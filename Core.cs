@@ -3,6 +3,7 @@ using System.Threading;
 using BlackCoat.Tools;
 using SFML.Graphics;
 using SFML.Window;
+using System.Diagnostics;
 
 namespace BlackCoat
 {
@@ -19,7 +20,6 @@ namespace BlackCoat
         // System
         private RenderWindow _Device;
         private AssetManager _AssetManager;
-        private Color _ClearColor = Color.Black;
         private RandomHelper _Random = new RandomHelper();
         private Boolean _FocusLost = false;
         // Layers
@@ -33,14 +33,9 @@ namespace BlackCoat
 
         // Properties ######################################################################
         // System
-        public Input Input { get { return _Device.Input; } }
         public AssetManager AssetManager { get { return _AssetManager; } }
         public RandomHelper Random { get { return _Random; } }
-        public Color ClearColor
-        {
-            get { return _ClearColor; }
-            set { _ClearColor = value; }
-        }
+        public Color ClearColor { get; set; }
 
         // Layers
         public GraphicLayer Layer_BG { get { return _LayerBackground; } }
@@ -53,7 +48,7 @@ namespace BlackCoat
         /// <summary>
         /// Current Mouse Position
         /// </summary>
-        public Vector2 MousePosition { get { return new Vector2(Input.GetMouseX(), Input.GetMouseY()); } }
+        public Vector2i MousePosition { get { return _Device.InternalGetMousePosition(); } }
 
 
         // CTOR ############################################################################
@@ -95,11 +90,27 @@ namespace BlackCoat
             if (debug)
             {
                 // Intialize Performance Monitoring
-                PerformanceMonitor perfMon = new PerformanceMonitor(this);
-                _LayerDebug.AddChild(perfMon);
+                //PerformanceMonitor perfMon = new PerformanceMonitor(this);
+                //_LayerDebug.AddChild(perfMon);
+                _Device.MouseWheelMoved += _Device_MouseWheelMoved;
+                //_Device.CurrentView.Zoom(0.5f);//debug overview
 
+                _Device.KeyPressed += _Device_KeyPressed;
             }
-            //_Device.CurrentView.Zoom(0.5f);//debug overview
+        }
+
+        void _Device_KeyPressed(object sender, KeyEventArgs e)
+        {
+            if (e.Code == Keyboard.Key.Escape) Exit();
+        }
+
+        void _Device_MouseWheelMoved(object sender, MouseWheelEventArgs e) // TODO : remove from core
+        {
+            //debug overview
+            var f = 1 + e.Delta / -50f;
+            var v = _Device.GetView();
+            v.Zoom(f);
+            _Device.SetView(v);
         }
 
 
@@ -116,13 +127,25 @@ namespace BlackCoat
         /// <returns>The Initialized RenderWindow or null if the Device could not be created</returns>
         public static RenderWindow CreateDevice(UInt32 deviceWidth, UInt32 deviceHeight, String title, Styles style, UInt32 antialiasing, Boolean skipValidityCheck = false)
         {
-            var settings = new WindowSettings(24, 8, antialiasing);
+            var settings = new ContextSettings(24, 8, antialiasing);
             var videoMode = new VideoMode(deviceWidth, deviceHeight);
-            if(skipValidityCheck || videoMode.IsValid())
+            if (skipValidityCheck || videoMode.IsValid())
             {
                 return new RenderWindow(videoMode, title, style, settings);
             }
             return null;
+        }
+        /// <summary>
+        /// Initializes a new Graphic Device based on a window or control handle
+        /// </summary>
+        /// <param name="handle">Handle to create the device on</param>
+        /// <param name="antialiasing">Determines the Antialiasing</param>
+        /// <returns>The Initialized RenderWindow instance based on the device</returns>
+        public static RenderWindow CreateDevice(IntPtr handle, UInt32 antialiasing)
+        {
+            if (handle == IntPtr.Zero) throw new NullReferenceException("Device creation failed since handle is Zero");
+            var settings = new ContextSettings(24, 8, antialiasing);
+            return new RenderWindow(handle, settings);
         }
 
         /// <summary>
@@ -139,7 +162,7 @@ namespace BlackCoat
         /// </summary>
         public void ShowRenderWindow()
         {
-            _Device.Show(true);
+            _Device.SetVisible(true);
         }
 
         /// <summary>
@@ -148,7 +171,7 @@ namespace BlackCoat
         /// </summary>
         public void HideRenderWindow()
         {
-            _Device.Show(false);
+            _Device.SetVisible(false);
         }
 
         /// <summary>
@@ -159,11 +182,12 @@ namespace BlackCoat
         public void Run(Action<float> updateGameDelegate)
         {
             ShowRenderWindow();
+            Stopwatch timer = new Stopwatch();
             float deltaT = 0;
-            while (_Device.IsOpened())
+            while (_Device.IsOpen())
             {
                 _Device.DispatchEvents();
-                deltaT = _Device.GetFrameTime();
+                deltaT = (float)timer.Elapsed.TotalMilliseconds;
                 if (_FocusLost) // pause updating & relieve host machine
                 {
                     Thread.Sleep(1);
@@ -174,6 +198,8 @@ namespace BlackCoat
                     updateGameDelegate(deltaT);
                 }
                 Draw();
+                timer.Reset();
+                timer.Start();
             }
             _AssetManager.Dispose();
             // Todo : Check remaining cleanup here
@@ -191,7 +217,7 @@ namespace BlackCoat
         private void Update(Single deltaT)
         {
             // check special input
-            if (Input.IsKeyDown(KeyCode.Escape)) Exit();
+            //if (Input.IsKeyDown(KeyCode.Escape)) Exit();
             
             // update layers
             _LayerBackground.Update(deltaT);
@@ -199,14 +225,13 @@ namespace BlackCoat
             _LayerParticles.Update(deltaT);
             _LayerOverlay.Update(deltaT);
             _LayerDebug.Update(deltaT);
-            _LayerCursor.Update(deltaT);
         }
 
         // layer draw root
         private void Draw()
         {
             // Clear Background
-            _Device.Clear(_ClearColor);
+            _Device.Clear(ClearColor);
 
             // Draw Layers
             _LayerBackground.Draw();
@@ -220,21 +245,10 @@ namespace BlackCoat
             _Device.Display();
         }
 
-        /// <summary>
-        /// Draws an Drawable element onto the Backbuffer
-        /// </summary>
-        /// <param name="target">The element to draw</param>
-        public void Render(Drawable element)
+        public void Log(params object[] logs) // TODO : cleanup!
         {
-            _Device.Draw(element);
-        }
-
-        public void Log(params object[] list) // TODO : cleanup!
-        {
-            for (int i = 0; i < list.Length; i++)
-            {
-                Console.WriteLine(list[i].ToString());
-            }
+            foreach (var log in logs)
+                Console.WriteLine(log);
             Console.WriteLine();
         }
 
@@ -252,6 +266,14 @@ namespace BlackCoat
         private void _Device_Closed(object sender, EventArgs e)
         {
             Exit();
+        }
+
+        internal void Render(Drawable graphicItem, Container Parent = null)
+        {
+            if (Parent == null)
+                _Device.Draw(graphicItem);
+            else
+                _Device.Draw(graphicItem, new RenderStates(Parent.Transform)); // FIX THIS !!!
         }
     }
 }

@@ -1,11 +1,12 @@
 ﻿using System;
 using SFML.Graphics;
+using SFML.Window;
 
 namespace BlackCoat
 {
     public class GraphicLayer : Container
     {
-        public override Vector2 Position { set { } } // disabled
+        public new Vector2f Position { set { } } // disabled
 
         public GraphicLayer(Core core) : base(core)
         {

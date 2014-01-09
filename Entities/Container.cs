@@ -11,25 +11,6 @@ namespace BlackCoat
         // Variables #######################################################################
         protected List<IEntity> _Childs = new List<IEntity>();
 
-
-        // Properties ######################################################################
-        /// <summary>
-        /// Local  Position
-        /// </summary>
-        public override Vector2 Position
-        {
-            get
-            {
-                return base.Position;
-            }
-            set
-            {
-                var cPos = _Childs.ToDictionary(k => k, v => v.Position);
-                base.Position = value;
-                foreach (var child in _Childs) child.Position = cPos[child];
-            }
-        }
-
         // CTOR ############################################################################
         public Container(Core core) : base(core)
         { }
@@ -107,7 +88,7 @@ namespace BlackCoat
         {
             if (_Visible)
             {
-                if (Image != null) base.Draw();
+                if (this.Texture != null) base.Draw();
                 foreach (IEntity e in _Childs) e.Draw();
             }
         }

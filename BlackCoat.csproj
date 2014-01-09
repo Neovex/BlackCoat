@@ -29,6 +29,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -51,29 +52,26 @@
     <Compile Include="Core.cs" />
     <Compile Include="Entities\IEntity.cs" />
     <Compile Include="Entities\Container.cs" />
-    <Compile Include="Entities\ShapeItem.cs" />
-    <Compile Include="Entities\TextItem.cs" />
+    <None Include="Entities\ShapeItem.cs" />
+    <None Include="Entities\TextItem.cs" />
     <Compile Include="Entities\GraphicItem.cs" />
     <Compile Include="Entities\GraphicLayer.cs" />
-    <Compile Include="ParticleSystem\Emitter.cs" />
-    <Compile Include="ParticleSystem\Particle.cs" />
+    <None Include="ParticleSystem\Emitter.cs" />
+    <None Include="ParticleSystem\Particle.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Role.cs" />
-    <Compile Include="Tools\PerformanceMonitor.cs" />
+    <None Include="Tools\PerformanceMonitor.cs" />
     <Compile Include="Tools\RandomHelper.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="sfmlnet-audio, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\SFML-1.6_dotNET\lib\sfmlnet-audio.dll</HintPath>
+    <Reference Include="sfmlnet-audio-2">
+      <HintPath>..\SFML.Net-2.1\lib\sfmlnet-audio-2.dll</HintPath>
     </Reference>
-    <Reference Include="sfmlnet-graphics, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\SFML-1.6_dotNET\lib\sfmlnet-graphics.dll</HintPath>
+    <Reference Include="sfmlnet-graphics-2">
+      <HintPath>..\SFML.Net-2.1\lib\sfmlnet-graphics-2.dll</HintPath>
     </Reference>
-    <Reference Include="sfmlnet-window, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\SFML-1.6_dotNET\lib\sfmlnet-window.dll</HintPath>
+    <Reference Include="sfmlnet-window-2">
+      <HintPath>..\SFML.Net-2.1\lib\sfmlnet-window-2.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
@@ -81,5 +79,19 @@
     </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\SFML.Net-2.1\extlibs\csfml-audio-2.dll">
+      <Link>csfml-audio-2.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\SFML.Net-2.1\extlibs\csfml-graphics-2.dll">
+      <Link>csfml-graphics-2.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\SFML.Net-2.1\extlibs\csfml-window-2.dll">
+      <Link>csfml-window-2.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 </Project>

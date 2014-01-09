@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using SFML.Graphics;
+using System.IO;
 
 namespace BlackCoat
 {
@@ -10,14 +11,18 @@ namespace BlackCoat
     {
         // Variables #######################################################################
         private Core _Core;
-        private Dictionary<String, Image> _Images = new Dictionary<String, Image>();
+        private Dictionary<String, Texture> _Images = new Dictionary<String, Texture>();
         private Dictionary<String, Font> _Fonts = new Dictionary<String, Font>();
+
+
+        public String RootFolder { get; set; }
 
 
         // CTOR ############################################################################
         public AssetManager(Core core)
         {
             _Core = core;
+            RootFolder = String.Empty;
         }
 
 
@@ -27,7 +32,7 @@ namespace BlackCoat
         /// </summary>
         /// <param name="name">Name of the Ressource</param>
         /// <returns>Image instance</returns>
-        public Image LoadImage(String name)
+        public Texture LoadImage(String name)
         {
             return LoadImage(name, true);
         }
@@ -38,13 +43,13 @@ namespace BlackCoat
         /// <param name="name">Name of the Ressource</param>
         /// <param name="smothing">Determines if the loaded Image should be smoothed</param>
         /// <returns>Image instance</returns>
-        public Image LoadImage(String name, Boolean smothing)
+        public Texture LoadImage(String name, Boolean smothing)
         {
             if (_Images.ContainsKey(name)) return _Images[name];
 
             try
             {
-                var img = new Image(String.Format("assets\\{0}.png", name));
+                var img = new Texture(Path.Combine(RootFolder, String.Concat(name, ".png")));
                 img.Smooth = smothing;
                 _Images.Add(name, img);
                 return img;
@@ -64,14 +69,14 @@ namespace BlackCoat
         /// <param name="color">Color of the Image as hex value 0xAARRGGBB</param>
         /// <param name="name">Optional name of the Ressource</param>
         /// <returns>The new Image</returns>
-        public Image CreateImage(UInt32 width, UInt32 height, UInt32 color, String name = "")
+        public Texture CreateImage(UInt32 width, UInt32 height, UInt32 color, String name = "")
         {
             if (_Images.ContainsKey(name)) return _Images[name];
             var c = new Color((Byte) ((color >> 0x10) & 0xff), 
                               (Byte) ((color >> 0x08) & 0xff),
                               (Byte)  (color &  0xff), 
                               (Byte) ((color >> 0x18) & 0xff));
-            var img = new Image(width, height, c);
+            var img = new Texture(new Image(width, height, c));
             if (!String.IsNullOrEmpty(name)) _Images.Add(name, img);
             return img;
         }

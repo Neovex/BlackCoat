@@ -1,5 +1,6 @@
 ﻿using System;
 using SFML.Graphics;
+using SFML.Window;
 
 namespace BlackCoat
 {
@@ -19,33 +20,6 @@ namespace BlackCoat
         /// Determines the Visisbility of the Entity
         /// </summary>
         Boolean Visible
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
-        /// Local  Position
-        /// </summary>
-        Vector2 Position
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
-        /// Local Rotation
-        /// </summary>
-        Single Rotation
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
-        /// Global Rotation
-        /// </summary>
-        Single GlobalRotation
         {
             get;
             set;

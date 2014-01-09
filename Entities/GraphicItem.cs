@@ -18,64 +18,12 @@ namespace BlackCoat
 
         // Properties ######################################################################
         /// <summary>
-        /// Local  Position
-        /// </summary>
-        public override Vector2 Position
-        {
-            get
-            {
-                if (_Parent == null) return base.Position;
-                return _Parent.TransformToLocal(base.Position);
-            }
-            set
-            {
-                if (_Parent == null) base.Position = value;
-                else base.Position = _Parent.TransformToGlobal(value);
-            }
-        }
-
-        /// <summary>
-        /// Local Rotation
-        /// </summary>
-        public override Single Rotation
-        {
-            get
-            {
-                if (_Parent == null) return GlobalRotation;
-                return GlobalRotation - _Parent.GlobalRotation;
-            }
-            set
-            {
-                if (_Parent == null) GlobalRotation = value;
-                else GlobalRotation = _Parent.GlobalRotation + value;
-            }
-        }
-
-        /// <summary>
-        /// World Rotation
-        /// </summary>
-        public virtual Single GlobalRotation 
-        {
-            get { return base.Rotation; }
-            set { base.Rotation = value; }
-        }
-
-
-        /// <summary>
         /// Parent Container of this Entity
         /// </summary>
         public Container Parent
         {
             get { return _Parent; }
-            set
-            {
-                if (value != null && !value.HasChild(this)) return;
-                Vector2 pos = Position;
-                float rot = Rotation;
-                _Parent = value;
-                Position = pos;
-                Rotation = rot;
-            }
+            set { /*if (value == null || !value.HasChild(this))*/ _Parent = value; }
         }
 
         /// <summary>
@@ -138,7 +86,7 @@ namespace BlackCoat
         /// </summary>
         public virtual void Draw()
         {
-            if (_Visible) _Core.Render(this);
+            if (_Visible) _Core.Render(this, Parent);
         }
 
 
