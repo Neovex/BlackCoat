@@ -1,4 +1,5 @@
 ﻿using System;
+using BlackCoat.Entities;
 
 namespace BlackCoat
 {

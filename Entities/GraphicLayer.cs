@@ -2,15 +2,16 @@
 using SFML.Graphics;
 using SFML.Window;
 
-namespace BlackCoat
+namespace BlackCoat.Entities
 {
     public class GraphicLayer : Container
     {
         public new Vector2f Position { set { } } // disabled
+        public new float Rotation { set { } } // disabled
+        public new Vector2f Scale { set { } } // disabled
 
         public GraphicLayer(Core core) : base(core)
-        {
-        }
+        { }
 
         public override void Update(Single deltaT)
         {

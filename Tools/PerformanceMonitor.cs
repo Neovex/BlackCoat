@@ -1,6 +1,9 @@
-﻿using System;
+﻿using BlackCoat.Entities;
 using BlackCoat.ParticleSystem;
 using SFML.Graphics;
+using System;
+using System.Linq;
+using System.Collections.Generic;
 
 namespace BlackCoat.Tools
 {
@@ -8,18 +11,22 @@ namespace BlackCoat.Tools
     {
         private Single _LastUpdate = 0;
         private Single _Runtime = 0;
+#if AVERAGE_FPS
+        private Queue<Single> _FPS = new Queue<float>();
+#endif
 
-        private const String TimeString = "\r\nBlack Coat Engine\r\n\r\n" +
-                                              "FPS:   {0}\r\n" +
-                                              "FTime: {1}\r\n" +
-                                              "Total: {2}\r\n" +
-                                              "APC:   {3}";
+        private const String TimeString = "Black Coat Engine\n\n" +
+                                          "FPS:   {0}\n" +
+                                          "FTime: {1}\n" +
+                                          "Total: {2}\n" +
+                                          "APC:   {3}";
 
 
-
-        public PerformanceMonitor(Core core) : base(core)
+        public PerformanceMonitor(Core core)
+            : base(core)
         {
-            Size = 13;
+            Font = _Core.DefaultFont;
+            CharacterSize = 13;
             Color = SFML.Graphics.Color.Yellow;
         }
 
@@ -29,15 +36,25 @@ namespace BlackCoat.Tools
             _LastUpdate += deltaT;
             _Runtime += deltaT;
 
-            if (_LastUpdate > 0.17)
-            {
-                Text = String.Format(TimeString,
-                                      1 / deltaT,
-                                      deltaT,
-                                      _Runtime,
-                                      Emitter.ACTIVE_PARTICLES);
-                _LastUpdate = 0;
-            }
+#if AVERAGE_FPS
+            _FPS.Enqueue(1 / deltaT);
+            if (_FPS.Count > 10000) _FPS.Dequeue();
+#endif
+
+            if (_LastUpdate < 0.25) return;
+            _LastUpdate = 0;
+
+
+            DisplayedString = String.Format(TimeString,
+# if !AVERAGE_FPS
+                                            1 / deltaT,
+#endif
+#if AVERAGE_FPS
+                                            _FPS.Sum() / _FPS.Count,
+#endif
+                                            deltaT,
+                                            _Runtime,
+                                            Emitter.ACTIVE_PARTICLES);
         }
     }
 }

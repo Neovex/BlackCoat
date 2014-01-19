@@ -2,7 +2,7 @@
 using SFML.Graphics;
 using SFML.Window;
 
-namespace BlackCoat
+namespace BlackCoat.Entities
 {
     public interface IEntity
     {

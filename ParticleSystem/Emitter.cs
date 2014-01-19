@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using SFML.Graphics;
+using BlackCoat.Entities;
+using SFML.Window;
 
 namespace BlackCoat.ParticleSystem
 {
@@ -18,24 +20,24 @@ namespace BlackCoat.ParticleSystem
         protected Queue<Particle> _InactiveParticles = new Queue<Particle>();
         protected Boolean _IsTriggered = false;
         // Spawn Infos
-        protected Vector2 _TTLRange = new Vector2(1, 1);
-        protected Vector2 _ParticlesPerSpawn = new Vector2(1, 1);
+        protected Vector2f _TTLRange = new Vector2f(1, 1);
+        protected Vector2f _ParticlesPerSpawn = new Vector2f(1, 1);
         protected Single _SpawnRate = 1;
         protected Single _SpawnTimer = 0;
         // Particle Ranges
         protected Container _SpawnContainer;
-        protected Image _ParticleTexture = null;
+        protected Texture _ParticleTexture = null;
         protected IntRect _SpawnArea = new IntRect(0, 0, 0, 0);
-        protected Vector2 _SpeedRange = new Vector2();
-        protected Vector2 _VelocityRange = new Vector2();
-        protected Vector2 _DirectionRange = new Vector2();
-        protected Vector2 _DirectionVelocityRange = new Vector2();
-        protected Vector2 _AlphaRange = new Vector2(1, 1);
-        protected Vector2 _BlendRange = new Vector2();
-        protected Vector2 _AngleRange = new Vector2();
-        protected Vector2 _RotationRange = new Vector2();
-        protected Vector2 _ScaleRange = new Vector2(1, 1);
-        protected Vector2 _TransformRange = new Vector2();
+        protected Vector2f _SpeedRange = new Vector2f();
+        protected Vector2f _VelocityRange = new Vector2f();
+        protected Vector2f _DirectionRange = new Vector2f();
+        protected Vector2f _DirectionVelocityRange = new Vector2f();
+        protected Vector2f _AlphaRange = new Vector2f(1, 1);
+        protected Vector2f _BlendRange = new Vector2f();
+        protected Vector2f _AngleRange = new Vector2f();
+        protected Vector2f _RotationRange = new Vector2f();
+        protected Vector2f _ScaleRange = new Vector2f(1, 1);
+        protected Vector2f _TransformRange = new Vector2f();
         private BlendMode _ParticleBlendMode = BlendMode.None;
 
 
@@ -45,13 +47,13 @@ namespace BlackCoat.ParticleSystem
         /// </summary>
         public virtual Boolean IsTriggered { get { return _IsTriggered; } }
         // Spawn Infos
-        public virtual Vector2 TTLRange
+        public virtual Vector2f TTLRange
         {
             get { return _TTLRange; }
             set { _TTLRange = value; }
         }
 
-        public virtual Vector2 ParticlesPerSpawn
+        public virtual Vector2f ParticlesPerSpawn
         {
             get { return _ParticlesPerSpawn; }
             set { _ParticlesPerSpawn = value; }
@@ -69,7 +71,7 @@ namespace BlackCoat.ParticleSystem
             set { _SpawnContainer = value; }
         }
 
-        public virtual Image ParticleTexture
+        public virtual Texture ParticleTexture
         {
             get { return _ParticleTexture; }
             set { _ParticleTexture = value; }
@@ -81,61 +83,61 @@ namespace BlackCoat.ParticleSystem
             set { _SpawnArea = value; }
         }
 
-        public virtual Vector2 SpeedRange
+        public virtual Vector2f SpeedRange
         {
             get { return _SpeedRange; }
             set { _SpeedRange = value; }
         }
 
-        public virtual Vector2 SpeedVelocityRange
+        public virtual Vector2f SpeedVelocityRange
         {
             get { return _VelocityRange; }
             set { _VelocityRange = value; }
         }
 
-        public virtual Vector2 DirectionRange
+        public virtual Vector2f DirectionRange
         {
             get { return _DirectionRange; }
             set { _DirectionRange = value; }
         }
 
-        public virtual Vector2 DirectionVelocityRange
+        public virtual Vector2f DirectionVelocityRange
         {
             get { return _DirectionVelocityRange; }
             set { _DirectionVelocityRange = value; }
         }
 
-        public virtual Vector2 AlphaRange
+        public virtual Vector2f AlphaRange
         {
             get { return _AlphaRange; }
             set { _AlphaRange = value; }
         }
 
-        public virtual Vector2 BlendRange
+        public virtual Vector2f BlendRange
         {
             get { return _BlendRange; }
             set { _BlendRange = value; }
         }
 
-        public virtual Vector2 AngleRange
+        public virtual Vector2f AngleRange
         {
             get { return _AngleRange; }
             set { _AngleRange = value; }
         }
 
-        public virtual Vector2 RotationRange
+        public virtual Vector2f RotationRange
         {
             get { return _RotationRange; }
             set { _RotationRange = value; }
         }
 
-        public virtual Vector2 ScaleRange
+        public virtual Vector2f ScaleRange
         {
             get { return _ScaleRange; }
             set { _ScaleRange = value; }
         }
 
-        public virtual Vector2 TransformRange
+        public virtual Vector2f TransformRange
         {
             get { return _TransformRange; }
             set { _TransformRange = value; }
@@ -196,11 +198,11 @@ namespace BlackCoat.ParticleSystem
                     else p = new Particle(this, _Core);
                     if (!_SpawnContainer.AddChild(p)) throw new Exception("invalid spawn container");
                     var scale = _Core.Random.NextFloat(_ScaleRange.X, _ScaleRange.Y);
-                    p.Scale = new Vector2(scale, scale);
+                    p.Scale = new Vector2f(scale, scale);
                     p.Image = _ParticleTexture;
                     p.TTL = _Core.Random.NextFloat(_TTLRange.X, _TTLRange.Y);
-                    p.Position = new Vector2(_Core.Random.NextFloat(_SpawnArea.Left, _SpawnArea.Right),
-                                             _Core.Random.NextFloat(_SpawnArea.Top, _SpawnArea.Bottom));
+                    p.Position = new Vector2f(_Core.Random.NextFloat(_SpawnArea.Left, _SpawnArea.Width),
+                                             _Core.Random.NextFloat(_SpawnArea.Top, _SpawnArea.Height));
                     p.Speed = _Core.Random.NextFloat(_SpeedRange.X, _SpeedRange.Y);
                     p.SpeedVelocity = _Core.Random.NextFloat(_VelocityRange.X, _VelocityRange.Y);
                     p.Direction = _Core.Random.NextFloat(_DirectionRange.X, _DirectionRange.Y);

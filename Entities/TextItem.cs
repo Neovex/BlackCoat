@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using SFML.Graphics;
 
-namespace BlackCoat
+namespace BlackCoat.Entities
 {
-    public class TextItem : String2D, IEntity
+    public class TextItem : Text, IEntity
     {
         // Variables #######################################################################
         protected Core _Core;
@@ -16,49 +16,6 @@ namespace BlackCoat
 
 
         // Properties ######################################################################
-        /// <summary>
-        /// Local  Position
-        /// </summary>
-        public override Vector2 Position
-        {
-            get
-            {
-                if (_Parent == null) return base.Position;
-                return _Parent.TransformToLocal(base.Position);
-            }
-            set
-            {
-                if (_Parent == null) base.Position = value;
-                else base.Position = _Parent.TransformToGlobal(value);
-            }
-        }
-
-        /// <summary>
-        /// Local Rotation
-        /// </summary>
-        public override Single Rotation
-        {
-            get
-            {
-                if (_Parent == null) return GlobalRotation;
-                return GlobalRotation - _Parent.GlobalRotation;
-            }
-            set
-            {
-                if (_Parent == null) GlobalRotation = value;
-                else GlobalRotation = _Parent.GlobalRotation + value;
-            }
-        }
-
-        /// <summary>
-        /// World Rotation
-        /// </summary>
-        public virtual Single GlobalRotation
-        {
-            get { return base.Rotation; }
-            set { base.Rotation = value; }
-        }
-
         /// <summary>
         /// Parent Container of this Entity
         /// </summary>

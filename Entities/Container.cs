@@ -4,12 +4,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace BlackCoat
+namespace BlackCoat.Entities
 {
     public class Container : GraphicItem
     {
         // Variables #######################################################################
         protected List<IEntity> _Childs = new List<IEntity>();
+
+
+        // Properties ######################################################################
+        /// <summary>
+        /// Transform Matrix defining Position, Scale and Rotation of the Entity
+        /// </summary>
+        public new Transform Transform { get { return Parent == null ? base.Transform : base.Transform * Parent.Transform; } }
+
 
         // CTOR ############################################################################
         public Container(Core core) : base(core)
@@ -21,7 +29,7 @@ namespace BlackCoat
         /// Adds an Entity to this Container
         /// </summary>
         /// <param name="e">The Entity to add</param>
-        /// <returns>True if the Entity coulb be added</returns>
+        /// <returns>True if the Entity could be added</returns>
         public virtual Boolean AddChild(IEntity e)
         {
             if (e.Parent != null) e.Parent.RemoveChild(e);

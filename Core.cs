@@ -1,9 +1,11 @@
-﻿using System;
-using System.Threading;
+﻿using BlackCoat.Entities;
 using BlackCoat.Tools;
 using SFML.Graphics;
 using SFML.Window;
+using System;
+using System.Threading;
 using System.Diagnostics;
+using System.IO;
 
 namespace BlackCoat
 {
@@ -20,8 +22,11 @@ namespace BlackCoat
         // System
         private RenderWindow _Device;
         private AssetManager _AssetManager;
-        private RandomHelper _Random = new RandomHelper();
+        private RandomHelper _Random;
         private Boolean _FocusLost = false;
+        // Views
+        private View _DefaultView;
+        private View _OverlayView;
         // Layers
         private GraphicLayer _LayerBackground;
         private GraphicLayer _LayerGame;
@@ -29,13 +34,16 @@ namespace BlackCoat
         private GraphicLayer _LayerOverlay;
         private GraphicLayer _LayerDebug;
         private GraphicLayer _LayerCursor;
+        // Speed
+        private RenderStates _RenderHelper = RenderStates.Default;
 
 
         // Properties ######################################################################
         // System
+        public RenderWindow Device { get { return _Device; } }
         public AssetManager AssetManager { get { return _AssetManager; } }
         public RandomHelper Random { get { return _Random; } }
-        public Color ClearColor { get; set; }
+        public Boolean FocusLost { get { return _FocusLost; } }
 
         // Layers
         public GraphicLayer Layer_BG { get { return _LayerBackground; } }
@@ -44,6 +52,13 @@ namespace BlackCoat
         public GraphicLayer Layer_Overlay { get { return _LayerOverlay; } }
         public GraphicLayer Layer_Debug { get { return _LayerDebug; } }
         public GraphicLayer Layer_Cursor { get { return _LayerCursor; } }
+
+        // Misc
+        public View DefaultView { get { return _DefaultView; } }
+        public View OverlayView { get { return _OverlayView; } }
+        public Color ClearColor { get; set; }
+        public Font DefaultFont { get; private set; }
+
 
         /// <summary>
         /// Current Mouse Position
@@ -69,15 +84,26 @@ namespace BlackCoat
             // Save Device Ref
             if (device == null) throw new ArgumentNullException("device");
             _Device = device;
+            _DefaultView = _Device.DefaultView;
+            _OverlayView = new View(_DefaultView);
+            // Device Events
             _Device.Closed += new EventHandler(_Device_Closed);
             _Device.LostFocus += new EventHandler(HandleLostFocus);
             _Device.GainedFocus += new EventHandler(HandleGainedFocus);
-
-            // Init Content Manager
+            
+            // Init Subsystems
             _AssetManager = new AssetManager(this);
+            _Random = new RandomHelper();
+            ClearColor = Color.Black;
+            DefaultFont = new Font(@"C:\Windows\Fonts\arial.ttf"); // FIXME
 
-            // Create Default Font
-            //DefaultFont = ContentManager.Load<SpriteFont>("DefaultFont");
+            // Init Input
+            Device.MouseMoved += Input.HandleMouseMoved;
+            Device.MouseButtonPressed += Input.HandleMouseButtonPressed;
+            Device.MouseButtonReleased += Input.HandleMouseButtonReleased;
+            Device.MouseWheelMoved += Input.HandleMouseWheelMoved;
+            Device.KeyPressed += Input.HandleKeyPressed;
+            Device.KeyReleased += Input.HandleKeyReleased;
 
             // Create Layersystem
             _LayerBackground = new GraphicLayer(this);
@@ -90,27 +116,17 @@ namespace BlackCoat
             if (debug)
             {
                 // Intialize Performance Monitoring
-                //PerformanceMonitor perfMon = new PerformanceMonitor(this);
-                //_LayerDebug.AddChild(perfMon);
-                _Device.MouseWheelMoved += _Device_MouseWheelMoved;
-                //_Device.CurrentView.Zoom(0.5f);//debug overview
+                _LayerDebug.AddChild(new PerformanceMonitor(this));
 
+                // Input
                 _Device.KeyPressed += _Device_KeyPressed;
+                //_Device.CurrentView.Zoom(0.5f);//debug overview
             }
         }
 
-        void _Device_KeyPressed(object sender, KeyEventArgs e)
+        private void _Device_KeyPressed(object sender, KeyEventArgs e)
         {
             if (e.Code == Keyboard.Key.Escape) Exit();
-        }
-
-        void _Device_MouseWheelMoved(object sender, MouseWheelEventArgs e) // TODO : remove from core
-        {
-            //debug overview
-            var f = 1 + e.Delta / -50f;
-            var v = _Device.GetView();
-            v.Zoom(f);
-            _Device.SetView(v);
         }
 
 
@@ -183,11 +199,11 @@ namespace BlackCoat
         {
             ShowRenderWindow();
             Stopwatch timer = new Stopwatch();
-            float deltaT = 0;
+            Single deltaT = 0;
             while (_Device.IsOpen())
             {
                 _Device.DispatchEvents();
-                deltaT = (float)timer.Elapsed.TotalMilliseconds;
+                deltaT = (Single)(timer.Elapsed.TotalMilliseconds / 1000d); // fractal second
                 if (_FocusLost) // pause updating & relieve host machine
                 {
                     Thread.Sleep(1);
@@ -197,9 +213,37 @@ namespace BlackCoat
                     Update(deltaT);
                     updateGameDelegate(deltaT);
                 }
-                Draw();
                 timer.Reset();
                 timer.Start();
+                Draw();
+            }
+            _AssetManager.Dispose();
+            // Todo : Check remaining cleanup here
+        }
+
+        /// <summary>
+        /// Begins the Update / Rendering Loop disregarding the current focus.
+        /// This method is blocking until Exit() is called.
+        /// </summary>
+        /// <param name="updateGameDelegate">Update callback for the calling class</param>
+        public void RunPassively(Action<float> updateGameDelegate) // CHECK
+        {
+            ShowRenderWindow();
+            Stopwatch timer = new Stopwatch();
+            Single deltaT = 0;
+            while (_Device.IsOpen()) // CHECK
+            {
+                _Device.DispatchEvents();
+                deltaT = (Single)(timer.Elapsed.TotalMilliseconds / 1000d); // fractal second
+
+                if(_FocusLost) Thread.Sleep(1);
+                // run updates
+                Update(deltaT);
+                updateGameDelegate(deltaT);
+
+                timer.Reset();
+                timer.Start();
+                Draw();
             }
             _AssetManager.Dispose();
             // Todo : Check remaining cleanup here
@@ -216,9 +260,6 @@ namespace BlackCoat
         // layer update root
         private void Update(Single deltaT)
         {
-            // check special input
-            //if (Input.IsKeyDown(KeyCode.Escape)) Exit();
-            
             // update layers
             _LayerBackground.Update(deltaT);
             _LayerGame.Update(deltaT);
@@ -227,17 +268,20 @@ namespace BlackCoat
             _LayerDebug.Update(deltaT);
         }
 
-        // layer draw root
+        // draw layer roots
         private void Draw()
         {
             // Clear Background
             _Device.Clear(ClearColor);
 
             // Draw Layers
+            _Device.SetView(_DefaultView);
             _LayerBackground.Draw();
             _LayerGame.Draw();
             _LayerParticles.Draw();
             _LayerOverlay.Draw();
+            // Overlay
+            _Device.SetView(_OverlayView);
             _LayerDebug.Draw();
             _LayerCursor.Draw();
 
@@ -245,7 +289,29 @@ namespace BlackCoat
             _Device.Display();
         }
 
-        public void Log(params object[] logs) // TODO : cleanup!
+        /// <summary>
+        /// Renders a drawable onto the backbuffer
+        /// </summary>
+        /// <param name="graphicItem">The item to render</param>
+        /// <param name="parent">Scene Graph parent of the item to render</param>
+        internal void Render(Drawable graphicItem, Container parent)
+        {
+            _RenderHelper.Transform = parent.Transform;
+            _Device.Draw(graphicItem, _RenderHelper);
+        }
+
+        /// <summary>
+        /// Renders a drawable onto the backbuffer
+        /// </summary>
+        /// <param name="graphicItem">The item to render</param>
+        internal void Render(Drawable graphicItem)
+        {
+            _Device.Draw(graphicItem);
+        }
+
+        /// <summary>Logs Message to the default output</summary>
+        /// <param name="logs">Objects to log</param>
+        public void Log(params object[] logs)
         {
             foreach (var log in logs)
                 Console.WriteLine(log);
@@ -256,6 +322,7 @@ namespace BlackCoat
         private void HandleLostFocus(object sender, EventArgs e)
         {
             _FocusLost = true;
+            Input.Reset();
         }
 
         private void HandleGainedFocus(object sender, EventArgs e)
@@ -266,14 +333,6 @@ namespace BlackCoat
         private void _Device_Closed(object sender, EventArgs e)
         {
             Exit();
-        }
-
-        internal void Render(Drawable graphicItem, Container Parent = null)
-        {
-            if (Parent == null)
-                _Device.Draw(graphicItem);
-            else
-                _Device.Draw(graphicItem, new RenderStates(Parent.Transform)); // FIX THIS !!!
         }
     }
 }

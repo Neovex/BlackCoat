@@ -1,5 +1,7 @@
 ﻿using System;
 using SFML.Graphics;
+using BlackCoat.Entities;
+using SFML.Window;
 
 namespace BlackCoat.ParticleSystem
 {
@@ -30,12 +32,12 @@ namespace BlackCoat.ParticleSystem
         /// <summary>
         /// Particle Image
         /// </summary>
-        public new Image Image
+        public new Texture Image
         {
             set
             {
-                base.Image = value;
-                if(value != null) Center = new Vector2(value.Width / 2, value.Height / 2);
+                base.Texture = value;
+                if(value != null) Origin = new Vector2f(value.Size.X / 2, value.Size.Y / 2);
             }
         }
 
@@ -142,7 +144,7 @@ namespace BlackCoat.ParticleSystem
                 // TTL
                 _TTL -= deltaT;
                 // Movement
-                Vector2 pos = Position;
+                var pos = Position;
                 pos.X += (float)(Math.Cos(_Direction * DEG_TO_RAD) * _Speed * deltaT);
                 pos.Y += (float)(Math.Sin(_Direction * DEG_TO_RAD) * _Speed * deltaT);
                 Position = pos;
@@ -154,7 +156,7 @@ namespace BlackCoat.ParticleSystem
                 Rotation += _RotationRate * deltaT;
 
                 //Scaleing
-                Vector2 scale = Scale; //check
+                var scale = Scale; //check
                 scale.X += _Transform * deltaT;
                 scale.Y += _Transform * deltaT;
                 Scale = scale;
