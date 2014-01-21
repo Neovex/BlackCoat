@@ -21,7 +21,7 @@ namespace BlackCoat.ParticleSystem
         protected Boolean _IsTriggered = false;
         // Spawn Infos
         protected Vector2f _TTLRange = new Vector2f(1, 1);
-        protected Vector2f _ParticlesPerSpawn = new Vector2f(1, 1);
+        protected Vector2i _ParticlesPerSpawn = new Vector2i(1, 1);
         protected Single _SpawnRate = 1;
         protected Single _SpawnTimer = 0;
         // Particle Ranges
@@ -38,7 +38,7 @@ namespace BlackCoat.ParticleSystem
         protected Vector2f _RotationRange = new Vector2f();
         protected Vector2f _ScaleRange = new Vector2f(1, 1);
         protected Vector2f _TransformRange = new Vector2f();
-        private BlendMode _ParticleBlendMode = BlendMode.None;
+        private BlendMode _ParticleBlendMode = BlendMode.Alpha;
 
 
         // Properties ######################################################################
@@ -53,7 +53,7 @@ namespace BlackCoat.ParticleSystem
             set { _TTLRange = value; }
         }
 
-        public virtual Vector2f ParticlesPerSpawn
+        public virtual Vector2i ParticlesPerSpawn
         {
             get { return _ParticlesPerSpawn; }
             set { _ParticlesPerSpawn = value; }
@@ -191,7 +191,7 @@ namespace BlackCoat.ParticleSystem
             {
                 _SpawnTimer = 0;
                 Particle p;
-                int particleCount = _Core.Random.Next((int)_ParticlesPerSpawn.X, (int)_ParticlesPerSpawn.Y);
+                int particleCount = _Core.Random.Next(_ParticlesPerSpawn.X, _ParticlesPerSpawn.Y);
                 for (int i = 0; i < particleCount; i++)
                 {
                     if(_InactiveParticles.Count > 0) p = _InactiveParticles.Dequeue();
@@ -199,7 +199,7 @@ namespace BlackCoat.ParticleSystem
                     if (!_SpawnContainer.AddChild(p)) throw new Exception("invalid spawn container");
                     var scale = _Core.Random.NextFloat(_ScaleRange.X, _ScaleRange.Y);
                     p.Scale = new Vector2f(scale, scale);
-                    p.Image = _ParticleTexture;
+                    p.Texture = _ParticleTexture;
                     p.TTL = _Core.Random.NextFloat(_TTLRange.X, _TTLRange.Y);
                     p.Position = new Vector2f(_Core.Random.NextFloat(_SpawnArea.Left, _SpawnArea.Width),
                                              _Core.Random.NextFloat(_SpawnArea.Top, _SpawnArea.Height));

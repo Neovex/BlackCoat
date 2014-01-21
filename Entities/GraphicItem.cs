@@ -13,7 +13,7 @@ namespace BlackCoat.Entities
         private Container _Parent;
         protected Boolean _Visible = true;
         protected List<Role> _Roles = new List<Role>();
-        protected Single _Alpha = 1;
+        protected Single _Alpha = 255;
 
         protected RenderStates _RenderState = RenderStates.Default;
 
@@ -45,7 +45,7 @@ namespace BlackCoat.Entities
             get { return Color.A == 0 ? 0 : _Alpha / 255f; }
             set
             {
-                _Alpha = value * 255;
+                _Alpha =  (_Parent == null ? value : value * _Parent.Alpha) * 255;
                 if (_Alpha < 0) _Alpha = 0;
                 var color = Color;
                 color.A = (Byte)_Alpha;

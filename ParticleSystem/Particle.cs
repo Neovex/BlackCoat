@@ -30,9 +30,9 @@ namespace BlackCoat.ParticleSystem
 
         // Properties ######################################################################
         /// <summary>
-        /// Particle Image
+        /// Particle Texture
         /// </summary>
-        public new Texture Image
+        public new Texture Texture
         {
             set
             {
@@ -155,7 +155,7 @@ namespace BlackCoat.ParticleSystem
                 //Rotation
                 Rotation += _RotationRate * deltaT;
 
-                //Scaleing
+                //Scaling
                 var scale = Scale; //check
                 scale.X += _Transform * deltaT;
                 scale.Y += _Transform * deltaT;
