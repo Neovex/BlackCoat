@@ -1,4 +1,5 @@
-﻿using SFML.Window;
+﻿using SFML.Graphics;
+using SFML.Window;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,11 +12,32 @@ namespace BlackCoat
     /// </summary>
     public static class Input
     {
+        internal static RenderWindow Device;
+
         public static Vector2i MousePosition { get; private set; }
         public static Int32 MouseWheelDelta { get; private set; }
 
         private static List<Mouse.Button> _MouseButtons = new List<Mouse.Button>();
         private static List<Keyboard.Key> _KeyboardKeys = new List<Keyboard.Key>();
+
+        // TODO : add remaining events
+        public static event EventHandler<MouseMoveEventArgs> MouseMoved
+        {
+            add { Device.MouseMoved += value; }
+            remove { Device.MouseMoved -= value; }
+        }
+
+        public static event EventHandler<MouseButtonEventArgs> MouseButtonPressed
+        {
+            add { Device.MouseButtonPressed += value; }
+            remove { Device.MouseButtonPressed -= value; }
+        }
+
+        public static event EventHandler<KeyEventArgs> KeyPressed
+        {
+            add { Device.KeyPressed += value; }
+            remove { Device.KeyPressed -= value; }
+        }
 
 
         // TODO : comment
@@ -68,6 +90,17 @@ namespace BlackCoat
             //return _KEY1 == key || _KEY2 == key || _KEY3 == key || _KEY4 == key;
             //VS
             return _KeyboardKeys.Contains(key); // performance impact?!
+        }
+
+        internal static void InitializeInternal(Core core) // TODO : cleanup
+        {
+            Device = core.Device;
+            Device.MouseMoved += Input.HandleMouseMoved;
+            Device.MouseButtonPressed += Input.HandleMouseButtonPressed;
+            Device.MouseButtonReleased += Input.HandleMouseButtonReleased;
+            Device.MouseWheelMoved += Input.HandleMouseWheelMoved;
+            Device.KeyPressed += Input.HandleKeyPressed;
+            Device.KeyReleased += Input.HandleKeyReleased;
         }
     }
 }

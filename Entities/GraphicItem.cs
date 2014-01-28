@@ -54,7 +54,7 @@ namespace BlackCoat.Entities
         }
 
         /// <summary>
-        /// Blendingmethod used for Rendering
+        /// Blending method used for Rendering
         /// </summary>
         public virtual BlendMode BlendMode
         {

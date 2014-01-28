@@ -46,14 +46,14 @@ namespace BlackCoat.Entities.Animation
         /// <param name="deltaT">Current gametime</param>
         public override void Update(float deltaT)
         {
+            base.Update(deltaT);
             _CurrentTime -= deltaT;
             if (_CurrentTime < 0)
             {
                 _CurrentTime = _AnimationTime;
-                Texture = _Frames[_CurrentFrame++];
-                if (_CurrentFrame >= _Frames.Length) _CurrentFrame = 0;
+                if (++_CurrentFrame >= _Frames.Length) _CurrentFrame = 0;
+                Texture = _Frames[_CurrentFrame];
             }
-            base.Update(deltaT);
         }
     }
 }

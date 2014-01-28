@@ -7,7 +7,7 @@ using System.IO;
 
 namespace BlackCoat
 {
-    public class AssetManager
+    public class AssetManager : IDisposable
     {
         // Variables #######################################################################
         private Core _Core;
@@ -15,14 +15,21 @@ namespace BlackCoat
         private Dictionary<String, Font> _Fonts = new Dictionary<String, Font>();
 
         /// <summary>
-        /// Rootfolder to look for Assets
+        /// Root-folder to look for Assets
         /// </summary>
         public String RootFolder { get; set; }
 
         /// <summary>
-        /// Determines if a smoothing should be apllied onto newly loaded Textures
+        /// Determines if a smoothing should be applied onto newly loaded Textures
         /// </summary>
         public Boolean SmoothTexturesOnLoad { get; set; }
+
+
+        // Properties ######################################################################
+        /// <summary>
+        /// Gets a value indicating whether this AssetManager is disposed.
+        /// </summary>
+        public bool Disposed { get; private set; }
 
 
         // CTOR ############################################################################
@@ -33,12 +40,17 @@ namespace BlackCoat
             SmoothTexturesOnLoad = false;
         }
 
+        ~AssetManager()
+        {
+            if (!Disposed) Dispose();
+        }
+
 
         // Methods #########################################################################
         /// <summary>
         /// Loads a Texture from a File or retrieves an already loaded instance
         /// </summary>
-        /// <param name="name">Name of the Ressource</param>
+        /// <param name="name">Name of the Resource</param>
         /// <returns>Texture instance</returns>
         public Texture LoadTexture(String name)
         {
@@ -48,11 +60,12 @@ namespace BlackCoat
         /// <summary>
         /// Loads an Texture from a File or retrieves an already loaded instance
         /// </summary>
-        /// <param name="name">Name of the Ressource</param>
+        /// <param name="name">Name of the Resource</param>
         /// <param name="smothing">Determines if the loaded Texture should be smoothed</param>
         /// <returns>Texture instance</returns>
         public Texture LoadTexture(String name, Boolean smothing)
         {
+            if (Disposed) throw new ObjectDisposedException("AssetManager");
             if (_Textures.ContainsKey(name)) return _Textures[name];
 
             try
@@ -75,10 +88,11 @@ namespace BlackCoat
         /// <param name="width">Width of the Image that should be created</param>
         /// <param name="height">Height of the Image that should be created</param>
         /// <param name="color">Color of the Image as hex value 0xAARRGGBB</param>
-        /// <param name="name">Optional name of the Ressource</param>
+        /// <param name="name">Optional name of the Resource</param>
         /// <returns>The new or present Texture</returns>
         public Texture CreateTexture(UInt32 width, UInt32 height, UInt32 color, String name = "")
         {
+            if (Disposed) throw new ObjectDisposedException("AssetManager");
             if (_Textures.ContainsKey(name)) return _Textures[name];
             var c = new Color((Byte) ((color >> 0x10) & 0xff), 
                               (Byte) ((color >> 0x08) & 0xff),
@@ -92,10 +106,11 @@ namespace BlackCoat
         /// <summary>
         /// Loads a Font from a File or retrieves an already loaded instance
         /// </summary>
-        /// <param name="name">Name of the Ressource</param>
+        /// <param name="name">Name of the Resource</param>
         /// <returns>The new Font</returns>
         public Font LoadFont(String name)
         {
+            if (Disposed) throw new ObjectDisposedException("AssetManager");
             if (_Fonts.ContainsKey(name)) return _Fonts[name];
 
             try
@@ -114,9 +129,10 @@ namespace BlackCoat
         /// <summary>
         /// Unloads an Texture with the given name
         /// </summary>
-        /// <param name="name">Name of the Ressource</param>
+        /// <param name="name">Name of the Resource</param>
         public void FreeTexture(String name)
         {
+            if (Disposed) throw new ObjectDisposedException("AssetManager");
             if (_Textures.ContainsKey(name))
             {
                 _Textures[name].Dispose();
@@ -127,9 +143,10 @@ namespace BlackCoat
         /// <summary>
         /// Unloads an font with the given name
         /// </summary>
-        /// <param name="name">Name of the Ressource</param>
+        /// <param name="name">Name of the Resource</param>
         public void FreeFont(String name)
         {
+            if (Disposed) throw new ObjectDisposedException("AssetManager");
             if (_Fonts.ContainsKey(name))
             {
                 _Fonts[name].Dispose();
@@ -138,10 +155,11 @@ namespace BlackCoat
         }
 
         /// <summary>
-        /// Releases all ressources
+        /// Releases all used unmanaged resources.
         /// </summary>
-        internal void Dispose()
+        public void Dispose()
         {
+            if (Disposed) return;
             foreach (var tex in _Textures.Values)
             {
                 tex.Dispose();
@@ -153,6 +171,9 @@ namespace BlackCoat
                 fnt.Dispose();
             }
             _Fonts.Clear();
+
+            Disposed = true;
+            GC.SuppressFinalize(this);
         }
     }
 }

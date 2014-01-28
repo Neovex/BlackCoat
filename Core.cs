@@ -9,7 +9,11 @@ using System.IO;
 
 namespace BlackCoat
 {
-    public sealed class Core
+    /// <summary>
+    /// BC Core Class - represents the main controller for all rendering and logic operations.
+    /// This class does not support multi threading.
+    /// </summary>
+    public sealed class Core : IDisposable
     {
         // Events ##########################################################################
         /*public event EventHandler DeviceCreated;
@@ -40,10 +44,21 @@ namespace BlackCoat
 
         // Properties ######################################################################
         // System
-        public RenderWindow Device { get { return _Device; } }
+        public RenderWindow Device
+        {
+            get { return _Device; }
+            //set
+            //{
+            //    if (Disposed) throw new ObjectDisposedException("Core");
+            //    if (value == null) throw new ArgumentNullException("Render device cannot be null");
+            //    _Device = value;
+            //    // TODO : update all event listeners and check if some other events need to be (re-)fired
+            //}
+        }
         public AssetManager AssetManager { get { return _AssetManager; } }
         public RandomHelper Random { get { return _Random; } }
         public Boolean FocusLost { get { return _FocusLost; } }
+        public Boolean Disposed { get; private set; }
 
         // Layers
         public GraphicLayer Layer_BG { get { return _LayerBackground; } }
@@ -63,7 +78,14 @@ namespace BlackCoat
         /// <summary>
         /// Current Mouse Position
         /// </summary>
-        public Vector2i MousePosition { get { return _Device.InternalGetMousePosition(); } }
+        public Vector2i MousePosition
+        {
+            get
+            {
+                if (Disposed) throw new ObjectDisposedException("Core");
+                return _Device.InternalGetMousePosition();
+            }
+        }
 
 
         // CTOR ############################################################################
@@ -98,14 +120,9 @@ namespace BlackCoat
             DefaultFont = new Font(@"C:\Windows\Fonts\arial.ttf"); // FIXME
 
             // Init Input
-            Device.MouseMoved += Input.HandleMouseMoved;
-            Device.MouseButtonPressed += Input.HandleMouseButtonPressed;
-            Device.MouseButtonReleased += Input.HandleMouseButtonReleased;
-            Device.MouseWheelMoved += Input.HandleMouseWheelMoved;
-            Device.KeyPressed += Input.HandleKeyPressed;
-            Device.KeyReleased += Input.HandleKeyReleased;
+            Input.InitializeInternal(this);
 
-            // Create Layersystem
+            // Create Layer System
             _LayerBackground = new GraphicLayer(this);
             _LayerGame = new GraphicLayer(this);
             _LayerParticles = new GraphicLayer(this);
@@ -115,14 +132,20 @@ namespace BlackCoat
 
             if (debug)
             {
-                // Intialize Performance Monitoring
+                // Initialize Performance Monitoring
                 _LayerDebug.AddChild(new PerformanceMonitor(this));
 
                 // Input
-                _Device.KeyPressed += _Device_KeyPressed;
+                //_Device.KeyPressed += _Device_KeyPressed;
                 //_Device.CurrentView.Zoom(0.5f);//debug overview
             }
         }
+
+        ~Core()
+        {
+            if (!Disposed) Dispose();
+        }
+        
 
         private void _Device_KeyPressed(object sender, KeyEventArgs e)
         {
@@ -139,7 +162,7 @@ namespace BlackCoat
         /// <param name="title">Title of the Renderwindow</param>
         /// <param name="style">Display Style of the Device/Window</param>
         /// <param name="antialiasing">Determines the Antialiasing</param>
-        /// <param name="skipValidityCheck">Skips the device validation (not recommented but required for non-standart resolutions)</param>
+        /// <param name="skipValidityCheck">Skips the device validation (not recommended but required for non-standard resolutions)</param>
         /// <returns>The Initialized RenderWindow or null if the Device could not be created</returns>
         public static RenderWindow CreateDevice(UInt32 deviceWidth, UInt32 deviceHeight, String title, Styles style, UInt32 antialiasing, Boolean skipValidityCheck = false)
         {
@@ -178,15 +201,17 @@ namespace BlackCoat
         /// </summary>
         public void ShowRenderWindow()
         {
+            if (Disposed) throw new ObjectDisposedException("Core");
             _Device.SetVisible(true);
         }
 
         /// <summary>
         /// Hides the Renderwindow to the User without closing it.
-        /// Use ShowRenderWindow() to unhide.
+        /// Use ShowRenderWindow() to un-hide.
         /// </summary>
         public void HideRenderWindow()
         {
+            if (Disposed) throw new ObjectDisposedException("Core");
             _Device.SetVisible(false);
         }
 
@@ -197,6 +222,7 @@ namespace BlackCoat
         /// <param name="updateGameDelegate">Update callback for the calling class</param>
         public void Run(Action<float> updateGameDelegate)
         {
+            if (Disposed) throw new ObjectDisposedException("Core");
             ShowRenderWindow();
             Stopwatch timer = new Stopwatch();
             Single deltaT = 0;
@@ -204,6 +230,8 @@ namespace BlackCoat
             {
                 _Device.DispatchEvents();
                 deltaT = (Single)(timer.Elapsed.TotalMilliseconds / 1000d); // fractal second
+                timer.Reset();
+                timer.Start();
                 if (_FocusLost) // pause updating & relieve host machine
                 {
                     Thread.Sleep(1);
@@ -213,40 +241,22 @@ namespace BlackCoat
                     Update(deltaT);
                     updateGameDelegate(deltaT);
                 }
-                timer.Reset();
-                timer.Start();
                 Draw();
             }
-            _AssetManager.Dispose();
-            // Todo : Check remaining cleanup here
         }
 
         /// <summary>
-        /// Begins the Update / Rendering Loop disregarding the current focus.
-        /// This method is blocking until Exit() is called.
+        /// Manually runs a single update followed by a single render call.
+        /// This method will fail if the the device is invalid
         /// </summary>
-        /// <param name="updateGameDelegate">Update callback for the calling class</param>
-        public void RunPassively(Action<float> updateGameDelegate) // CHECK
+        /// <param name="deltaT">Optional time delta between frames in fractional seconds</param>
+        public void PerformManualRefresh(float deltaT = 0)
         {
-            ShowRenderWindow();
-            Stopwatch timer = new Stopwatch();
-            Single deltaT = 0;
-            while (_Device.IsOpen()) // CHECK
-            {
-                _Device.DispatchEvents();
-                deltaT = (Single)(timer.Elapsed.TotalMilliseconds / 1000d); // fractal second
-
-                if(_FocusLost) Thread.Sleep(1);
-                // run updates
-                Update(deltaT);
-                updateGameDelegate(deltaT);
-
-                timer.Reset();
-                timer.Start();
-                Draw();
-            }
-            _AssetManager.Dispose();
-            // Todo : Check remaining cleanup here
+            if (Disposed) throw new ObjectDisposedException("Core");
+            if (!_Device.IsOpen()) throw new InvalidOperationException("Device not ready");
+            _Device.DispatchEvents();
+            Update(deltaT);
+            Draw();
         }
 
         /// <summary>
@@ -254,6 +264,7 @@ namespace BlackCoat
         /// </summary>
         public void Exit()
         {
+            if (Disposed) throw new ObjectDisposedException("Core");
             _Device.Close();
         }
         
@@ -313,6 +324,7 @@ namespace BlackCoat
         /// <param name="logs">Objects to log</param>
         public void Log(params object[] logs)
         {
+            if (Disposed) throw new ObjectDisposedException("Core");
             foreach (var log in logs)
                 Console.WriteLine(log);
             Console.WriteLine();
@@ -333,6 +345,28 @@ namespace BlackCoat
         private void _Device_Closed(object sender, EventArgs e)
         {
             Exit();
+        }
+
+
+        /// <summary>
+        /// Releases all used unmanaged resources.
+        /// </summary>
+        public void Dispose()
+        {
+            if (Disposed) return;
+
+            if (_Device.CPointer != IntPtr.Zero)
+            {
+                if (_Device.IsOpen()) _Device.Close();
+                _Device.Dispose();
+            }
+            _Device = null;
+            
+            _AssetManager.Dispose();
+            _AssetManager = null;
+
+            Disposed = true;
+            GC.SuppressFinalize(this);
         }
     }
 }
