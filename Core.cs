@@ -136,7 +136,7 @@ namespace BlackCoat
                 _LayerDebug.AddChild(new PerformanceMonitor(this));
 
                 // Input
-                //_Device.KeyPressed += _Device_KeyPressed;
+                _Device.KeyPressed += _Device_KeyPressed;
                 //_Device.CurrentView.Zoom(0.5f);//debug overview
             }
         }
