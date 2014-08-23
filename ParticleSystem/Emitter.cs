@@ -211,7 +211,7 @@ namespace BlackCoat.ParticleSystem
                     p.Blend = _Core.Random.NextFloat(_BlendRange.X, _BlendRange.Y);
                     p.Rotation = _Core.Random.NextFloat(_AngleRange.X, _AngleRange.Y);
                     p.RotationRate = _Core.Random.NextFloat(_RotationRange.X, _RotationRange.Y);
-                    p.Transform = _Core.Random.NextFloat(_TransformRange.X, _TransformRange.Y);
+                    p.ScaleTransform = _Core.Random.NextFloat(_TransformRange.X, _TransformRange.Y);
                     p.BlendMode = _ParticleBlendMode;
                     ACTIVE_PARTICLES++;
                 }

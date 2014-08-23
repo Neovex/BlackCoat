@@ -33,8 +33,8 @@ namespace BlackCoat.Entities
         public virtual Boolean AddChild(IEntity e)
         {
             if (e.Parent != null) e.Parent.RemoveChild(e);
-            _Childs.Add(e);
             e.Parent = this;
+            _Childs.Add(e);
             return true;
         }
 

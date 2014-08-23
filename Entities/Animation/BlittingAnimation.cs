@@ -64,14 +64,14 @@ namespace BlackCoat.Entities.Animation
         /// <summary>
         /// Updates the Animation and its applied Roles.
         /// </summary>
-        /// <param name="deltaT">Current gametime</param>
+        /// <param name="deltaT">Current game time</param>
         public override void Update(float deltaT)
         {
             base.Update(deltaT);
             _CurrentTime -= deltaT;
-            if (_CurrentTime < 0)
+            while (_CurrentTime <= 0)
             {
-                _CurrentTime = _AnimationTime;
+                _CurrentTime += _AnimationTime;
                 if (++_CurrentFrame >= _Frames.Length) _CurrentFrame = 0;
                 TextureRect = _Frames[_CurrentFrame];
             }

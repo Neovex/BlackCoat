@@ -1,19 +1,20 @@
-﻿using System;
+﻿using SFML.Graphics;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using SFML.Graphics;
 
-namespace BlackCoat.Entities
+namespace BlackCoat.Entities.Shapes
 {
-    public class GraphicItem : Sprite, IEntity
+    // TODO : fix shape madness
+    public class ShapeItem:RectangleShape,IEntity
     {
         // Variables #######################################################################
         protected Core _Core;
         private Container _Parent;
         protected Boolean _Visible = true;
         protected List<Role> _Roles = new List<Role>();
-        protected Single _Alpha = 255;
+        protected Single _Alpha = 1;
 
         protected RenderStates _RenderState = RenderStates.Default;
         protected View _View = null;
@@ -30,13 +31,40 @@ namespace BlackCoat.Entities
         }
 
         /// <summary>
-        /// Determines the Visibility of the Entity
+        /// Determines the visibility of the Entity
         /// </summary>
         public virtual Boolean Visible
         {
             get { return _Visible; }
             set { _Visible = value; }
         }
+
+        /// <summary>
+        /// Alpha Value
+        /// </summary>
+        public virtual Single Alpha
+        {
+            get
+            {
+                if (FillColor.A == 0) return 0;
+                return _Alpha / 255f;
+            }
+            set
+            {
+                _Alpha = value * 255;
+                if (_Alpha < 0) _Alpha = 0;
+                Byte b = (Byte)_Alpha;
+                var color = FillColor;
+                color.A = b;
+                FillColor = color;
+            }
+        }
+
+        /// <summary>
+        /// Current Role that describes the Entities behavior
+        /// </summary>
+        public Role CurrentRole { get { return _Roles.Count == 0 ? null : _Roles[_Roles.Count - 1]; } }
+
 
         public View View
         {
@@ -45,43 +73,8 @@ namespace BlackCoat.Entities
         }
 
 
-        /// <summary>
-        /// Alpha Visibility - 0-1f
-        /// </summary>
-        public virtual Single Alpha
-        {
-            get { return Color.A == 0 ? 0 : _Alpha / 255f; }
-            set
-            {
-                _Alpha =  (_Parent == null ? value : value * _Parent.Alpha) * 255;
-                if (_Alpha < 0) _Alpha = 0;
-                var color = Color;
-                color.A = (Byte)_Alpha;
-                Color = color;
-            }
-        }
-
-        /// <summary>
-        /// Blending method used for Rendering
-        /// </summary>
-        public virtual BlendMode BlendMode
-        {
-            get { return _RenderState.BlendMode; }
-            set { _RenderState.BlendMode = value; }
-        }
-
-        /// <summary>
-        /// Current Role that describes the Entities Behavior
-        /// </summary>
-        public Role CurrentRole { get { return _Roles.Count == 0 ? null : _Roles[_Roles.Count - 1]; } }
-
-
         // CTOR ############################################################################
-        /// <summary>
-        /// Initializes a new instance of the <see cref="GraphicItem"/> class.
-        /// </summary>
-        /// <param name="core">The render core.</param>
-        public GraphicItem(Core core)
+        public ShapeItem(Core core)
         {
             _Core = core;
         }
@@ -108,7 +101,6 @@ namespace BlackCoat.Entities
             if (View != null) _Core.CurrentView = View;
             if (Parent != null) _RenderState.Transform = Parent.Transform;
             Draw(_Core.Device, _RenderState);
-            //_Core.Render(this/*, Parent*/); // CHECK THIS
         }
 
 
@@ -118,7 +110,7 @@ namespace BlackCoat.Entities
         /// Can be overridden by derived classes.
         /// </summary>
         /// <param name="role">The Role to assign</param>
-        /// <param name="supressInitialization">Suppress initialization call on assigned role</param>
+        /// <param name="supressInitialization">Supress initialization call on assigned role</param>
         public virtual void AssignRole(Role role, Boolean supressInitialization = false)
         {
             if (role == null) throw new ArgumentNullException("role");
@@ -132,22 +124,22 @@ namespace BlackCoat.Entities
         /// Can be overridden by derived classes.
         /// </summary>
         /// <param name="role">The Role to assign</param>
-        /// <param name="supressInitialization">Suppress initialization call on assigned role</param>
-        /// <returns>The removed role if there was one - otherwise null</returns>
+        /// <param name="supressInitialization">Supress initialization call on assigned role</param>
+        /// <returns>The removed role if there was one - otherwhise null</returns>
         public virtual Role ReplaceRole(Role role, Boolean supressInitialization = false)
         {
             if (role == null) throw new ArgumentNullException("role");
-            var ret = RemoveRole();
+            Role temp = RemoveRole();
             AssignRole(role);
             if (!supressInitialization) role.Initialize();
-            return ret;
+            return temp;
         }
 
         /// <summary>
         /// Removes the currently active Role from this Entity
         /// Can be overridden by derived classes.
         /// </summary>
-        /// <returns>The removed role if there was one - otherwise null</returns>
+        /// <returns>The removed role if there was one - otherwhise null</returns>
         public virtual Role RemoveRole()
         {
             if (_Roles.Count == 0) return null;

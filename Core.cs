@@ -10,7 +10,7 @@ using System.IO;
 namespace BlackCoat
 {
     /// <summary>
-    /// BC Core Class - represents the main controller for all rendering and logic operations.
+    /// Render Core Class - represents the main controller for all rendering and logic operations.
     /// This class does not support multi threading.
     /// </summary>
     public sealed class Core : IDisposable
@@ -30,7 +30,6 @@ namespace BlackCoat
         private Boolean _FocusLost = false;
         // Views
         private View _DefaultView;
-        private View _OverlayView;
         // Layers
         private GraphicLayer _LayerBackground;
         private GraphicLayer _LayerGame;
@@ -47,13 +46,13 @@ namespace BlackCoat
         public RenderWindow Device
         {
             get { return _Device; }
-            //set
-            //{
-            //    if (Disposed) throw new ObjectDisposedException("Core");
-            //    if (value == null) throw new ArgumentNullException("Render device cannot be null");
-            //    _Device = value;
-            //    // TODO : update all event listeners and check if some other events need to be (re-)fired
-            //}
+            set
+            {
+                if (Disposed) throw new ObjectDisposedException("Core");
+                if (value == null) throw new ArgumentNullException("Render device cannot be null");
+                _Device = value;
+                // TODO : update all event listeners and check if some other events need to be (re-)fired
+            }
         }
         public AssetManager AssetManager { get { return _AssetManager; } }
         public RandomHelper Random { get { return _Random; } }
@@ -69,10 +68,28 @@ namespace BlackCoat
         public GraphicLayer Layer_Cursor { get { return _LayerCursor; } }
 
         // Misc
-        public View DefaultView { get { return _DefaultView; } }
-        public View OverlayView { get { return _OverlayView; } }
         public Color ClearColor { get; set; }
         public Font DefaultFont { get; private set; }
+        public View DefaultView
+        {
+            get
+            {
+                if (Disposed) throw new ObjectDisposedException("Core");
+                return new View(_DefaultView);
+            }
+        }
+        public View CurrentView {
+            get
+            {
+                if (Disposed) throw new ObjectDisposedException("Core");
+                return _Device.GetView();
+            }
+            internal set
+            {
+                if (Disposed) throw new ObjectDisposedException("Core");
+                _Device.SetView(value);
+            }
+        }
 
 
         /// <summary>
@@ -106,8 +123,7 @@ namespace BlackCoat
             // Save Device Ref
             if (device == null) throw new ArgumentNullException("device");
             _Device = device;
-            _DefaultView = _Device.DefaultView;
-            _OverlayView = new View(_DefaultView);
+            _DefaultView = new View(CurrentView);
             // Device Events
             _Device.Closed += new EventHandler(_Device_Closed);
             _Device.LostFocus += new EventHandler(HandleLostFocus);
@@ -193,7 +209,7 @@ namespace BlackCoat
         /// <returns>The default device</returns>
         public static RenderWindow CreateDefaultDevice()
         {
-            return new RenderWindow(new VideoMode(800, 600), "BlackCoat Game", Styles.Titlebar);
+            return new RenderWindow(new VideoMode(800, 600), "Default", Styles.Titlebar);
         }
 
         /// <summary>
@@ -207,7 +223,7 @@ namespace BlackCoat
 
         /// <summary>
         /// Hides the Renderwindow to the User without closing it.
-        /// Use ShowRenderWindow() to un-hide.
+        /// Use ShowRenderWindow() to reveal it again.
         /// </summary>
         public void HideRenderWindow()
         {
@@ -284,15 +300,13 @@ namespace BlackCoat
         {
             // Clear Background
             _Device.Clear(ClearColor);
-
+            
             // Draw Layers
-            _Device.SetView(_DefaultView);
             _LayerBackground.Draw();
             _LayerGame.Draw();
             _LayerParticles.Draw();
             _LayerOverlay.Draw();
             // Overlay
-            _Device.SetView(_OverlayView);
             _LayerDebug.Draw();
             _LayerCursor.Draw();
 
@@ -300,33 +314,12 @@ namespace BlackCoat
             _Device.Display();
         }
 
-        /// <summary>
-        /// Renders a drawable onto the backbuffer
-        /// </summary>
-        /// <param name="graphicItem">The item to render</param>
-        /// <param name="parent">Scene Graph parent of the item to render</param>
-        internal void Render(Drawable graphicItem, Container parent)
-        {
-            _RenderHelper.Transform = parent.Transform;
-            _Device.Draw(graphicItem, _RenderHelper);
-        }
-
-        /// <summary>
-        /// Renders a drawable onto the backbuffer
-        /// </summary>
-        /// <param name="graphicItem">The item to render</param>
-        internal void Render(Drawable graphicItem)
-        {
-            _Device.Draw(graphicItem);
-        }
-
-        /// <summary>Logs Message to the default output</summary>
+        /// <summary>Logs Messages to the Console</summary>
         /// <param name="logs">Objects to log</param>
-        public void Log(params object[] logs)
+        internal void Log(params object[] logs)
         {
             if (Disposed) throw new ObjectDisposedException("Core");
-            foreach (var log in logs)
-                Console.WriteLine(log);
+            foreach (var log in logs) Console.WriteLine(log);
             Console.WriteLine();
         }
 
@@ -366,7 +359,7 @@ namespace BlackCoat
             _AssetManager = null;
 
             Disposed = true;
-            GC.SuppressFinalize(this);
+            GC.SuppressFinalize(this); // ?
         }
     }
 }

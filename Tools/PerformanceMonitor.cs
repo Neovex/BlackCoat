@@ -4,6 +4,7 @@ using SFML.Graphics;
 using System;
 using System.Linq;
 using System.Collections.Generic;
+using SFML.Window;
 
 namespace BlackCoat.Tools
 {
@@ -15,8 +16,7 @@ namespace BlackCoat.Tools
         private Queue<Single> _FPS = new Queue<float>();
 #endif
 
-        private const String TimeString = "Black Coat Engine\n\n" +
-                                          "FPS:   {0}\n" +
+        private const String TimeString = "FPS:   {0}\n" +
                                           "FTime: {1}\n" +
                                           "Total: {2}\n" +
                                           "APC:   {3}";
@@ -25,9 +25,18 @@ namespace BlackCoat.Tools
         public PerformanceMonitor(Core core)
             : base(core)
         {
+            View = _Core.DefaultView;
             Font = _Core.DefaultFont;
             CharacterSize = 13;
             Color = SFML.Graphics.Color.Yellow;
+            
+            _Core.Device.Resized += Device_Resized;
+        }
+
+        private void Device_Resized(object sender, SizeEventArgs e)
+        {
+            View.Size = new Vector2f(e.Width, e.Height);
+            View.Center = new Vector2f(e.Width / 2f, e.Height / 2f);
         }
 
 

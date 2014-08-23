@@ -14,6 +14,9 @@ namespace BlackCoat.Entities
         protected Boolean _Visible = true;
         protected List<Role> _Roles = new List<Role>();
 
+        protected RenderStates _RenderState = RenderStates.Default;
+        protected View _View = null;
+
 
         // Properties ######################################################################
         /// <summary>
@@ -22,11 +25,7 @@ namespace BlackCoat.Entities
         public Container Parent
         {
             get { return _Parent; }
-            set
-            {
-                if (_Parent != null && !_Parent.HasChild(this)) return;
-                _Parent = value;
-            }
+            set { if (value == null || !value.HasChild(this)) _Parent = value; }
         }
 
         /// <summary>
@@ -36,6 +35,12 @@ namespace BlackCoat.Entities
         {
             get { return _Visible; }
             set { _Visible = value; }
+        }
+
+        public View View
+        {
+            get { return _View ?? (_Parent == null ? _View : _Parent.View); }
+            set { _View = value; }
         }
 
         /// <summary>
@@ -51,6 +56,15 @@ namespace BlackCoat.Entities
                 color.A = b;
                 Color = color;
             }
+        }
+
+        /// <summary>
+        /// Blending method used for Rendering
+        /// </summary>
+        public virtual BlendMode BlendMode
+        {
+            get { return _RenderState.BlendMode; }
+            set { _RenderState.BlendMode = value; }
         }
 
         /// <summary>
@@ -82,7 +96,10 @@ namespace BlackCoat.Entities
         /// </summary>
         public virtual void Draw()
         {
-            if (_Visible) _Core.Render(this);
+            if (!_Visible) return;
+            if (View != null) _Core.CurrentView = View;
+            if (Parent != null) _RenderState.Transform = Parent.Transform;
+            Draw(_Core.Device, _RenderState);
         }
 
 

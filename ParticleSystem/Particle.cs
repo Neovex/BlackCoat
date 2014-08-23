@@ -112,7 +112,7 @@ namespace BlackCoat.ParticleSystem
         /// <summary>
         /// Particle Scale. Read and Write.
         /// </summary>
-        public virtual Single Transform
+        public virtual Single ScaleTransform
         {
             get { return _Transform; }
             set { _Transform = value; }
@@ -124,7 +124,7 @@ namespace BlackCoat.ParticleSystem
         /// Creates a new  Instance of the Particle class.
         /// </summary>
         /// <param name="emitter">Parent Emitter of the Particle</param>
-        /// <param name="core">Black Coat Engine Core</param>
+        /// <param name="core">BlackCoat Engine Core</param>
         public Particle(Emitter emitter, Core core):base(core)
         {
             if (emitter == null) throw new ArgumentNullException("emitter");
