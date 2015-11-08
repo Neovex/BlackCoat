@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>BlackCoat</RootNamespace>
     <AssemblyName>BlackCoat</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <StartupObject>
     </StartupObject>
@@ -29,7 +29,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <PlatformTarget>x86</PlatformTarget>
+    <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -69,14 +69,20 @@
     <Compile Include="Tools\RandomHelper.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="sfmlnet-audio-2">
-      <HintPath>..\SFML.Net-2.1\lib\sfmlnet-audio-2.dll</HintPath>
+    <Reference Include="sfmlnet-audio-2, Version=2.3.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Current Projects\Gemmy\packages\Graphnode.SFML.Net.2.3\lib\sfmlnet-audio-2.dll</HintPath>
     </Reference>
-    <Reference Include="sfmlnet-graphics-2">
-      <HintPath>..\SFML.Net-2.1\lib\sfmlnet-graphics-2.dll</HintPath>
+    <Reference Include="sfmlnet-graphics-2, Version=2.3.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Current Projects\Gemmy\packages\Graphnode.SFML.Net.2.3\lib\sfmlnet-graphics-2.dll</HintPath>
     </Reference>
-    <Reference Include="sfmlnet-window-2">
-      <HintPath>..\SFML.Net-2.1\lib\sfmlnet-window-2.dll</HintPath>
+    <Reference Include="sfmlnet-system-2">
+      <HintPath>..\..\Current Projects\Gemmy\packages\Graphnode.SFML.Net.2.3\lib\sfmlnet-system-2.dll</HintPath>
+    </Reference>
+    <Reference Include="sfmlnet-window-2, Version=2.3.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Current Projects\Gemmy\packages\Graphnode.SFML.Net.2.3\lib\sfmlnet-window-2.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
@@ -86,27 +92,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\SFML.Net-2.1\extlibs\csfml-audio-2.dll">
-      <Link>csfml-audio-2.dll</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="..\SFML.Net-2.1\extlibs\csfml-graphics-2.dll">
-      <Link>csfml-graphics-2.dll</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="..\SFML.Net-2.1\extlibs\csfml-window-2.dll">
-      <Link>csfml-window-2.dll</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="..\SFML.Net-2.1\extlibs\libsndfile-1.dll">
-      <Link>libsndfile-1.dll</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="..\SFML.Net-2.1\extlibs\openal32.dll">
-      <Link>openal32.dll</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
+  <Import Project="..\..\Current Projects\Gemmy\packages\Graphnode.SFML.Net.2.3\build\Graphnode.SFML.Net.targets" Condition="Exists('..\..\Current Projects\Gemmy\packages\Graphnode.SFML.Net.2.3\build\Graphnode.SFML.Net.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\..\Current Projects\Gemmy\packages\Graphnode.SFML.Net.2.3\build\Graphnode.SFML.Net.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\Current Projects\Gemmy\packages\Graphnode.SFML.Net.2.3\build\Graphnode.SFML.Net.targets'))" />
+  </Target>
 </Project>

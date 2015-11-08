@@ -75,9 +75,9 @@ namespace BlackCoat
                 _Textures.Add(name, img);
                 return img;
             }
-            catch
+            catch (Exception e)
             {
-                _Core.Log("Could not load image", name);
+                _Core.Log("Could not load image", name, e.Message);
             }
             return null;
         }
@@ -119,9 +119,9 @@ namespace BlackCoat
                 _Fonts.Add(name, fnt);
                 return fnt;
             }
-            catch
+            catch (Exception e)
             {
-                _Core.Log("Could not load font", name);
+                _Core.Log("Could not load font", name, e.Message);
             }
             return null;
         }

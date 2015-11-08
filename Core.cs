@@ -2,7 +2,9 @@
 using BlackCoat.Tools;
 using SFML.Graphics;
 using SFML.Window;
+using SFML.System;
 using System;
+using System.Linq;
 using System.Threading;
 using System.Diagnostics;
 using System.IO;
@@ -15,13 +17,6 @@ namespace BlackCoat
     /// </summary>
     public sealed class Core : IDisposable
     {
-        // Events ##########################################################################
-        /*public event EventHandler DeviceCreated;
-        public event EventHandler DeviceReset;
-        public event EventHandler DeviceResetting;
-        public event EventHandler DeviceDisposing;*/
-
-
         // Variables #######################################################################
         // System
         private RenderWindow _Device;
@@ -92,19 +87,6 @@ namespace BlackCoat
         }
 
 
-        /// <summary>
-        /// Current Mouse Position
-        /// </summary>
-        public Vector2i MousePosition
-        {
-            get
-            {
-                if (Disposed) throw new ObjectDisposedException("Core");
-                return _Device.InternalGetMousePosition();
-            }
-        }
-
-
         // CTOR ############################################################################
         /// <summary>
         /// Creates a new Instance of the BlackCoat Core class
@@ -170,47 +152,6 @@ namespace BlackCoat
 
 
         // Methods #########################################################################
-        /// <summary>
-        /// Initializes a new Graphic Device
-        /// </summary>
-        /// <param name="deviceWidth">With of the Backbuffer</param>
-        /// <param name="deviceHeight">Height of the Backbuffer</param>
-        /// <param name="title">Title of the Renderwindow</param>
-        /// <param name="style">Display Style of the Device/Window</param>
-        /// <param name="antialiasing">Determines the Antialiasing</param>
-        /// <param name="skipValidityCheck">Skips the device validation (not recommended but required for non-standard resolutions)</param>
-        /// <returns>The Initialized RenderWindow or null if the Device could not be created</returns>
-        public static RenderWindow CreateDevice(UInt32 deviceWidth, UInt32 deviceHeight, String title, Styles style, UInt32 antialiasing, Boolean skipValidityCheck = false)
-        {
-            var settings = new ContextSettings(24, 8, antialiasing);
-            var videoMode = new VideoMode(deviceWidth, deviceHeight);
-            if (skipValidityCheck || videoMode.IsValid())
-            {
-                return new RenderWindow(videoMode, title, style, settings);
-            }
-            return null;
-        }
-        /// <summary>
-        /// Initializes a new Graphic Device based on a window or control handle
-        /// </summary>
-        /// <param name="handle">Handle to create the device on</param>
-        /// <param name="antialiasing">Determines the Antialiasing</param>
-        /// <returns>The Initialized RenderWindow instance based on the device</returns>
-        public static RenderWindow CreateDevice(IntPtr handle, UInt32 antialiasing)
-        {
-            if (handle == IntPtr.Zero) throw new NullReferenceException("Device creation failed since handle is Zero");
-            var settings = new ContextSettings(24, 8, antialiasing);
-            return new RenderWindow(handle, settings);
-        }
-
-        /// <summary>
-        /// Initializes a default Graphic Device primarily for testing purposes
-        /// </summary>
-        /// <returns>The default device</returns>
-        public static RenderWindow CreateDefaultDevice()
-        {
-            return new RenderWindow(new VideoMode(800, 600), "Default", Styles.Titlebar);
-        }
 
         /// <summary>
         /// Displays the Renderwindow to the User.
@@ -242,7 +183,7 @@ namespace BlackCoat
             ShowRenderWindow();
             Stopwatch timer = new Stopwatch();
             Single deltaT = 0;
-            while (_Device.IsOpen())
+            while (_Device.IsOpen)
             {
                 _Device.DispatchEvents();
                 deltaT = (Single)(timer.Elapsed.TotalMilliseconds / 1000d); // fractal second
@@ -269,7 +210,7 @@ namespace BlackCoat
         public void PerformManualRefresh(float deltaT = 0)
         {
             if (Disposed) throw new ObjectDisposedException("Core");
-            if (!_Device.IsOpen()) throw new InvalidOperationException("Device not ready");
+            if (!_Device.IsOpen) throw new InvalidOperationException("Device not ready");
             _Device.DispatchEvents();
             Update(deltaT);
             Draw();
@@ -318,9 +259,7 @@ namespace BlackCoat
         /// <param name="logs">Objects to log</param>
         internal void Log(params object[] logs)
         {
-            if (Disposed) throw new ObjectDisposedException("Core");
-            foreach (var log in logs) Console.WriteLine(log);
-            Console.WriteLine();
+            Console.WriteLine(String.Join(" ", logs.Select(l => l.ToString())));
         }
 
         // Device Event Handlers ############################################################
@@ -350,7 +289,7 @@ namespace BlackCoat
 
             if (_Device.CPointer != IntPtr.Zero)
             {
-                if (_Device.IsOpen()) _Device.Close();
+                if (_Device.IsOpen) _Device.Close();
                 _Device.Dispose();
             }
             _Device = null;
@@ -361,5 +300,53 @@ namespace BlackCoat
             Disposed = true;
             GC.SuppressFinalize(this); // ?
         }
+
+
+        #region STATICS
+        /// <summary>
+        /// Initializes a default Graphic Device primarily for testing purposes
+        /// </summary>
+        /// <returns>The default device</returns>
+        public static RenderWindow DefaultDevice
+        {
+            get
+            {
+                return new RenderWindow(new VideoMode(800, 600), "Default", Styles.Titlebar);
+            }
+        }
+
+        /// <summary>
+        /// Initializes a new Graphic Device
+        /// </summary>
+        /// <param name="deviceWidth">With of the Backbuffer</param>
+        /// <param name="deviceHeight">Height of the Backbuffer</param>
+        /// <param name="title">Title of the Renderwindow</param>
+        /// <param name="style">Display Style of the Device/Window</param>
+        /// <param name="antialiasing">Determines the Antialiasing</param>
+        /// <param name="skipValidityCheck">Skips the device validation (not recommended but required for non-standard resolutions)</param>
+        /// <returns>The Initialized RenderWindow or null if the Device could not be created</returns>
+        public static RenderWindow CreateDevice(UInt32 deviceWidth, UInt32 deviceHeight, String title, Styles style, UInt32 antialiasing, Boolean skipValidityCheck = false)
+        {
+            var settings = new ContextSettings(24, 8, antialiasing);
+            var videoMode = new VideoMode(deviceWidth, deviceHeight);
+            if (skipValidityCheck || videoMode.IsValid())
+            {
+                return new RenderWindow(videoMode, title, style, settings);
+            }
+            return null;
+        }
+        /// <summary>
+        /// Initializes a new Graphic Device based on a window or control handle
+        /// </summary>
+        /// <param name="handle">Handle to create the device on</param>
+        /// <param name="antialiasing">Determines the Antialiasing</param>
+        /// <returns>The Initialized RenderWindow instance based on the device</returns>
+        public static RenderWindow CreateDevice(IntPtr handle, UInt32 antialiasing)
+        {
+            if (handle == IntPtr.Zero) throw new NullReferenceException("Device creation failed since handle is Zero");
+            var settings = new ContextSettings(24, 8, antialiasing);
+            return new RenderWindow(handle, settings);
+        }
+        #endregion
     }
 }

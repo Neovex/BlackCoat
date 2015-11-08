@@ -2,6 +2,7 @@
 using SFML.Graphics;
 using BlackCoat.Entities;
 using SFML.Window;
+using SFML.System;
 
 namespace BlackCoat.ParticleSystem
 {

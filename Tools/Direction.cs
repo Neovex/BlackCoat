@@ -1,5 +1,6 @@
-﻿using SFML.Window;
-using System;
+﻿using System;
+using SFML.Window;
+using SFML.System;
 
 namespace BlackCoat.Tools
 {

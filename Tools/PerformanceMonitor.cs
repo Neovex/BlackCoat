@@ -1,6 +1,7 @@
 ﻿using BlackCoat.Entities;
 using BlackCoat.ParticleSystem;
 using SFML.Graphics;
+using SFML.System;
 using System;
 using System.Linq;
 using System.Collections.Generic;
