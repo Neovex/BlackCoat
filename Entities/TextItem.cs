@@ -11,10 +11,7 @@ namespace BlackCoat.Entities
         // Variables #######################################################################
         protected Core _Core;
         private Container _Parent;
-        protected Boolean _Visible = true;
         protected List<Role> _Roles = new List<Role>();
-
-        protected RenderStates _RenderState = RenderStates.Default;
         protected View _View = null;
 
 
@@ -31,17 +28,18 @@ namespace BlackCoat.Entities
         /// <summary>
         /// Determines the Visisbility of the Entity
         /// </summary>
-        public virtual Boolean Visible
-        {
-            get { return _Visible; }
-            set { _Visible = value; }
-        }
+        public virtual Boolean Visible { get; set; }
 
         public View View
         {
             get { return _View ?? (_Parent == null ? _View : _Parent.View); }
             set { _View = value; }
         }
+
+        /// <summary>
+        /// Renderstate of the entity
+        /// </summary>
+        public RenderStates RenderState { get; set; }
 
         /// <summary>
         /// Alpha Value
@@ -63,8 +61,13 @@ namespace BlackCoat.Entities
         /// </summary>
         public virtual BlendMode BlendMode
         {
-            get { return _RenderState.BlendMode; }
-            set { _RenderState.BlendMode = value; }
+            get { return RenderState.BlendMode; }
+            set
+            {
+                var state = RenderState;
+                state.BlendMode = value;
+                RenderState = state;
+            }
         }
 
         /// <summary>
@@ -77,6 +80,8 @@ namespace BlackCoat.Entities
         public TextItem(Core core)
         {
             _Core = core;
+            Visible = true;
+            RenderState = RenderStates.Default;
         }
 
 
@@ -96,10 +101,7 @@ namespace BlackCoat.Entities
         /// </summary>
         public virtual void Draw()
         {
-            if (!_Visible) return;
-            if (View != null) _Core.CurrentView = View;
-            if (Parent != null) _RenderState.Transform = Parent.Transform;
-            Draw(_Core.Device, _RenderState);
+            _Core.Draw(this);
         }
 
 

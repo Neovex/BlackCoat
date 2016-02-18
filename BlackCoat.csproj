@@ -53,8 +53,10 @@
     <Compile Include="Core.cs" />
     <Compile Include="Entities\Animation\BlittingAnimation.cs" />
     <Compile Include="Entities\Animation\FrameAnimation.cs" />
+    <Compile Include="Entities\BaseEntity.cs" />
     <Compile Include="Entities\IEntity.cs" />
     <Compile Include="Entities\Container.cs" />
+    <Compile Include="Entities\Shapes\Line.cs" />
     <Compile Include="Entities\Shapes\ShapeItem.cs" />
     <Compile Include="Entities\TextItem.cs" />
     <Compile Include="Entities\GraphicItem.cs" />

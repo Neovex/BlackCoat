@@ -20,71 +20,27 @@ namespace BlackCoat
         // Variables #######################################################################
         // System
         private RenderWindow _Device;
-        private AssetManager _AssetManager;
-        private RandomHelper _Random;
-        private Boolean _FocusLost = false;
-        // Views
-        private View _DefaultView;
-        // Layers
-        private GraphicLayer _LayerBackground;
-        private GraphicLayer _LayerGame;
-        private GraphicLayer _LayerParticles;
-        private GraphicLayer _LayerOverlay;
-        private GraphicLayer _LayerDebug;
-        private GraphicLayer _LayerCursor;
-        // Speed
-        private RenderStates _RenderHelper = RenderStates.Default;
 
 
         // Properties ######################################################################
         // System
-        public RenderWindow Device
-        {
-            get { return _Device; }
-            set
-            {
-                if (Disposed) throw new ObjectDisposedException("Core");
-                if (value == null) throw new ArgumentNullException("Render device cannot be null");
-                _Device = value;
-                // TODO : update all event listeners and check if some other events need to be (re-)fired
-            }
-        }
-        public AssetManager AssetManager { get { return _AssetManager; } }
-        public RandomHelper Random { get { return _Random; } }
-        public Boolean FocusLost { get { return _FocusLost; } }
+        public AssetManager AssetManager { get; private set; }
+        public RandomHelper Random { get; private set; }
+        public Boolean FocusLost { get; private set; }
         public Boolean Disposed { get; private set; }
 
         // Layers
-        public GraphicLayer Layer_BG { get { return _LayerBackground; } }
-        public GraphicLayer Layer_Game { get { return _LayerGame; } }
-        public GraphicLayer Layer_Particles { get { return _LayerParticles; } }
-        public GraphicLayer Layer_Overlay { get { return _LayerOverlay; } }
-        public GraphicLayer Layer_Debug { get { return _LayerDebug; } }
-        public GraphicLayer Layer_Cursor { get { return _LayerCursor; } }
+        public GraphicLayer Layer_BG { get; private set; }
+        public GraphicLayer Layer_Game { get; private set; }
+        public GraphicLayer Layer_Particles { get; private set; }
+        public GraphicLayer Layer_Overlay { get; private set; }
+        public GraphicLayer Layer_Debug { get; private set; }
+        public GraphicLayer Layer_Cursor { get; private set; }
 
         // Misc
         public Color ClearColor { get; set; }
         public Font DefaultFont { get; private set; }
-        public View DefaultView
-        {
-            get
-            {
-                if (Disposed) throw new ObjectDisposedException("Core");
-                return new View(_DefaultView);
-            }
-        }
-        public View CurrentView {
-            get
-            {
-                if (Disposed) throw new ObjectDisposedException("Core");
-                return _Device.GetView();
-            }
-            internal set
-            {
-                if (Disposed) throw new ObjectDisposedException("Core");
-                _Device.SetView(value);
-            }
-        }
+        public View DefaultView { get; private set; }
 
 
         // CTOR ############################################################################
@@ -105,33 +61,34 @@ namespace BlackCoat
             // Save Device Ref
             if (device == null) throw new ArgumentNullException("device");
             _Device = device;
-            _DefaultView = new View(CurrentView);
+            DefaultView = new View(_Device.GetView());
             // Device Events
             _Device.Closed += new EventHandler(_Device_Closed);
             _Device.LostFocus += new EventHandler(HandleLostFocus);
             _Device.GainedFocus += new EventHandler(HandleGainedFocus);
             
             // Init Subsystems
-            _AssetManager = new AssetManager(this);
-            _Random = new RandomHelper();
+            FocusLost = false;
+            AssetManager = new AssetManager(this);
+            Random = new RandomHelper();
             ClearColor = Color.Black;
-            DefaultFont = new Font(@"C:\Windows\Fonts\arial.ttf"); // FIXME
+            DefaultFont = new Font(@"C:\Windows\Fonts\arial.ttf"); // TODO : FIXME
 
             // Init Input
-            Input.InitializeInternal(this);
+            Input.InitializeInternal(_Device);
 
             // Create Layer System
-            _LayerBackground = new GraphicLayer(this);
-            _LayerGame = new GraphicLayer(this);
-            _LayerParticles = new GraphicLayer(this);
-            _LayerOverlay = new GraphicLayer(this);
-            _LayerDebug = new GraphicLayer(this);
-            _LayerCursor = new GraphicLayer(this);
+            Layer_BG = new GraphicLayer(this);
+            Layer_Game = new GraphicLayer(this);
+            Layer_Particles = new GraphicLayer(this);
+            Layer_Overlay = new GraphicLayer(this);
+            Layer_Debug = new GraphicLayer(this);
+            Layer_Cursor = new GraphicLayer(this);
 
             if (debug)
             {
                 // Initialize Performance Monitoring
-                _LayerDebug.AddChild(new PerformanceMonitor(this));
+                Layer_Debug.AddChild(new PerformanceMonitor(this, _Device));
 
                 // Input
                 _Device.KeyPressed += _Device_KeyPressed;
@@ -186,10 +143,10 @@ namespace BlackCoat
             while (_Device.IsOpen)
             {
                 _Device.DispatchEvents();
-                deltaT = (Single)(timer.Elapsed.TotalMilliseconds / 1000d); // fractal second
+                deltaT = (float)(timer.Elapsed.TotalMilliseconds / 1000d); // fractal second
                 timer.Reset();
                 timer.Start();
-                if (_FocusLost) // pause updating & relieve host machine
+                if (FocusLost) // pause updating & relieve host machine
                 {
                     Thread.Sleep(1);
                 }
@@ -203,11 +160,10 @@ namespace BlackCoat
         }
 
         /// <summary>
-        /// Manually runs a single update followed by a single render call.
-        /// This method will fail if the the device is invalid
+        /// Performs a single update followed by a single render call. Resulting in a single Device refresh.
         /// </summary>
-        /// <param name="deltaT">Optional time delta between frames in fractional seconds</param>
-        public void PerformManualRefresh(float deltaT = 0)
+        /// <param name="deltaT">Optional time delta between frames in fractal seconds</param>
+        public void ManualRefresh(float deltaT = 0)
         {
             if (Disposed) throw new ObjectDisposedException("Core");
             if (!_Device.IsOpen) throw new InvalidOperationException("Device not ready");
@@ -229,11 +185,11 @@ namespace BlackCoat
         private void Update(Single deltaT)
         {
             // update layers
-            _LayerBackground.Update(deltaT);
-            _LayerGame.Update(deltaT);
-            _LayerParticles.Update(deltaT);
-            _LayerOverlay.Update(deltaT);
-            _LayerDebug.Update(deltaT);
+            Layer_BG.Update(deltaT);
+            Layer_Game.Update(deltaT);
+            Layer_Particles.Update(deltaT);
+            Layer_Overlay.Update(deltaT);
+            Layer_Debug.Update(deltaT);
         }
 
         // draw layer roots
@@ -243,16 +199,34 @@ namespace BlackCoat
             _Device.Clear(ClearColor);
             
             // Draw Layers
-            _LayerBackground.Draw();
-            _LayerGame.Draw();
-            _LayerParticles.Draw();
-            _LayerOverlay.Draw();
+            Layer_BG.Draw();
+            Layer_Game.Draw();
+            Layer_Particles.Draw();
+            Layer_Overlay.Draw();
             // Overlay
-            _LayerDebug.Draw();
-            _LayerCursor.Draw();
+            Layer_Debug.Draw();
+            Layer_Cursor.Draw();
 
             // Present Backbuffer
             _Device.Display();
+        }
+
+        public void Draw(IEntity e)
+        {
+            if (!e.Visible) return;
+            if (e.View != null) _Device.SetView(e.View);
+            if (e.Parent != null)
+            {
+                var state = e.RenderState;
+                state.Transform = e.Parent.Transform;
+                e.RenderState = state;
+            }
+            _Device.Draw(e, e.RenderState);
+        }
+
+        public void Draw(Vertex[] vertices, PrimitiveType type, RenderStates states)
+        {
+            _Device.Draw(vertices, type, states);
         }
 
         /// <summary>Logs Messages to the Console</summary>
@@ -265,13 +239,13 @@ namespace BlackCoat
         // Device Event Handlers ############################################################
         private void HandleLostFocus(object sender, EventArgs e)
         {
-            _FocusLost = true;
+            FocusLost = true;
             Input.Reset();
         }
 
         private void HandleGainedFocus(object sender, EventArgs e)
         {
-            _FocusLost = false;
+            FocusLost = false;
         }
 
         private void _Device_Closed(object sender, EventArgs e)
@@ -293,12 +267,14 @@ namespace BlackCoat
                 _Device.Dispose();
             }
             _Device = null;
-            
-            _AssetManager.Dispose();
-            _AssetManager = null;
+
+            DefaultFont.Dispose();
+
+            AssetManager.Dispose();
+            AssetManager = null;
 
             Disposed = true;
-            GC.SuppressFinalize(this); // ?
+            GC.SuppressFinalize(this);
         }
 
 

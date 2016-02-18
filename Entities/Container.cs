@@ -94,11 +94,9 @@ namespace BlackCoat.Entities
         /// </summary>
         override public void Draw()
         {
-            if (_Visible)
-            {
-                if (this.Texture != null) base.Draw();
-                foreach (IEntity e in _Childs) e.Draw();
-            }
+            if (!Visible) return;
+            if (Texture != null) base.Draw();
+            foreach (IEntity e in _Childs) e.Draw();
         }
     }
 }

@@ -4,35 +4,43 @@ using SFML.Window;
 
 namespace BlackCoat.Entities
 {
-    public interface IEntity
+    public interface IEntity:Drawable
     {
         // Properties ######################################################################
         /// <summary>
         /// Parent Container of this Entity
         /// </summary>
-        Container Parent
-        {
-            get;
-            set;
-        }
+        Container Parent { get; set; }
 
         /// <summary>
         /// Determines the Visisbility of the Entity
         /// </summary>
-        Boolean Visible
-        {
-            get;
-            set;
-        }
+        Boolean Visible { get; set; }
+
+        /// <summary>
+        /// Target Render View
+        /// </summary>
+        View View { get; set; }
+
+        /// <summary>
+        /// Renderstate of the entity
+        /// </summary>
+        RenderStates RenderState { get; set; }
+
+        /// <summary>
+        /// Blending method used for Rendering
+        /// </summary>
+        BlendMode BlendMode { get; set; }
+
+        /// <summary>
+        /// Gobal Color/Tint of the Entitiy
+        /// </summary>
+        Color Color { get; set; }
 
         /// <summary>
         /// Alpha Value
         /// </summary>
-        Single Alpha
-        {
-            get;
-            set;
-        }
+        Single Alpha { get; set; }
 
         /// <summary>
         /// Current Role that descripes the Entities Behaviour

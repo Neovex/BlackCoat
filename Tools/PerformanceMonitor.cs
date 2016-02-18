@@ -23,15 +23,14 @@ namespace BlackCoat.Tools
                                           "APC:   {3}";
 
 
-        public PerformanceMonitor(Core core)
-            : base(core)
+        public PerformanceMonitor(Core core, RenderWindow device) : base(core)
         {
+            device.Resized += Device_Resized;
+
             View = _Core.DefaultView;
             Font = _Core.DefaultFont;
             CharacterSize = 13;
             Color = SFML.Graphics.Color.Yellow;
-            
-            _Core.Device.Resized += Device_Resized;
         }
 
         private void Device_Resized(object sender, SizeEventArgs e)
@@ -39,7 +38,6 @@ namespace BlackCoat.Tools
             View.Size = new Vector2f(e.Width, e.Height);
             View.Center = new Vector2f(e.Width / 2f, e.Height / 2f);
         }
-
 
         public override void Update(Single deltaT)
         {

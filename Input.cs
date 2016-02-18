@@ -16,12 +16,12 @@ namespace BlackCoat
         internal static RenderWindow Device;
 
         public static Vector2i MousePosition { get; private set; }
-        public static Int32 MouseWheelDelta { get; private set; }
+        public static Single MouseWheelDelta { get; private set; }
 
         private static List<Mouse.Button> _MouseButtons = new List<Mouse.Button>();
         private static List<Keyboard.Key> _KeyboardKeys = new List<Keyboard.Key>();
 
-        // TODO : add remaining events
+        // TODO : add remaining events (i.e. Device resized)    
         public static event EventHandler<MouseMoveEventArgs> MouseMoved
         {
             add { Device.MouseMoved += value; }
@@ -58,7 +58,7 @@ namespace BlackCoat
             MousePosition = new Vector2i(e.X, e.Y);
         }
 
-        internal static void HandleMouseWheelMoved(object sender, MouseWheelEventArgs e)
+        internal static void HandleMouseWheelMoved(object sender, MouseWheelScrollEventArgs e)
         {
             MouseWheelDelta = e.Delta;
         }
@@ -93,13 +93,13 @@ namespace BlackCoat
             return _KeyboardKeys.Contains(key); // performance impact?!
         }
 
-        internal static void InitializeInternal(Core core) // TODO : cleanup
+        internal static void InitializeInternal(RenderWindow device)
         {
-            Device = core.Device;
+            Device = device;
             Device.MouseMoved += Input.HandleMouseMoved;
             Device.MouseButtonPressed += Input.HandleMouseButtonPressed;
             Device.MouseButtonReleased += Input.HandleMouseButtonReleased;
-            Device.MouseWheelMoved += Input.HandleMouseWheelMoved;
+            Device.MouseWheelScrolled += Input.HandleMouseWheelMoved;
             Device.KeyPressed += Input.HandleKeyPressed;
             Device.KeyReleased += Input.HandleKeyReleased;
         }

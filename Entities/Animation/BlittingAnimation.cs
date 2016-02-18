@@ -14,23 +14,17 @@ namespace BlackCoat.Entities.Animation
     public class BlittingAnimation:GraphicItem
     {
         // Variables #######################################################################
-        protected Int32 _CurrentFrame = 0;
+        protected Int32 _CurrentFrame = -1;
         protected IntRect[] _Frames;
         protected Vector2u _FrameSize;
-
-        protected Single _AnimationTime;
-        protected Single _CurrentTime;
+        protected Single _FrameTime;
 
 
         // Properties ######################################################################
         /// <summary>
         /// Duration of one frame
         /// </summary>
-        public virtual Single AnimationTime
-        {
-            get { return _AnimationTime; }
-            set { _AnimationTime = _CurrentTime = value; }
-        }
+        public virtual Single AnimationTime { get; set; }
 
         /// <summary>
         /// Texture of this Sprite
@@ -41,7 +35,7 @@ namespace BlackCoat.Entities.Animation
             set
             {
                 base.Texture = value;
-                if (value == null || _FrameSize.X == 0 || _FrameSize.Y == 0) return;
+                if (value == null || _FrameSize.X == 0 || _FrameSize.Y == 0) return; // TODO : extract to method
                 // Rebuild frames to match new texture
                 var list = new List<IntRect>();
                 for (UInt32 y = 0; y < value.Size.Y; y+=_FrameSize.Y)
@@ -69,10 +63,10 @@ namespace BlackCoat.Entities.Animation
         public override void Update(float deltaT)
         {
             base.Update(deltaT);
-            _CurrentTime -= deltaT;
-            while (_CurrentTime <= 0)
+            _FrameTime -= deltaT;
+            while (_FrameTime <= 0)
             {
-                _CurrentTime += _AnimationTime;
+                _FrameTime += AnimationTime;
                 if (++_CurrentFrame >= _Frames.Length) _CurrentFrame = 0;
                 TextureRect = _Frames[_CurrentFrame];
             }

@@ -12,11 +12,8 @@ namespace BlackCoat.Entities.Shapes
         // Variables #######################################################################
         protected Core _Core;
         private Container _Parent;
-        protected Boolean _Visible = true;
         protected List<Role> _Roles = new List<Role>();
         protected Single _Alpha = 1;
-
-        protected RenderStates _RenderState = RenderStates.Default;
         protected View _View = null;
 
 
@@ -33,11 +30,30 @@ namespace BlackCoat.Entities.Shapes
         /// <summary>
         /// Determines the visibility of the Entity
         /// </summary>
-        public virtual Boolean Visible
+        public virtual Boolean Visible { get; set; }
+
+        /// <summary>
+        /// Target Render View
+        /// </summary>
+        public View View
         {
-            get { return _Visible; }
-            set { _Visible = value; }
+            get { return _View ?? (_Parent == null ? _View : _Parent.View); }
+            set { _View = value; }
         }
+
+        /// <summary>
+        /// Fillcolor of the Rectangle
+        /// </summary>
+        public Color Color
+        {
+            get { return FillColor; }
+            set { FillColor = value; }
+        }
+
+        /// <summary>
+        /// Renderstate of the entity
+        /// </summary>
+        public virtual RenderStates RenderState { get; set; }
 
         /// <summary>
         /// Alpha Value
@@ -65,11 +81,18 @@ namespace BlackCoat.Entities.Shapes
         /// </summary>
         public Role CurrentRole { get { return _Roles.Count == 0 ? null : _Roles[_Roles.Count - 1]; } }
 
-
-        public View View
+        /// <summary>
+        /// Blending method used for Rendering
+        /// </summary>
+        public virtual BlendMode BlendMode
         {
-            get { return _View ?? (_Parent == null ? _View : _Parent.View); }
-            set { _View = value; }
+            get { return RenderState.BlendMode; }
+            set
+            {
+                var state = RenderState;
+                state.BlendMode = value;
+                RenderState = state;
+            }
         }
 
 
@@ -77,6 +100,8 @@ namespace BlackCoat.Entities.Shapes
         public ShapeItem(Core core)
         {
             _Core = core;
+            Visible = true;
+            RenderState = RenderStates.Default;
         }
 
 
@@ -97,10 +122,7 @@ namespace BlackCoat.Entities.Shapes
         /// </summary>
         public virtual void Draw()
         {
-            if (!_Visible) return;
-            if (View != null) _Core.CurrentView = View;
-            if (Parent != null) _RenderState.Transform = Parent.Transform;
-            Draw(_Core.Device, _RenderState);
+            _Core.Draw(this);
         }
 
 
