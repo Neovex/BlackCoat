@@ -1,17 +1,14 @@
-﻿using SFML.Graphics;
-using SFML.Window;
-using SFML.System;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using SFML.Graphics;
+using SFML.System;
 
 namespace BlackCoat.Entities.Animation
 {
     /// <summary>
-    /// Animation Graphic Item using a single blitted Texture for all Frames
+    /// Animated Graphic Entity. Utilizes a single blitted Texture for all Frames.
     /// </summary>
-    public class BlittingAnimation:GraphicItem
+    public class BlittingAnimation:Graphic
     {
         // Variables #######################################################################
         protected Int32 _CurrentFrame = -1;
@@ -24,7 +21,7 @@ namespace BlackCoat.Entities.Animation
         /// <summary>
         /// Duration of one frame
         /// </summary>
-        public virtual Single AnimationTime { get; set; }
+        public virtual Single FrameDuration { get; set; }
 
         /// <summary>
         /// Texture of this Sprite
@@ -51,8 +48,25 @@ namespace BlackCoat.Entities.Animation
 
 
         // CTOR ############################################################################
-        public BlittingAnimation(Core core, Vector2u frameSize) : base(core) { _FrameSize = frameSize; }
-        public BlittingAnimation(Core core, IntRect[] frames) : base(core) { _Frames = frames; }
+        /// <summary>
+        /// Creates a new Instance of the BlittingAnimation class.
+        /// </summary>
+        /// <param name="core">Engine Core</param>
+        /// <param name="frameSize">Size of a single frame inside the blitted texture</param>
+        public BlittingAnimation(Core core, Vector2u frameSize) : base(core)
+        {
+            _FrameSize = frameSize;
+        }
+
+        /// <summary>
+        /// Creates a new Instance of the BlittingAnimation class.
+        /// </summary>
+        /// <param name="core">Engine Core</param>
+        /// <param name="frames">Determines the frame locations of the animation frames inside the blitted texture</param>
+        public BlittingAnimation(Core core, IntRect[] frames) : base(core)
+        {
+            _Frames = frames;
+        }
 
 
         // Methods #########################################################################
@@ -66,7 +80,7 @@ namespace BlackCoat.Entities.Animation
             _FrameTime -= deltaT;
             while (_FrameTime <= 0)
             {
-                _FrameTime += AnimationTime;
+                _FrameTime += FrameDuration;
                 if (++_CurrentFrame >= _Frames.Length) _CurrentFrame = 0;
                 TextureRect = _Frames[_CurrentFrame];
             }

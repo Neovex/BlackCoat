@@ -1,12 +1,21 @@
 ﻿using System;
 using SFML.Graphics;
 using SFML.Window;
+using SFML.System;
 
 namespace BlackCoat.Entities
 {
+    /// <summary>
+    /// Shared interface of all supported Entity Types
+    /// </summary>
     public interface IEntity:Drawable
     {
         // Properties ######################################################################
+        /// <summary>
+        /// Location of the Entity within its parent container
+        /// </summary>
+        Vector2f Position { get; set; }
+
         /// <summary>
         /// Parent Container of this Entity
         /// </summary>
@@ -50,14 +59,14 @@ namespace BlackCoat.Entities
 
         // Methods ######################################################################
         /// <summary>
-        /// Updates the Current Entity using its applied Role.
+        /// Updates the current Entity using its applied Role.
         /// Can be overriden by derived classes.
         /// </summary>
         /// <param name="gameTime">Current gametime</param>
         void Update(Single deltaT);
 
         /// <summary>
-        /// Draws the Graphic of the Entity if it is visible
+        /// Renders the Entity into the scene
         /// </summary>
         void Draw();
 

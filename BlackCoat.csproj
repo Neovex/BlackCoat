@@ -50,6 +50,7 @@
   -->
   <ItemGroup>
     <Compile Include="AssetManager.cs" />
+    <Compile Include="Constants.cs" />
     <Compile Include="Core.cs" />
     <Compile Include="Entities\Animation\BlittingAnimation.cs" />
     <Compile Include="Entities\Animation\FrameAnimation.cs" />
@@ -57,10 +58,10 @@
     <Compile Include="Entities\IEntity.cs" />
     <Compile Include="Entities\Container.cs" />
     <Compile Include="Entities\Shapes\Line.cs" />
-    <Compile Include="Entities\Shapes\ShapeItem.cs" />
+    <Compile Include="Entities\Shapes\Rectangle.cs" />
     <Compile Include="Entities\TextItem.cs" />
-    <Compile Include="Entities\GraphicItem.cs" />
-    <Compile Include="Entities\GraphicLayer.cs" />
+    <Compile Include="Entities\Graphic.cs" />
+    <Compile Include="Entities\Layer.cs" />
     <Compile Include="Input.cs" />
     <Compile Include="ParticleSystem\Emitter.cs" />
     <Compile Include="ParticleSystem\Particle.cs" />

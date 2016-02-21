@@ -6,27 +6,10 @@ using SFML.System;
 
 namespace BlackCoat.ParticleSystem
 {
-    public class Particle : GraphicItem
+    public class Particle : Graphic
     {
-        // Constants #######################################################################
-        private const double DEG_TO_RAD = Math.PI / -180;
-
-
         // Variables #######################################################################
-        // System
         protected Emitter _Emitter;
-        protected Single _TTL = 0;
-        // Movement
-        protected Single _Speed = 0;
-        protected Single _SpeedVelocity = 0;
-        protected Single _Direction = 0;
-        protected Single _DirectionVelocity = 0;
-        // Blending
-        protected Single _Blend = 0;
-        // Rotation
-        protected Single _RotationRate = 0;
-        // Scaling
-        protected Single _Transform = 0;
 
 
         // Properties ######################################################################
@@ -45,79 +28,47 @@ namespace BlackCoat.ParticleSystem
         /// <summary>
         /// Determines if the Particle is alive. Read Only.
         /// </summary>
-        public virtual Boolean Alive { get { return _TTL > 0; } }
+        public virtual Boolean Alive { get { return TTL > 0; } }
 
         /// <summary>
         /// Remaining Lifetime of the Particle. Read and Write.
         /// </summary>
-        public virtual Single TTL
-        {
-            get { return _TTL; }
-            set { _TTL = value; }
-        }
+        public virtual Single TTL { get; set; }
 
         /// <summary>
         /// Movement Speed of the Particle. Read and Write.
         /// </summary>
-        public virtual Single Speed
-        {
-            get { return _Speed; }
-            set { _Speed = value; }
-        }
+        public virtual Single Speed { get; set; }
 
         /// <summary>
         /// Speed Modifier of the Particle. Read and Write.
         /// </summary>
-        public virtual Single SpeedVelocity
-        {
-            get { return _SpeedVelocity; }
-            set { _SpeedVelocity = value; }
-        }
+        public virtual Single SpeedVelocity { get; set; }
 
         /// <summary>
         /// Movement Direction of the Particle. Read and Write.
         /// </summary>
-        public virtual Single Direction
-        {
-            get { return _Direction; }
-            set { _Direction = value; }
-        }
+        public virtual Single Direction { get; set; }
 
         /// <summary>
         /// Direction Modifier of the Particle. Read and Write.
         /// </summary>
-        public virtual Single DirectionVelocity
-        {
-            get { return _DirectionVelocity; }
-            set { _DirectionVelocity = value; }
-        }
+        public virtual Single DirectionVelocity { get; set; }
 
         /// <summary>
         /// Alphablending of the Particle. Read and Write.
         /// </summary>
-        public virtual Single Blend
-        {
-            get { return _Blend; }
-            set { _Blend = value; }
-        }
+        public virtual Single Blend { get; set; }
 
         /// <summary>
         /// Particle Rotation. Read and Write.
         /// </summary>
-        public virtual Single RotationRate
-        {
-            get { return _RotationRate; }
-            set { _RotationRate = value; }
-        }
+        public virtual Single RotationRate { get; set; }
 
         /// <summary>
         /// Particle Scale. Read and Write.
         /// </summary>
-        public virtual Single ScaleTransform
-        {
-            get { return _Transform; }
-            set { _Transform = value; }
-        }
+        public virtual Single ScaleTransform { get; set; }
 
 
         // CTOR ############################################################################
@@ -143,28 +94,28 @@ namespace BlackCoat.ParticleSystem
             if (Alive)
             {
                 // TTL
-                _TTL -= deltaT;
+                TTL -= deltaT;
                 // Movement
                 var pos = Position;
-                pos.X += (float)(Math.Cos(_Direction * DEG_TO_RAD) * _Speed * deltaT);
-                pos.Y += (float)(Math.Sin(_Direction * DEG_TO_RAD) * _Speed * deltaT);
+                pos.X += (float)(Math.Cos(Direction * Constants.DEG_TO_RAD) * Speed * deltaT);
+                pos.Y += (float)(Math.Sin(Direction * Constants.DEG_TO_RAD) * Speed * deltaT);
                 Position = pos;
 
                 //Blending
-                Alpha += _Blend * deltaT;
+                Alpha += Blend * deltaT;
 
                 //Rotation
-                Rotation += _RotationRate * deltaT;
+                Rotation += RotationRate * deltaT;
 
                 //Scaling
                 var scale = Scale; //check
-                scale.X += _Transform * deltaT;
-                scale.Y += _Transform * deltaT;
+                scale.X += ScaleTransform * deltaT;
+                scale.Y += ScaleTransform * deltaT;
                 Scale = scale;
 
                 //Velocity calculation
-                _Speed += SpeedVelocity * deltaT;
-                _Direction += _DirectionVelocity * deltaT;
+                Speed += SpeedVelocity * deltaT;
+                Direction += DirectionVelocity * deltaT;
             }
             else
             {

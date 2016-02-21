@@ -6,7 +6,11 @@ using System.Text;
 
 namespace BlackCoat.Entities
 {
-    public class Container : GraphicItem
+    /// <summary>
+    /// Hierarchical render element. The scene graph is constructed primarily out of instances of this class.
+    /// It can be used like a <see cref="Graphic"/> but additionally supports having child elements which will be rendered as well.
+    /// </summary>
+    public class Container : Graphic
     {
         // Variables #######################################################################
         protected List<IEntity> _Childs = new List<IEntity>();
@@ -55,8 +59,7 @@ namespace BlackCoat.Entities
         /// <returns>The requested Entity if found otherwhise null</returns>
         public virtual IEntity GetChildFromIndex(Int32 i)
         {
-            if (i > -1 && i < _Childs.Count) return _Childs[i];
-            return null;
+            return i > -1 && i < _Childs.Count ? _Childs[i] : null;
         }
 
         /// <summary>

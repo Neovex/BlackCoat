@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using SFML.Graphics;
+using SFML.System;
 
 namespace BlackCoat.Entities
 {
@@ -20,6 +21,11 @@ namespace BlackCoat.Entities
 
 
         // Properties ######################################################################
+        /// <summary>
+        /// Entity Position
+        /// </summary>
+        public abstract Vector2f Position { get; set; }
+
         /// <summary>
         /// Parent Container of this Entity
         /// </summary>
@@ -91,7 +97,7 @@ namespace BlackCoat.Entities
 
         // CTOR ############################################################################
         /// <summary>
-        /// Initializes a new instance of the <see cref="GraphicItem"/> class.
+        /// Initializes a new instance of the <see cref="Graphic"/> class.
         /// </summary>
         /// <param name="core">The render core.</param>
         protected BaseEntity(Core core)
@@ -113,10 +119,15 @@ namespace BlackCoat.Entities
         }
 
         /// <summary>
-        /// Base Entity cannot be rendered
+        /// Renders the entity into the scene if correctly implemented in derieved classes.
         /// </summary>
         public abstract void Draw();
 
+        /// <summary>
+        /// Renders the entity into the scene if correctly implemented in derieved classes.
+        /// </summary>
+        /// <param name="target">Render device</param>
+        /// <param name="states">Additional render information</param>
         public abstract void Draw(RenderTarget target, RenderStates states);
 
 

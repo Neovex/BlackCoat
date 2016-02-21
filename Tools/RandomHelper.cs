@@ -2,16 +2,21 @@
 
 namespace BlackCoat.Tools
 {
+    /// <summary>
+    /// Helperclass that extends the default C# Pseudo Random Number Generator with float numbers
+    /// </summary>
     public class RandomHelper : Random
     {
+        // CTOR ############################################################################
         /// <summary>
         /// Creates a new Instance of the RandomHelper class.
         /// Creates a Random with a default seed.
         /// </summary>
-        public RandomHelper():base()
+        internal RandomHelper():base()
         { }
 
 
+        // Methods #########################################################################
         /// <summary>
         /// Generates a random float number
         /// </summary>

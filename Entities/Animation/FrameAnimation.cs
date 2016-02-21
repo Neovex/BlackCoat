@@ -1,37 +1,32 @@
-﻿using SFML.Graphics;
-using SFML.Window;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System;
+using SFML.Graphics;
 
 namespace BlackCoat.Entities.Animation
 {
     /// <summary>
-    /// Animation Graphic Item using one Texture per Frame
+    /// Animated Graphic Entity. Requires one Texture per Frame.
     /// </summary>
-    public class FrameAnimation:GraphicItem
+    public class FrameAnimation:Graphic
     {
         // Variables #######################################################################
-        protected Int32 _CurrentFrame = 0;
+        protected Int32 _CurrentFrame = -1;
         protected Texture[] _Frames;
-
-        protected Single _AnimationTime;
-        protected Single _CurrentTime;
+        protected Single _FrameTime;
 
 
         // Properties ######################################################################
         /// <summary>
         /// Duration of one frame
         /// </summary>
-        public virtual Single AnimationTime
-        {
-            get { return _AnimationTime; }
-            set { _AnimationTime = _CurrentTime = value; }
-        }
+        public virtual Single FrameDuration { get; set; }
 
 
         // CTOR ############################################################################
+        /// <summary>
+        /// Creates a new Instance of the FrameAnimation class.
+        /// </summary>
+        /// <param name="core">Engine Core</param>
+        /// <param name="frames">All frame textures</param>
         public FrameAnimation(Core core, Texture[] frames) : base(core)
         {
             if (frames == null || frames.Length < 2) throw new NullReferenceException("FrameAnimation must have at least 2 frames");
@@ -47,10 +42,10 @@ namespace BlackCoat.Entities.Animation
         public override void Update(float deltaT)
         {
             base.Update(deltaT);
-            _CurrentTime -= deltaT;
-            if (_CurrentTime < 0)
+            _FrameTime -= deltaT;
+            while (_FrameTime <= 0)
             {
-                _CurrentTime = _AnimationTime;
+                _FrameTime += FrameDuration;
                 if (++_CurrentFrame >= _Frames.Length) _CurrentFrame = 0;
                 Texture = _Frames[_CurrentFrame];
             }

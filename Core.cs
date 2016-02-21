@@ -1,13 +1,13 @@
-﻿using BlackCoat.Entities;
-using BlackCoat.Tools;
-using SFML.Graphics;
-using SFML.Window;
-using SFML.System;
-using System;
+﻿using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading;
-using System.Diagnostics;
-using System.IO;
+
+using SFML.Graphics;
+using SFML.Window;
+
+using BlackCoat.Entities;
+using BlackCoat.Tools;
 
 namespace BlackCoat
 {
@@ -30,12 +30,12 @@ namespace BlackCoat
         public Boolean Disposed { get; private set; }
 
         // Layers
-        public GraphicLayer Layer_BG { get; private set; }
-        public GraphicLayer Layer_Game { get; private set; }
-        public GraphicLayer Layer_Particles { get; private set; }
-        public GraphicLayer Layer_Overlay { get; private set; }
-        public GraphicLayer Layer_Debug { get; private set; }
-        public GraphicLayer Layer_Cursor { get; private set; }
+        public Layer Layer_BG { get; private set; }
+        public Layer Layer_Game { get; private set; }
+        public Layer Layer_Particles { get; private set; }
+        public Layer Layer_Overlay { get; private set; }
+        public Layer Layer_Debug { get; private set; }
+        public Layer Layer_Cursor { get; private set; }
 
         // Misc
         public Color ClearColor { get; set; }
@@ -75,15 +75,15 @@ namespace BlackCoat
             DefaultFont = new Font(@"C:\Windows\Fonts\arial.ttf"); // TODO : FIXME
 
             // Init Input
-            Input.InitializeInternal(_Device);
+            Input.Initialize(_Device);
 
             // Create Layer System
-            Layer_BG = new GraphicLayer(this);
-            Layer_Game = new GraphicLayer(this);
-            Layer_Particles = new GraphicLayer(this);
-            Layer_Overlay = new GraphicLayer(this);
-            Layer_Debug = new GraphicLayer(this);
-            Layer_Cursor = new GraphicLayer(this);
+            Layer_BG = new Layer(this);
+            Layer_Game = new Layer(this);
+            Layer_Particles = new Layer(this);
+            Layer_Overlay = new Layer(this);
+            Layer_Debug = new Layer(this);
+            Layer_Cursor = new Layer(this);
 
             if (debug)
             {

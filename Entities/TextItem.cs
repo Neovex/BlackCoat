@@ -6,6 +6,9 @@ using SFML.Graphics;
 
 namespace BlackCoat.Entities
 {
+    /// <summary>
+    /// Renders Text onto the Scene
+    /// </summary>
     public class TextItem : Text, IEntity
     {
         // Variables #######################################################################

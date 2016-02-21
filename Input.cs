@@ -9,38 +9,45 @@ using SFML.System;
 namespace BlackCoat
 {
     /// <summary>
-    /// Handles input device information
+    /// Collects available input data and provides usefull events for custom input handlers
     /// </summary>
     public static class Input
     {
-        internal static RenderWindow Device;
+        // Variables #######################################################################
+        private static RenderWindow _Device;
 
+
+        // Properties ######################################################################
         public static Vector2i MousePosition { get; private set; }
         public static Single MouseWheelDelta { get; private set; }
 
         private static List<Mouse.Button> _MouseButtons = new List<Mouse.Button>();
         private static List<Keyboard.Key> _KeyboardKeys = new List<Keyboard.Key>();
+        
 
-        // TODO : add remaining events (i.e. Device resized)    
+
+        // Events ##########################################################################
+        // TODO : add remaining events (i.e. Device resized, mousewheel)    
         public static event EventHandler<MouseMoveEventArgs> MouseMoved
         {
-            add { Device.MouseMoved += value; }
-            remove { Device.MouseMoved -= value; }
+            add { _Device.MouseMoved += value; }
+            remove { _Device.MouseMoved -= value; }
         }
 
         public static event EventHandler<MouseButtonEventArgs> MouseButtonPressed
         {
-            add { Device.MouseButtonPressed += value; }
-            remove { Device.MouseButtonPressed -= value; }
+            add { _Device.MouseButtonPressed += value; }
+            remove { _Device.MouseButtonPressed -= value; }
         }
 
         public static event EventHandler<KeyEventArgs> KeyPressed
         {
-            add { Device.KeyPressed += value; }
-            remove { Device.KeyPressed -= value; }
+            add { _Device.KeyPressed += value; }
+            remove { _Device.KeyPressed -= value; }
         }
 
 
+        // Methods #########################################################################
         // TODO : comment
         // Mouse
         internal static void HandleMouseButtonPressed(object sender, MouseButtonEventArgs e)
@@ -93,15 +100,20 @@ namespace BlackCoat
             return _KeyboardKeys.Contains(key); // performance impact?!
         }
 
-        internal static void InitializeInternal(RenderWindow device)
+        /// <summary>
+        /// Initializes the Input class.
+        /// Starts listening to all available input events
+        /// </summary>
+        /// <param name="device">Renderwindow as event provider</param>
+        internal static void Initialize(RenderWindow device)
         {
-            Device = device;
-            Device.MouseMoved += Input.HandleMouseMoved;
-            Device.MouseButtonPressed += Input.HandleMouseButtonPressed;
-            Device.MouseButtonReleased += Input.HandleMouseButtonReleased;
-            Device.MouseWheelScrolled += Input.HandleMouseWheelMoved;
-            Device.KeyPressed += Input.HandleKeyPressed;
-            Device.KeyReleased += Input.HandleKeyReleased;
+            _Device = device;
+            _Device.MouseMoved += Input.HandleMouseMoved;
+            _Device.MouseButtonPressed += Input.HandleMouseButtonPressed;
+            _Device.MouseButtonReleased += Input.HandleMouseButtonReleased;
+            _Device.MouseWheelScrolled += Input.HandleMouseWheelMoved;
+            _Device.KeyPressed += Input.HandleKeyPressed;
+            _Device.KeyReleased += Input.HandleKeyReleased;
         }
     }
 }

@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using SFML.Graphics;
 using System.IO;
+using SFML.Graphics;
 
 namespace BlackCoat
 {
+    /// <summary>
+    /// Asset management class. Takes care of loading/unloading assets of one specified folder.
+    /// Multiple instances of the AssetManager class can be used to simplify asset memory management.
+    /// </summary>
     public class AssetManager : IDisposable
     {
         // Variables #######################################################################
@@ -33,10 +35,15 @@ namespace BlackCoat
 
 
         // CTOR ############################################################################
-        public AssetManager(Core core)
+        /// <summary>
+        /// Creates a new instance of the AssetManager class.
+        /// </summary>
+        /// <param name="core">Engine Core</param>
+        /// <param name="assetRoot">Optional root path of the managed asset folder</param>
+        public AssetManager(Core core, String assetRoot = "")
         {
             _Core = core;
-            RootFolder = String.Empty;
+            RootFolder = assetRoot;
             SmoothTexturesOnLoad = false;
         }
 

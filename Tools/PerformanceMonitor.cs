@@ -9,8 +9,12 @@ using SFML.Window;
 
 namespace BlackCoat.Tools
 {
+    /// <summary>
+    /// Internal Helperclass that renders some performance information into the scene
+    /// </summary>
     internal class PerformanceMonitor : TextItem
     {
+        // Variables #######################################################################
         private Single _LastUpdate = 0;
         private Single _Runtime = 0;
 #if AVERAGE_FPS
@@ -23,7 +27,13 @@ namespace BlackCoat.Tools
                                           "APC:   {3}";
 
 
-        public PerformanceMonitor(Core core, RenderWindow device) : base(core)
+        // CTOR ############################################################################
+        /// <summary>
+        /// Creates a new instance of the performance monitor class
+        /// </summary>
+        /// <param name="core">Engine Core</param>
+        /// <param name="device">Render Device</param>
+        internal PerformanceMonitor(Core core, RenderWindow device) : base(core)
         {
             device.Resized += Device_Resized;
 
@@ -33,12 +43,19 @@ namespace BlackCoat.Tools
             Color = SFML.Graphics.Color.Yellow;
         }
 
+
+        // Methods #########################################################################
+        // TODO : check this view change here
         private void Device_Resized(object sender, SizeEventArgs e)
         {
             View.Size = new Vector2f(e.Width, e.Height);
             View.Center = new Vector2f(e.Width / 2f, e.Height / 2f);
         }
 
+        /// <summary>
+        /// Updates the FPS display
+        /// </summary>
+        /// <param name="gameTime">Current gametime</param>
         public override void Update(Single deltaT)
         {
             _LastUpdate += deltaT;
