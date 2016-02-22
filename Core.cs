@@ -14,7 +14,7 @@ namespace BlackCoat
 {
     /// <summary>
     /// Render Core Class - represents the main controller for all rendering, logic and engine related operations.
-    /// This class does not support multi threading.
+    /// This class does not support multi-threading.
     /// </summary>
     public sealed class Core : IDisposable
     {
@@ -27,6 +27,7 @@ namespace BlackCoat
         
         // Variables #######################################################################
         private RenderWindow _Device;
+        private Stopwatch _Timer;
 
 
         // Properties ######################################################################
@@ -90,9 +91,10 @@ namespace BlackCoat
         /// <param name="debug">Determines if the Core should enable debug features</param>
         public Core(RenderWindow device, Boolean debug)
         {
-            // Save Device Ref
+            // Init Core Systems
             if (device == null) throw new ArgumentNullException("device");
             _Device = device;
+            _Timer = new Stopwatch();
 
             // Init Defaults
             ClearColor = Color.Black;
@@ -167,23 +169,22 @@ namespace BlackCoat
         {
             if (Disposed) throw new ObjectDisposedException("Core");
             ShowRenderWindow();
-            Stopwatch timer = new Stopwatch();
-            Single deltaT = 0;
             while (_Device.IsOpen)
             {
                 _Device.DispatchEvents();
-                deltaT = (float)(timer.Elapsed.TotalMilliseconds / 1000d); // fractal second
-                timer.Restart();
                 if (FocusLost) // pause updating & relieve host machine
                 {
                     Thread.Sleep(1);
                 }
                 else // run updates
                 {
+                    var deltaT = (float)(_Timer.Elapsed.TotalMilliseconds / 1000d);// fractal second
+                    _Timer.Restart();
                     Update(deltaT);
                 }
                 Draw();
             }
+            _Timer.Stop();
         }
 
         /// <summary>
@@ -287,6 +288,7 @@ namespace BlackCoat
         // Device Event Handlers ############################################################
         private void HandleLostFocus(object sender, EventArgs e)
         {
+            _Timer.Stop();
             FocusLost = true;
             Input.Reset();
         }
@@ -294,6 +296,7 @@ namespace BlackCoat
         private void HandleGainedFocus(object sender, EventArgs e)
         {
             FocusLost = false;
+            _Timer.Start();
         }
 
         private void _Device_Closed(object sender, EventArgs e)

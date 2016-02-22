@@ -15,7 +15,8 @@ namespace BlackCoat.Tweening
         
         // Variables #######################################################################
         private List<Tween> _ActiveTweens = new List<Tween>();
-        private List<Tween> _CompletedTweens = new List<Tween>();
+        private List<Tween> _TweensToAdd = new List<Tween>();
+        private List<Tween> _TweensToRemove = new List<Tween>();
 
 
         // Properties ######################################################################
@@ -51,10 +52,10 @@ namespace BlackCoat.Tweening
         /// <param name="tween">Tween to add</param>
         public void Add(Tween tween)
         {
-            if (_ActiveTweens.Contains(tween)) throw new InvalidOperationException("tween cannot be added twice");
+            if (_ActiveTweens.Contains(tween) || _TweensToAdd.Contains(tween)) throw new InvalidOperationException("tween cannot be added twice");
             if (tween.Finished) throw new InvalidOperationException("tweens cannot be reused");
             tween.Completed += HandleTweenCompleted;
-            _ActiveTweens.Add(tween);
+            _TweensToAdd.Add(tween);
 
             ACTIVE_TWEENS++;
         }
@@ -94,15 +95,22 @@ namespace BlackCoat.Tweening
         /// <param name="deltaT">Frame Time</param>
         internal void Update(float deltaT)
         {
+            // Add
+            _ActiveTweens.AddRange(_TweensToAdd);
+            _TweensToAdd.Clear();
+
+            // Update
             foreach (var tween in _ActiveTweens)
             {
                 tween.Update(deltaT);
             }
-            foreach (var tween in _CompletedTweens)
+
+            // Delete
+            foreach (var tween in _TweensToRemove)
             {
                 _ActiveTweens.Remove(tween);
             }
-            _CompletedTweens.Clear();
+            _TweensToRemove.Clear();
         }
 
         /// <summary>
@@ -112,7 +120,7 @@ namespace BlackCoat.Tweening
         private void HandleTweenCompleted(Tween tween)
         {
             tween.Completed -= HandleTweenCompleted;
-            _CompletedTweens.Add(tween);
+            _TweensToRemove.Add(tween);
 
             ACTIVE_TWEENS--;
         }

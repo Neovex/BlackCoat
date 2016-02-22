@@ -54,7 +54,7 @@ namespace BlackCoat.ParticleSystem
             ParticlesPerSpawn = new Vector2i(1, 1);
             SpawnRate = 1;
             SpawnContainer = this;
-            ScaleRange = new Vector2f(1, 1);
+            AlphaRange = new Vector2f(1, 1);
             ScaleRange = new Vector2f(1, 1);
             ParticleBlendMode = BlendMode.Alpha;
         }
