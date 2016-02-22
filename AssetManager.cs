@@ -6,7 +6,7 @@ using SFML.Graphics;
 namespace BlackCoat
 {
     /// <summary>
-    /// Asset management class. Takes care of loading/unloading assets of one specified folder.
+    /// Asset management class. Handles loading/unloading of assets located in its specified root folder.
     /// Multiple instances of the AssetManager class can be used to simplify asset memory management.
     /// </summary>
     public class AssetManager : IDisposable

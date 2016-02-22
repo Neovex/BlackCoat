@@ -8,26 +8,41 @@ using SFML.Window;
 
 using BlackCoat.Entities;
 using BlackCoat.Tools;
+using BlackCoat.Tweening;
 
 namespace BlackCoat
 {
     /// <summary>
-    /// Render Core Class - represents the main controller for all rendering and logic operations.
+    /// Render Core Class - represents the main controller for all rendering, logic and engine related operations.
     /// This class does not support multi threading.
     /// </summary>
     public sealed class Core : IDisposable
     {
+        // Events ##########################################################################
+        /// <summary>
+        /// Update Event is raised for each frame. This event can be used to update external components such as a game instance.
+        /// </summary>
+        public event Action<float> OnUpdate = (d) => { };
+
+        
         // Variables #######################################################################
-        // System
         private RenderWindow _Device;
 
 
         // Properties ######################################################################
-        // System
+        // Subsystems
+        /// <summary>
+        /// Default Asset Manager. Handles loading/unloading of assets located in its specified root folder.
+        /// </summary>
         public AssetManager AssetManager { get; private set; }
+        /// <summary>
+        /// Random Number Generator with float and integer support.
+        /// </summary>
         public RandomHelper Random { get; private set; }
-        public Boolean FocusLost { get; private set; }
-        public Boolean Disposed { get; private set; }
+        /// <summary>
+        /// Tween Manager and Factory. Used primarly to make stuff move.
+        /// </summary>
+        public Tweener Tweener { get; private set; }
 
         // Layers
         public Layer Layer_BG { get; private set; }
@@ -38,41 +53,63 @@ namespace BlackCoat
         public Layer Layer_Cursor { get; private set; }
 
         // Misc
+        /// <summary>
+        /// Color used to clear the screen of the contents from the last rendered frame.
+        /// </summary>
         public Color ClearColor { get; set; }
-        public Font DefaultFont { get; private set; }
+        /// <summary>
+        /// Determines if the render window is no longer in focus.
+        /// </summary>
+        public Boolean FocusLost { get; private set; }
+        /// <summary>
+        /// Determines if the Engine Core has been disposed.
+        /// </summary>
+        public Boolean Disposed { get; private set; }
+        /// <summary>
+        /// Default Render View - uses full with and height of the rendering device.
+        /// </summary>
         public View DefaultView { get; private set; }
+        /// <summary>
+        /// Default font of the Engine. The <see cref="TextItem"/> class needs it to display text when no font is loaded.
+        /// </summary>
+        public Font DefaultFont { get; private set; }
 
 
         // CTOR ############################################################################
         /// <summary>
         /// Creates a new Instance of the BlackCoat Core class
         /// </summary>
-        /// <param name="device">Render Device used by the Core - use of the static creation methods is recommended</param>
+        /// <param name="device">Render Device used by the Core - use of the static creation methods is recommented</param>
         public Core(RenderWindow device) : this(device, false)
         { }
 
         /// <summary>
         /// Creates a new Instance of the BlackCoat Core class
         /// </summary>
-        /// <param name="device">Render Device used by the Core - the use the static creation methods is recommended</param>
+        /// <param name="device">Render Device used by the Core - use of the static creation methods is recommented</param>
         /// <param name="debug">Determines if the Core should enable debug features</param>
         public Core(RenderWindow device, Boolean debug)
         {
             // Save Device Ref
             if (device == null) throw new ArgumentNullException("device");
             _Device = device;
-            DefaultView = new View(_Device.GetView());
+
+            // Init Defaults
+            ClearColor = Color.Black;
+            FocusLost = false;
+            Disposed = false;
+            DefaultView = _Device.DefaultView;
+            DefaultFont = new Font(@"C:\Windows\Fonts\arial.ttf"); // TODO : FIXME
+
             // Device Events
             _Device.Closed += new EventHandler(_Device_Closed);
             _Device.LostFocus += new EventHandler(HandleLostFocus);
             _Device.GainedFocus += new EventHandler(HandleGainedFocus);
             
             // Init Subsystems
-            FocusLost = false;
             AssetManager = new AssetManager(this);
             Random = new RandomHelper();
-            ClearColor = Color.Black;
-            DefaultFont = new Font(@"C:\Windows\Fonts\arial.ttf"); // TODO : FIXME
+            Tweener = new Tweener();
 
             // Init Input
             Input.Initialize(_Device);
@@ -91,8 +128,8 @@ namespace BlackCoat
                 Layer_Debug.AddChild(new PerformanceMonitor(this, _Device));
 
                 // Input
-                _Device.KeyPressed += _Device_KeyPressed;
-                //_Device.CurrentView.Zoom(0.5f);//debug overview
+                _Device.KeyPressed += (s, e) => { if (e.Code == Keyboard.Key.Escape) Exit(); };
+                //DefaultView.Zoom(2f);//debug overview
             }
         }
 
@@ -100,16 +137,9 @@ namespace BlackCoat
         {
             if (!Disposed) Dispose();
         }
-        
-
-        private void _Device_KeyPressed(object sender, KeyEventArgs e)
-        {
-            if (e.Code == Keyboard.Key.Escape) Exit();
-        }
 
 
         // Methods #########################################################################
-
         /// <summary>
         /// Displays the Renderwindow to the User.
         /// </summary>
@@ -133,8 +163,7 @@ namespace BlackCoat
         /// Begins the Update / Rendering Loop.
         /// This method is blocking until Exit() is called.
         /// </summary>
-        /// <param name="updateGameDelegate">Update callback for the calling class</param>
-        public void Run(Action<float> updateGameDelegate)
+        public void Run()
         {
             if (Disposed) throw new ObjectDisposedException("Core");
             ShowRenderWindow();
@@ -144,8 +173,7 @@ namespace BlackCoat
             {
                 _Device.DispatchEvents();
                 deltaT = (float)(timer.Elapsed.TotalMilliseconds / 1000d); // fractal second
-                timer.Reset();
-                timer.Start();
+                timer.Restart();
                 if (FocusLost) // pause updating & relieve host machine
                 {
                     Thread.Sleep(1);
@@ -153,7 +181,6 @@ namespace BlackCoat
                 else // run updates
                 {
                     Update(deltaT);
-                    updateGameDelegate(deltaT);
                 }
                 Draw();
             }
@@ -181,29 +208,40 @@ namespace BlackCoat
             _Device.Close();
         }
         
-        // layer update root
+        /// <summary>
+        /// Calls the Update methods of the SceneGraph Hierarchy
+        /// </summary>
+        /// <param name="deltaT">Frame time</param>
         private void Update(Single deltaT)
         {
-            // update layers
+            // Update SceneGraph
             Layer_BG.Update(deltaT);
             Layer_Game.Update(deltaT);
             Layer_Particles.Update(deltaT);
             Layer_Overlay.Update(deltaT);
             Layer_Debug.Update(deltaT);
+
+            // Raise Update event for external updates
+            OnUpdate(deltaT);
+
+            // Update running tweens
+            Tweener.Update(deltaT);
         }
 
-        // draw layer roots
+        /// <summary>
+        /// Draws the SceneGraph to the Render Device
+        /// </summary>
         private void Draw()
         {
             // Clear Background
             _Device.Clear(ClearColor);
             
-            // Draw Layers
+            // SceneGraph
             Layer_BG.Draw();
             Layer_Game.Draw();
             Layer_Particles.Draw();
             Layer_Overlay.Draw();
-            // Overlay
+            // System Overlay
             Layer_Debug.Draw();
             Layer_Cursor.Draw();
 
@@ -211,6 +249,10 @@ namespace BlackCoat
             _Device.Display();
         }
 
+        /// <summary>
+        /// Draws the provided Entity onto the scene.
+        /// </summary>
+        /// <param name="e">The Entity to draw</param>
         public void Draw(IEntity e)
         {
             if (!e.Visible) return;
@@ -224,6 +266,12 @@ namespace BlackCoat
             _Device.Draw(e, e.RenderState);
         }
 
+        /// <summary>
+        /// Draws the provided vertex array onto the scene.
+        /// </summary>
+        /// <param name="vertices">Vertex array to draw</param>
+        /// <param name="type">Type of primitives to draw</param>
+        /// <param name="states">Additional state information for rendering</param>
         public void Draw(Vertex[] vertices, PrimitiveType type, RenderStates states)
         {
             _Device.Draw(vertices, type, states);
