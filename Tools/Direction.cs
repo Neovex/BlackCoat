@@ -11,14 +11,14 @@ namespace BlackCoat.Tools
     public static class Direction
     {
         // Constants #######################################################################
-        public const Single O  = 0f;// RIGHT
-        public const Single SO = 45f;
-        public const Single S  = 90f;// DOWN
-        public const Single SW = 135f;
-        public const Single W  = 180f;// LEFT
-        public const Single NW = 225f;
-        public const Single N  = 270f;// UP
-        public const Single NO = 315f;
+        public const float O  = 0f;// RIGHT
+        public const float SO = 45f;
+        public const float S  = 90f;// DOWN
+        public const float SW = 135f;
+        public const float W  = 180f;// LEFT
+        public const float NW = 225f;
+        public const float N  = 270f;// UP
+        public const float NO = 315f;
 
 
         // Methods #########################################################################
@@ -77,6 +77,19 @@ namespace BlackCoat.Tools
         public static Single LookAt(this IEntity entity, Vector2f target, Vector2f offset = default(Vector2f))
         {
             return entity.Position.AngleTowards(new Vector2f(target.X + offset.X, target.Y + offset.Y));
+        }
+
+        /// <summary>
+        /// Calculates a movement Vector based on a given direction.
+        /// </summary>
+        /// <param name="direction">Direction angle</param>
+        /// <returns>Movement Vector - multiply with a distance/speed to </returns>
+        public static Vector2f ToMovementVector(float direction)
+        {
+            var pos = new Vector2f();
+            pos.X = (float)(Math.Cos(direction * Constants.DEG_TO_RAD));
+            pos.Y = (float)(Math.Sin(direction * Constants.DEG_TO_RAD));
+            return pos;
         }
     }
 }

@@ -95,10 +95,12 @@ namespace BlackCoat.ParticleSystem
             {
                 // TTL
                 TTL -= deltaT;
+
                 // Movement
                 var pos = Position;
-                pos.X += (float)(Math.Cos(Direction * Constants.DEG_TO_RAD) * Speed * deltaT);
-                pos.Y += (float)(Math.Sin(Direction * Constants.DEG_TO_RAD) * Speed * deltaT);
+                var mv = Tools.Direction.ToMovementVector(Direction);
+                pos.X += mv.X * Speed * deltaT;
+                pos.Y += mv.Y * Speed * deltaT;
                 Position = pos;
 
                 //Blending
@@ -108,7 +110,7 @@ namespace BlackCoat.ParticleSystem
                 Rotation += RotationRate * deltaT;
 
                 //Scaling
-                var scale = Scale; //check
+                var scale = Scale;
                 scale.X += ScaleTransform * deltaT;
                 scale.Y += ScaleTransform * deltaT;
                 Scale = scale;
