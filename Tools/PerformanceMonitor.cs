@@ -6,6 +6,7 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using SFML.Window;
+using BlackCoat.Tweening;
 
 namespace BlackCoat.Tools
 {
@@ -24,7 +25,8 @@ namespace BlackCoat.Tools
         private const String TimeString = "FPS:   {0}\n" +
                                           "FTime: {1}\n" +
                                           "Total: {2}\n" +
-                                          "APC:   {3}";
+                                          "APC:   {3}\n" +
+                                          "ATC:   {4}";
 
 
         // CTOR ############################################################################
@@ -79,7 +81,8 @@ namespace BlackCoat.Tools
 #endif
                                             deltaT,
                                             _Runtime,
-                                            Emitter.ACTIVE_PARTICLES);
+                                            Emitter.ACTIVE_PARTICLES,
+                                            Tweener.ACTIVE_TWEENS);
         }
     }
 }

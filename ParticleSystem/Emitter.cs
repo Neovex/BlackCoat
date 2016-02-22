@@ -11,7 +11,7 @@ namespace BlackCoat.ParticleSystem
 {
     public class Emitter:Container
     {
-        // Constants #######################################################################
+        // Statics #########################################################################
         public static Int32 ACTIVE_PARTICLES = 0;
         public static Int32 PARTICLE_LIMIT = 500;
 

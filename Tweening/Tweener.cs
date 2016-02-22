@@ -8,14 +8,19 @@ namespace BlackCoat.Tweening
     /// </summary>
     public sealed class Tweener
     {
+        // Statics #########################################################################
+        public static Int32 ACTIVE_TWEENS = 0;
+
+
+        
         // Variables #######################################################################
-        private HashSet<Tween> _ActiveTweens = new HashSet<Tween>();
+        private List<Tween> _ActiveTweens = new List<Tween>();
         private List<Tween> _CompletedTweens = new List<Tween>();
 
 
         // Properties ######################################################################
         /// <summary>
-        /// Retrieves the ammount of currsntly running tweens.
+        /// Retrieves the ammount of currently running tweens.
         /// </summary>
         public int ActiveTweens { get { return _ActiveTweens.Count; } }
 
@@ -50,6 +55,8 @@ namespace BlackCoat.Tweening
             if (tween.Finished) throw new InvalidOperationException("tweens cannot be reused");
             tween.Completed += HandleTweenCompleted;
             _ActiveTweens.Add(tween);
+
+            ACTIVE_TWEENS++;
         }
 
         /// <summary>
@@ -106,6 +113,8 @@ namespace BlackCoat.Tweening
         {
             tween.Completed -= HandleTweenCompleted;
             _CompletedTweens.Add(tween);
+
+            ACTIVE_TWEENS--;
         }
     }
 }
