@@ -95,9 +95,9 @@ namespace BlackCoat
         /// <param name="width">Width of the Image that should be created</param>
         /// <param name="height">Height of the Image that should be created</param>
         /// <param name="color">Color of the Image as hex value 0xAARRGGBB</param>
-        /// <param name="name">Optional name of the Resource</param>
+        /// <param name="name">Name of the generated Texture</param>
         /// <returns>The new or present Texture</returns>
-        public Texture CreateTexture(UInt32 width, UInt32 height, UInt32 color, String name = "")
+        public Texture CreateTexture(UInt32 width, UInt32 height, UInt32 color, String name)
         {
             if (Disposed) throw new ObjectDisposedException("AssetManager");
             if (_Textures.ContainsKey(name)) return _Textures[name];

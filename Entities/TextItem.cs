@@ -20,6 +20,15 @@ namespace BlackCoat.Entities
 
         // Properties ######################################################################
         /// <summary>
+        /// Text to Render
+        /// </summary>
+        public String Text
+        {
+            get { return DisplayedString; }
+            set { DisplayedString = value; }
+        }
+        
+        /// <summary>
         /// Parent Container of this Entity
         /// </summary>
         public Container Parent
@@ -84,6 +93,7 @@ namespace BlackCoat.Entities
         {
             _Core = core;
             Visible = true;
+            Font = _Core.DefaultFont;
             RenderState = RenderStates.Default;
         }
 

@@ -13,9 +13,10 @@ namespace BlackCoat.Tools
     /// <summary>
     /// Internal Helperclass that renders some performance information into the scene
     /// </summary>
-    internal class PerformanceMonitor : TextItem
+    internal class PerformanceMonitor : Container
     {
         // Variables #######################################################################
+        private TextItem _InfoDisplay;
         private Single _LastUpdate = 0;
         private Single _Runtime = 0;
 #if AVERAGE_FPS
@@ -39,10 +40,15 @@ namespace BlackCoat.Tools
         {
             device.Resized += Device_Resized;
 
+            Texture = _Core.AssetManager.CreateTexture(110, 75, 0x99000000, "PerformanceMonitorBackground");
+
+            _InfoDisplay = new TextItem(_Core);
+            _InfoDisplay.Position = new Vector2f(5, 2);
+            _InfoDisplay.Color = SFML.Graphics.Color.Yellow;
+            _InfoDisplay.CharacterSize = 12;
+            AddChild(_InfoDisplay);
+
             View = _Core.DefaultView;
-            Font = _Core.DefaultFont;
-            CharacterSize = 13;
-            Color = SFML.Graphics.Color.Yellow;
         }
 
 
@@ -72,7 +78,7 @@ namespace BlackCoat.Tools
             _LastUpdate = 0;
 
 
-            DisplayedString = String.Format(TimeString,
+            _InfoDisplay.Text = String.Format(TimeString,
 # if !AVERAGE_FPS
                                             1 / deltaT,
 #endif

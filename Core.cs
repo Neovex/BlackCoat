@@ -162,6 +162,19 @@ namespace BlackCoat
         }
 
         /// <summary>
+        /// Sets the icon of the render window and the associated taskbar button.
+        /// </summary>
+        /// <param name="icon">Texture used to set the icon from</param>
+        public void SetRenderWindowIcon(Texture icon)
+        {
+            if (icon == null) throw new ArgumentNullException("icon");
+            using (var img = icon.CopyToImage())
+            {
+                _Device.SetIcon(img.Size.X, img.Size.Y, img.Pixels);
+            }
+        }
+
+        /// <summary>
         /// Begins the Update / Rendering Loop.
         /// This method is blocking until Exit() is called.
         /// </summary>
