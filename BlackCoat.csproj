@@ -73,6 +73,7 @@
     <Compile Include="Tweening\Interpolation.cs" />
     <Compile Include="Tweening\Tween.cs" />
     <Compile Include="Tweening\Tweener.cs" />
+    <Compile Include="VectorExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="sfmlnet-audio-2, Version=2.3.0.0, Culture=neutral, processorArchitecture=MSIL">

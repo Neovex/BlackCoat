@@ -12,11 +12,14 @@ namespace BlackCoat.Tweening
         /// <summary>
         /// Occurs when the Tween reached its assigned target value and is therefore complete.
         /// </summary>
-        public event Action<Tween> Completed = (t) => { };
+        public event Action<Tween> OnComplete = (t) => { };
+        /// <summary>
+        /// Occurs on each update cycle of the tween with the interpolated value
+        /// </summary>
+        public event Action<float> OnUpdate = (v) => { };
 
 
         // Variables #######################################################################
-        private Action<float> _Setter;
         private Func<float, float, float, float, float> _Interpolation;
         private float _Distance;
         private float _ElapsedTime;
@@ -54,12 +57,11 @@ namespace BlackCoat.Tweening
         /// <param name="duration">Tween duration in fractal seconds</param>
         /// <param name="setter">Delegate to assign the calculated value to a target</param>
         /// <param name="interpolation">Delegate to interpolate the Tween</param>
-        internal Tween(float startValue, float targetValue, float duration, Action<float> setter, Func<float, float, float, float, float> interpolation)
+        internal Tween(float startValue, float targetValue, float duration, Func<float, float, float, float, float> interpolation)
         {
             StartValue = startValue;
             TargetValue = targetValue;
             Duration = duration;
-            _Setter = setter;
             _Interpolation = interpolation;
 
             // Calculate Distance
@@ -74,7 +76,7 @@ namespace BlackCoat.Tweening
         {
             _ElapsedTime += deltaT;
             CurrentValue = _Interpolation.Invoke(StartValue, _Distance, _ElapsedTime, Duration);
-            _Setter(CurrentValue);
+            OnUpdate(CurrentValue);
             if (CurrentValue == TargetValue) Cancel();
         }
 
@@ -85,7 +87,7 @@ namespace BlackCoat.Tweening
         {
             if (Finished) return;
             Finished = true;
-            Completed(this);
+            OnComplete(this);
         }
     }
 }

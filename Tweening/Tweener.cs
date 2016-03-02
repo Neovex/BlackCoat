@@ -33,59 +33,48 @@ namespace BlackCoat.Tweening
 
         // Methods #########################################################################
         /// <summary>
-        /// Creates a new unmanaged Tween.
+        /// Creates a new Tween.
         /// </summary>
         /// <param name="startValue">Value to start the Tween from</param>
         /// <param name="targetValue">Value to Tween to</param>
         /// <param name="duration">Tween duration in fractal seconds</param>
-        /// <param name="setter">Delegate to assign the calculated value to a target</param>
-        /// <param name="interpolation">Delegate to interpolate the Tween</param>
+        /// <param name="interpolation">Optional delegate to interpolate the Tween</param>
         /// <returns>Created Tween</returns>
-        public Tween Create(float startValue, float targetValue, float duration, Action<float> setter, Func<float, float, float, float, float> interpolation)
+        public Tween Create(float startValue, float targetValue, float duration, Func<float, float, float, float, float> interpolation = null)
         {
-            return new Tween(startValue, targetValue, duration, setter, interpolation);
+            return new Tween(startValue, targetValue, duration, interpolation ?? Interpolation.Linear);
         }
 
         /// <summary>
-        /// Adds a Tween to the Tweeneer so it can run.
+        /// Runs the provided Tween
         /// </summary>
         /// <param name="tween">Tween to add</param>
-        public void Add(Tween tween)
+        public void Run(Tween tween)
         {
             if (_ActiveTweens.Contains(tween) || _TweensToAdd.Contains(tween)) throw new InvalidOperationException("tween cannot be added twice");
             if (tween.Finished) throw new InvalidOperationException("tweens cannot be reused");
-            tween.Completed += HandleTweenCompleted;
+            tween.OnComplete += HandleTweenCompleted;
             _TweensToAdd.Add(tween);
 
             ACTIVE_TWEENS++;
         }
 
         /// <summary>
-        /// Creates a new Tween and adds it to the Tweeneer so it can run.
+        /// Creates a new Tween and runs it.
         /// </summary>
         /// <param name="startValue">Value to start the Tween from</param>
         /// <param name="targetValue">Value to Tween to</param>
         /// <param name="duration">Tween duration in fractal seconds</param>
-        /// <param name="setter">Delegate to assign the calculated value to a target</param>
+        /// <param name="onUpdate">Optional delegate to assign the interpolated value to a target</param>
+        /// <param name="interpolation">Optional delegate to interpolate the Tween</param>
+        /// <param name="onComplete">Optional delegate called when the tween has finished</param>
         /// <returns>Created Tween</returns>
-        public Tween Add(float startValue, float targetValue, float duration, Action<float> setter)
+        public Tween Run(float startValue, float targetValue, float duration, Action<float> onUpdate = null, Func<float, float, float, float, float> interpolation = null, Action<Tween> onComplete = null)
         {
-            return Add(startValue, targetValue, duration, setter, Interpolation.Linear);
-        }
-
-        /// <summary>
-        /// Creates a new Tween and adds it to the Tweeneer so it can run.
-        /// </summary>
-        /// <param name="startValue">Value to start the Tween from</param>
-        /// <param name="targetValue">Value to Tween to</param>
-        /// <param name="duration">Tween duration in fractal seconds</param>
-        /// <param name="setter">Delegate to assign the calculated value to a target</param>
-        /// <param name="interpolation">Delegate to interpolate the Tween</param>
-        /// <returns>Created Tween</returns>
-        public Tween Add(float startValue, float targetValue, float duration, Action<float> setter, Func<float, float, float, float, float> interpolation)
-        {
-            var tween = Create(startValue, targetValue, duration, setter, interpolation);
-            Add(tween);
+            var tween = Create(startValue, targetValue, duration, interpolation ?? Interpolation.Linear);
+            if (onUpdate != null) tween.OnUpdate += onUpdate;
+            if (onComplete != null) tween.OnComplete += onComplete;
+            Run(tween);
             return tween;
         }
 
@@ -119,7 +108,7 @@ namespace BlackCoat.Tweening
         /// <param name="tween">Tween that is finished or canceled</param>
         private void HandleTweenCompleted(Tween tween)
         {
-            tween.Completed -= HandleTweenCompleted;
+            tween.OnComplete -= HandleTweenCompleted;
             _TweensToRemove.Add(tween);
 
             ACTIVE_TWEENS--;
