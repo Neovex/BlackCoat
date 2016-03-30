@@ -6,7 +6,7 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using SFML.Window;
-using BlackCoat.Tweening;
+using BlackCoat.Animation;
 
 namespace BlackCoat.Tools
 {
@@ -88,7 +88,7 @@ namespace BlackCoat.Tools
                                             deltaT,
                                             _Runtime,
                                             Emitter.ACTIVE_PARTICLES,
-                                            Tweener.ACTIVE_TWEENS);
+                                            AnimationManager.ACTIVE_ANIMATIONS);
         }
     }
 }

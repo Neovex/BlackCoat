@@ -8,7 +8,7 @@ using SFML.Window;
 
 using BlackCoat.Entities;
 using BlackCoat.Tools;
-using BlackCoat.Tweening;
+using BlackCoat.Animation;
 
 namespace BlackCoat
 {
@@ -22,7 +22,8 @@ namespace BlackCoat
         /// <summary>
         /// Update Event is raised for each frame. This event can be used to update external components such as a game instance.
         /// </summary>
-        public event Action<float> OnUpdate = (d) => { };
+        public event Action<float> OnUpdate = d => { };
+        public event Action<String> OnLog = Console.WriteLine;
 
         
         // Variables #######################################################################
@@ -41,9 +42,9 @@ namespace BlackCoat
         /// </summary>
         public RandomHelper Random { get; private set; }
         /// <summary>
-        /// Tween Manager and Factory. Used primarly to make stuff move.
+        /// Animation Manager and Factory. Used primarly to make stuff move.
         /// </summary>
-        public Tweener Tweener { get; private set; }
+        public AnimationManager AnimationManager { get; private set; }
 
         // Layers
         public Layer Layer_BG { get; private set; }
@@ -111,7 +112,7 @@ namespace BlackCoat
             // Init Subsystems
             AssetManager = new AssetManager(this);
             Random = new RandomHelper();
-            Tweener = new Tweener();
+            AnimationManager = new AnimationManager();
 
             // Init Input
             Input.Initialize(_Device);
@@ -238,8 +239,8 @@ namespace BlackCoat
             // Raise Update event for external updates
             OnUpdate(deltaT);
 
-            // Update running tweens
-            Tweener.Update(deltaT);
+            // Update running Animations
+            AnimationManager.Update(deltaT);
         }
 
         /// <summary>
@@ -291,11 +292,11 @@ namespace BlackCoat
             _Device.Draw(vertices, type, states);
         }
 
-        /// <summary>Logs Messages to the Console</summary>
+        /// <summary>Logs Messages to the Console and all registered log handlers</summary>
         /// <param name="logs">Objects to log</param>
-        internal void Log(params object[] logs)
+        public void Log(params object[] logs)
         {
-            Console.WriteLine(String.Join(" ", logs.Select(l => l.ToString())));
+            OnLog(String.Join(" ", logs.Select(l => l == null ? "null" : l.ToString())));
         }
 
         // Device Event Handlers ############################################################
@@ -347,13 +348,13 @@ namespace BlackCoat
         /// Initializes a default Graphic Device primarily for testing purposes
         /// </summary>
         /// <returns>The default device</returns>
-        public static RenderWindow DefaultDevice
-        {
-            get
-            {
-                return new RenderWindow(new VideoMode(800, 600), "Default", Styles.Titlebar);
-            }
-        }
+        public static RenderWindow DefaultDevice { get { return new RenderWindow(new VideoMode(800, 600), "Default", Styles.Titlebar); } }
+
+        /// <summary>
+        /// Initializes a default Graphic Device mimiking the current desktop
+        /// </summary>
+        /// <returns>The desktop device</returns>
+        public static RenderWindow DesktopDevice { get { return new RenderWindow(VideoMode.DesktopMode, String.Empty, Styles.Fullscreen); } }
 
         /// <summary>
         /// Initializes a new Graphic Device

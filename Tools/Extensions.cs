@@ -3,24 +3,13 @@ using SFML.Window;
 using SFML.System;
 using BlackCoat.Entities;
 
-namespace BlackCoat.Tools
+namespace BlackCoat
 {
     /// <summary>
-    /// Provides constants and vector extension methods for calculating angles based on positions and entities
+    /// Provides extension methods for calculating angles based on positions and entities
     /// </summary>
-    public static class Direction
+    public static class Extensions
     {
-        // Constants #######################################################################
-        public const float O  = 0f;// RIGHT
-        public const float SO = 45f;
-        public const float S  = 90f;// DOWN
-        public const float SW = 135f;
-        public const float W  = 180f;// LEFT
-        public const float NW = 225f;
-        public const float N  = 270f;// UP
-        public const float NO = 315f;
-
-
         // Methods #########################################################################
         /// <summary>
         /// Retrieves the angle for the viewer to look at a given point
@@ -84,7 +73,7 @@ namespace BlackCoat.Tools
         /// </summary>
         /// <param name="direction">Direction angle</param>
         /// <returns>Movement Vector - multiply with a distance/speed to </returns>
-        public static Vector2f ToMovementVector(float direction)
+        public static Vector2f ToMovementVector(this float direction)
         {
             var pos = new Vector2f();
             pos.X = (float)(Math.Cos(direction * Constants.DEG_TO_RAD));

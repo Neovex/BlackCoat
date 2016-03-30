@@ -7,7 +7,7 @@ using SFML.Graphics;
 namespace BlackCoat.Entities
 {
     /// <summary>
-    /// Renders a simple texture/graphic onto the scene
+    /// Renders a texture onto the scene
     /// </summary>
     public class Graphic : Sprite, IEntity
     {

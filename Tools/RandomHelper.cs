@@ -29,7 +29,8 @@ namespace BlackCoat.Tools
             if (min > max) throw new ArgumentException();
             if (min == max) return max;
 
-            // Negative case
+            // Negative cases
+            if (max < 0) return NextFloat(max * -1, min * -1) * -1;
             if (min < 0) return NextFloat(0, max - min) + min;
 
             // Random

@@ -67,7 +67,7 @@ namespace BlackCoat
         /// <summary>
         /// Loads an Texture from a File or retrieves an already loaded instance
         /// </summary>
-        /// <param name="name">Name of the Resource</param>
+        /// <param name="name">Name of the Texture</param>
         /// <param name="smothing">Determines if the loaded Texture should be smoothed</param>
         /// <returns>Texture instance</returns>
         public Texture LoadTexture(String name, Boolean smothing)
@@ -84,7 +84,33 @@ namespace BlackCoat
             }
             catch (Exception e)
             {
-                _Core.Log("Could not load image", name, e.Message);
+                _Core.Log("Could not load texture", name, e.Message);
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// Loads an Texture from a Byte Array
+        /// </summary>
+        /// <param name="name">Name of the Texture</param>
+        /// <param name="textureData">Byte Array containing the raw texture</param>
+        /// <param name="smothing">Determines if the loaded Texture should be smoothed</param>
+        /// <returns>Texture instance</returns>
+        public Texture LoadTexture(String name, Byte[] textureData, Boolean smothing)
+        {
+            if (Disposed) throw new ObjectDisposedException("AssetManager");
+            if (_Textures.ContainsKey(name)) throw new ArgumentException("A texture with the provided name already exists");
+
+            try
+            {
+                var img = new Texture(textureData);
+                img.Smooth = smothing;
+                _Textures.Add(name, img);
+                return img;
+            }
+            catch (Exception e)
+            {
+                _Core.Log("Could not create texture", name, e.Message);
             }
             return null;
         }
@@ -123,6 +149,30 @@ namespace BlackCoat
             try
             {
                 var fnt = new Font("assets\\" + name + ".png");
+                _Fonts.Add(name, fnt);
+                return fnt;
+            }
+            catch (Exception e)
+            {
+                _Core.Log("Could not load font", name, e.Message);
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// Loads a new Font from a Byte Array
+        /// </summary>
+        /// <param name="name">Name of the Resource</param>
+        /// <param name="fontData">The Font as raw data byte array</param>
+        /// <returns>The new Font</returns>
+        public Font LoadFont(String name, Byte[] fontData)
+        {
+            if (Disposed) throw new ObjectDisposedException("AssetManager");
+            if (_Fonts.ContainsKey(name)) throw new ArgumentException("A font with the provided name already exists");
+
+            try
+            {
+                var fnt = new Font(fontData);
                 _Fonts.Add(name, fnt);
                 return fnt;
             }

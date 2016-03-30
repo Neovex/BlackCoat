@@ -18,7 +18,7 @@ namespace BlackCoat
 
 
         // Properties ######################################################################
-        public static Vector2i MousePosition { get; private set; }
+        public static Vector2f MousePosition { get; private set; }
         public static Single MouseWheelDelta { get; private set; }
 
         private static List<Mouse.Button> _MouseButtons = new List<Mouse.Button>();
@@ -53,7 +53,7 @@ namespace BlackCoat
 
         internal static void HandleMouseMoved(object sender, MouseMoveEventArgs e)
         {
-            MousePosition = new Vector2i(e.X, e.Y);
+            MousePosition = new Vector2f(e.X, e.Y);
             MouseMoved(e);
         }
 

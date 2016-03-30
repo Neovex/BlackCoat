@@ -35,9 +35,9 @@ namespace BlackCoat.Entities.Animation
                 if (value == null || _FrameSize.X == 0 || _FrameSize.Y == 0) return; // TODO : extract to method
                 // Rebuild frames to match new texture
                 var list = new List<IntRect>();
-                for (UInt32 y = 0; y < value.Size.Y; y+=_FrameSize.Y)
+                for (UInt32 y = 0; y < value.Size.Y; y += _FrameSize.Y)
                 {
-                    for (UInt32 x = 0; x < value.Size.X; x+=_FrameSize.X)
+                    for (UInt32 x = 0; x < value.Size.X; x += _FrameSize.X)
                     {
                         list.Add(new IntRect((Int32)x, (Int32)y, (Int32)_FrameSize.X, (Int32)_FrameSize.Y));
                     }

@@ -98,7 +98,7 @@ namespace BlackCoat.ParticleSystem
 
                 // Movement
                 var pos = Position;
-                var mv = Tools.Direction.ToMovementVector(Direction);
+                var mv = Direction.ToMovementVector();
                 pos.X += mv.X * Speed * deltaT;
                 pos.Y += mv.Y * Speed * deltaT;
                 Position = pos;

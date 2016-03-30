@@ -89,11 +89,11 @@ namespace BlackCoat.Entities
 
 
         // CTOR ############################################################################
-        public TextItem(Core core)
+        public TextItem(Core core, Font font = null)
         {
             _Core = core;
             Visible = true;
-            Font = _Core.DefaultFont;
+            Font = font ?? _Core.DefaultFont;
             RenderState = RenderStates.Default;
         }
 
