@@ -70,6 +70,7 @@
     <Compile Include="ParticleSystem\Particle.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Role.cs" />
+    <Compile Include="Tools\Console.cs" />
     <Compile Include="Tools\Extensions.cs" />
     <Compile Include="Tools\Heading.cs" />
     <Compile Include="Tools\PerformanceMonitor.cs" />

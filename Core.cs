@@ -23,12 +23,14 @@ namespace BlackCoat
         /// Update Event is raised for each frame. This event can be used to update external components such as a game instance.
         /// </summary>
         public event Action<float> OnUpdate = d => { };
-        public event Action<String> OnLog = Console.WriteLine;
+        public event Action<String> OnLog = System.Console.WriteLine;
+        public event Func<String, Boolean> ConsoleCommand = c => false;
 
         
         // Variables #######################################################################
         private RenderWindow _Device;
         private Stopwatch _Timer;
+        private Tools.Console _Console;
 
 
         // Properties ######################################################################
@@ -102,13 +104,13 @@ namespace BlackCoat
             FocusLost = false;
             Disposed = false;
             DefaultView = _Device.DefaultView;
-            DefaultFont = new Font(@"C:\Windows\Fonts\arial.ttf"); // TODO : FIXME
+            DefaultFont = new Font(@"C:\Windows\Fonts\arial.ttf"); // TODO : FIXME -> hardcoded path
 
             // Device Events
             _Device.Closed += new EventHandler(_Device_Closed);
             _Device.LostFocus += new EventHandler(HandleLostFocus);
             _Device.GainedFocus += new EventHandler(HandleGainedFocus);
-            
+
             // Init Subsystems
             AssetManager = new AssetManager(this);
             Random = new RandomHelper();
@@ -124,6 +126,10 @@ namespace BlackCoat
             Layer_Overlay = new Layer(this);
             Layer_Debug = new Layer(this);
             Layer_Cursor = new Layer(this);
+
+            // Init Console
+            _Console = new Tools.Console(this, _Device);
+            _Console.Command += HandleConsoleCommand;
 
             if (debug)
             {
@@ -299,7 +305,32 @@ namespace BlackCoat
             OnLog(String.Join(" ", logs.Select(l => l == null ? "null" : l.ToString())));
         }
 
-        // Device Event Handlers ############################################################
+        /// <summary>
+        /// Handles Core Commands and broadcasts other Commands to the remaining application
+        /// </summary>
+        /// <param name="cmd">Console input</param>
+        private void HandleConsoleCommand(String cmd)
+        {
+            // Handle Core Commands first
+            switch (cmd)
+            {
+                case "exit":
+                case "quit":
+                    Exit();
+                    return;
+                case "togglefullscreen":
+                    Log("togglefullscreen - not yet implemented");
+                    return;
+            }
+
+            // Then broadcast Commands to all other systems and the client application
+            if (ConsoleCommand.GetInvocationList().All(listener => !(bool)listener.DynamicInvoke(cmd)))
+            {
+                Log("Unknown Command:", cmd);
+            }
+        }
+
+        #region Device Eventhandlers
         private void HandleLostFocus(object sender, EventArgs e)
         {
             _Timer.Stop();
@@ -317,7 +348,7 @@ namespace BlackCoat
         {
             Exit();
         }
-
+        #endregion
 
         /// <summary>
         /// Releases all used unmanaged resources.

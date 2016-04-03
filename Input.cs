@@ -23,7 +23,7 @@ namespace BlackCoat
 
         private static List<Mouse.Button> _MouseButtons = new List<Mouse.Button>();
         private static List<Keyboard.Key> _KeyboardKeys = new List<Keyboard.Key>();
-        
+
 
 
         // Events ##########################################################################
@@ -33,6 +33,7 @@ namespace BlackCoat
         public static event Action<MouseWheelScrollEventArgs> MouseWheelScrolled = (a) => { };
         public static event Action<KeyEventArgs> KeyPressed = (a) => { };
         public static event Action<KeyEventArgs> KeyReleased = (a) => { };
+        public static event Action<TextEventArgs> TextEntered = (a) => { };
 
 
 
@@ -83,6 +84,11 @@ namespace BlackCoat
             KeyReleased(e);
         }
 
+        internal static void HandleTextEntered(object sender, TextEventArgs e)
+        {
+            TextEntered(e);
+        }
+
         // Other
         internal static void Reset()
         {
@@ -111,6 +117,7 @@ namespace BlackCoat
             _Device.MouseWheelScrolled += Input.HandleMouseWheelScrolled;
             _Device.KeyPressed += Input.HandleKeyPressed;
             _Device.KeyReleased += Input.HandleKeyReleased;
+            _Device.TextEntered += Input.HandleTextEntered;
         }
     }
 }

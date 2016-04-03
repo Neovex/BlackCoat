@@ -53,11 +53,10 @@ namespace BlackCoat.Tools
 
 
         // Methods #########################################################################
-        // TODO : check this view change here
         private void Device_Resized(object sender, SizeEventArgs e)
         {
             View.Size = new Vector2f(e.Width, e.Height);
-            View.Center = new Vector2f(e.Width / 2f, e.Height / 2f);
+            View.Center = new Vector2f(e.Width / 2, e.Height / 2);
         }
 
         /// <summary>

@@ -58,7 +58,7 @@ namespace BlackCoat.Entities.Shapes
         public virtual RenderStates RenderState { get; set; }
 
         /// <summary>
-        /// Alpha Value
+        /// Alpha Value (0-1f)
         /// </summary>
         public virtual Single Alpha
         {
