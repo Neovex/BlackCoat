@@ -71,13 +71,15 @@ namespace BlackCoat
         // Keyboard
         internal static void HandleKeyPressed(object sender, KeyEventArgs e)
         {
-            if (!_KeyboardKeys.Contains(e.Code)) _KeyboardKeys.Add(e.Code);
+            if (IsKeyDown(e.Code)) return;
+            _KeyboardKeys.Add(e.Code);
             KeyPressed(e);
         }
 
         internal static void HandleKeyReleased(object sender, KeyEventArgs e)
         {
-            if (_KeyboardKeys.Contains(e.Code)) _KeyboardKeys.Remove(e.Code);
+            if (!IsKeyDown(e.Code)) return;
+            _KeyboardKeys.Remove(e.Code);
             KeyReleased(e);
         }
 
