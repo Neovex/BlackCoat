@@ -98,7 +98,7 @@ namespace BlackCoat.Tools
 
         private void Log(String msg)
         {
-            _Messages.Enqueue(msg);
+            _Messages.Enqueue(msg.Replace(Environment.NewLine, Constants.NEW_LINE));
             if (_Messages.Count > 100) _Messages.Dequeue();
             UpdateDisplayText();
         }
@@ -106,7 +106,7 @@ namespace BlackCoat.Tools
         private void UpdateDisplayText()
         {
             var availableLines = Convert.ToInt32(Math.Floor(_Background.Size.Y / _FONT_SIZE)) - 3;
-            _Display.Text = String.Join("\n", new[] { _CurrentInput ?? String.Empty }.Concat(_Messages.Reverse().Take(availableLines)));
+            _Display.Text = String.Join(Constants.NEW_LINE, new[] { _CurrentInput ?? String.Empty }.Concat(_Messages.Reverse().Take(availableLines)));
         }
 
         private void Device_Resized(object sender, SizeEventArgs e)

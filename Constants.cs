@@ -8,5 +8,6 @@ namespace BlackCoat
     public static class Constants
     {
         public const double DEG_TO_RAD = Math.PI / -180;
+        public const string NEW_LINE = "\n";
     }
 }

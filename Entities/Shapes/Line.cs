@@ -29,10 +29,7 @@ namespace BlackCoat.Entities.Shapes
         /// </summary>
         public override Vector2f Position
         {
-            get
-            {
-                return Start;
-            }
+            get { return Start; }
             set
             {
                 End = new Vector2f(End.X + value.X - Start.X, End.Y + value.Y - Start.Y);

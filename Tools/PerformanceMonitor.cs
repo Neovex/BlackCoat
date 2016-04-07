@@ -11,7 +11,7 @@ using BlackCoat.Animation;
 namespace BlackCoat.Tools
 {
     /// <summary>
-    /// Internal Helperclass that renders some performance information into the scene
+    /// Internal Helperclass that renders performance and engine information onto the scene
     /// </summary>
     internal class PerformanceMonitor : Container
     {
@@ -23,10 +23,10 @@ namespace BlackCoat.Tools
         private Queue<Single> _FPS = new Queue<float>();
 #endif
 
-        private const String TimeString = "FPS:   {0}\n" +
-                                          "FTime: {1}\n" +
-                                          "Total: {2}\n" +
-                                          "APC:   {3}\n" +
+        private const String TimeString = "FPS:   {0}" + Constants.NEW_LINE +
+                                          "FTime: {1}" + Constants.NEW_LINE +
+                                          "Total: {2}" + Constants.NEW_LINE +
+                                          "APC:   {3}" + Constants.NEW_LINE + 
                                           "ATC:   {4}";
 
 

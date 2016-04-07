@@ -3,8 +3,9 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 
-using SFML.Graphics;
+using SFML.System;
 using SFML.Window;
+using SFML.Graphics;
 
 using BlackCoat.Entities;
 using BlackCoat.Tools;
@@ -70,13 +71,17 @@ namespace BlackCoat
         /// </summary>
         public Boolean Disposed { get; private set; }
         /// <summary>
+        /// Size of the current Render Device
+        /// </summary>
+        public Vector2u DeviceSize { get { return _Device.Size; } }
+        /// <summary>
         /// Default Render View - uses full with and height of the rendering device.
         /// </summary>
-        public View DefaultView { get; private set; }
+        internal View DefaultView { get { return _Device.DefaultView; } }
         /// <summary>
         /// Default font of the Engine. The <see cref="TextItem"/> class needs it to display text when no font is loaded.
         /// </summary>
-        public Font DefaultFont { get; private set; }
+        internal Font DefaultFont { get; private set; }
 
 
         // CTOR ############################################################################
@@ -103,7 +108,6 @@ namespace BlackCoat
             ClearColor = Color.Black;
             FocusLost = false;
             Disposed = false;
-            DefaultView = _Device.DefaultView;
             DefaultFont = new Font(@"C:\Windows\Fonts\arial.ttf"); // TODO : FIXME -> hardcoded path
 
             // Device Events
@@ -277,7 +281,7 @@ namespace BlackCoat
         public void Draw(IEntity e)
         {
             if (!e.Visible) return;
-            if (e.View != null) _Device.SetView(e.View);
+            _Device.SetView(e.View ?? DefaultView);
             if (e.Parent != null)
             {
                 var state = e.RenderState;
@@ -351,7 +355,7 @@ namespace BlackCoat
         #endregion
 
         /// <summary>
-        /// Releases all used unmanaged resources.
+        /// Releases all unmanaged resources.
         /// </summary>
         public void Dispose()
         {
@@ -365,6 +369,7 @@ namespace BlackCoat
             _Device = null;
 
             DefaultFont.Dispose();
+            DefaultFont = null;
 
             AssetManager.Dispose();
             AssetManager = null;

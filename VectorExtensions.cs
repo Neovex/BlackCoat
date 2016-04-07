@@ -13,5 +13,10 @@ namespace BlackCoat
         {
             return new Vector2f(v.X, v.Y);
         }
+
+        public static Vector2f ToVector2f(this Vector2u v)
+        {
+            return new Vector2f(v.X, v.Y);
+        }
     }
 }
