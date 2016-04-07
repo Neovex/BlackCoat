@@ -27,7 +27,7 @@ namespace BlackCoat.Tools
                                           "FTime: {1}" + Constants.NEW_LINE +
                                           "Total: {2}" + Constants.NEW_LINE +
                                           "APC:   {3}" + Constants.NEW_LINE + 
-                                          "ATC:   {4}";
+                                          "AAC:   {4}";
 
 
         // CTOR ############################################################################

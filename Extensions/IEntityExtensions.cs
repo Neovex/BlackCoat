@@ -1,27 +1,14 @@
 ﻿using System;
-using SFML.Window;
-using SFML.System;
 using BlackCoat.Entities;
+using SFML.System;
 
 namespace BlackCoat
 {
     /// <summary>
-    /// Provides extension methods for calculating angles based on positions and entities
+    /// Provides extension methods for all entity types.
     /// </summary>
-    public static class Extensions
+    public static class IEntityExtensions
     {
-        // Methods #########################################################################
-        /// <summary>
-        /// Retrieves the angle for the viewer to look at a given point
-        /// </summary>
-        /// <param name="from">Position of the viewer</param>
-        /// <param name="to">Position to look at</param>
-        /// <returns>The look angle in degree</returns>
-        public static Single AngleTowards(this Vector2f from, Vector2f to)
-        {
-            return (float)(Math.Atan2(to.Y - from.Y, to.X - from.X) * 180 / Math.PI);
-        }
-
         /// <summary>
         /// Retrieves the angle for an entity to look at the position of another entity
         /// </summary>
@@ -66,19 +53,6 @@ namespace BlackCoat
         public static Single LookAt(this IEntity entity, Vector2f target, Vector2f offset = default(Vector2f))
         {
             return entity.Position.AngleTowards(new Vector2f(target.X + offset.X, target.Y + offset.Y));
-        }
-
-        /// <summary>
-        /// Calculates a movement Vector based on a given direction.
-        /// </summary>
-        /// <param name="direction">Direction angle</param>
-        /// <returns>Movement Vector - multiply with a distance/speed to </returns>
-        public static Vector2f ToMovementVector(this float direction)
-        {
-            var pos = new Vector2f();
-            pos.X = (float)(Math.Cos(direction * Constants.DEG_TO_RAD));
-            pos.Y = (float)(Math.Sin(direction * Constants.DEG_TO_RAD));
-            return pos;
         }
     }
 }

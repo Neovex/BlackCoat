@@ -65,20 +65,21 @@
     <Compile Include="Entities\TextItem.cs" />
     <Compile Include="Entities\Graphic.cs" />
     <Compile Include="Entities\Layer.cs" />
+    <Compile Include="Extensions\IEntityExtensions.cs" />
     <Compile Include="Input.cs" />
     <Compile Include="ParticleSystem\Emitter.cs" />
     <Compile Include="ParticleSystem\Particle.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Role.cs" />
     <Compile Include="Tools\Console.cs" />
-    <Compile Include="Tools\Extensions.cs" />
+    <Compile Include="Extensions\Extensions.cs" />
     <Compile Include="Tools\Heading.cs" />
     <Compile Include="Tools\PerformanceMonitor.cs" />
     <Compile Include="Tools\RandomHelper.cs" />
     <Compile Include="Animation\Interpolation.cs" />
     <Compile Include="Animation\TimeAnimation.cs" />
     <Compile Include="Animation\AnimationManager.cs" />
-    <Compile Include="VectorExtensions.cs" />
+    <Compile Include="Extensions\VectorExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="sfmlnet-audio-2, Version=2.3.0.0, Culture=neutral, processorArchitecture=MSIL">
