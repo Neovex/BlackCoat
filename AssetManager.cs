@@ -75,16 +75,17 @@ namespace BlackCoat
             if (Disposed) throw new ObjectDisposedException("AssetManager");
             if (_Textures.ContainsKey(name)) return _Textures[name];
 
+            var path = Path.Combine(RootFolder, String.Concat(name, ".png"));
             try
             {
-                var img = new Texture(Path.Combine(RootFolder, String.Concat(name, ".png")));
+                var img = new Texture(path);
                 img.Smooth = smothing;
                 _Textures.Add(name, img);
                 return img;
             }
             catch (Exception e)
             {
-                _Core.Log("Could not load texture", name, e.Message);
+                _Core.Log("Could not load texture", name, "from", path, "because of", e);
             }
             return null;
         }
@@ -110,7 +111,7 @@ namespace BlackCoat
             }
             catch (Exception e)
             {
-                _Core.Log("Could not create texture", name, e.Message);
+                _Core.Log("Could not create texture", name, "because of", e);
             }
             return null;
         }
@@ -146,15 +147,16 @@ namespace BlackCoat
             if (Disposed) throw new ObjectDisposedException("AssetManager");
             if (_Fonts.ContainsKey(name)) return _Fonts[name];
 
+            var path = Path.Combine(RootFolder, String.Concat(name, ".ttf"));
             try
             {
-                var fnt = new Font("assets\\" + name + ".png");
-                _Fonts.Add(name, fnt);
-                return fnt;
+                var font = new Font(path);
+                _Fonts.Add(name, font);
+                return font;
             }
             catch (Exception e)
             {
-                _Core.Log("Could not load font", name, e.Message);
+                _Core.Log("Could not load font", name, "from", path, "because of", e);
             }
             return null;
         }
@@ -178,7 +180,7 @@ namespace BlackCoat
             }
             catch (Exception e)
             {
-                _Core.Log("Could not load font", name, e.Message);
+                _Core.Log("Could not load font", name, "because of", e);
             }
             return null;
         }

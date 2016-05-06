@@ -246,11 +246,11 @@ namespace BlackCoat
             Layer_Overlay.Update(deltaT);
             Layer_Debug.Update(deltaT);
 
-            // Raise Update event for external updates
-            OnUpdate(deltaT);
-
             // Update running Animations
             AnimationManager.Update(deltaT);
+
+            // Raise Update event for external updates
+            OnUpdate(deltaT);
         }
 
         /// <summary>
@@ -316,7 +316,7 @@ namespace BlackCoat
         private void HandleConsoleCommand(String cmd)
         {
             // Handle Core Commands first
-            switch (cmd)
+            switch (cmd.ToLower())
             {
                 case "exit":
                 case "quit":

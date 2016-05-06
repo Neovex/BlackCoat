@@ -76,7 +76,7 @@ namespace BlackCoat.Tools
                 {
                     if (!String.IsNullOrWhiteSpace(_CurrentInput))
                     {
-                        Command.Invoke(_CurrentInput.ToLower());
+                        Command.Invoke(_CurrentInput);
                     }
                     _CurrentInput = null;
                     UpdateDisplayText();
