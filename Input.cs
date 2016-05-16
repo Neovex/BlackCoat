@@ -27,6 +27,7 @@ namespace BlackCoat
 
 
         // Events ##########################################################################
+        public static event Action<Vector2u> DeviceResized = (v) => { };
         public static event Action<MouseMoveEventArgs> MouseMoved = (a) => { };
         public static event Action<MouseButtonEventArgs> MouseButtonPressed = (a) => { };
         public static event Action<MouseButtonEventArgs> MouseButtonReleased = (a) => { };
@@ -39,6 +40,13 @@ namespace BlackCoat
 
         // Methods #########################################################################
         // TODO : comment
+
+        // Render Window
+        static void HandleDeviceResized(object sender, SizeEventArgs e)
+        {
+            DeviceResized(new Vector2u(e.Width, e.Height));
+        }
+
         // Mouse
         internal static void HandleMouseButtonPressed(object sender, MouseButtonEventArgs e)
         {
@@ -72,6 +80,7 @@ namespace BlackCoat
         // Keyboard
         internal static void HandleKeyPressed(object sender, KeyEventArgs e)
         {
+            //if(e.Code == Keyboard.Key.BackSpace) TextEntered(new TODO: replace all event objects with corresponding structures also add backspace to text input
             if (IsKeyDown(e.Code)) return;
             _KeyboardKeys.Add(e.Code);
             KeyPressed(e);
@@ -89,18 +98,13 @@ namespace BlackCoat
             TextEntered(e);
         }
 
+        public static Boolean IsKeyDown(Keyboard.Key key) { return _KeyboardKeys.Contains(key); } // performance impact?!
+
         // Other
         internal static void Reset()
         {
             _MouseButtons.Clear();
             _KeyboardKeys.Clear();
-        }
-
-        public static Boolean IsKeyDown(Keyboard.Key key)
-        {
-            //return _KEY1 == key || _KEY2 == key || _KEY3 == key || _KEY4 == key;
-            //VS
-            return _KeyboardKeys.Contains(key); // performance impact?!
         }
 
         /// <summary>
@@ -111,13 +115,14 @@ namespace BlackCoat
         internal static void Initialize(RenderWindow device)
         {
             _Device = device;
-            _Device.MouseMoved += Input.HandleMouseMoved;
-            _Device.MouseButtonPressed += Input.HandleMouseButtonPressed;
-            _Device.MouseButtonReleased += Input.HandleMouseButtonReleased;
-            _Device.MouseWheelScrolled += Input.HandleMouseWheelScrolled;
-            _Device.KeyPressed += Input.HandleKeyPressed;
-            _Device.KeyReleased += Input.HandleKeyReleased;
-            _Device.TextEntered += Input.HandleTextEntered;
+            _Device.Resized += HandleDeviceResized;
+            _Device.MouseMoved += HandleMouseMoved;
+            _Device.MouseButtonPressed += HandleMouseButtonPressed;
+            _Device.MouseButtonReleased += HandleMouseButtonReleased;
+            _Device.MouseWheelScrolled += HandleMouseWheelScrolled;
+            _Device.KeyPressed += HandleKeyPressed;
+            _Device.KeyReleased += HandleKeyReleased;
+            _Device.TextEntered += HandleTextEntered;
         }
     }
 }

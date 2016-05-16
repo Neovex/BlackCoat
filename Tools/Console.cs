@@ -39,8 +39,6 @@ namespace BlackCoat.Tools
         /// <param name="device">Render Device</param>
         internal Console(Core core, RenderWindow device) : base(core)
         {
-            //Alpha = 0;
-            _Core.Layer_Debug.AddChild(this);
             _Core.OnLog += Log;
             Input.KeyPressed += HandleKeyPressed;
             Input.TextEntered += HandleTextEntered;

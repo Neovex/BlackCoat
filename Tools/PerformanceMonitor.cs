@@ -35,11 +35,8 @@ namespace BlackCoat.Tools
         /// Creates a new instance of the performance monitor class
         /// </summary>
         /// <param name="core">Engine Core</param>
-        /// <param name="device">Render Device</param>
-        internal PerformanceMonitor(Core core, RenderWindow device) : base(core)
+        internal PerformanceMonitor(Core core) : base(core)
         {
-            device.Resized += Device_Resized;
-
             Texture = _Core.AssetManager.CreateTexture(110, 75, 0x99000000, "PerformanceMonitorBackground");
 
             _InfoDisplay = new TextItem(_Core);
@@ -53,12 +50,6 @@ namespace BlackCoat.Tools
 
 
         // Methods #########################################################################
-        private void Device_Resized(object sender, SizeEventArgs e)
-        {
-            View.Size = new Vector2f(e.Width, e.Height);
-            View.Center = new Vector2f(e.Width / 2, e.Height / 2);
-        }
-
         /// <summary>
         /// Updates the FPS display
         /// </summary>

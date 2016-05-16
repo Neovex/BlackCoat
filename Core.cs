@@ -26,15 +26,22 @@ namespace BlackCoat
         public event Action<float> OnUpdate = d => { };
         public event Action<String> OnLog = System.Console.WriteLine;
         public event Func<String, Boolean> ConsoleCommand = c => false;
+        public event Action<Boolean> DebugChanged = d => { };
 
         
         // Variables #######################################################################
         private RenderWindow _Device;
         private Stopwatch _Timer;
         private Tools.Console _Console;
+        private Boolean _Debug;
 
 
         // Properties ######################################################################
+        public Boolean Debug
+        {
+            get { return _Debug; }
+            set { ToggleDebug(value); }
+        }
         // Subsystems
         /// <summary>
         /// Default Asset Manager. Handles loading/unloading of assets located in its specified root folder.
@@ -45,17 +52,13 @@ namespace BlackCoat
         /// </summary>
         public RandomHelper Random { get; private set; }
         /// <summary>
+        /// Game State Manager. Manages the current Gamestate as well as Gamestate transitions.
+        /// </summary>
+        public StateManager StateManager { get; set; }
+        /// <summary>
         /// Animation Manager and Factory. Used primarly to make stuff move.
         /// </summary>
         public AnimationManager AnimationManager { get; private set; }
-
-        // Layers
-        public Layer Layer_BG { get; private set; }
-        public Layer Layer_Game { get; private set; }
-        public Layer Layer_Particles { get; private set; }
-        public Layer Layer_Overlay { get; private set; }
-        public Layer Layer_Debug { get; private set; }
-        public Layer Layer_Cursor { get; private set; }
 
         // Misc
         /// <summary>
@@ -89,16 +92,11 @@ namespace BlackCoat
         /// Creates a new Instance of the BlackCoat Core class
         /// </summary>
         /// <param name="device">Render Device used by the Core - use of the static creation methods is recommented</param>
-        public Core(RenderWindow device) : this(device, false)
-        { }
-
-        /// <summary>
-        /// Creates a new Instance of the BlackCoat Core class
-        /// </summary>
-        /// <param name="device">Render Device used by the Core - use of the static creation methods is recommented</param>
         /// <param name="debug">Determines if the Core should enable debug features</param>
-        public Core(RenderWindow device, Boolean debug)
+        public Core(RenderWindow device)
         {
+            Log("Initializing Black Coat Engine...");
+
             // Init Core Systems
             if (device == null) throw new ArgumentNullException("device");
             _Device = device;
@@ -118,32 +116,17 @@ namespace BlackCoat
             // Init Subsystems
             AssetManager = new AssetManager(this);
             Random = new RandomHelper();
+            StateManager = new StateManager(this);
             AnimationManager = new AnimationManager();
 
             // Init Input
             Input.Initialize(_Device);
 
-            // Create Layer System
-            Layer_BG = new Layer(this);
-            Layer_Game = new Layer(this);
-            Layer_Particles = new Layer(this);
-            Layer_Overlay = new Layer(this);
-            Layer_Debug = new Layer(this);
-            Layer_Cursor = new Layer(this);
-
             // Init Console
             _Console = new Tools.Console(this, _Device);
             _Console.Command += HandleConsoleCommand;
 
-            if (debug)
-            {
-                // Initialize Performance Monitoring
-                Layer_Debug.AddChild(new PerformanceMonitor(this, _Device));
-
-                // Input
-                _Device.KeyPressed += (s, e) => { if (e.Code == Keyboard.Key.Escape) Exit(); };
-                //DefaultView.Zoom(2f);//debug overview
-            }
+            Log("Engine ready.");
         }
 
         ~Core()
@@ -192,6 +175,8 @@ namespace BlackCoat
         public void Run()
         {
             if (Disposed) throw new ObjectDisposedException("Core");
+            Log("Starting Engine...");
+            AnimationManager.Wait(0.1f, a => Log("Engine started!"));
             ShowRenderWindow();
             while (_Device.IsOpen)
             {
@@ -209,6 +194,7 @@ namespace BlackCoat
                 Draw();
             }
             _Timer.Stop();
+            Log("Engine stopped.");
         }
 
         /// <summary>
@@ -239,12 +225,8 @@ namespace BlackCoat
         /// <param name="deltaT">Frame time</param>
         private void Update(Single deltaT)
         {
-            // Update SceneGraph
-            Layer_BG.Update(deltaT);
-            Layer_Game.Update(deltaT);
-            Layer_Particles.Update(deltaT);
-            Layer_Overlay.Update(deltaT);
-            Layer_Debug.Update(deltaT);
+            // Update Scene Graph
+            StateManager.Update(deltaT);
 
             // Update running Animations
             AnimationManager.Update(deltaT);
@@ -261,14 +243,9 @@ namespace BlackCoat
             // Clear Background
             _Device.Clear(ClearColor);
             
-            // SceneGraph
-            Layer_BG.Draw();
-            Layer_Game.Draw();
-            Layer_Particles.Draw();
-            Layer_Overlay.Draw();
-            // System Overlay
-            Layer_Debug.Draw();
-            Layer_Cursor.Draw();
+            // Draw Scene
+            StateManager.Draw();
+            _Console.Draw();
 
             // Present Backbuffer
             _Device.Display();
@@ -325,6 +302,9 @@ namespace BlackCoat
                 case "togglefullscreen":
                     Log("togglefullscreen - not yet implemented");
                     return;
+                case "debug":
+                    ToggleDebug(!Debug);
+                    return;
             }
 
             // Then broadcast Commands to all other systems and the client application
@@ -333,6 +313,19 @@ namespace BlackCoat
                 Log("Unknown Command:", cmd);
             }
         }
+
+        #region Debug Handler
+        private void ToggleDebug(Boolean value)
+        {
+            _Debug = value;
+            if (_Debug) _Device.KeyPressed += QuitOnEsc;
+            else _Device.KeyPressed -= QuitOnEsc;
+        }
+        private void QuitOnEsc(object s, KeyEventArgs e)
+        {
+            if (e.Code == Keyboard.Key.Escape) Exit();
+        }
+        #endregion
 
         #region Device Eventhandlers
         private void HandleLostFocus(object sender, EventArgs e)
