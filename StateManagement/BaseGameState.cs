@@ -11,9 +11,11 @@ namespace BlackCoat
     public abstract class BaseGameState
     {
         protected Core _Core;
+        //private AssetManager _AssetManager;
         private PerformanceMonitor _PerformanceMonitor;
 
         public String Name { get; protected set; }
+        //public AssetManager AssetManager { get { return _AssetManager ?? (_AssetManager = new AssetManager(_Core)); } }
         public Boolean Paused { get; set; }
         // Layers
         public Layer Layer_BG { get; private set; }
@@ -26,7 +28,6 @@ namespace BlackCoat
         public BaseGameState(Core core, String name = null)
         {
             _Core = core;
-            _Core.DebugChanged += HandleDebugChanged;
             Name = String.IsNullOrWhiteSpace(name) ? GetType().Name : name;
 
             // Create Default Layer Structure
@@ -38,16 +39,20 @@ namespace BlackCoat
             // System Layer
             Layer_Debug = new Layer(_Core);
             Layer_Cursor = new Layer(_Core);
+
+            // Debug Overlay
+            HandleDebugChanged(_Core.Debug);
+            _Core.DebugChanged += HandleDebugChanged;
         }
 
-        private void HandleDebugChanged(bool obj)
+        private void HandleDebugChanged(bool debug)
         {
-            if (obj)
+            if (debug)
             {
                 _PerformanceMonitor = _PerformanceMonitor ?? new PerformanceMonitor(_Core);
                 Layer_Debug.AddChild(_PerformanceMonitor);
             }
-            else
+            else if(_PerformanceMonitor != null)
             {
                 Layer_Debug.RemoveChild(_PerformanceMonitor);
             }
@@ -81,6 +86,6 @@ namespace BlackCoat
             Layer_Cursor.Draw();
         }
 
-        public override string ToString() { return String.Concat(GetType().Name, "\"", Name, "\""); }
+        public override string ToString() { return String.Concat("\"", Name, "\""); }
     }
 }

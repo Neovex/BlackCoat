@@ -15,26 +15,29 @@ namespace BlackCoat
     {
         // Variables #######################################################################
         private static RenderWindow _Device;
-
-
-        // Properties ######################################################################
-        public static Vector2f MousePosition { get; private set; }
-        public static Single MouseWheelDelta { get; private set; }
-
         private static List<Mouse.Button> _MouseButtons = new List<Mouse.Button>();
         private static List<Keyboard.Key> _KeyboardKeys = new List<Keyboard.Key>();
 
 
+        // Properties ######################################################################
+        public static Boolean Shift { get { return IsKeyDown(Keyboard.Key.LShift) || IsKeyDown(Keyboard.Key.RShift); } }
+        public static Boolean Control { get { return IsKeyDown(Keyboard.Key.LControl) || IsKeyDown(Keyboard.Key.RControl); } }
+        public static Boolean Alt { get { return IsKeyDown(Keyboard.Key.LAlt) || IsKeyDown(Keyboard.Key.RAlt); } }
+
+        public static Vector2f MousePosition { get; private set; }
+        public static Single MouseWheelDelta { get; private set; }
+
+
 
         // Events ##########################################################################
-        public static event Action<Vector2u> DeviceResized = (v) => { };
-        public static event Action<MouseMoveEventArgs> MouseMoved = (a) => { };
-        public static event Action<MouseButtonEventArgs> MouseButtonPressed = (a) => { };
-        public static event Action<MouseButtonEventArgs> MouseButtonReleased = (a) => { };
-        public static event Action<MouseWheelScrollEventArgs> MouseWheelScrolled = (a) => { };
-        public static event Action<KeyEventArgs> KeyPressed = (a) => { };
-        public static event Action<KeyEventArgs> KeyReleased = (a) => { };
-        public static event Action<TextEventArgs> TextEntered = (a) => { };
+        public static event Action<Vector2u> DeviceResized = v => { };
+        public static event Action<Vector2f> MouseMoved = p => { };
+        public static event Action<Mouse.Button> MouseButtonPressed = b => { };
+        public static event Action<Mouse.Button> MouseButtonReleased = b => { };
+        public static event Action<Single> MouseWheelScrolled = d => { };
+        public static event Action<Keyboard.Key> KeyPressed = k => { };
+        public static event Action<Keyboard.Key> KeyReleased = k => { };
+        public static event Action<TextEnteredEventArgs> TextEntered = t => { };
 
 
 
@@ -51,25 +54,25 @@ namespace BlackCoat
         internal static void HandleMouseButtonPressed(object sender, MouseButtonEventArgs e)
         {
             if (!_MouseButtons.Contains(e.Button)) _MouseButtons.Add(e.Button);
-            MouseButtonPressed(e);
+            MouseButtonPressed(e.Button);
         }
 
         internal static void HandleMouseButtonReleased(object sender, MouseButtonEventArgs e)
         {
             if (_MouseButtons.Contains(e.Button)) _MouseButtons.Remove(e.Button);
-            MouseButtonReleased(e);
+            MouseButtonReleased(e.Button);
         }
 
         internal static void HandleMouseMoved(object sender, MouseMoveEventArgs e)
         {
             MousePosition = new Vector2f(e.X, e.Y);
-            MouseMoved(e);
+            MouseMoved(MousePosition);
         }
 
         internal static void HandleMouseWheelScrolled(object sender, MouseWheelScrollEventArgs e)
         {
             MouseWheelDelta = e.Delta;
-            MouseWheelScrolled(e);
+            MouseWheelScrolled(MouseWheelDelta);
         }
 
         public static Boolean IsMButtonDown(Mouse.Button button) { return _MouseButtons.Contains(button); }
@@ -80,22 +83,22 @@ namespace BlackCoat
         // Keyboard
         internal static void HandleKeyPressed(object sender, KeyEventArgs e)
         {
-            //if(e.Code == Keyboard.Key.BackSpace) TextEntered(new TODO: replace all event objects with corresponding structures also add backspace to text input
+            if (e.Code == Keyboard.Key.BackSpace) TextEntered(new TextEnteredEventArgs(true));
             if (IsKeyDown(e.Code)) return;
             _KeyboardKeys.Add(e.Code);
-            KeyPressed(e);
+            KeyPressed(e.Code);
         }
 
         internal static void HandleKeyReleased(object sender, KeyEventArgs e)
         {
             if (!IsKeyDown(e.Code)) return;
             _KeyboardKeys.Remove(e.Code);
-            KeyReleased(e);
+            KeyReleased(e.Code);
         }
 
         internal static void HandleTextEntered(object sender, TextEventArgs e)
         {
-            TextEntered(e);
+            if (e.Unicode.All(c => !Char.IsControl(c))) TextEntered(new TextEnteredEventArgs(e.Unicode));
         }
 
         public static Boolean IsKeyDown(Keyboard.Key key) { return _KeyboardKeys.Contains(key); } // performance impact?!

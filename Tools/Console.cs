@@ -61,36 +61,28 @@ namespace BlackCoat.Tools
 
 
         // Methods #########################################################################
-        private void HandleKeyPressed(KeyEventArgs args)
+        private void HandleKeyPressed(Keyboard.Key key)
         {
-            if (args.Control && args.Shift && args.Code == Keyboard.Key.Num1)
+            if (Input.Control && Input.Shift && key == Keyboard.Key.Num1)
             {
                 if (_Open) Close();
                 else Open();
             }
-            else if (_Open)
+            else if (_Open && key == Keyboard.Key.Return)
             {
-                if (args.Code == Keyboard.Key.Return)
+                if (!String.IsNullOrWhiteSpace(_CurrentInput))
                 {
-                    if (!String.IsNullOrWhiteSpace(_CurrentInput))
-                    {
-                        Command.Invoke(_CurrentInput);
-                    }
-                    _CurrentInput = null;
-                    UpdateDisplayText();
+                    Command.Invoke(_CurrentInput);
                 }
-                else if (args.Code == Keyboard.Key.BackSpace && _CurrentInput != null && _CurrentInput.Length != 0)
-                {
-                    _CurrentInput = _CurrentInput.Substring(0, _CurrentInput.Length - 1);
-                    UpdateDisplayText();
-                }
+                _CurrentInput = null;
+                UpdateDisplayText();
             }
         }
 
-        private void HandleTextEntered(TextEventArgs args)
+        private void HandleTextEntered(TextEnteredEventArgs evnt)
         {
-            if (!_Open || args.Unicode.Any(c => Char.IsControl(c))) return;
-            _CurrentInput += args.Unicode;
+            if (!_Open) return;
+            _CurrentInput = evnt.UpdateText(_CurrentInput);
             UpdateDisplayText();
         }
 

@@ -20,6 +20,7 @@ namespace BlackCoat
         public void ChangeState(BaseGameState state)
         {
             _RequestedState = state;
+            Log.Debug("---------------------------------------");
             Log.Debug("Gamestate", _RequestedState, "requested");
         }
 
@@ -27,7 +28,7 @@ namespace BlackCoat
         {
             if (_CurrentState == _RequestedState)
             {
-                _CurrentState.UpdateInternal(deltaT);
+                if (_CurrentState != null) _CurrentState.UpdateInternal(deltaT);
             }
             else
             {
@@ -69,7 +70,7 @@ namespace BlackCoat
 
         internal void Draw()
         {
-            _CurrentState.Draw();
+            if (_CurrentState != null) _CurrentState.Draw();
         }
     }
 }

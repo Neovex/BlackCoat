@@ -1,12 +1,8 @@
-﻿using BlackCoat.Entities;
-using BlackCoat.ParticleSystem;
-using SFML.Graphics;
+﻿using System;
 using SFML.System;
-using System;
-using System.Linq;
-using System.Collections.Generic;
-using SFML.Window;
+using BlackCoat.Entities;
 using BlackCoat.Animation;
+using BlackCoat.ParticleSystem;
 
 namespace BlackCoat.Tools
 {
@@ -16,9 +12,10 @@ namespace BlackCoat.Tools
     internal class PerformanceMonitor : Container
     {
         // Variables #######################################################################
+        private static Single _Runtime = 0;
         private TextItem _InfoDisplay;
         private Single _LastUpdate = 0;
-        private Single _Runtime = 0;
+
 #if AVERAGE_FPS
         private Queue<Single> _FPS = new Queue<float>();
 #endif
