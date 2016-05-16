@@ -20,7 +20,7 @@ namespace BlackCoat
         public void ChangeState(BaseGameState state)
         {
             _RequestedState = state;
-            _Core.Log("Gamestate", _RequestedState, "requested");
+            Log.Debug("Gamestate", _RequestedState, "requested");
         }
 
         internal void Update(float deltaT)
@@ -31,37 +31,37 @@ namespace BlackCoat
             }
             else
             {
-                _Core.Log("Changing Gamestate...");
+                Log.Debug("Changing Gamestate...");
 
                 // Unload old State
                 if (_CurrentState != null)
                 {
-                    _Core.Log("Destroying", _CurrentState);
+                    Log.Debug("Destroying", _CurrentState);
                     _CurrentState.Destroy();
                     _CurrentState = null;
-                    _Core.Log("Old Gamestate destroyed");
+                    Log.Debug("Old Gamestate destroyed");
                 }
 
                 // Set new State
-                _Core.Log("Setting new Gamestate", _RequestedState);
+                Log.Debug("Setting new Gamestate", _RequestedState);
                 _CurrentState = _RequestedState;
 
                 if (_CurrentState != null)
                 {
                     // Load state
-                    _Core.Log("Trying to load new State:", _CurrentState);
+                    Log.Debug("Trying to load new State:", _CurrentState);
                     if (_CurrentState.Load())
                     {
-                        _Core.Log(_CurrentState, "sucessfully loaded");
+                        Log.Debug(_CurrentState, "sucessfully loaded");
                         StateChanged();
                     }
                     else
                     {
-                        _Core.Log("Failed to load state", _CurrentState, "resetting state to NULL");
+                        Log.Error("Failed to load state", _CurrentState, "resetting state to NULL");
                         _CurrentState = null;
                     }
                 }
-                _Core.Log("Gamestate change completed. New State:", _CurrentState);
+                Log.Info("Gamestate change completed. New State:", _CurrentState);
             }
         }
 

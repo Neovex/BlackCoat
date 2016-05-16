@@ -24,7 +24,6 @@ namespace BlackCoat
         /// Update Event is raised for each frame. This event can be used to update external components such as a game instance.
         /// </summary>
         public event Action<float> OnUpdate = d => { };
-        public event Action<String> OnLog = System.Console.WriteLine;
         public event Func<String, Boolean> ConsoleCommand = c => false;
         public event Action<Boolean> DebugChanged = d => { };
 
@@ -95,7 +94,7 @@ namespace BlackCoat
         /// <param name="debug">Determines if the Core should enable debug features</param>
         public Core(RenderWindow device)
         {
-            Log("Initializing Black Coat Engine...");
+            Log.Info("Initializing Black Coat Engine...");
 
             // Init Core Systems
             if (device == null) throw new ArgumentNullException("device");
@@ -126,7 +125,7 @@ namespace BlackCoat
             _Console = new Tools.Console(this, _Device);
             _Console.Command += HandleConsoleCommand;
 
-            Log("Engine ready.");
+            Log.Info("Engine ready.");
         }
 
         ~Core()
@@ -175,8 +174,7 @@ namespace BlackCoat
         public void Run()
         {
             if (Disposed) throw new ObjectDisposedException("Core");
-            Log("Starting Engine...");
-            AnimationManager.Wait(0.1f, a => Log("Engine started!"));
+            Log.Info("Engine Started"); // todo: add version info
             ShowRenderWindow();
             while (_Device.IsOpen)
             {
@@ -194,7 +192,7 @@ namespace BlackCoat
                 Draw();
             }
             _Timer.Stop();
-            Log("Engine stopped.");
+            Log.Info("Engine stopped.");
         }
 
         /// <summary>
@@ -279,13 +277,6 @@ namespace BlackCoat
             _Device.Draw(vertices, type, states);
         }
 
-        /// <summary>Logs Messages to the Console and all registered log handlers</summary>
-        /// <param name="logs">Objects to log</param>
-        public void Log(params object[] logs)
-        {
-            OnLog(String.Join(" ", logs.Select(l => l == null ? "null" : l.ToString())));
-        }
-
         /// <summary>
         /// Handles Core Commands and broadcasts other Commands to the remaining application
         /// </summary>
@@ -300,7 +291,7 @@ namespace BlackCoat
                     Exit();
                     return;
                 case "togglefullscreen":
-                    Log("togglefullscreen - not yet implemented");
+                    Log.Warning("togglefullscreen - not yet implemented");
                     return;
                 case "debug":
                     ToggleDebug(!Debug);
@@ -310,7 +301,7 @@ namespace BlackCoat
             // Then broadcast Commands to all other systems and the client application
             if (ConsoleCommand.GetInvocationList().All(listener => !(bool)listener.DynamicInvoke(cmd)))
             {
-                Log("Unknown Command:", cmd);
+                Log.Warning("Unknown Command:", cmd);
             }
         }
 

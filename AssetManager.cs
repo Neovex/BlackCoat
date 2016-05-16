@@ -85,7 +85,7 @@ namespace BlackCoat
             }
             catch (Exception e)
             {
-                _Core.Log("Could not load texture", name, "from", path, "because of", e);
+                Log.Error("Could not load texture", name, "from", path, "because of", e);
             }
             return null;
         }
@@ -111,7 +111,7 @@ namespace BlackCoat
             }
             catch (Exception e)
             {
-                _Core.Log("Could not create texture", name, "because of", e);
+                Log.Error("Could not create texture", name, "because of", e);
             }
             return null;
         }
@@ -156,7 +156,7 @@ namespace BlackCoat
             }
             catch (Exception e)
             {
-                _Core.Log("Could not load font", name, "from", path, "because of", e);
+                Log.Error("Could not load font", name, "from", path, "because of", e);
             }
             return null;
         }
@@ -180,7 +180,7 @@ namespace BlackCoat
             }
             catch (Exception e)
             {
-                _Core.Log("Could not load font", name, "because of", e);
+                Log.Error("Could not load font", name, "because of", e);
             }
             return null;
         }

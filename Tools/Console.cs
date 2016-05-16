@@ -39,7 +39,7 @@ namespace BlackCoat.Tools
         /// <param name="device">Render Device</param>
         internal Console(Core core, RenderWindow device) : base(core)
         {
-            _Core.OnLog += Log;
+            Log.OnLog += LogMessage;
             Input.KeyPressed += HandleKeyPressed;
             Input.TextEntered += HandleTextEntered;
             device.Resized += Device_Resized;
@@ -94,7 +94,7 @@ namespace BlackCoat.Tools
             UpdateDisplayText();
         }
 
-        private void Log(String msg)
+        private void LogMessage(String msg)
         {
             _Messages.Enqueue(msg.Replace(Environment.NewLine, Constants.NEW_LINE));
             if (_Messages.Count > 100) _Messages.Dequeue();
