@@ -1,8 +1,10 @@
 ﻿using System;
 using SFML.System;
+using SFML.Graphics;
 using BlackCoat.Entities;
 using BlackCoat.Animation;
 using BlackCoat.ParticleSystem;
+using BlackCoat.Entities.Shapes;
 
 namespace BlackCoat.Tools
 {
@@ -34,11 +36,15 @@ namespace BlackCoat.Tools
         /// <param name="core">Engine Core</param>
         internal PerformanceMonitor(Core core) : base(core)
         {
-            Texture = _Core.AssetManager.CreateTexture(110, 75, 0x99000000, "PerformanceMonitorBackground");
+            var backGround = new Rectangle(_Core);
+            backGround.Size = new Vector2f(110, 75);
+            backGround.Color = Color.Black;
+            backGround.Alpha = 0.5f;
+            AddChild(backGround);
 
             _InfoDisplay = new TextItem(_Core);
             _InfoDisplay.Position = new Vector2f(5, 2);
-            _InfoDisplay.Color = SFML.Graphics.Color.Yellow;
+            _InfoDisplay.Color = Color.Yellow;
             _InfoDisplay.CharacterSize = 12;
             AddChild(_InfoDisplay);
 

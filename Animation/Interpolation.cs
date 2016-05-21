@@ -84,8 +84,8 @@ namespace BlackCoat.Animation
 
         internal static float Linear(float start, float distance, float elapsedTime, float duration)
 		{
-			if (elapsedTime > duration) elapsedTime = duration;
-	  		return distance * (elapsedTime / duration) + start;
+            elapsedTime = (elapsedTime > duration) ? 1.0f : elapsedTime / duration;
+	  		return distance * elapsedTime + start;
 		}
 
         internal static float InQuad(float start, float distance, float elapsedTime, float duration)
@@ -175,38 +175,33 @@ namespace BlackCoat.Animation
 		}
 
         internal static float InSine(float start, float distance, float elapsedTime, float duration)
-		{
-			if (elapsedTime > duration)
-				elapsedTime = duration;
-			return (float)(-distance * Math.Cos(elapsedTime / duration * (Math.PI / 2)) + distance + start);
+        {
+            elapsedTime = (elapsedTime > duration) ? 1.0f : elapsedTime / duration;
+			return (float)(-distance * Math.Cos(elapsedTime * (Math.PI / 2)) + distance + start);
 		}
 
         internal static float OutSine(float start, float distance, float elapsedTime, float duration)
-		{
-			if (elapsedTime > duration)
-				elapsedTime = duration;
-			return (float)(distance * Math.Sin(elapsedTime / duration * (Math.PI / 2)) + start);
+        {
+            elapsedTime = (elapsedTime > duration) ? 1.0f : elapsedTime / duration;
+			return (float)(distance * Math.Sin(elapsedTime * (Math.PI / 2)) + start);
 		}
 
         internal static float InOutSine(float start, float distance, float elapsedTime, float duration)
-		{
-			if (elapsedTime > duration)
-				elapsedTime = duration;
-			return (float)(-distance / 2 * (Math.Cos(Math.PI * elapsedTime / duration) - 1) + start);
+        {
+            elapsedTime = (elapsedTime > duration) ? 1.0f : elapsedTime / duration;
+			return (float)(-distance / 2 * (Math.Cos(Math.PI * elapsedTime) - 1) + start);
 		}
 
         internal static float InExpo(float start, float distance, float elapsedTime, float duration)
-		{
-			if (elapsedTime > duration)
-				elapsedTime = duration;
-			return (float)(distance * Math.Pow(2, 10 * (elapsedTime / duration - 1)) + start);
+        {
+            elapsedTime = (elapsedTime > duration) ? 1.0f : elapsedTime / duration;
+			return (float)(distance * Math.Pow(2, 10 * (elapsedTime - 1)) + start);
 		}
 
         internal static float OutExpo(float start, float distance, float elapsedTime, float duration)
-		{
-			if (elapsedTime > duration)
-				elapsedTime = duration;
-            return (float)(distance * (-Math.Pow(2, -10 * elapsedTime / duration) + 1) + start);
+        {
+            elapsedTime = (elapsedTime > duration) ? 1.0f : elapsedTime / duration;
+            return (float)(distance * (-Math.Pow(2, -10 * elapsedTime) + 1) + start);
 		}
 
         internal static float InOutExpo(float start, float distance, float elapsedTime, float duration)
@@ -248,7 +243,7 @@ namespace BlackCoat.Animation
             if (elapsedTime == 0.0f)
                 return start;
 	
-            if ((elapsedTime /= duration) == 1.0f)
+            if ((elapsedTime /= duration) == 1.0f || duration == 0)
                     return start + distance;
 	
             float p = duration * 0.3f;
@@ -266,8 +261,8 @@ namespace BlackCoat.Animation
 	
             if (elapsedTime == 0.0f)
                 return start;
-	
-            if ((elapsedTime /= duration) == 1.0f)
+
+            if ((elapsedTime /= duration) == 1.0f || duration == 0)
                     return start + distance;
 	
             float p = duration * 0.3f;

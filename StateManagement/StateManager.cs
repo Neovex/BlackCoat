@@ -56,7 +56,7 @@ namespace BlackCoat
                         Log.Debug(_CurrentState, "sucessfully loaded");
                         StateChanged();
                     }
-                    else
+                    else // todo improve security with try catch
                     {
                         Log.Error("Failed to load state", _CurrentState, "resetting state to NULL");
                         _CurrentState = null;

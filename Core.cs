@@ -41,19 +41,17 @@ namespace BlackCoat
             get { return _Debug; }
             set { ToggleDebug(value); }
         }
-        // Subsystems
-        /// <summary>
-        /// Default Asset Manager. Handles loading/unloading of assets located in its specified root folder.
-        /// </summary>
-        public AssetManager AssetManager { get; private set; }
+
         /// <summary>
         /// Random Number Generator with float and integer support.
         /// </summary>
         public RandomHelper Random { get; private set; }
+        
         /// <summary>
         /// Game State Manager. Manages the current Gamestate as well as Gamestate transitions.
         /// </summary>
         public StateManager StateManager { get; set; }
+        
         /// <summary>
         /// Animation Manager and Factory. Used primarly to make stuff move.
         /// </summary>
@@ -64,22 +62,27 @@ namespace BlackCoat
         /// Color used to clear the screen of the contents from the last rendered frame.
         /// </summary>
         public Color ClearColor { get; set; }
+        
         /// <summary>
         /// Determines if the render window is no longer in focus.
         /// </summary>
         public Boolean FocusLost { get; private set; }
+        
         /// <summary>
         /// Determines if the Engine Core has been disposed.
         /// </summary>
         public Boolean Disposed { get; private set; }
+        
         /// <summary>
         /// Size of the current Render Device
         /// </summary>
         public Vector2u DeviceSize { get { return _Device.Size; } }
+        
         /// <summary>
         /// Default Render View - uses full with and height of the rendering device.
         /// </summary>
         internal View DefaultView { get { return _Device.DefaultView; } }
+        
         /// <summary>
         /// Default font of the Engine. The <see cref="TextItem"/> class needs it to display text when no font is loaded.
         /// </summary>
@@ -113,7 +116,6 @@ namespace BlackCoat
             _Device.GainedFocus += new EventHandler(HandleGainedFocus);
 
             // Init Subsystems
-            AssetManager = new AssetManager(this);
             Random = new RandomHelper();
             StateManager = new StateManager(this);
             AnimationManager = new AnimationManager();
@@ -354,9 +356,6 @@ namespace BlackCoat
 
             DefaultFont.Dispose();
             DefaultFont = null;
-
-            AssetManager.Dispose();
-            AssetManager = null;
 
             Disposed = true;
             GC.SuppressFinalize(this);

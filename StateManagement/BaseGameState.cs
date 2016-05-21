@@ -11,12 +11,18 @@ namespace BlackCoat
     public abstract class BaseGameState
     {
         protected Core _Core;
-        //private AssetManager _AssetManager;
         private PerformanceMonitor _PerformanceMonitor;
 
+        // State Info
         public String Name { get; protected set; }
-        //public AssetManager AssetManager { get { return _AssetManager ?? (_AssetManager = new AssetManager(_Core)); } }
         public Boolean Paused { get; set; }
+
+        // Asset Managers
+        public FontManager FontManager { get; protected set; }
+        public MusicManager MusicManager { get; protected set; }
+        public SfxManager SfxManager { get; protected set; }
+        public TextureManager TextureManager { get; protected set; }
+
         // Layers
         public Layer Layer_BG { get; private set; }
         public Layer Layer_Game { get; private set; }
@@ -25,10 +31,19 @@ namespace BlackCoat
         public Layer Layer_Debug { get; private set; }
         public Layer Layer_Cursor { get; private set; }
 
-        public BaseGameState(Core core, String name = null)
+
+        /// <param name="root">Optional root path of the managed asset folder</param>
+        public BaseGameState(Core core, String name = null, String root = "")
         {
+            // Init
             _Core = core;
             Name = String.IsNullOrWhiteSpace(name) ? GetType().Name : name;
+
+            // Create Asset Managers
+            FontManager = new FontManager(root);
+            MusicManager = new MusicManager(root);
+            SfxManager = new SfxManager(root);
+            TextureManager = new TextureManager(root);
 
             // Create Default Layer Structure
             // Game Layer
@@ -64,7 +79,7 @@ namespace BlackCoat
 
         internal void UpdateInternal(float deltaT)
         {
-            if (!Paused)
+            if (!Paused) // TODO: good?
             {
                 Layer_BG.Update(deltaT);
                 Layer_Game.Update(deltaT);
