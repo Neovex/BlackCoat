@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using SFML.Graphics;
 using SFML.Audio;
+using System.Drawing.Imaging;
 
 namespace BlackCoat
 {
@@ -63,6 +64,17 @@ namespace BlackCoat
             var img = new Texture(new Image(width, height, c));
             if (!String.IsNullOrEmpty(name)) _Assets.Add(name, img);
             return img;
+        }
+
+        public Texture Load(string name, System.Drawing.Bitmap bmp)
+        {
+            Byte[] data = null;
+            using (var strm = new MemoryStream())
+            {
+                bmp.Save(strm, ImageFormat.Png);
+                data = strm.ToArray();
+            }
+            return Load(name, data);
         }
     }
 }

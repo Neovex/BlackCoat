@@ -21,5 +21,13 @@ namespace BlackCoat
         public SfxManager(String assetRoot = "") : base(AvailableFormats, assetRoot)
         {
         }
+
+        public SoundBuffer Load(string p, Stream stream)
+        {
+            if (stream == null) return null;
+            var data = new byte[stream.Length];
+            stream.Read(data, 0, data.Length);
+            return Load(p, data);
+        }
     }
 }
