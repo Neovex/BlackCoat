@@ -37,15 +37,15 @@ namespace BlackCoat.Tools
         internal PerformanceMonitor(Core core) : base(core)
         {
             var backGround = new Rectangle(_Core);
-            backGround.Size = new Vector2f(110, 75);
+            backGround.Size = new Vector2f(120, 65);
             backGround.Color = Color.Black;
             backGround.Alpha = 0.5f;
             AddChild(backGround);
 
             _InfoDisplay = new TextItem(_Core);
             _InfoDisplay.Position = new Vector2f(5, 2);
-            _InfoDisplay.Color = Color.Yellow;
-            _InfoDisplay.CharacterSize = 12;
+            _InfoDisplay.Color = Color.Cyan;
+            _InfoDisplay.CharacterSize = 10;
             AddChild(_InfoDisplay);
 
             View = _Core.DefaultView;

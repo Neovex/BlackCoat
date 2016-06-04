@@ -10,6 +10,7 @@ using SFML.Graphics;
 using BlackCoat.Entities;
 using BlackCoat.Tools;
 using BlackCoat.Animation;
+using BlackCoat.Properties;
 
 namespace BlackCoat
 {
@@ -108,7 +109,7 @@ namespace BlackCoat
             ClearColor = Color.Black;
             FocusLost = false;
             Disposed = false;
-            DefaultFont = new Font(@"C:\Windows\Fonts\arial.ttf"); // TODO : FIXME -> hardcoded path
+            DefaultFont = new Font(Resources.Squares_Bold_Free);
 
             // Device Events
             _Device.Closed += new EventHandler(_Device_Closed);

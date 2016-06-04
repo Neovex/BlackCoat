@@ -16,7 +16,7 @@ namespace BlackCoat.Tools
     internal class Console : Container
     {
         // Constants #######################################################################
-        private const int _FONT_SIZE = 12;
+        private const int _FONT_SIZE = 10;
 
 
         // Events ##########################################################################
@@ -51,7 +51,7 @@ namespace BlackCoat.Tools
 
             _Display = new TextItem(_Core);
             _Display.Position = new Vector2f(3, 3);
-            _Display.Color = SFML.Graphics.Color.Yellow;
+            _Display.Color = SFML.Graphics.Color.Cyan;
             _Display.CharacterSize = _FONT_SIZE;
             AddChild(_Display);
 
@@ -95,7 +95,7 @@ namespace BlackCoat.Tools
 
         private void UpdateDisplayText()
         {
-            var availableLines = Convert.ToInt32(Math.Floor(_Background.Size.Y / _FONT_SIZE)) - 3;
+            var availableLines = Convert.ToInt32(Math.Floor(_Background.Size.Y / _FONT_SIZE)) - 5;
             _Display.Text = String.Join(Constants.NEW_LINE, new[] { _CurrentInput ?? String.Empty }.Concat(_Messages.Reverse().Take(availableLines)));
         }
 

@@ -29,7 +29,7 @@ namespace BlackCoat
         public override bool Load()
         {
             _BgTex = TextureManager.Load("bg", Resources.Loader);
-            _Sound = SfxManager.Load("snd", Resources.BcPad);
+            _Sound = SfxManager.Load("snd", Resources.BCPad);
 
             _Bg = new Graphic(_Core);
             _Bg.Texture = _BgTex;
