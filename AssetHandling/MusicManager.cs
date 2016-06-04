@@ -1,22 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
-using SFML.Graphics;
 using SFML.Audio;
 
 namespace BlackCoat
 {
     /// <summary>
-    /// Todo
+    /// Music management class. Handles loading/unloading of unmanaged Music resources.
     /// </summary>
     public class MusicManager : AssetManager<Music>
     {
+        // Statics #########################################################################
         public static readonly IEnumerable<String> AvailableFormats = new[] { ".wav", ".ogg", ".flac" };
-
-        // Variables #######################################################################
-
-
-        // Properties ######################################################################
 
 
         // CTOR ############################################################################
@@ -28,8 +22,5 @@ namespace BlackCoat
         public MusicManager(String assetRoot = "") : base(AvailableFormats, assetRoot)
         {
         }
-
-
-        // Methods #########################################################################
     }
 }

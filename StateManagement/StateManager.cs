@@ -37,10 +37,17 @@ namespace BlackCoat
                 // Unload old State
                 if (_CurrentState != null)
                 {
-                    Log.Debug("Destroying", _CurrentState);
-                    _CurrentState.Destroy();
+                    try
+                    {
+                        Log.Debug("Destroying", _CurrentState);
+                        _CurrentState.Destroy();
+                        Log.Debug("Old Gamestate destroyed");
+                    }
+                    catch (Exception e)
+                    {
+                        Log.Error("Failed to destroy old Gamestate. Reason:", e);
+                    }
                     _CurrentState = null;
-                    Log.Debug("Old Gamestate destroyed");
                 }
 
                 // Set new State
@@ -49,16 +56,24 @@ namespace BlackCoat
 
                 if (_CurrentState != null)
                 {
-                    // Load state
-                    Log.Debug("Trying to load new State:", _CurrentState);
-                    if (_CurrentState.Load())
+                    try
                     {
-                        Log.Debug(_CurrentState, "sucessfully loaded");
-                        StateChanged();
+                        // Load state
+                        Log.Debug("Trying to load new State:", _CurrentState);
+                        if (_CurrentState.Load())
+                        {
+                            Log.Debug(_CurrentState, "sucessfully loaded");
+                            StateChanged();
+                        }
+                        else
+                        {
+                            Log.Error("Failed to load state", _CurrentState, "resetting state to NULL");
+                            _CurrentState = null;
+                        }
                     }
-                    else // todo improve security with try catch
+                    catch (Exception e)
                     {
-                        Log.Error("Failed to load state", _CurrentState, "resetting state to NULL");
+                        Log.Error("Failed to load state", _CurrentState, "Reason:", e);
                         _CurrentState = null;
                     }
                 }

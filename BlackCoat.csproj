@@ -94,7 +94,6 @@
     <Compile Include="Animation\TimeAnimation.cs" />
     <Compile Include="Animation\AnimationManager.cs" />
     <Compile Include="Extensions\VectorExtensions.cs" />
-    <Compile Include="Tools\ResourceHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="sfmlnet-audio-2, Version=2.3.0.0, Culture=neutral, processorArchitecture=MSIL">

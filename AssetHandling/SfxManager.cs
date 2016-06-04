@@ -1,17 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using SFML.Graphics;
+using System.Collections.Generic;
 using SFML.Audio;
 
 namespace BlackCoat
 {
     /// <summary>
-    /// TODO
+    /// Sound management class. Handles loading/unloading of unmanaged sound resources.
     /// </summary>
     public class SfxManager : AssetManager<SoundBuffer>
     {
+        // Statics #########################################################################
         public static readonly IEnumerable<String> AvailableFormats = new[] { ".wav", ".ogg", ".flac" };
+
 
         // CTOR ############################################################################
         /// <summary>
@@ -22,12 +23,25 @@ namespace BlackCoat
         {
         }
 
-        public SoundBuffer Load(string p, Stream stream)
+
+        // Methods #########################################################################
+        /// <summary>
+        /// Loads or retrieves an already loaded instance of a Sound from a Stream Source
+        /// </summary>
+        /// <param name="name">Name of the Resource</param>
+        /// <param name="stream">Readable stream containing the raw data of the sound</param>
+        /// <returns>The managed Sound</returns>
+        public SoundBuffer Load(string name, Stream stream)
         {
-            if (stream == null) return null;
+            // Sanity
+            if (Disposed) throw new ObjectDisposedException("SfxManager");
+            if (name == null) throw new ArgumentNullException("name");
+            if (_Assets.ContainsKey(name)) return _Assets[name];
+            if (stream == null || !stream.CanRead) throw new ArgumentNullException("stream");
+            // Load
             var data = new byte[stream.Length];
             stream.Read(data, 0, data.Length);
-            return Load(p, data);
+            return Load(name, data);
         }
     }
 }

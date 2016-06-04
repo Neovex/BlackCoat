@@ -9,7 +9,7 @@ using SFML.System;
 namespace BlackCoat
 {
     /// <summary>
-    /// Collects available input data and provides usefull events for custom input handlers
+    /// Collects available input data and provides useful events for custom input handlers
     /// </summary>
     public static class Input
     {
@@ -45,31 +45,31 @@ namespace BlackCoat
         // TODO : comment
 
         // Render Window
-        static void HandleDeviceResized(object sender, SizeEventArgs e)
+        private static void HandleDeviceResized(object sender, SizeEventArgs e)
         {
             DeviceResized(new Vector2u(e.Width, e.Height));
         }
 
         // Mouse
-        internal static void HandleMouseButtonPressed(object sender, MouseButtonEventArgs e)
+        private static void HandleMouseButtonPressed(object sender, MouseButtonEventArgs e)
         {
             if (!_MouseButtons.Contains(e.Button)) _MouseButtons.Add(e.Button);
             MouseButtonPressed(e.Button);
         }
 
-        internal static void HandleMouseButtonReleased(object sender, MouseButtonEventArgs e)
+        private static void HandleMouseButtonReleased(object sender, MouseButtonEventArgs e)
         {
             if (_MouseButtons.Contains(e.Button)) _MouseButtons.Remove(e.Button);
             MouseButtonReleased(e.Button);
         }
 
-        internal static void HandleMouseMoved(object sender, MouseMoveEventArgs e)
+        private static void HandleMouseMoved(object sender, MouseMoveEventArgs e)
         {
             MousePosition = new Vector2f(e.X, e.Y);
             MouseMoved(MousePosition);
         }
 
-        internal static void HandleMouseWheelScrolled(object sender, MouseWheelScrollEventArgs e)
+        private static void HandleMouseWheelScrolled(object sender, MouseWheelScrollEventArgs e)
         {
             MouseWheelDelta = e.Delta;
             MouseWheelScrolled(MouseWheelDelta);
@@ -81,7 +81,7 @@ namespace BlackCoat
 
 
         // Keyboard
-        internal static void HandleKeyPressed(object sender, KeyEventArgs e)
+        private static void HandleKeyPressed(object sender, KeyEventArgs e)
         {
             if (e.Code == Keyboard.Key.BackSpace) TextEntered(new TextEnteredEventArgs(true));
             if (IsKeyDown(e.Code)) return;
@@ -89,14 +89,14 @@ namespace BlackCoat
             KeyPressed(e.Code);
         }
 
-        internal static void HandleKeyReleased(object sender, KeyEventArgs e)
+        private static void HandleKeyReleased(object sender, KeyEventArgs e)
         {
             if (!IsKeyDown(e.Code)) return;
             _KeyboardKeys.Remove(e.Code);
             KeyReleased(e.Code);
         }
 
-        internal static void HandleTextEntered(object sender, TextEventArgs e)
+        private static void HandleTextEntered(object sender, TextEventArgs e)
         {
             if (e.Unicode.All(c => !Char.IsControl(c))) TextEntered(new TextEnteredEventArgs(e.Unicode));
         }

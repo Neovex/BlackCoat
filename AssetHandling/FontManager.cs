@@ -1,23 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using SFML.Graphics;
-using SFML.Audio;
 
 namespace BlackCoat
 {
     /// <summary>
-    /// TODO
+    /// Font management class. Handles loading/unloading of unmanaged font resources.
     /// </summary>
     public class FontManager : AssetManager<Font>
     {
-        public static readonly IEnumerable<String> AvailableFormats = new[] { ".ttf", ".cff", ".fnt" }; // TODO: find and add file remaining endings for TrueType, Type 1, CFF, OpenType, SFNT, X11 PCF, Windows FNT, BDF, PFR and Type 42.
+        // Statics #########################################################################
+        public static readonly IEnumerable<String> AvailableFormats = new[] { ".ttf", ".cff", ".fnt", ".ttf", ".otf", ".eot" };
+
 
         // CTOR ############################################################################
         /// <summary>
         /// Creates a new instance of the FontManager class.
         /// </summary>
-        /// <param name="core">Engine Core</param>
         /// <param name="assetRoot">Optional root path of the managed asset folder</param>
         public FontManager(String assetRoot = "") : base(AvailableFormats, assetRoot)
         {

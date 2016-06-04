@@ -19,6 +19,9 @@ namespace BlackCoat
 
 
         // Properties ######################################################################
+        /// <summary>
+        /// The supported file endings by this <see cref="AssetManager{T}"/> instance
+        /// </summary>
         public IEnumerable<String> FileEndings { get { return _FileEndings; } }
 
         /// <summary>
@@ -41,7 +44,7 @@ namespace BlackCoat
         public AssetManager(IEnumerable<String> supportedFileEndings, String assetRoot = "")
         {
             RootFolder = assetRoot;
-            _FileEndings = supportedFileEndings.ToArray();
+            _FileEndings = new[] { String.Empty }.Concat(supportedFileEndings).Distinct().ToArray();
         }
 
         ~AssetManager()
@@ -55,7 +58,7 @@ namespace BlackCoat
         /// Loads or retrieves an already loaded instance of an Asset from a File or Raw Data Source
         /// </summary>
         /// <param name="name">Name of the Resource</param>
-        /// <param name="rawData">Optional bytearray containing the raw data of the asset</param>
+        /// <param name="rawData">Optional byte array containing the raw data of the asset</param>
         /// <returns>The managed Asset</returns>
         public virtual T Load(String name, Byte[] rawData = null)
         {

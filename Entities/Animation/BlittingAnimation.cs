@@ -32,17 +32,7 @@ namespace BlackCoat.Entities.Animation
             set
             {
                 base.Texture = value;
-                if (value == null || _FrameSize.X == 0 || _FrameSize.Y == 0) return; // TODO : extract to method
-                // Rebuild frames to match new texture
-                var list = new List<IntRect>();
-                for (UInt32 y = 0; y < value.Size.Y; y += _FrameSize.Y)
-                {
-                    for (UInt32 x = 0; x < value.Size.X; x += _FrameSize.X)
-                    {
-                        list.Add(new IntRect((Int32)x, (Int32)y, (Int32)_FrameSize.X, (Int32)_FrameSize.Y));
-                    }
-                }
-                _Frames = list.ToArray();
+                RecalculateFrames();
             }
         }
 
@@ -84,6 +74,25 @@ namespace BlackCoat.Entities.Animation
                 if (++_CurrentFrame >= _Frames.Length) _CurrentFrame = 0;
                 TextureRect = _Frames[_CurrentFrame];
             }
+        }
+
+        /// <summary>
+        /// Rebuilds the animation frame info based on the current texture
+        /// </summary>
+        /// <returns>True on success</returns>
+        protected virtual Boolean RecalculateFrames()
+        {
+            if (Texture == null || _FrameSize.X == 0 || _FrameSize.Y == 0) return false;
+            var list = new List<IntRect>();
+            for (UInt32 y = 0; y < Texture.Size.Y; y += _FrameSize.Y)
+            {
+                for (UInt32 x = 0; x < Texture.Size.X; x += _FrameSize.X)
+                {
+                    list.Add(new IntRect((Int32)x, (Int32)y, (Int32)_FrameSize.X, (Int32)_FrameSize.Y));
+                }
+            }
+            _Frames = list.ToArray();
+            return true;
         }
     }
 }
