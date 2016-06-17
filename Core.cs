@@ -177,7 +177,7 @@ namespace BlackCoat
         public void Run()
         {
             if (Disposed) throw new ObjectDisposedException("Core");
-            Log.Info("Engine Started"); // todo: add version info
+            Log.Info("Black Coat Engine Started - Version", GetType().Assembly.GetName().Version);
             ShowRenderWindow();
             while (_Device.IsOpen)
             {
