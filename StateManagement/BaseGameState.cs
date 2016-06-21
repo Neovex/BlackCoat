@@ -91,6 +91,15 @@ namespace BlackCoat
             Update(deltaT);
         }
 
+        internal void DestroyInternal()
+        {
+            Destroy();
+            FontManager.Dispose();
+            MusicManager.Dispose();
+            SfxManager.Dispose();
+            TextureManager.Dispose();
+        }
+
         internal void Draw()
         {
             Layer_BG.Draw();

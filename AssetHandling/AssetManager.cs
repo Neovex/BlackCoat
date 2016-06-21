@@ -122,7 +122,6 @@ namespace BlackCoat
             _Assets.Clear();
 
             Disposed = true;
-            GC.SuppressFinalize(this);
         }
     }
 }

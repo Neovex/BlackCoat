@@ -40,7 +40,7 @@ namespace BlackCoat
                     try
                     {
                         Log.Debug("Destroying", _CurrentState);
-                        _CurrentState.Destroy();
+                        _CurrentState.DestroyInternal();
                         Log.Debug("Old Gamestate destroyed");
                     }
                     catch (Exception e)
@@ -68,13 +68,13 @@ namespace BlackCoat
                         else
                         {
                             Log.Error("Failed to load state", _CurrentState, "resetting state to NULL");
-                            _CurrentState = null;
+                            _CurrentState = _RequestedState = null;
                         }
                     }
                     catch (Exception e)
                     {
                         Log.Error("Failed to load state", _CurrentState, "Reason:", e);
-                        _CurrentState = null;
+                        _CurrentState = _RequestedState = null;
                     }
                 }
                 Log.Info("Gamestate change completed. New State:", _CurrentState);
@@ -86,6 +86,11 @@ namespace BlackCoat
         internal void Draw()
         {
             if (_CurrentState != null) _CurrentState.Draw();
+        }
+
+        internal void Destroy()
+        {
+            if (_CurrentState != null) _CurrentState.DestroyInternal();
         }
     }
 }

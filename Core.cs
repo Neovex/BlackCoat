@@ -348,6 +348,8 @@ namespace BlackCoat
         {
             if (Disposed) return;
 
+            StateManager.Destroy();
+
             if (_Device.CPointer != IntPtr.Zero)
             {
                 if (_Device.IsOpen) _Device.Close();
@@ -359,7 +361,6 @@ namespace BlackCoat
             DefaultFont = null;
 
             Disposed = true;
-            GC.SuppressFinalize(this);
         }
 
 
