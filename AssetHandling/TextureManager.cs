@@ -61,6 +61,7 @@ namespace BlackCoat
             if (name == null) throw new ArgumentNullException("name");
             if (_Assets.ContainsKey(name)) return _Assets[name];
             if (bmp == null) throw new ArgumentNullException("bmp");
+            if (bmp.Size.Width > Texture.MaximumSize || bmp.Size.Height > Texture.MaximumSize) throw new ArgumentException($"Bimtap size exceeds capabilities of current Grafik adapter: {Texture.MaximumSize} px");
             // Conversion
             Byte[] data = null;
             using (var strm = new MemoryStream())

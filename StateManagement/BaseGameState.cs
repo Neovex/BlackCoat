@@ -8,7 +8,10 @@ using BlackCoat.Tools;
 
 namespace BlackCoat
 {
-    public abstract class BaseGameState
+    /// <summary>
+    /// Basecalss for all Gamestates
+    /// </summary>
+    public abstract class BaseGamestate
     {
         protected Core _Core;
         private PerformanceMonitor _PerformanceMonitor;
@@ -32,8 +35,24 @@ namespace BlackCoat
         public Layer Layer_Cursor { get; private set; }
 
 
-        /// <param name="root">Optional root path of the managed asset folder</param>
-        public BaseGameState(Core core, String name = null, String root = "")
+        /// <summary>
+        /// Occurs when the State has been sucessfully initialized.
+        /// </summary>
+        public event Action Ready = () => { };
+
+        /// <summary>
+        /// Occurs when the State is about to be destroyed.
+        /// </summary>
+        public event Action OnDestroy = () => { };
+
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BaseGamestate"/> class.
+        /// </summary>
+        /// <param name="core">Engine core.</param>
+        /// <param name="name">State name.</param>
+        /// <param name="root">Optional Asset root path.</param>
+        public BaseGamestate(Core core, String name = null, String root = "")
         {
             // Init
             _Core = core;
@@ -55,7 +74,7 @@ namespace BlackCoat
             Layer_Debug = new Layer(_Core);
             Layer_Cursor = new Layer(_Core);
 
-            // Debug Overlay
+            // Handle Debug Overlay
             HandleDebugChanged(_Core.Debug);
             _Core.DebugChanged += HandleDebugChanged;
         }
@@ -73,10 +92,34 @@ namespace BlackCoat
             }
         }
 
-        public abstract Boolean Load();
-        public abstract void Update(float deltaT);
-        public abstract void Destroy();
+        /// <summary>
+        /// Draws this state onto the scene.
+        /// </summary>
+        internal void Draw()
+        {
+            Layer_BG.Draw();
+            Layer_Game.Draw();
+            Layer_Particles.Draw();
+            Layer_Overlay.Draw();
+            Layer_Debug.Draw();
+            Layer_Cursor.Draw();
+        }
 
+        /// <summary>
+        /// Loads the recuired data for this state.
+        /// </summary>
+        /// <returns>True on success.</returns>
+        internal bool LoadInternal()
+        {
+            if (!Load()) return false;
+            Ready.Invoke();
+            return true;
+        }
+
+        /// <summary>
+        /// Updates the State and its children.
+        /// </summary>
+        /// <param name="deltaT">Current Frametime.</param>
         internal void UpdateInternal(float deltaT)
         {
             if (!Paused) // TODO: good?
@@ -91,8 +134,12 @@ namespace BlackCoat
             Update(deltaT);
         }
 
+        /// <summary>
+        /// Destroys the state.
+        /// </summary>
         internal void DestroyInternal()
         {
+            OnDestroy.Invoke();
             Destroy();
             FontManager.Dispose();
             MusicManager.Dispose();
@@ -100,16 +147,25 @@ namespace BlackCoat
             TextureManager.Dispose();
         }
 
-        internal void Draw()
-        {
-            Layer_BG.Draw();
-            Layer_Game.Draw();
-            Layer_Particles.Draw();
-            Layer_Overlay.Draw();
-            Layer_Debug.Draw();
-            Layer_Cursor.Draw();
-        }
+        /// <summary>
+        /// Loads the recuired data for this state.
+        /// </summary>
+        /// <returns>True on success.</returns>
+        protected abstract Boolean Load();
 
-        public override string ToString() { return String.Concat("\"", Name, "\""); }
+        /// <summary>
+        /// Updates the State and its children.
+        /// </summary>
+        /// <param name="deltaT">Current Frametime.</param>
+        protected abstract void Update(float deltaT);
+
+        /// <summary>
+        /// Destroys the state.
+        /// </summary>
+        protected abstract void Destroy();
+
+        /// <summary>Returns a <see cref="System.String" /> that represents this instance.</summary>
+        /// <returns>A <see cref="System.String" /> that represents this instance.</returns>
+        public override string ToString() => $"{base.ToString()} \"{Name}\"";
     }
 }

@@ -6,29 +6,56 @@ using BlackCoat;
 
 namespace BlackCoat
 {
-    public class StateManager
+    /// <summary>
+    /// Manages the transistions between Gamestates
+    /// </summary>
+    public sealed class StateManager
     {
-        protected Core _Core;
-        private BaseGameState _CurrentState;
-        private BaseGameState _RequestedState;
-        
-        protected internal StateManager(Core core)
+        private Core _Core;
+        private BaseGamestate _CurrentState;
+        private BaseGamestate _RequestedState;
+
+        /// <summary>
+        /// Name of the currently active Gamestate. NULL if none active.
+        /// </summary>
+        public String CurrentState { get { return _CurrentState?.Name; } }
+
+
+        /// <summary>
+        /// Occurs when a new Gamestate has successfully finished loading an becomes the new acive state.
+        /// </summary>
+        public event Action<BaseGamestate> StateChanged = s => { };
+
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="StateManager"/> class.
+        /// </summary>
+        /// <param name="core">The Engine Core.</param>
+        internal StateManager(Core core)
         {
             _Core = core;
         }
 
-        public void ChangeState(BaseGameState state)
+        /// <summary>
+        /// Beginns a state chane. Note: the new state usually becomes active in the next frame.
+        /// </summary>
+        /// <param name="state">The new state.</param>
+        public void ChangeState(BaseGamestate state)
         {
             _RequestedState = state;
             Log.Debug("---------------------------------------");
             Log.Debug("Gamestate", _RequestedState, "requested");
         }
 
+        /// <summary>
+        /// Updates the current state or executes a state change.
+        /// </summary>
+        /// <param name="deltaT">Current Frametime</param>
         internal void Update(float deltaT)
         {
             if (_CurrentState == _RequestedState)
             {
-                if (_CurrentState != null) _CurrentState.UpdateInternal(deltaT);
+                _CurrentState?.UpdateInternal(deltaT);
             }
             else
             {
@@ -60,10 +87,10 @@ namespace BlackCoat
                     {
                         // Load state
                         Log.Debug("Trying to load new State:", _CurrentState);
-                        if (_CurrentState.Load())
+                        if (_CurrentState.LoadInternal())
                         {
                             Log.Debug(_CurrentState, "sucessfully loaded");
-                            StateChanged();
+                            StateChanged.Invoke(_CurrentState);
                         }
                         else
                         {
@@ -81,16 +108,20 @@ namespace BlackCoat
             }
         }
 
-        public virtual void StateChanged() { }
-
+        /// <summary>
+        /// Draws the current state if any.
+        /// </summary>
         internal void Draw()
         {
-            if (_CurrentState != null) _CurrentState.Draw();
+            _CurrentState?.Draw();
         }
 
+        /// <summary>
+        /// Destroys this instance and the current state if any.
+        /// </summary>
         internal void Destroy()
         {
-            if (_CurrentState != null) _CurrentState.DestroyInternal();
+            _CurrentState?.DestroyInternal();
         }
     }
-}
+

@@ -36,8 +36,6 @@ namespace BlackCoat
         private Boolean _Debug;
 
 
-
-
         // Properties ######################################################################
         public Boolean Debug
         {
@@ -53,7 +51,7 @@ namespace BlackCoat
         /// <summary>
         /// Game State Manager. Manages the current Gamestate as well as Gamestate transitions.
         /// </summary>
-        public StateManager StateManager { get; set; }
+        public StateManager StateManager { get; private set; }
         
         /// <summary>
         /// Animation Manager and Factory. Used primarly to make stuff move.
@@ -97,7 +95,6 @@ namespace BlackCoat
         /// Creates a new Instance of the BlackCoat Core class
         /// </summary>
         /// <param name="device">Render Device used by the Core - use of the static creation methods is recommented</param>
-        /// <param name="debug">Determines if the Core should enable debug features</param>
         public Core(RenderWindow device)
         {
             Log.Info("Initializing Black Coat Engine...");
@@ -349,6 +346,7 @@ namespace BlackCoat
         public void Dispose()
         {
             if (Disposed) return;
+            Disposed = true;
 
             StateManager.Destroy();
 
@@ -361,8 +359,6 @@ namespace BlackCoat
 
             DefaultFont.Dispose();
             DefaultFont = null;
-
-            Disposed = true;
         }
 
 

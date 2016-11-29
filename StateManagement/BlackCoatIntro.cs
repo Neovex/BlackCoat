@@ -13,20 +13,28 @@ using SFML.System;
 
 namespace BlackCoat
 {
-    public class BlackCoatIntro : BaseGameState
+    public class BlackCoatIntro : BaseGamestate
     {
-        private BaseGameState _NextState;
+        private BaseGamestate _NextState;
         private Graphic _Bg;
         private Texture _BgTex;
         private SoundBuffer _Sound;
         private Boolean _Done = false;
 
-        public BlackCoatIntro(Core core, BaseGameState nextState):base(core, "BlackCoatIntro")
+        public BlackCoatIntro(Core core, BaseGamestate nextState):base(core, "BlackCoatIntro")
         {
             _NextState = nextState;
+            if (_NextState == null)
+            {
+                Log.Fatal("Engine Intro initialized without followup state");
+            }
         }
 
-        public override bool Load()
+        /// <summary>
+        /// Loads the recuired data for this state.
+        /// </summary>
+        /// <returns>True on success.</returns>
+        protected override bool Load()
         {
             _BgTex = TextureManager.Load("bg", Resources.Loader);
             _Sound = SfxManager.Load("snd", Resources.BCPad);
@@ -50,12 +58,12 @@ namespace BlackCoat
             _Done = true;
         }
 
-        public override void Update(float deltaT)
+        protected override void Update(float deltaT)
         {
             if (_Done) _Core.StateManager.ChangeState(_NextState);
         }
 
-        public override void Destroy()
+        protected override void Destroy()
         {
             Input.KeyPressed -= HandleKeyPressed;
             Layer_BG.RemoveChild(_Bg);
