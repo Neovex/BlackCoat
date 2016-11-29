@@ -48,6 +48,9 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+
+
+
   <ItemGroup>
     <Compile Include="Animation\ValueAnimation.cs" />
     <Compile Include="Animation\Animation.cs" />
