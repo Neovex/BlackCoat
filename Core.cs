@@ -36,6 +36,8 @@ namespace BlackCoat
         private Boolean _Debug;
 
 
+
+
         // Properties ######################################################################
         public Boolean Debug
         {
