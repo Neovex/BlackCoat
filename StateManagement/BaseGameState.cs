@@ -106,7 +106,7 @@ namespace BlackCoat
         }
 
         /// <summary>
-        /// Loads the recuired data for this state.
+        /// Loads the required data for this state.
         /// </summary>
         /// <returns>True on success.</returns>
         internal bool LoadInternal()

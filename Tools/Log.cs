@@ -60,7 +60,8 @@ public static class Log
             // Dig deeper into the stack
             callingMethod = new StackFrame(skip++).GetMethod();
         }
-        var msg = String.Concat(DateTime.Now.ToLongTimeString(), " - ", lvl, " - ", callingMethod.DeclaringType.Name, ".", callingMethod.Name, "(): ", String.Join(" ", msgs.Select(m => (m ?? "[NULL]").ToString())));
+        var msg = String.Concat(DateTime.Now.ToLongTimeString(), " - ", lvl, " - ", callingMethod.DeclaringType.Name, ".", callingMethod.Name, "(): ",
+                                String.Join(" ", msgs.Select(m => (m ?? "[NULL]").ToString())));
         OnLog(msg);
     }
 }

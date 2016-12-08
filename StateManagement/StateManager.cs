@@ -124,4 +124,4 @@ namespace BlackCoat
             _CurrentState?.DestroyInternal();
         }
     }
-
+}

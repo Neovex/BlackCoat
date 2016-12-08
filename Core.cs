@@ -290,9 +290,11 @@ namespace BlackCoat
             {
                 case "exit":
                 case "quit":
+                    Log.Debug("Beginning Engine Shutdown");
                     Exit();
                     return;
                 case "togglefullscreen":
+                case "tfs":
                     Log.Warning("togglefullscreen - not yet implemented");
                     return;
                 case "debug":
