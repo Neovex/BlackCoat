@@ -65,7 +65,7 @@ namespace BlackCoat.Entities
         }
 
         /// <summary>
-        /// Blending method used for Rendering
+        /// Blend method for Rendering
         /// </summary>
         public virtual BlendMode BlendMode
         {
@@ -74,6 +74,20 @@ namespace BlackCoat.Entities
             {
                 var state = RenderState;
                 state.BlendMode = value;
+                RenderState = state;
+            }
+        }
+
+        /// <summary>
+        /// Shader for Rendering
+        /// </summary>
+        public virtual Shader Shader
+        {
+            get { return RenderState.Shader; }
+            set
+            {
+                var state = RenderState;
+                state.Shader = value;
                 RenderState = state;
             }
         }
