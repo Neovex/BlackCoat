@@ -17,6 +17,9 @@ namespace BlackCoat.InputMapping
 
         public InputMap()
         {
+            _KeyboardActions = new List<InputAction<Keyboard.Key, TMappedAction>>();
+            _MouseActions = new List<InputAction<Mouse.Button, TMappedAction>>();
+            _ScrollActions = new List<InputAction<float, TMappedAction>>();
             Enable();
         }
         ~InputMap()
