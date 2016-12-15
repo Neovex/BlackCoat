@@ -7,19 +7,38 @@ using SFML.Window;
 
 namespace BlackCoat.InputMapping
 {
-    public class InputMap<TMappedAction> : IDisposable // TODO: check inheritance & Action structure
+    /// <summary>
+    /// Represents a mapping between input events and a generic operation identifier.
+    /// </summary>
+    /// <typeparam name="TMappedOperation">The type of the mapped operation.</typeparam>
+    /// <seealso cref="System.IDisposable" />
+    public class InputMap<TMappedOperation> : IDisposable // TODO: check inheritance & Action structure
     {
-        private List<InputAction<Keyboard.Key, TMappedAction>> _KeyboardActions;
-        private List<InputAction<Mouse.Button, TMappedAction>> _MouseActions;
-        private List<InputAction<float, TMappedAction>> _ScrollActions;
+        private List<InputAction<Keyboard.Key, TMappedOperation>> _KeyboardActions;
+        private List<InputAction<Mouse.Button, TMappedOperation>> _MouseActions;
+        private List<InputAction<float, TMappedOperation>> _ScrollActions;
 
+        /// <summary>
+        /// Gets a value indicating whether this <see cref="InputMap{TMappedOperation}"/> is enabled.
+        /// </summary>
         public Boolean Enabled { get; private set; }
 
+        /// <summary>
+        /// Occurs when a mapped operation is invoked.
+        /// </summary>
+        public event Action<TMappedOperation> MappedOperationInvoked = a => { };
+
+
+        //CTOR
+        /// <summary>
+        /// Initializes a new instance of the <see cref="InputMap{TMappedOperation}"/> class.
+        /// </summary>
         public InputMap()
         {
-            _KeyboardActions = new List<InputAction<Keyboard.Key, TMappedAction>>();
-            _MouseActions = new List<InputAction<Mouse.Button, TMappedAction>>();
-            _ScrollActions = new List<InputAction<float, TMappedAction>>();
+            Log.Debug("created");
+            _KeyboardActions = new List<InputAction<Keyboard.Key, TMappedOperation>>();
+            _MouseActions = new List<InputAction<Mouse.Button, TMappedOperation>>();
+            _ScrollActions = new List<InputAction<float, TMappedOperation>>();
             Enable();
         }
         ~InputMap()
@@ -27,6 +46,9 @@ namespace BlackCoat.InputMapping
             Dispose();
         }
 
+        /// <summary>
+        /// Enables this instance.
+        /// </summary>
         public void Enable()
         {
             Input.MouseButtonPressed += HandleMouseButtonPressed;
@@ -35,6 +57,9 @@ namespace BlackCoat.InputMapping
             Enabled = true;
         }
 
+        /// <summary>
+        /// Disables this instance.
+        /// </summary>
         public void Disable()
         {
             Input.MouseButtonPressed += HandleMouseButtonPressed;
@@ -43,30 +68,60 @@ namespace BlackCoat.InputMapping
             Enabled = false;
         }
 
-        public void AddKeyboardMapping(Keyboard.Key key, TMappedAction action)
+        /// <summary>
+        /// Adds a keyboard mapping.
+        /// </summary>
+        /// <param name="key">The Keyboard.Key.</param>
+        /// <param name="action">The mapped value.</param>
+        /// <returns>The created InputAction</returns>
+        public InputAction<Keyboard.Key, TMappedOperation> AddKeyboardMapping(Keyboard.Key key, TMappedOperation action)
         {
-            _KeyboardActions.Add(new InputAction<Keyboard.Key, TMappedAction>(new[] { key }, action, Input.IsKeyDown));
+            var a = new InputAction<Keyboard.Key, TMappedOperation>(key, action, Input.IsKeyDown);
+            a.Invoked += RaiseMappedOperationInvoked;
+            _KeyboardActions.Add(a);
+            return a;
         }
 
-        public void AddMouseMapping(Mouse.Button button, TMappedAction action)
+        /// <summary>
+        /// Adds a mouse mapping.
+        /// </summary>
+        /// <param name="button">The Mouse.Button.</param>
+        /// <param name="action">The mapped value.</param>
+        /// <returns>The created InputAction</returns>
+        public InputAction<Mouse.Button, TMappedOperation> AddMouseMapping(Mouse.Button button, TMappedOperation action)
         {
-            _MouseActions.Add(new InputAction<Mouse.Button, TMappedAction>(new[] { button }, action, Input.IsMButtonDown));
+            var a = new InputAction<Mouse.Button, TMappedOperation>(button, action, Input.IsMButtonDown);
+            a.Invoked += RaiseMappedOperationInvoked;
+            _MouseActions.Add(a);
+            return a;
         }
 
-        public void AddScrollMapping(float delta, TMappedAction action)
+        /// <summary>
+        /// Adds a scroll mapping.
+        /// </summary>
+        /// <param name="delta">The delta condition.</param>
+        /// <param name="action">The mapped value.</param>
+        /// <returns>The created InputAction</returns>
+        public InputAction<float, TMappedOperation> AddScrollMapping(float delta, TMappedOperation action)
         {
-            _ScrollActions.Add(new InputAction<float, TMappedAction>(new[] { delta }, action, d => Math.Sign(d) == Math.Sign(Input.MouseWheelDelta)));
+            var a = new InputAction<float, TMappedOperation>(delta, action, ValidateDelta);
+            a.Invoked += RaiseMappedOperationInvoked;
+            _ScrollActions.Add(a);
+            return a;
         }
 
-
-        private void HandleMouseButtonPressed(Mouse.Button button)
+        private bool ValidateDelta(float d)
         {
-            foreach (var action in _KeyboardActions) action.Invoke();
+            return Math.Sign(d) == Math.Sign(Input.MouseWheelDelta);
         }
 
         private void HandleKeyPressed(Keyboard.Key key)
         {
+            foreach (var action in _KeyboardActions) action.Invoke();
+        }
 
+        private void HandleMouseButtonPressed(Mouse.Button button)
+        {
             foreach (var action in _MouseActions) action.Invoke();
         }
 
@@ -76,8 +131,18 @@ namespace BlackCoat.InputMapping
         }
 
 
+        private void RaiseMappedOperationInvoked(TMappedOperation operation)
+        {
+            MappedOperationInvoked.Invoke(operation);
+        }
+
+
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
         public void Dispose()
         {
+            Log.Debug("dispose");
             if (Enabled) Disable();
         }
     }

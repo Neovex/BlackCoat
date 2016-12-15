@@ -1,38 +1,46 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BlackCoat.InputMapping
 {
-    public class InputAction<TInput, TOutput>
+    /// <summary>
+    /// Represents a single mapped operation
+    /// </summary>
+    /// <typeparam name="TCondition">The type of the condition.</typeparam>
+    /// <typeparam name="TOperation">The type of the operation.</typeparam>
+    public class InputAction<TCondition, TOperation> // consider class rename to operation something
     {
-        private TInput[] _Conditions;
-        private TOutput _Output;
-        private Func<TInput, Boolean> _Validator;
+        private TCondition _Condition;
+        private TOperation _Operation;
+        private Func<TCondition, Boolean> _Validator;
 
-        public event Action<TOutput> Invoked = x => { };
+        /// <summary>
+        /// Occurs when the operation condition is met.
+        /// </summary>
+        public event Action<TOperation> Invoked = x => { };
 
-        public InputAction(IEnumerable<TInput> conditions, TOutput output, Func<TInput, Boolean> validator)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="InputAction{TCondition, TOperation}"/> class.
+        /// </summary>
+        /// <param name="condition">The condition.</param>
+        /// <param name="operation">The operation.</param>
+        /// <param name="validator">The validator.</param>
+        public InputAction(TCondition condition, TOperation operation, Func<TCondition, Boolean> validator)
         {
-            if (conditions == null) throw new ArgumentNullException(nameof(conditions));
-            if (conditions.Count() == 0) throw new ArgumentException("no conditions");
-            if (output == null) throw new ArgumentNullException(nameof(output));
+            if (condition == null) throw new ArgumentNullException(nameof(condition));
+            if (operation == null) throw new ArgumentNullException(nameof(operation));
             if (validator == null) throw new ArgumentNullException(nameof(validator));
 
-            _Conditions = conditions.ToArray();
-            _Output = output;
+            _Condition = condition;
+            _Operation = operation;
             _Validator = validator;
         }
 
-        public void Invoke()
+        /// <summary>
+        /// Invokes the operation when the condition is met
+        /// </summary>
+        internal void Invoke()
         {
-            foreach (var condition in _Conditions)
-            {
-                if (!_Validator.Invoke(condition)) return;
-            }
-            Invoked.Invoke(_Output);
+            if (_Validator.Invoke(_Condition)) Invoked.Invoke(_Operation);
         }
     }
 }
