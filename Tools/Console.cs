@@ -17,6 +17,7 @@ namespace BlackCoat.Tools
     {
         // Constants #######################################################################
         private const int _FONT_SIZE = 10;
+        private const int _KEEP_LINES = 25;
 
 
         // Events ##########################################################################
@@ -89,8 +90,8 @@ namespace BlackCoat.Tools
         private void LogMessage(String msg)
         {
             _Messages.Enqueue(msg.Replace(Environment.NewLine, Constants.NEW_LINE));
-            if (_Messages.Count > 100) _Messages.Dequeue();
-            UpdateDisplayText();
+            if (_Messages.Count > _KEEP_LINES) _Messages.Dequeue();
+            if(!_Core.Disposed) UpdateDisplayText();
         }
 
         private void UpdateDisplayText()
