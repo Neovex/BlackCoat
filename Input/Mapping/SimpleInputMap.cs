@@ -8,20 +8,25 @@ using SFML.Window;
 namespace BlackCoat.InputMapping
 {
     /// <summary>
-    /// Represents a mapping between input events and a generic operation identifier.
+    /// Represents a mapping between single input events and a generic operation identifier.
     /// </summary>
     /// <typeparam name="TMappedOperation">The type of the mapped operation.</typeparam>
     /// <seealso cref="System.IDisposable" />
-    public class InputMap<TMappedOperation> : IDisposable // TODO: check inheritance & Action structure
+    public class SimpleInputMap<TMappedOperation> : IDisposable
     {
-        private List<InputAction<Keyboard.Key, TMappedOperation>> _KeyboardActions;
-        private List<InputAction<Mouse.Button, TMappedOperation>> _MouseActions;
-        private List<InputAction<float, TMappedOperation>> _ScrollActions;
+        private Dictionary<Keyboard.Key, TMappedOperation> _KeyboardActions;
+        private Dictionary<Mouse.Button, TMappedOperation> _MouseActions;
+        private Dictionary<float, TMappedOperation> _ScrollActions;
 
         /// <summary>
         /// Gets a value indicating whether this <see cref="InputMap{TMappedOperation}"/> is enabled.
         /// </summary>
         public Boolean Enabled { get; private set; }
+        
+        /// <summary>
+        /// Gets the name of this instance.
+        /// </summary>
+        public String Name { get; private set; }
 
         /// <summary>
         /// Occurs when a mapped operation is invoked.
@@ -33,15 +38,19 @@ namespace BlackCoat.InputMapping
         /// <summary>
         /// Initializes a new instance of the <see cref="InputMap{TMappedOperation}"/> class.
         /// </summary>
-        public InputMap()
+        public SimpleInputMap(string name)
         {
-            Log.Debug("created");
-            _KeyboardActions = new List<InputAction<Keyboard.Key, TMappedOperation>>();
-            _MouseActions = new List<InputAction<Mouse.Button, TMappedOperation>>();
-            _ScrollActions = new List<InputAction<float, TMappedOperation>>();
+            if (String.IsNullOrEmpty(name)) throw new ArgumentException(nameof(name));
+            Name = name;
+            Log.Debug(nameof(SimpleInputMap<TMappedOperation>), Name, "created");
+
+            _KeyboardActions = new Dictionary<Keyboard.Key, TMappedOperation>();
+            _MouseActions = new Dictionary<Mouse.Button, TMappedOperation>();
+            _ScrollActions = new Dictionary<float, TMappedOperation>();
+
             Enable();
         }
-        ~InputMap()
+        ~SimpleInputMap()
         {
             Dispose();
         }
@@ -62,9 +71,9 @@ namespace BlackCoat.InputMapping
         /// </summary>
         public void Disable()
         {
-            Input.MouseButtonPressed += HandleMouseButtonPressed;
-            Input.MouseWheelScrolled += HandleMouseWheelScrolled;
-            Input.KeyPressed += HandleKeyPressed;
+            Input.MouseButtonPressed -= HandleMouseButtonPressed;
+            Input.MouseWheelScrolled -= HandleMouseWheelScrolled;
+            Input.KeyPressed -= HandleKeyPressed;
             Enabled = false;
         }
 
@@ -74,12 +83,9 @@ namespace BlackCoat.InputMapping
         /// <param name="key">The Keyboard.Key.</param>
         /// <param name="action">The mapped value.</param>
         /// <returns>The created InputAction</returns>
-        public InputAction<Keyboard.Key, TMappedOperation> AddKeyboardMapping(Keyboard.Key key, TMappedOperation action)
+        public void AddKeyboardMapping(Keyboard.Key key, TMappedOperation action)
         {
-            var a = new InputAction<Keyboard.Key, TMappedOperation>(key, action, Input.IsKeyDown);
-            a.Invoked += RaiseMappedOperationInvoked;
-            _KeyboardActions.Add(a);
-            return a;
+            _KeyboardActions[key] = action;
         }
 
         /// <summary>
@@ -88,12 +94,9 @@ namespace BlackCoat.InputMapping
         /// <param name="button">The Mouse.Button.</param>
         /// <param name="action">The mapped value.</param>
         /// <returns>The created InputAction</returns>
-        public InputAction<Mouse.Button, TMappedOperation> AddMouseMapping(Mouse.Button button, TMappedOperation action)
+        public void AddMouseMapping(Mouse.Button button, TMappedOperation action)
         {
-            var a = new InputAction<Mouse.Button, TMappedOperation>(button, action, Input.IsMButtonDown);
-            a.Invoked += RaiseMappedOperationInvoked;
-            _MouseActions.Add(a);
-            return a;
+            _MouseActions[button] = action;
         }
 
         /// <summary>
@@ -102,12 +105,9 @@ namespace BlackCoat.InputMapping
         /// <param name="delta">The delta condition.</param>
         /// <param name="action">The mapped value.</param>
         /// <returns>The created InputAction</returns>
-        public InputAction<float, TMappedOperation> AddScrollMapping(float delta, TMappedOperation action)
+        public void AddScrollMapping(float delta, TMappedOperation action)
         {
-            var a = new InputAction<float, TMappedOperation>(delta, action, ValidateDelta);
-            a.Invoked += RaiseMappedOperationInvoked;
-            _ScrollActions.Add(a);
-            return a;
+            _ScrollActions[delta] = action;
         }
 
         private bool ValidateDelta(float d)
@@ -117,17 +117,29 @@ namespace BlackCoat.InputMapping
 
         private void HandleKeyPressed(Keyboard.Key key)
         {
-            foreach (var action in _KeyboardActions) action.Invoke();
+            TMappedOperation action;
+            if (_KeyboardActions.TryGetValue(key, out action))
+            {
+                RaiseMappedOperationInvoked(action);
+            }
         }
 
         private void HandleMouseButtonPressed(Mouse.Button button)
         {
-            foreach (var action in _MouseActions) action.Invoke();
+            TMappedOperation action;
+            if (_MouseActions.TryGetValue(button, out action))
+            {
+                RaiseMappedOperationInvoked(action);
+            }
         }
 
         private void HandleMouseWheelScrolled(float delta)
         {
-            foreach (var action in _ScrollActions) action.Invoke();
+            if (delta != 0)
+            {
+                TMappedOperation action = _ScrollActions.First(kvp => ValidateDelta(kvp.Key)).Value;
+                RaiseMappedOperationInvoked(action);
+            }
         }
 
 
@@ -142,7 +154,6 @@ namespace BlackCoat.InputMapping
         /// </summary>
         public void Dispose()
         {
-            Log.Debug("dispose");
             if (Enabled) Disable();
         }
     }

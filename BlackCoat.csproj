@@ -73,8 +73,9 @@
     <Compile Include="Entities\Layer.cs" />
     <Compile Include="Extensions\IEntityExtensions.cs" />
     <Compile Include="Input\Input.cs" />
-    <Compile Include="Input\Mapping\InputAction.cs" />
-    <Compile Include="Input\Mapping\InputMap.cs" />
+    <Compile Include="Input\Mapping\MappedOperation.cs" />
+    <Compile Include="Input\Mapping\ComplexInputMap.cs" />
+    <Compile Include="Input\Mapping\SimpleInputMap.cs" />
     <Compile Include="Input\TextEnteredEventArgs.cs" />
     <Compile Include="ParticleSystem\Emitter.cs" />
     <Compile Include="ParticleSystem\Particle.cs" />
