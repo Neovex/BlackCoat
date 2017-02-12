@@ -26,6 +26,7 @@ namespace BlackCoat.Tools
 
         // Variables #######################################################################
         private Boolean _Open = false;
+        private Boolean _AnimationRunning = false;
         private Rectangle _Background;
         private TextItem _Display;
         private Queue<String> _Messages = new Queue<String>();
@@ -123,11 +124,23 @@ namespace BlackCoat.Tools
 
         private void Open()
         {
-            _Core.AnimationManager.Run(Position.Y, Position.Y - _Background.Size.Y, 0.4f, v => Position = new Vector2f(Position.X, v), InterpolationType.OutCubic, a => _Open = true);
+            if (_AnimationRunning) return;
+            _AnimationRunning = true;
+            _Core.AnimationManager.Run(Position.Y, Position.Y - _Background.Size.Y, 0.4f, v => Position = new Vector2f(Position.X, v), InterpolationType.OutCubic, a =>
+            {
+                _Open = true;
+                _AnimationRunning = false;
+            });
         }
         private void Close()
         {
-            _Core.AnimationManager.Run(Position.Y, Position.Y + _Background.Size.Y, 0.4f, v => Position = new Vector2f(Position.X, v), InterpolationType.OutCubic, a => _Open = false);
+            if (_AnimationRunning) return;
+            _AnimationRunning = true;
+            _Core.AnimationManager.Run(Position.Y, Position.Y + _Background.Size.Y, 0.4f, v => Position = new Vector2f(Position.X, v), InterpolationType.OutCubic, a =>
+            {
+                _Open = false;
+                _AnimationRunning = false;
+            });
         }
     }
 }
