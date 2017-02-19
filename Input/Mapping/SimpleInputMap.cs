@@ -16,10 +16,13 @@ namespace BlackCoat.InputMapping
     {
         private Dictionary<Keyboard.Key, TMappedOperation> _KeyboardActions;
         private Dictionary<Mouse.Button, TMappedOperation> _MouseActions;
-        private Dictionary<float, TMappedOperation> _ScrollActions;
+        private Boolean _ScrollUpActionSet;
+        private TMappedOperation _ScrollUpAction;
+        private Boolean _ScrollDownActionSet;
+        private TMappedOperation _ScrollDownAction;
 
         /// <summary>
-        /// Gets a value indicating whether this <see cref="InputMap{TMappedOperation}"/> is enabled.
+        /// Gets a value indicating whether this <see cref="SimpleInputMap{TMappedOperation}"/> is enabled.
         /// </summary>
         public Boolean Enabled { get; private set; }
         
@@ -31,12 +34,12 @@ namespace BlackCoat.InputMapping
         /// <summary>
         /// Occurs when a mapped operation is invoked.
         /// </summary>
-        public event Action<TMappedOperation> MappedOperationInvoked = a => { };
+        public event Action<TMappedOperation, Boolean> MappedOperationInvoked = (a, b) => { };
 
 
-        //CTOR
+
         /// <summary>
-        /// Initializes a new instance of the <see cref="InputMap{TMappedOperation}"/> class.
+        /// Initializes a new instance of the <see cref="SimpleInputMap{TMappedOperation}"/> class.
         /// </summary>
         public SimpleInputMap(string name)
         {
@@ -46,7 +49,8 @@ namespace BlackCoat.InputMapping
 
             _KeyboardActions = new Dictionary<Keyboard.Key, TMappedOperation>();
             _MouseActions = new Dictionary<Mouse.Button, TMappedOperation>();
-            _ScrollActions = new Dictionary<float, TMappedOperation>();
+            _ScrollUpActionSet = false;
+            _ScrollDownActionSet = false;
 
             Enable();
         }
@@ -55,14 +59,17 @@ namespace BlackCoat.InputMapping
             Dispose();
         }
 
+
         /// <summary>
         /// Enables this instance.
         /// </summary>
         public void Enable()
         {
             Input.MouseButtonPressed += HandleMouseButtonPressed;
+            Input.MouseButtonReleased += HandleMouseButtonReleased;
             Input.MouseWheelScrolled += HandleMouseWheelScrolled;
             Input.KeyPressed += HandleKeyPressed;
+            Input.KeyReleased += HandleKeyReleased;
             Enabled = true;
         }
 
@@ -72,8 +79,10 @@ namespace BlackCoat.InputMapping
         public void Disable()
         {
             Input.MouseButtonPressed -= HandleMouseButtonPressed;
+            Input.MouseButtonReleased -= HandleMouseButtonReleased;
             Input.MouseWheelScrolled -= HandleMouseWheelScrolled;
             Input.KeyPressed -= HandleKeyPressed;
+            Input.KeyReleased -= HandleKeyReleased;
             Enabled = false;
         }
 
@@ -102,50 +111,62 @@ namespace BlackCoat.InputMapping
         /// <summary>
         /// Adds a scroll mapping.
         /// </summary>
-        /// <param name="delta">The delta condition.</param>
+        /// <param name="direction">The scroll direction.</param>
         /// <param name="action">The mapped value.</param>
         /// <returns>The created InputAction</returns>
-        public void AddScrollMapping(float delta, TMappedOperation action)
+        public void AddScrollMapping(ScrollDirection direction, TMappedOperation action)
         {
-            _ScrollActions[delta] = action;
+            if(direction == ScrollDirection.Up)
+            {
+                _ScrollUpAction = action;
+                _ScrollUpActionSet = true;
+            }
+            else
+            {
+                _ScrollDownAction = action;
+                _ScrollDownActionSet = true;
+            }
         }
 
-        private bool ValidateDelta(float d)
-        {
-            return Math.Sign(d) == Math.Sign(Input.MouseWheelDelta);
-        }
 
         private void HandleKeyPressed(Keyboard.Key key)
         {
-            TMappedOperation action;
-            if (_KeyboardActions.TryGetValue(key, out action))
-            {
-                RaiseMappedOperationInvoked(action);
-            }
+            RaiseMappedOperationInvoked(_KeyboardActions, key, true);
+        }
+        private void HandleKeyReleased(Keyboard.Key key)
+        {
+            RaiseMappedOperationInvoked(_KeyboardActions, key, false);
         }
 
         private void HandleMouseButtonPressed(Mouse.Button button)
         {
-            TMappedOperation action;
-            if (_MouseActions.TryGetValue(button, out action))
-            {
-                RaiseMappedOperationInvoked(action);
-            }
+            RaiseMappedOperationInvoked(_MouseActions, button, true);
+        }
+        private void HandleMouseButtonReleased(Mouse.Button button)
+        {
+            RaiseMappedOperationInvoked(_MouseActions, button, false);
         }
 
         private void HandleMouseWheelScrolled(float delta)
         {
-            if (delta != 0)
+            if (delta > 0)
             {
-                TMappedOperation action = _ScrollActions.First(kvp => ValidateDelta(kvp.Key)).Value;
-                RaiseMappedOperationInvoked(action);
+                if (_ScrollUpActionSet) MappedOperationInvoked.Invoke(_ScrollUpAction, true);
+            }
+            else
+            {
+                if (_ScrollUpActionSet) MappedOperationInvoked.Invoke(_ScrollDownAction, true);
             }
         }
 
 
-        private void RaiseMappedOperationInvoked(TMappedOperation operation)
+        private void RaiseMappedOperationInvoked<TKey>(Dictionary<TKey, TMappedOperation> lookup, TKey key, Boolean activate)
         {
-            MappedOperationInvoked.Invoke(operation);
+            TMappedOperation operation;
+            if (lookup.TryGetValue(key, out operation))
+            {
+                MappedOperationInvoked.Invoke(operation, activate);
+            }
         }
 
 
@@ -156,5 +177,11 @@ namespace BlackCoat.InputMapping
         {
             if (Enabled) Disable();
         }
+    }
+
+    public enum ScrollDirection
+    {
+        Up,
+        Down
     }
 }
