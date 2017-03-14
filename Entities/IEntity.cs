@@ -15,6 +15,11 @@ namespace BlackCoat.Entities
         /// Location of the Entity within its parent container
         /// </summary>
         Vector2f Position { get; set; }
+        
+        /// <summary>
+        /// Entity Rotation
+        /// </summary>
+        Single Rotation { get; set; }
 
         /// <summary>
         /// Parent Container of this Entity

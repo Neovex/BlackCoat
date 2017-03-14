@@ -27,6 +27,11 @@ namespace BlackCoat.Entities
         public abstract Vector2f Position { get; set; }
 
         /// <summary>
+        /// Entity Rotation
+        /// </summary>
+        public abstract Single Rotation { get; set; }
+
+        /// <summary>
         /// Parent Container of this Entity
         /// </summary>
         public Container Parent

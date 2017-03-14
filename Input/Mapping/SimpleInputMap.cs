@@ -155,7 +155,7 @@ namespace BlackCoat.InputMapping
             }
             else
             {
-                if (_ScrollUpActionSet) MappedOperationInvoked.Invoke(_ScrollDownAction, true);
+                if (_ScrollDownActionSet) MappedOperationInvoked.Invoke(_ScrollDownAction, true);
             }
         }
 

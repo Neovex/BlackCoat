@@ -1,4 +1,5 @@
-﻿using SFML.Graphics;
+﻿using System;
+using SFML.Graphics;
 using SFML.System;
 
 namespace BlackCoat.Entities.Shapes
@@ -35,6 +36,15 @@ namespace BlackCoat.Entities.Shapes
                 End = new Vector2f(End.X + value.X - Start.X, End.Y + value.Y - Start.Y);
                 Start = value;
             }
+        }
+        
+        /// <summary>
+        /// The Angle between Start and Endpoint of the Line. READ ONLY!
+        /// </summary>
+        public override float Rotation
+        {
+            get { return Start.AngleTowards(End); }
+            set { throw new NotSupportedException(); }
         }
 
 
