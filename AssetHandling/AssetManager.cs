@@ -29,6 +29,8 @@ namespace BlackCoat
         /// </summary>
         public String RootFolder { get; set; }
 
+        public Boolean SupressLoadingErrors { get; set; }
+
         /// <summary>
         /// Gets a value indicating whether this AssetManager is disposed.
         /// </summary>
@@ -77,6 +79,7 @@ namespace BlackCoat
             catch (Exception e)
             {
                 Log.Error("Could not load asset", name, "from", param, "because of", e);
+                if (!SupressLoadingErrors) throw;
             }
             return null;
         }
