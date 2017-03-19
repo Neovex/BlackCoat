@@ -27,7 +27,9 @@ namespace BlackCoat.Animation
 
         // CTOR ############################################################################
         internal AnimationManager()
-        { }
+        {
+            Log.Debug(nameof(AnimationManager), "created");
+        }
 
 
         // Methods #########################################################################

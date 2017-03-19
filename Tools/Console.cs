@@ -59,6 +59,8 @@ namespace BlackCoat.Tools
 
             View = new View(_Core.DefaultView);
             UpdateDisplayProportions(View.Size.X, View.Size.Y);
+            
+            Log.Debug("Engine", nameof(Console), "ready");
         }
 
 

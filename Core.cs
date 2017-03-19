@@ -57,8 +57,7 @@ namespace BlackCoat
         /// Animation Manager and Factory. Used primarly to make stuff move.
         /// </summary>
         public AnimationManager AnimationManager { get; private set; }
-
-        // Misc
+        
         /// <summary>
         /// Color used to clear the screen of the contents from the last rendered frame.
         /// </summary>
@@ -129,7 +128,6 @@ namespace BlackCoat
 
             Log.Info("Engine ready.");
         }
-
         ~Core()
         {
             if (!Disposed) Dispose();
@@ -361,6 +359,8 @@ namespace BlackCoat
 
             DefaultFont.Dispose();
             DefaultFont = null;
+
+            Log.Info("Engine Destroyed");
         }
 
 

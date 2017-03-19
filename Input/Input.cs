@@ -67,6 +67,8 @@ namespace BlackCoat
             _Device.KeyPressed += HandleKeyPressed;
             _Device.KeyReleased += HandleKeyReleased;
             _Device.TextEntered += HandleTextEntered;
+            
+            Log.Debug(nameof(Input), "management initialized");
         }
 
         /// <summary>

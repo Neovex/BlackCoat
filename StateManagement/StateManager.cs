@@ -34,6 +34,7 @@ namespace BlackCoat
         internal StateManager(Core core)
         {
             _Core = core;
+            Log.Debug(nameof(StateManager), "created");
         }
 
         /// <summary>
@@ -122,6 +123,8 @@ namespace BlackCoat
         internal void Destroy()
         {
             _CurrentState?.DestroyInternal();
+            _CurrentState = _RequestedState = null;
+            Log.Debug(nameof(StateManager), "destroyed");
         }
     }
 }
