@@ -3,13 +3,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using SFML.System;
 
 namespace BlackCoat.Entities.Shapes
 {
     /// <summary>
-    /// Represents a Rectangle Primitve
+    /// Represents a convex Polygon
     /// </summary>
-    public class Rectangle:RectangleShape,IEntity
+    public class Polygon : Shape, IEntity
     {
         // Variables #######################################################################
         protected Core _Core;
@@ -17,11 +18,31 @@ namespace BlackCoat.Entities.Shapes
         protected List<Role> _Roles = new List<Role>();
         protected Single _Alpha = 1;
         protected View _View = null;
+        protected List<Vector2f> _Points = new List<Vector2f>();
 
 
-        // Properties ######################################################################
+        // Properties ######################################################################        
         /// <summary>
-        /// Parent Container of this <see cref="Rectangle"/>
+        /// Vectors this <see cref="Polygon"/> is composed of.
+        /// </summary>
+        public IEnumerable<Vector2f> Points { get { return _Points; } }
+
+        /// <summary>
+        /// Gets the <see cref="Vector2f"/> of the <see cref="Polygon"/> at the specified index.
+        /// </summary>
+        public Vector2f this[int index]
+        {
+            get { return _Points[index]; }
+            set
+            {
+                if (index >= _Points.Count) _Points.Add(value);
+                else _Points[index] = value;
+                Update();
+            }
+        }
+
+        /// <summary>
+        /// Parent Container of this <see cref="Polygon"/>
         /// </summary>
         public Container Parent
         {
@@ -30,7 +51,7 @@ namespace BlackCoat.Entities.Shapes
         }
 
         /// <summary>
-        /// Determines the visibility of the <see cref="Rectangle"/>
+        /// Determines the visibility of the <see cref="Polygon"/>
         /// </summary>
         public virtual Boolean Visible { get; set; }
 
@@ -44,7 +65,7 @@ namespace BlackCoat.Entities.Shapes
         }
 
         /// <summary>
-        /// Fillcolor of the <see cref="Rectangle"/>
+        /// Fillcolor of the <see cref="Polygon"/>
         /// </summary>
         public Color Color
         {
@@ -53,7 +74,7 @@ namespace BlackCoat.Entities.Shapes
         }
 
         /// <summary>
-        /// Renderstate of the <see cref="Rectangle"/>
+        /// Renderstate of the <see cref="Polygon"/>
         /// </summary>
         public virtual RenderStates RenderState { get; set; }
 
@@ -79,7 +100,7 @@ namespace BlackCoat.Entities.Shapes
         }
 
         /// <summary>
-        /// Current Role that describes the <see cref="Rectangle"/>s behavior
+        /// Current Role that describes the <see cref="Polygon"/>s behavior
         /// </summary>
         public Role CurrentRole { get { return _Roles.Count == 0 ? null : _Roles[_Roles.Count - 1]; } }
 
@@ -100,20 +121,21 @@ namespace BlackCoat.Entities.Shapes
 
         // CTOR ############################################################################
         /// <summary>
-        /// Creates a new <see cref="Rectangle"/> instance
+        /// Creates a new <see cref="Polygon"/> instance
         /// </summary>
         /// <param name="core">Engine Core</param>
-        public Rectangle(Core core)
+        public Polygon(Core core)
         {
             _Core = core;
             Visible = true;
             RenderState = RenderStates.Default;
+            _Points = new List<Vector2f>();
         }
 
 
         // Methods #########################################################################
         /// <summary>
-        /// Updates the <see cref="Rectangle"/> using its applied Role.
+        /// Updates the <see cref="Polygon"/> using its applied Role.
         /// Can be overridden by derived classes.
         /// </summary>
         /// <param name="deltaT">Current game-time</param>
@@ -123,7 +145,7 @@ namespace BlackCoat.Entities.Shapes
         }
 
         /// <summary>
-        /// Draws the <see cref="Rectangle"/> if it is visible.
+        /// Draws the <see cref="Polygon"/> if it is visible.
         /// Can be overridden by derived classes.
         /// </summary>
         public virtual void Draw()
@@ -131,10 +153,20 @@ namespace BlackCoat.Entities.Shapes
             _Core.Draw(this);
         }
 
+        // Abstract Implementation #######################################################
+        public override uint GetPointCount()
+        {
+            return (uint)_Points.Count;
+        }
+
+        public override Vector2f GetPoint(uint index)
+        {
+            return _Points[(int)index];
+        }
 
         // Roles #########################################################################
         /// <summary>
-        /// Assigns a new Role to the <see cref="Rectangle"/> without removing the current one.
+        /// Assigns a new Role to the <see cref="Polygon"/> without removing the current one.
         /// Can be overridden by derived classes.
         /// </summary>
         /// <param name="role">The Role to assign</param>
@@ -148,7 +180,7 @@ namespace BlackCoat.Entities.Shapes
         }
 
         /// <summary>
-        /// Assigns a new Role to the <see cref="Rectangle"/> after removing the current one.
+        /// Assigns a new Role to the <see cref="Polygon"/> after removing the current one.
         /// Can be overridden by derived classes.
         /// </summary>
         /// <param name="role">The Role to assign</param>
@@ -164,7 +196,7 @@ namespace BlackCoat.Entities.Shapes
         }
 
         /// <summary>
-        /// Removes the currently active Role from this <see cref="Rectangle"/>
+        /// Removes the currently active Role from this <see cref="Polygon"/>
         /// Can be overridden by derived classes.
         /// </summary>
         /// <returns>The removed role if there was one - otherwhise null</returns>

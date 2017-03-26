@@ -42,7 +42,7 @@ namespace BlackCoat
         Color Color { get; set; }
 
         /// <summary>
-        /// Alpha Value
+        /// Alpha Visibility - 0-1f
         /// </summary>
         Single Alpha { get; set; }
 
