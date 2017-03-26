@@ -9,43 +9,35 @@ namespace BlackCoat.Entities.Shapes
     /// </summary>
     public class Line:BaseEntity
     {
+        private Color _Color;
+        private Vertex[] _Verticies;
+
+
         // Properties ######################################################################
         /// <summary>
         /// Line Color
         /// </summary>
-        public override Color Color { get; set; }
+        public override Color Color
+        {
+            get { return _Color; }
+            set
+            {
+                _Color = value;
+                Start.Color = value;
+                End.Color = value;
+            }
+        }
+
 
         /// <summary>
         /// Point to start the line from
         /// </summary>
-        public Vector2f Start { get; set; }
-        
+        public Vertex Start;
+
         /// <summary>
         /// Point to draw the line to
         /// </summary>
-        public Vector2f End { get; set; }
-
-        /// <summary>
-        /// Position of Startpoint and Endpoint in relation to each other
-        /// </summary>
-        public override Vector2f Position
-        {
-            get { return Start; }
-            set
-            {
-                End = new Vector2f(End.X + value.X - Start.X, End.Y + value.Y - Start.Y);
-                Start = value;
-            }
-        }
-        
-        /// <summary>
-        /// The Angle between Start and Endpoint of the Line. READ ONLY!
-        /// </summary>
-        public override float Rotation
-        {
-            get { return Start.AngleTowards(End); }
-            set { throw new NotSupportedException(); }
-        }
+        public Vertex End;
 
 
         // CTOR ############################################################################
@@ -53,14 +45,15 @@ namespace BlackCoat.Entities.Shapes
         /// Creates a Line instance.
         /// </summary>
         /// <param name="core">Engine Core</param>
-        /// <param name="start">Optional start vector</param>
-        /// <param name="end">Optional end vector</param>
-        /// <param name="color">Optional line color</param>
-        public Line(Core core, Vector2f start = default(Vector2f), Vector2f end = default(Vector2f), Color? color = null) : base(core)
+        /// <param name="start">Start Vertex</param>
+        /// <param name="end">End Vertex</param>
+        /// <param name="color">Optional line color - overrides Vertex color</param>
+        public Line(Core core, Vertex start, Vertex end, Color? color = null) : base(core)
         {
-            Color = color ?? Color.Cyan;
             Start = start;
             End = end;
+            Color = color ?? Color.Cyan;
+            _Verticies = new[] { Start, End };
         }
 
 
@@ -70,7 +63,7 @@ namespace BlackCoat.Entities.Shapes
         /// </summary>
         public override void Draw()
         {
-            _Core.Draw(new[] { new Vertex(Start, Color), new Vertex(End, Color) }, PrimitiveType.Lines, RenderState);
+            _Core.Draw(_Verticies, PrimitiveType.Lines, RenderState);
         }
 
         /// <summary>

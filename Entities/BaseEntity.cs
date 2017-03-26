@@ -10,7 +10,7 @@ namespace BlackCoat.Entities
     /// <summary>
     /// Basic abstract implementation of IEntity
     /// </summary>
-    public abstract class BaseEntity:IEntity
+    public abstract class BaseEntity: Transformable, IEntity
     {
         // Variables #######################################################################
         protected Core _Core;
@@ -21,16 +21,6 @@ namespace BlackCoat.Entities
 
 
         // Properties ######################################################################
-        /// <summary>
-        /// Entity Position
-        /// </summary>
-        public abstract Vector2f Position { get; set; }
-
-        /// <summary>
-        /// Entity Rotation
-        /// </summary>
-        public abstract Single Rotation { get; set; }
-
         /// <summary>
         /// Parent Container of this Entity
         /// </summary>

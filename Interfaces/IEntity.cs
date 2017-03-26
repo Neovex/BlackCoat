@@ -1,26 +1,16 @@
 ﻿using System;
 using SFML.Graphics;
-using SFML.Window;
-using SFML.System;
+using BlackCoat.Entities;
 
-namespace BlackCoat.Entities
+
+namespace BlackCoat
 {
     /// <summary>
     /// Shared interface of all supported Entity Types
     /// </summary>
-    public interface IEntity:Drawable
+    public interface IEntity:Drawable, ITransformable
     {
         // Properties ######################################################################
-        /// <summary>
-        /// Location of the Entity within its parent container
-        /// </summary>
-        Vector2f Position { get; set; }
-        
-        /// <summary>
-        /// Entity Rotation
-        /// </summary>
-        Single Rotation { get; set; }
-
         /// <summary>
         /// Parent Container of this Entity
         /// </summary>
