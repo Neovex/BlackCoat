@@ -59,6 +59,14 @@
     <Compile Include="AssetHandling\MusicManager.cs" />
     <Compile Include="AssetHandling\FontManager.cs" />
     <Compile Include="AssetHandling\TextureManager.cs" />
+    <Compile Include="Collision\CollisionHelper.cs" />
+    <Compile Include="Collision\IPoly.cs" />
+    <Compile Include="Collision\ICircle.cs" />
+    <Compile Include="Collision\IRectangle.cs" />
+    <Compile Include="Collision\ILine.cs" />
+    <Compile Include="Collision\ICollisionShape.cs" />
+    <Compile Include="Collision\ICollidable.cs" />
+    <Compile Include="Collision\Geometry.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="Core.cs" />
     <Compile Include="Entities\Animation\BlittingAnimation.cs" />
@@ -135,5 +143,8 @@
       <Project>{D17DE83D-A592-461F-8AF2-53F9E22E1D0F}</Project>
       <Name>sfml-window</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Collision\Collision.cd" />
   </ItemGroup>
 </Project>

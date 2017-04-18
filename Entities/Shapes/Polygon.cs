@@ -18,14 +18,14 @@ namespace BlackCoat.Entities.Shapes
         protected List<Role> _Roles = new List<Role>();
         protected Single _Alpha = 1;
         protected View _View = null;
-        protected List<Vector2f> _Points = new List<Vector2f>();
+        protected List<Vector2f> _Points;
 
 
         // Properties ######################################################################        
         /// <summary>
         /// Vectors this <see cref="Polygon"/> is composed of.
         /// </summary>
-        public IEnumerable<Vector2f> Points { get { return _Points; } }
+        public IReadOnlyList<Vector2f> Points { get { return _Points; } }
 
         /// <summary>
         /// Gets the <see cref="Vector2f"/> of the <see cref="Polygon"/> at the specified index.
@@ -37,7 +37,7 @@ namespace BlackCoat.Entities.Shapes
             {
                 if (index >= _Points.Count) _Points.Add(value);
                 else _Points[index] = value;
-                Update();
+                Update(); // TODO: mayhaps find a way to force concavity
             }
         }
 
@@ -124,12 +124,12 @@ namespace BlackCoat.Entities.Shapes
         /// Creates a new <see cref="Polygon"/> instance
         /// </summary>
         /// <param name="core">Engine Core</param>
-        public Polygon(Core core)
+        public Polygon(Core core, IEnumerable<Vector2f> points = null)
         {
             _Core = core;
             Visible = true;
             RenderState = RenderStates.Default;
-            _Points = new List<Vector2f>();
+            _Points = points?.ToList() ?? new List<Vector2f>();
         }
 
 
