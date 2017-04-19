@@ -1,16 +1,17 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading;
+using System.Diagnostics;
 
 using SFML.System;
 using SFML.Window;
 using SFML.Graphics;
 
-using BlackCoat.Entities;
 using BlackCoat.Tools;
 using BlackCoat.Animation;
 using BlackCoat.Properties;
+using BlackCoat.Collision;
+
 
 namespace BlackCoat
 {
@@ -34,6 +35,7 @@ namespace BlackCoat
         private Stopwatch _Timer;
         private Tools.Console _Console;
         private Boolean _Debug;
+        private CollisionSystem _CollisionSystem;
 
 
         // Properties ######################################################################
@@ -57,7 +59,20 @@ namespace BlackCoat
         /// Animation Manager and Factory. Used primarly to make stuff move.
         /// </summary>
         public AnimationManager AnimationManager { get; private set; }
-        
+
+        /// <summary>
+        /// Offers methods to calculate collisions between geometric primitves. Must never be null.
+        /// </summary>
+        public CollisionSystem CollisionSystem
+        {
+            get { return _CollisionSystem; }
+            set
+            {
+                if (value == null) throw new Exception($"{nameof(CollisionSystem)} must never be null");
+                _CollisionSystem = value;
+            }
+        }
+
         /// <summary>
         /// Color used to clear the screen of the contents from the last rendered frame.
         /// </summary>
@@ -118,6 +133,7 @@ namespace BlackCoat
             Random = new RandomHelper();
             StateManager = new StateManager(this);
             AnimationManager = new AnimationManager();
+            CollisionSystem = new CollisionSystem();
 
             // Init Input
             Input.Initialize(_Device);

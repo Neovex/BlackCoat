@@ -1,43 +1,43 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using BlackCoat;
+
 using SFML.System;
 
 namespace BlackCoat.Collision
 {
-    // TODO : Comment
-    public static class CollisionHelper
+    /// <summary>
+    /// Contains methods to calculate collisions between geometric primitves
+    /// </summary>
+    public class CollisionSystem
     {
         /// <summary>
         /// Determines if valuerange minA-maxA intersects with a second valuerange minB-maxB
         /// </summary>
-        private static bool Intersect(float minA, float maxA, float minB, float maxB)
+        protected bool Intersect(float minA, float maxA, float minB, float maxB)
         {
             return !(minA < minB ? minB > maxA : minA > maxB);
         }
 
         // Finds the shortest Vector between a Circle center and a set of points
-        private static Vector2f FindCircleProjectionAxis(ICircle a, IEnumerable<Vector2f> points)
+        protected Vector2f FindCircleProjectionAxis(ICircle a, IEnumerable<Vector2f> points)
         {
             return points.AsParallel().OrderBy(p => p.ToLocal(a.Position).LengthSquared()).First().Normalize();
         }
 
         // Projects a set of of points onto an axis and returns the min and max value
-        private static Vector2f CalcProjectionLimits(IEnumerable<Vector2f> points, Vector2f axis)
+        protected Vector2f CalcProjectionLimits(IEnumerable<Vector2f> points, Vector2f axis)
         {
             var projections = points.AsParallel().Select(p => p.DotProduct(axis)).OrderBy(v => v).ToArray();
             return new Vector2f((float)projections[0], (float)projections[projections.Length - 1]);
         }
 
-        private static Vector2f FindPolyProjectionAxis(int i, IReadOnlyList<Vector2f> points)
+        protected Vector2f FindPolyProjectionAxis(int i, IReadOnlyList<Vector2f> points)
         {
             return (i == points.Count - 1 ? points[0] : points[i + 1]).ToLocal(points[i]).FaceVector();
         }
 
-        private static Vector2f[] CalcVerticies(IRectangle rect)
+        protected Vector2f[] CalcVerticies(IRectangle rect)
         {
             return new[]
             {
@@ -49,12 +49,12 @@ namespace BlackCoat.Collision
         }
 
         //POINT
-        public static bool Collide(Vector2f a, Vector2f b)
+        public virtual bool CheckCollision(Vector2f a, Vector2f b)
         {
             return a.ToLocal(b).LengthSquared() <= 1;
         }
 
-        public static bool Collide(Vector2f a, ILine b)
+        public virtual bool CheckCollision(Vector2f a, ILine b)
         {
             var p = a.ToLocal(b.Start);
             var localEnd = b.End.ToLocal(b.Start);
@@ -65,17 +65,17 @@ namespace BlackCoat.Collision
             return !(projectedLength < 0 || projectedLength > localEnd.DotProduct(axis));
         }
 
-        public static bool Collide(Vector2f a, ICircle b)
+        public virtual bool CheckCollision(Vector2f a, ICircle b)
         {
             return a.ToLocal(b.Position).LengthSquared() <= b.Radius * b.Radius;
         }
 
-        public static bool Collide(Vector2f a, IRectangle b)
+        public virtual bool CheckCollision(Vector2f a, IRectangle b)
         {
             return !(a.X < b.Position.X || a.Y < b.Position.Y || a.X > b.Position.X + b.Size.X || a.Y > b.Position.Y + b.Size.Y);
         }
 
-        public static bool Collide(Vector2f a, IPoly b, double offset = 0)
+        public virtual bool CheckCollision(Vector2f a, IPoly b, double offset = 0)
         {
             var v = a.ToLocal(b.Position);
             return !b.Points.AsParallel().Select((p, i) => v.ToLocal(p).DotProduct(FindPolyProjectionAxis(i, b.Points))).Any(p => p + offset > 0);
@@ -83,12 +83,12 @@ namespace BlackCoat.Collision
 
 
         //CIRCLE
-        public static bool Collide(ICircle a, ICircle b)
+        public virtual bool CheckCollision(ICircle a, ICircle b)
         {
             return a.Radius * a.Radius + b.Radius * b.Radius <= a.Position.ToLocal(b.Position).LengthSquared();
         }
 
-        public static bool Collide(ICircle a, ILine b)
+        public virtual bool CheckCollision(ICircle a, ILine b)
         {
             var localEnd = b.End.ToLocal(b.Start);
             var axis = localEnd.Normalize();
@@ -99,7 +99,7 @@ namespace BlackCoat.Collision
                    Intersect(productN - a.Radius, productN + a.Radius, 0, (float)localEnd.DotProduct(axis));
         }
 
-        public static bool Collide(ICircle a, IRectangle b)
+        public virtual bool CheckCollision(ICircle a, IRectangle b)
         {
             var rectPoints = CalcVerticies(b);
             var limits = CalcProjectionLimits(rectPoints.AsParallel().Select(p => p.ToLocal(a.Position)), FindCircleProjectionAxis(a, rectPoints));
@@ -109,7 +109,7 @@ namespace BlackCoat.Collision
                 && Intersect(a.Position.Y - a.Radius, a.Position.Y + a.Radius, rectPoints[0].Y, rectPoints[2].Y);
         }
 
-        public static bool Collide(ICircle circle, IRectangle rect, bool alternate)
+        public virtual bool CheckCollision(ICircle circle, IRectangle rect, bool alternate)
         {
             var circleDistance = new Vector2f();
             circleDistance.X = Math.Abs(circle.Position.X - rect.Position.X);
@@ -128,16 +128,16 @@ namespace BlackCoat.Collision
             return (cornerDistance_sq <= (circle.Radius * circle.Radius));
         }
 
-        public static bool Collide(ICircle a, IPoly b)
+        public virtual bool CheckCollision(ICircle a, IPoly b)
         {
             var pGlobalPoints = b.Points.AsParallel().Select(p => p.ToGlobal(b.Position)).ToArray();
-            var limits = CalcProjectionLimits(pGlobalPoints.AsParallel().Select(p=>p.ToLocal(a.Position)), FindCircleProjectionAxis(a, pGlobalPoints));
-            return Intersect(-a.Radius, a.Radius, limits.X, limits.Y) && Collide(a.Position, b, -a.Radius);
+            var limits = CalcProjectionLimits(pGlobalPoints.AsParallel().Select(p => p.ToLocal(a.Position)), FindCircleProjectionAxis(a, pGlobalPoints));
+            return Intersect(-a.Radius, a.Radius, limits.X, limits.Y) && CheckCollision(a.Position, b, -a.Radius);
         }
 
 
         //RECT
-        public static bool Collide(IRectangle a, ILine b)
+        public virtual bool CheckCollision(IRectangle a, ILine b)
         {
             var localEnd = b.End.ToLocal(b.Start);
             var axis = localEnd.Normalize();
@@ -148,13 +148,13 @@ namespace BlackCoat.Collision
                    Intersect(limitN.X, limitN.Y, 0, (float)localEnd.DotProduct(axis));
         }
 
-        public static bool Collide(IRectangle a, IRectangle b)
+        public virtual bool CheckCollision(IRectangle a, IRectangle b)
         {
             return Intersect(a.Position.X, a.Position.X + a.Size.X, b.Position.X, b.Position.X + b.Size.X)
                 && Intersect(a.Position.Y, a.Position.Y + a.Size.Y, b.Position.Y, b.Position.Y + b.Size.Y);
         }
 
-        public static bool Collide(IRectangle a, IPoly b)
+        public virtual bool CheckCollision(IRectangle a, IPoly b)
         {
             var rectPoints = CalcVerticies(a);
             var polyPoints = b.Points.AsParallel().Select(p => p.ToGlobal(b.Position)).ToArray();
@@ -182,7 +182,7 @@ namespace BlackCoat.Collision
 
 
         // POLY
-        public static Boolean Collide(IPoly a, IPoly b)
+        public virtual Boolean CheckCollision(IPoly a, IPoly b)
         {
             var aGlobalPoints = a.Points.AsParallel().Select(p => p.ToGlobal(a.Position)).ToArray();
             var bGlobalPoints = b.Points.AsParallel().Select(p => p.ToGlobal(b.Position)).ToArray();
@@ -216,7 +216,7 @@ namespace BlackCoat.Collision
                 .Any(limits => Intersect(limits.limitA.X, limits.limitA.Y, limits.limitB.X, limits.limitB.Y));
         }
 
-        public static bool Collide(IPoly a, ILine b)
+        public virtual bool CheckCollision(IPoly a, ILine b)
         {
             var localEnd = b.End.ToLocal(b.Start);
             var axis = localEnd.Normalize();
@@ -229,7 +229,7 @@ namespace BlackCoat.Collision
 
 
         // LINES
-        public static bool Collide(ILine a, ILine b)
+        public virtual bool CheckCollision(ILine a, ILine b)
         {
             var localEnd = a.End.ToLocal(a.Start);
             var axis = localEnd.FaceVector().Normalize();

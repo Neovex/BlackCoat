@@ -59,14 +59,17 @@
     <Compile Include="AssetHandling\MusicManager.cs" />
     <Compile Include="AssetHandling\FontManager.cs" />
     <Compile Include="AssetHandling\TextureManager.cs" />
-    <Compile Include="Collision\CollisionHelper.cs" />
-    <Compile Include="Collision\IPoly.cs" />
-    <Compile Include="Collision\ICircle.cs" />
-    <Compile Include="Collision\IRectangle.cs" />
-    <Compile Include="Collision\ILine.cs" />
-    <Compile Include="Collision\ICollisionShape.cs" />
-    <Compile Include="Collision\ICollidable.cs" />
+    <Compile Include="Collision\CollisionSystem.cs" />
+    <Compile Include="Collision\Interfaces\IPoly.cs" />
+    <Compile Include="Collision\Interfaces\ICircle.cs" />
+    <Compile Include="Collision\Interfaces\IRectangle.cs" />
+    <Compile Include="Collision\Interfaces\ILine.cs" />
+    <Compile Include="Collision\Interfaces\ICollisionShape.cs" />
+    <Compile Include="Collision\Interfaces\ICollidable.cs" />
     <Compile Include="Collision\Geometry.cs" />
+    <Compile Include="Collision\Shapes\CollisionShape.cs" />
+    <Compile Include="Collision\Shapes\RectangleCollisionShape.cs" />
+    <Compile Include="Collision\Shapes\GraphicCollisionShape.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="Core.cs" />
     <Compile Include="Entities\Animation\BlittingAnimation.cs" />
@@ -145,6 +148,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Animation\Animation.cd" />
     <None Include="Collision\Collision.cd" />
   </ItemGroup>
+  <ItemGroup />
 </Project>

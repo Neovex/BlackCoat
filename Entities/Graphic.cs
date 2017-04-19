@@ -1,22 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+
 using SFML.Graphics;
+
+using BlackCoat.Collision;
+
 
 namespace BlackCoat.Entities
 {
     /// <summary>
     /// Renders a texture onto the scene
     /// </summary>
-    public class Graphic : Sprite, IEntity
+    public class Graphic : Sprite, IEntity, ICollidable
     {
         // Variables #######################################################################
         protected Core _Core;
         private Container _Parent;
+        private Single _Alpha = 255;
+        protected View _View;
+        private ICollisionShape _CollisionShape;
         protected List<Role> _Roles = new List<Role>();
-        protected Single _Alpha = 255;
-        protected View _View = null;
 
 
         // Properties ######################################################################
@@ -90,6 +93,15 @@ namespace BlackCoat.Entities
                 state.Shader = value;
                 RenderState = state;
             }
+        }
+
+        /// <summary>
+        /// Gets or sets the collision shape for collision detection
+        /// </summary>
+        public ICollisionShape CollisionShape
+        {
+            get { return _CollisionShape ?? (_CollisionShape = new GraphicCollisionShape(_Core.CollisionSystem, this)); }
+            set { _CollisionShape = value; }
         }
 
         /// <summary>

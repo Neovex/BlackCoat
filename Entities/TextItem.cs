@@ -1,15 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+
 using SFML.Graphics;
+
+using BlackCoat.Collision;
+
 
 namespace BlackCoat.Entities
 {
     /// <summary>
     /// Renders Text onto the Scene
     /// </summary>
-    public class TextItem : Text, IEntity
+    public class TextItem : Text, IEntity, ICollidable
     {
         // Variables #######################################################################
         protected Core _Core;
@@ -81,6 +83,11 @@ namespace BlackCoat.Entities
                 RenderState = state;
             }
         }
+
+        /// <summary>
+        /// Gets or sets the collision shape for collision detection
+        /// </summary>
+        public ICollisionShape CollisionShape { get; set; }
 
         /// <summary>
         /// Current Role that descripes the Entities Behaviour

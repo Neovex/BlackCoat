@@ -1,22 +1,25 @@
-﻿using SFML.Graphics;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+
+using SFML.Graphics;
+
+using BlackCoat.Collision;
+using SFML.System;
 
 namespace BlackCoat.Entities.Shapes
 {
     /// <summary>
     /// Represents a Rectangle Primitve
     /// </summary>
-    public class Rectangle:RectangleShape,IEntity
+    public class Rectangle : RectangleShape, IEntity, ICollidable, IRectangle
     {
         // Variables #######################################################################
         protected Core _Core;
         private Container _Parent;
+        private Single _Alpha = 255;
+        protected View _View;
+        private ICollisionShape _CollisionShape;
         protected List<Role> _Roles = new List<Role>();
-        protected Single _Alpha = 1;
-        protected View _View = null;
 
 
         // Properties ######################################################################
@@ -44,6 +47,11 @@ namespace BlackCoat.Entities.Shapes
         }
 
         /// <summary>
+        /// Renderstate of the <see cref="Rectangle"/>
+        /// </summary>
+        public virtual RenderStates RenderState { get; set; }
+
+        /// <summary>
         /// Fillcolor of the <see cref="Rectangle"/>
         /// </summary>
         public Color Color
@@ -51,11 +59,6 @@ namespace BlackCoat.Entities.Shapes
             get { return FillColor; }
             set { FillColor = value; }
         }
-
-        /// <summary>
-        /// Renderstate of the <see cref="Rectangle"/>
-        /// </summary>
-        public virtual RenderStates RenderState { get; set; }
 
         /// <summary>
         /// Alpha Value (0-1f)
@@ -79,6 +82,15 @@ namespace BlackCoat.Entities.Shapes
         }
 
         /// <summary>
+        /// Gets or sets the collision shape for collision detection
+        /// </summary>
+        public ICollisionShape CollisionShape
+        {
+            get { return _CollisionShape ?? this; }
+            set { _CollisionShape = value; }
+        }
+
+        /// <summary>
         /// Current Role that describes the <see cref="Rectangle"/>s behavior
         /// </summary>
         public Role CurrentRole { get { return _Roles.Count == 0 ? null : _Roles[_Roles.Count - 1]; } }
@@ -94,6 +106,14 @@ namespace BlackCoat.Entities.Shapes
                 var state = RenderState;
                 state.BlendMode = value;
                 RenderState = state;
+            }
+        }
+
+        public Geometry CollisionGeometry
+        {
+            get
+            {
+                throw new NotImplementedException();
             }
         }
 
@@ -119,7 +139,7 @@ namespace BlackCoat.Entities.Shapes
         /// <param name="deltaT">Current game-time</param>
         public virtual void Update(Single deltaT)
         {
-            for (int i = _Roles.Count - 1; i > -1 && _Roles[i].Update(deltaT); i--);
+            for (int i = _Roles.Count - 1; i > -1 && _Roles[i].Update(deltaT); i--) ;
         }
 
         /// <summary>
@@ -131,6 +151,26 @@ namespace BlackCoat.Entities.Shapes
             _Core.Draw(this);
         }
 
+        /// <summary>
+        /// Determines if this <see cref="Rectangle"/> is colliding with another <see cref="ICollisionShape"/>
+        /// </summary>
+        /// <param name="other">The other <see cref="ICollisionShape"/></param>
+        /// <returns>True when the objetcs overlap or touch</returns>
+        public bool Collide(ICollisionShape other)
+        {
+            if (_CollisionShape != null) return _CollisionShape.Collide(other);
+
+            switch (other.CollisionGeometry)
+            {
+                case Geometry.Line:      return _Core.CollisionSystem.CheckCollision(this, other as ILine);
+                case Geometry.Circle:    return _Core.CollisionSystem.CheckCollision(other as ICircle, this);
+                case Geometry.Rectangle: return _Core.CollisionSystem.CheckCollision(this, other as IRectangle);
+                case Geometry.Polygon:   return _Core.CollisionSystem.CheckCollision(this, other as IPoly);
+            }
+
+            Log.Error("Invalid collision shape", other, other?.CollisionGeometry);
+            throw new Exception("Invalid collision shape");
+        }
 
         // Roles #########################################################################
         /// <summary>
