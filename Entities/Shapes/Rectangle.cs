@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 
 using SFML.Graphics;
-
 using BlackCoat.Collision;
 using SFML.System;
 
@@ -18,7 +17,6 @@ namespace BlackCoat.Entities.Shapes
         private Container _Parent;
         private Single _Alpha = 255;
         protected View _View;
-        private ICollisionShape _CollisionShape;
         protected List<Role> _Roles = new List<Role>();
 
 
@@ -84,11 +82,12 @@ namespace BlackCoat.Entities.Shapes
         /// <summary>
         /// Gets or sets the collision shape for collision detection
         /// </summary>
-        public ICollisionShape CollisionShape
-        {
-            get { return _CollisionShape ?? this; }
-            set { _CollisionShape = value; }
-        }
+        public virtual ICollisionShape CollisionShape => this;
+
+        /// <summary>
+        /// Determines the geometric primitive used for collision detection
+        /// </summary>
+        public virtual Geometry CollisionGeometry => Geometry.Rectangle;
 
         /// <summary>
         /// Current Role that describes the <see cref="Rectangle"/>s behavior
@@ -109,13 +108,6 @@ namespace BlackCoat.Entities.Shapes
             }
         }
 
-        public Geometry CollisionGeometry
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-        }
 
 
         // CTOR ############################################################################
@@ -152,24 +144,23 @@ namespace BlackCoat.Entities.Shapes
         }
 
         /// <summary>
+        /// Determines if this <see cref="Rectangle"/> is contains the defined point
+        /// </summary>
+        /// <param name="point">The point to check</param>
+        /// <returns>True when the point is inside the <see cref="Rectangle"/></returns>
+        public virtual bool Collide(Vector2f point)
+        {
+            return _Core.CollisionSystem.CheckCollision(point, this);
+        }
+
+        /// <summary>
         /// Determines if this <see cref="Rectangle"/> is colliding with another <see cref="ICollisionShape"/>
         /// </summary>
         /// <param name="other">The other <see cref="ICollisionShape"/></param>
         /// <returns>True when the objetcs overlap or touch</returns>
-        public bool Collide(ICollisionShape other)
+        public virtual bool Collide(ICollisionShape other)
         {
-            if (_CollisionShape != null) return _CollisionShape.Collide(other);
-
-            switch (other.CollisionGeometry)
-            {
-                case Geometry.Line:      return _Core.CollisionSystem.CheckCollision(this, other as ILine);
-                case Geometry.Circle:    return _Core.CollisionSystem.CheckCollision(other as ICircle, this);
-                case Geometry.Rectangle: return _Core.CollisionSystem.CheckCollision(this, other as IRectangle);
-                case Geometry.Polygon:   return _Core.CollisionSystem.CheckCollision(this, other as IPoly);
-            }
-
-            Log.Error("Invalid collision shape", other, other?.CollisionGeometry);
-            throw new Exception("Invalid collision shape");
+            return _Core.CollisionSystem.CheckCollision(this, other);
         }
 
         // Roles #########################################################################

@@ -60,7 +60,7 @@
     <Compile Include="AssetHandling\FontManager.cs" />
     <Compile Include="AssetHandling\TextureManager.cs" />
     <Compile Include="Collision\CollisionSystem.cs" />
-    <Compile Include="Collision\Interfaces\IPoly.cs" />
+    <Compile Include="Collision\Interfaces\IPolygon.cs" />
     <Compile Include="Collision\Interfaces\ICircle.cs" />
     <Compile Include="Collision\Interfaces\IRectangle.cs" />
     <Compile Include="Collision\Interfaces\ILine.cs" />

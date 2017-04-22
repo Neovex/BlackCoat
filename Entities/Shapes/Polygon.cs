@@ -1,24 +1,25 @@
-﻿using SFML.Graphics;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+
 using SFML.System;
+using SFML.Graphics;
+using BlackCoat.Collision;
 
 namespace BlackCoat.Entities.Shapes
 {
     /// <summary>
     /// Represents a convex Polygon
     /// </summary>
-    public class Polygon : Shape, IEntity
+    public class Polygon : Shape, IEntity, ICollidable, IPolygon
     {
         // Variables #######################################################################
         protected Core _Core;
         private Container _Parent;
-        protected List<Role> _Roles = new List<Role>();
-        protected Single _Alpha = 1;
+        protected Single _Alpha = 255;
         protected View _View = null;
         protected List<Vector2f> _Points;
+        protected List<Role> _Roles = new List<Role>();
 
 
         // Properties ######################################################################        
@@ -37,7 +38,7 @@ namespace BlackCoat.Entities.Shapes
             {
                 if (index >= _Points.Count) _Points.Add(value);
                 else _Points[index] = value;
-                Update(); // TODO: mayhaps find a way to force concavity
+                Update(); // TODO: mayhaps find a way to force convexity
             }
         }
 
@@ -98,6 +99,16 @@ namespace BlackCoat.Entities.Shapes
                 FillColor = color;
             }
         }
+
+        /// <summary>
+        /// Gets or sets the collision shape for collision detection
+        /// </summary>
+        public virtual ICollisionShape CollisionShape => this;
+
+        /// <summary>
+        /// Determines the geometric primitive used for collision detection
+        /// </summary>
+        public virtual Geometry CollisionGeometry => Geometry.Polygon;
 
         /// <summary>
         /// Current Role that describes the <see cref="Polygon"/>s behavior
@@ -162,6 +173,28 @@ namespace BlackCoat.Entities.Shapes
         public override Vector2f GetPoint(uint index)
         {
             return _Points[(int)index];
+        }
+
+
+
+        /// <summary>
+        /// Determines if this <see cref="Polygon"/> is contains the defined point
+        /// </summary>
+        /// <param name="point">The point to check</param>
+        /// <returns>True when the point is inside the <see cref="Polygon"/></returns>
+        public virtual bool Collide(Vector2f point)
+        {
+            return _Core.CollisionSystem.CheckCollision(point, this);
+        }
+
+        /// <summary>
+        /// Determines if this <see cref="Polygon"/> is colliding with another <see cref="ICollisionShape"/>
+        /// </summary>
+        /// <param name="other">The other <see cref="ICollisionShape"/></param>
+        /// <returns>True when the objetcs overlap or touch</returns>
+        public virtual bool Collide(ICollisionShape other)
+        {
+            return _Core.CollisionSystem.CheckCollision(this, other);
         }
 
         // Roles #########################################################################

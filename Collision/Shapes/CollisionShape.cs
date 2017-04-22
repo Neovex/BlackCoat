@@ -1,4 +1,5 @@
 ﻿using System;
+using SFML.System;
 
 namespace BlackCoat.Collision
 {
@@ -24,6 +25,13 @@ namespace BlackCoat.Collision
             if (collisionSystem == null) throw new ArgumentNullException(nameof(collisionSystem));
             _CollisionSystem = collisionSystem;
         }
+
+        /// <summary>
+        /// Determines if this object is contains the defined point
+        /// </summary>
+        /// <param name="point">The point to check</param>
+        /// <returns>True when the point is inside the object</returns>
+        public abstract bool Collide(Vector2f point);
 
         /// <summary>
         /// Determines if this object is colliding with the defined other

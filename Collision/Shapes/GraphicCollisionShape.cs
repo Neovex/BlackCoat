@@ -41,22 +41,23 @@ namespace BlackCoat.Collision
         }
 
         /// <summary>
+        /// Determines if this <see cref="GraphicCollisionShape"/> is contains the defined point
+        /// </summary>
+        /// <param name="point">The point to check</param>
+        /// <returns>True when the point is inside the <see cref="GraphicCollisionShape"/></returns>
+        override public bool Collide(Vector2f point)
+        {
+            return _CollisionSystem.CheckCollision(point, this);
+        }
+
+        /// <summary>
         /// Determines if this <see cref="GraphicCollisionShape"/> is colliding with another <see cref="ICollisionShape"/>
         /// </summary>
         /// <param name="other">The other <see cref="ICollisionShape"/></param>
         /// <returns>True when the objetcs overlap or touch</returns>
-        public override bool Collide(ICollisionShape other)
+        override public bool Collide(ICollisionShape other)
         {
-            switch (other.CollisionGeometry)
-            {
-                case Geometry.Line: return _CollisionSystem.CheckCollision(this, other as ILine);
-                case Geometry.Circle: return _CollisionSystem.CheckCollision(other as ICircle, this);
-                case Geometry.Rectangle: return _CollisionSystem.CheckCollision(this, other as IRectangle);
-                case Geometry.Polygon: return _CollisionSystem.CheckCollision(this, other as IPoly);
-            }
-
-            Log.Error("Invalid collision shape", other, other?.CollisionGeometry);
-            throw new Exception("Invalid collision shape");
+            return _CollisionSystem.CheckCollision(this, other);
         }
     }
 }
