@@ -16,17 +16,17 @@ namespace BlackCoat.Collision
         /// <summary>
         /// Determines the geometric primitive used for collision detection
         /// </summary>
-        public override Geometry CollisionGeometry { get { return Geometry.Rectangle; } }
+        public override Geometry CollisionGeometry => Geometry.Rectangle;
 
         /// <summary>
         /// Gets the position of the associated <see cref="Graphic"/>.
         /// </summary>
-        public Vector2f Position { get { return _Graphic.Position; } }
-        
+        public Vector2f Position => _Graphic.Position;
+
         /// <summary>
         /// Gets the size of the associated <see cref="Graphic"/>.
         /// </summary>
-        public Vector2f Size { get { return _Graphic.Texture?.Size.ToVector2f() ?? new Vector2f(); } }
+        public Vector2f Size => _Graphic.Texture?.Size.ToVector2f() ?? new Vector2f();
 
 
         /// <summary>

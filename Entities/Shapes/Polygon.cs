@@ -22,9 +22,9 @@ namespace BlackCoat.Entities.Shapes
         protected List<Role> _Roles = new List<Role>();
 
 
-        // Properties ######################################################################        
+        // Properties ######################################################################
         /// <summary>
-        /// Vectors this <see cref="Polygon"/> is composed of.
+        /// Vectors this <see cref="Polygon"/> is composed of. Read Only.
         /// </summary>
         public IReadOnlyList<Vector2f> Points { get { return _Points; } }
 
@@ -164,7 +164,7 @@ namespace BlackCoat.Entities.Shapes
             _Core.Draw(this);
         }
 
-        // Abstract Implementation #######################################################
+        // Abstract Implementation #########################################################
         public override uint GetPointCount()
         {
             return (uint)_Points.Count;
@@ -176,7 +176,7 @@ namespace BlackCoat.Entities.Shapes
         }
 
 
-
+        // Collision Implementation ########################################################
         /// <summary>
         /// Determines if this <see cref="Polygon"/> is contains the defined point
         /// </summary>
@@ -197,7 +197,8 @@ namespace BlackCoat.Entities.Shapes
             return _Core.CollisionSystem.CheckCollision(this, other);
         }
 
-        // Roles #########################################################################
+
+        // Roles ###########################################################################
         /// <summary>
         /// Assigns a new Role to the <see cref="Polygon"/> without removing the current one.
         /// Can be overridden by derived classes.
@@ -223,7 +224,7 @@ namespace BlackCoat.Entities.Shapes
         {
             if (role == null) throw new ArgumentNullException("role");
             Role temp = RemoveRole();
-            AssignRole(role);
+            AssignRole(role, true);
             if (!supressInitialization) role.Initialize();
             return temp;
         }

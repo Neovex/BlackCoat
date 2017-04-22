@@ -22,7 +22,7 @@ namespace BlackCoat.Collision
         /// <summary>
         /// Determines the geometric primitive used for collision detection. In this case a Rectangle.
         /// </summary>
-        public override Geometry CollisionGeometry { get { return Geometry.Rectangle; } }
+        public override Geometry CollisionGeometry => Geometry.Rectangle;
 
 
         /// <summary>

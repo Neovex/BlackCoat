@@ -152,7 +152,7 @@ namespace BlackCoat.Entities
         {
             if (role == null) throw new ArgumentNullException("role");
             var ret = RemoveRole();
-            AssignRole(role);
+            AssignRole(role, true);
             if (!supressInitialization) role.Initialize();
             return ret;
         }

@@ -143,6 +143,7 @@ namespace BlackCoat.Entities.Shapes
             _Core.Draw(this);
         }
 
+        // Collision Implementation ########################################################
         /// <summary>
         /// Determines if this <see cref="Rectangle"/> is contains the defined point
         /// </summary>
@@ -163,7 +164,7 @@ namespace BlackCoat.Entities.Shapes
             return _Core.CollisionSystem.CheckCollision(this, other);
         }
 
-        // Roles #########################################################################
+        // Roles ###########################################################################
         /// <summary>
         /// Assigns a new Role to the <see cref="Rectangle"/> without removing the current one.
         /// Can be overridden by derived classes.
@@ -188,8 +189,8 @@ namespace BlackCoat.Entities.Shapes
         public virtual Role ReplaceRole(Role role, Boolean supressInitialization = false)
         {
             if (role == null) throw new ArgumentNullException("role");
-            Role temp = RemoveRole();
-            AssignRole(role);
+            var temp = RemoveRole();
+            AssignRole(role, true);
             if (!supressInitialization) role.Initialize();
             return temp;
         }

@@ -5,7 +5,14 @@ namespace BlackCoat.Collision
 {
     public interface IPolygon : ICollisionShape
     {
-        Vector2f Position { get; set; }
+        /// <summary>
+        /// Location of the <see cref="IPolygon"/> within its parent container
+        /// </summary>
+        Vector2f Position { get; }
+
+        /// <summary>
+        /// Vectors this <see cref="IPolygon"/> is composed of. Read Only.
+        /// </summary>
         IReadOnlyList<Vector2f> Points { get; }
     }
 }

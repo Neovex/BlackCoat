@@ -1,4 +1,5 @@
 ﻿using System;
+using BlackCoat.Collision;
 using SFML.Graphics;
 using SFML.System;
 
@@ -7,10 +8,22 @@ namespace BlackCoat.Entities.Shapes
     /// <summary>
     /// Represents a Line Primitve
     /// </summary>
-    public class Line:BaseEntity
+    public class Line : BaseEntity, IEntity, ICollidable, ILine
     {
+        // Variables #######################################################################
         private Color _Color;
         private Vertex[] _Verticies;
+
+
+        /// <summary>
+        /// Point to start the line from
+        /// </summary>
+        public Vertex Start;
+
+        /// <summary>
+        /// Point to draw the line to
+        /// </summary>
+        public Vertex End;
 
 
         // Properties ######################################################################
@@ -28,16 +41,25 @@ namespace BlackCoat.Entities.Shapes
             }
         }
 
+        /// <summary>
+        /// Gets or sets the collision shape for collision detection
+        /// </summary>
+        public virtual ICollisionShape CollisionShape => this;
 
         /// <summary>
-        /// Point to start the line from
+        /// Determines the geometric primitive used for collision detection
         /// </summary>
-        public Vertex Start;
+        public virtual Geometry CollisionGeometry => Geometry.Line;
 
         /// <summary>
-        /// Point to draw the line to
+        /// Startposition of the <see cref="ILine"/>. Read only.
         /// </summary>
-        public Vertex End;
+        Vector2f ILine.Start => Start.Position;
+
+        /// <summary>
+        /// Endposition of the <see cref="ILine"/>. Read only.
+        /// </summary>
+        Vector2f ILine.End => End.Position;
 
 
         // CTOR ############################################################################
@@ -72,6 +94,27 @@ namespace BlackCoat.Entities.Shapes
         public override void Draw(RenderTarget target, RenderStates states)
         {
             Draw();
+        }
+
+        // Collision Implementation ########################################################
+        /// <summary>
+        /// Determines if this <see cref="Line"/> is contains the defined point
+        /// </summary>
+        /// <param name="point">The point to check</param>
+        /// <returns>True when the point is on the <see cref="Line"/></returns>
+        public virtual bool Collide(Vector2f point)
+        {
+            return _Core.CollisionSystem.CheckCollision(point, this);
+        }
+
+        /// <summary>
+        /// Determines if this <see cref="Line"/> is colliding with another <see cref="ICollisionShape"/>
+        /// </summary>
+        /// <param name="other">The other <see cref="ICollisionShape"/></param>
+        /// <returns>True when the objetcs overlap or touch</returns>
+        public virtual bool Collide(ICollisionShape other)
+        {
+            return _Core.CollisionSystem.CheckCollision(this, other);
         }
     }
 }

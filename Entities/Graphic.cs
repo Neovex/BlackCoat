@@ -9,7 +9,7 @@ using BlackCoat.Collision;
 namespace BlackCoat.Entities
 {
     /// <summary>
-    /// Renders a texture onto the scene
+    /// Represents a single texture <see cref="IEntity"/> in the Scene
     /// </summary>
     public class Graphic : Sprite, IEntity, ICollidable
     {
@@ -24,7 +24,7 @@ namespace BlackCoat.Entities
 
         // Properties ######################################################################
         /// <summary>
-        /// Parent Container of this Entity
+        /// Parent Container of the <see cref="IEntity"/>
         /// </summary>
         public Container Parent
         {
@@ -33,7 +33,7 @@ namespace BlackCoat.Entities
         }
 
         /// <summary>
-        /// Determines the Visibility of the Entity
+        /// Determines the Visibility of the <see cref="IEntity"/>
         /// </summary>
         public virtual Boolean Visible { get; set; }
 
@@ -47,7 +47,7 @@ namespace BlackCoat.Entities
         }
 
         /// <summary>
-        /// Renderstate of the entity
+        /// Renderstate of the <see cref="IEntity"/> 
         /// </summary>
         public RenderStates RenderState { get; set; }
 
@@ -105,7 +105,7 @@ namespace BlackCoat.Entities
         }
 
         /// <summary>
-        /// Current Role that describes the Entities Behavior
+        /// Current Role that describes the <see cref="IEntity"/>s Behavior
         /// </summary>
         public Role CurrentRole { get { return _Roles.Count == 0 ? null : _Roles[_Roles.Count - 1]; } }
 
@@ -140,10 +140,6 @@ namespace BlackCoat.Entities
         /// </summary>
         public virtual void Draw()
         {
-            //if (!_Visible) return;
-            //if (View != null) _Core.CurrentView = View;
-            //if (Parent != null) _RenderState.Transform = Parent.Transform;
-            //Draw(_Core.Device, _RenderState);
             _Core.Draw(this);
         }
 
@@ -174,7 +170,7 @@ namespace BlackCoat.Entities
         {
             if (role == null) throw new ArgumentNullException("role");
             var ret = RemoveRole();
-            AssignRole(role);
+            AssignRole(role, true);
             if (!supressInitialization) role.Initialize();
             return ret;
         }
