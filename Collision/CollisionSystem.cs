@@ -11,33 +11,38 @@ namespace BlackCoat.Collision
     /// </summary>
     public class CollisionSystem
     {
+        public Boolean RaiseCollisionExceptions { get; set; }
+
+
         /// <summary>
         /// Determines if valuerange minA-maxA intersects with a second valuerange minB-maxB
         /// </summary>
-        protected bool Intersect(float minA, float maxA, float minB, float maxB)
+        protected virtual bool Intersect(float minA, float maxA, float minB, float maxB)
         {
             return !(minA < minB ? minB > maxA : minA > maxB);
         }
 
         // Finds the shortest Vector between a Circle center and a set of points
-        protected Vector2f FindCircleProjectionAxis(ICircle a, IEnumerable<Vector2f> points)
+        protected virtual Vector2f FindCircleProjectionAxis(ICircle a, IEnumerable<Vector2f> points)
         {
             return points.AsParallel().OrderBy(p => p.ToLocal(a.Position).LengthSquared()).First().Normalize();
         }
 
         // Projects a set of of points onto an axis and returns the min and max value
-        protected Vector2f CalcProjectionLimits(IEnumerable<Vector2f> points, Vector2f axis)
+        protected virtual Vector2f CalcProjectionLimits(IEnumerable<Vector2f> points, Vector2f axis)
         {
             var projections = points.AsParallel().Select(p => p.DotProduct(axis)).OrderBy(v => v).ToArray();
             return new Vector2f((float)projections[0], (float)projections[projections.Length - 1]);
         }
 
-        protected Vector2f FindPolyProjectionAxis(int i, IReadOnlyList<Vector2f> points)
+        // Retrieves a projection axis based on a polygon side
+        protected virtual Vector2f FindPolyProjectionAxis(int i, IReadOnlyList<Vector2f> points)
         {
             return (i == points.Count - 1 ? points[0] : points[i + 1]).ToLocal(points[i]).FaceVector();
         }
 
-        protected Vector2f[] CalcVerticies(IRectangle rect)
+        // Extracts verticies from a Rectangle
+        protected virtual Vector2f[] CalcRectVerticies(IRectangle rect)
         {
             return new[]
             {
@@ -101,7 +106,7 @@ namespace BlackCoat.Collision
 
         public virtual bool CheckCollision(ICircle a, IRectangle b)
         {
-            var rectPoints = CalcVerticies(b);
+            var rectPoints = CalcRectVerticies(b);
             var limits = CalcProjectionLimits(rectPoints.AsParallel().Select(p => p.ToLocal(a.Position)), FindCircleProjectionAxis(a, rectPoints));
 
             return Intersect(-a.Radius, a.Radius, limits.X, limits.Y)
@@ -141,7 +146,7 @@ namespace BlackCoat.Collision
         {
             var localEnd = b.End.ToLocal(b.Start);
             var axis = localEnd.Normalize();
-            var localRectPoints = CalcVerticies(a).AsParallel().Select(p => p.ToLocal(b.Start)).ToArray();
+            var localRectPoints = CalcRectVerticies(a).AsParallel().Select(p => p.ToLocal(b.Start)).ToArray();
             var limitF = CalcProjectionLimits(localRectPoints, axis.FaceVector());
             var limitN = CalcProjectionLimits(localRectPoints, axis);
             return Intersect(limitF.X, limitF.Y, 0, 0) &&
@@ -156,7 +161,7 @@ namespace BlackCoat.Collision
 
         public virtual bool CheckCollision(IRectangle a, IPolygon b)
         {
-            var rectPoints = CalcVerticies(a);
+            var rectPoints = CalcRectVerticies(a);
             var polyPoints = b.Points.AsParallel().Select(p => p.ToGlobal(b.Position)).ToArray();
 
             // Rough Collision Box check
@@ -244,10 +249,16 @@ namespace BlackCoat.Collision
 
 
         // MAPPERS
-        protected virtual bool HandlUnknownShape(ICollisionShape other)
+        public virtual bool CheckCollision(ICollisionShape self, ICollisionShape other)
         {
-            Log.Error("Invalid collision shape", other, other?.CollisionGeometry);
-            throw new Exception("Invalid collision shape");
+            switch (self.CollisionGeometry)
+            {
+                case Geometry.Line: return CheckCollision(self as ILine, other);
+                case Geometry.Circle: return CheckCollision(self as ICircle, other);
+                case Geometry.Rectangle: return CheckCollision(self as IRectangle, other);
+                case Geometry.Polygon: return CheckCollision(self as IPolygon, other);
+            }
+            return HandlUnknownShape(self);
         }
 
         public virtual bool CheckCollision(ILine line, ICollisionShape other)
@@ -293,6 +304,13 @@ namespace BlackCoat.Collision
                 case Geometry.Polygon: return CheckCollision(poly, other as IPolygon);
             }
             return HandlUnknownShape(other);
+        }
+
+        protected virtual bool HandlUnknownShape(ICollisionShape shape)
+        {
+            Log.Error("Invalid collision shape", shape, shape?.CollisionGeometry);
+            if (RaiseCollisionExceptions) throw new Exception("Invalid collision shape");
+            return false;
         }
     }
 }

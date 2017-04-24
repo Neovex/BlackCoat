@@ -164,12 +164,24 @@ namespace BlackCoat.Entities.Shapes
             _Core.Draw(this);
         }
 
-        // Abstract Implementation #########################################################
+        // Abstract Implementation #########################################################        
+        /// <summary>
+        /// Get the total number of points of the <see cref="Polygon"/>
+        /// </summary>
+        /// <returns>The total point count</returns>
         public override uint GetPointCount()
         {
             return (uint)_Points.Count;
         }
 
+        /// <summary>
+        /// Get the position of a point
+        /// The returned point is in local coordinates, that is,
+        /// the <see cref="Polygon"/>'s transforms (position, rotation, scale) are
+        /// not taken into account.
+        /// </summary>
+        /// <param name="index">Index of the point to get, in range [0 .. PointCount - 1]</param>
+        /// <returns>index-th point of the <see cref="Polygon"/></returns>
         public override Vector2f GetPoint(uint index)
         {
             return _Points[(int)index];
@@ -178,7 +190,7 @@ namespace BlackCoat.Entities.Shapes
 
         // Collision Implementation ########################################################
         /// <summary>
-        /// Determines if this <see cref="Polygon"/> is contains the defined point
+        /// Determines if this <see cref="Polygon"/> contains the defined point
         /// </summary>
         /// <param name="point">The point to check</param>
         /// <returns>True when the point is inside the <see cref="Polygon"/></returns>

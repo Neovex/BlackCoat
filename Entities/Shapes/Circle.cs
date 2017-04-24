@@ -8,9 +8,9 @@ using BlackCoat.Collision;
 namespace BlackCoat.Entities.Shapes
 {
     /// <summary>
-    /// Represents a Rectangle Primitve
+    /// Represents a Circle Primitve
     /// </summary>
-    public class Rectangle : RectangleShape, IEntity, ICollidable, IRectangle
+    class Circle : CircleShape, IEntity, ICollidable, ICircle
     {
         // Variables #######################################################################
         protected Core _Core;
@@ -22,7 +22,7 @@ namespace BlackCoat.Entities.Shapes
 
         // Properties ######################################################################
         /// <summary>
-        /// Parent Container of this <see cref="Rectangle"/>
+        /// Parent Container of this <see cref="Circle"/>
         /// </summary>
         public Container Parent
         {
@@ -31,7 +31,7 @@ namespace BlackCoat.Entities.Shapes
         }
 
         /// <summary>
-        /// Determines the visibility of the <see cref="Rectangle"/>
+        /// Determines the visibility of the <see cref="Circle"/>
         /// </summary>
         public virtual Boolean Visible { get; set; }
 
@@ -45,12 +45,12 @@ namespace BlackCoat.Entities.Shapes
         }
 
         /// <summary>
-        /// Renderstate of the <see cref="Rectangle"/>
+        /// Renderstate of the <see cref="Circle"/>
         /// </summary>
         public virtual RenderStates RenderState { get; set; }
 
         /// <summary>
-        /// Fillcolor of the <see cref="Rectangle"/>
+        /// Fillcolor of the <see cref="Circle"/>
         /// </summary>
         public Color Color
         {
@@ -87,10 +87,10 @@ namespace BlackCoat.Entities.Shapes
         /// <summary>
         /// Determines the geometric primitive used for collision detection
         /// </summary>
-        public virtual Geometry CollisionGeometry => Geometry.Rectangle;
+        public virtual Geometry CollisionGeometry => Geometry.Circle;
 
         /// <summary>
-        /// Current Role that describes the <see cref="Rectangle"/>s behavior
+        /// Current Role that describes the <see cref="Circle"/>s behavior
         /// </summary>
         public Role CurrentRole { get { return _Roles.Count == 0 ? null : _Roles[_Roles.Count - 1]; } }
 
@@ -112,10 +112,10 @@ namespace BlackCoat.Entities.Shapes
 
         // CTOR ############################################################################
         /// <summary>
-        /// Creates a new <see cref="Rectangle"/> instance
+        /// Creates a new <see cref="Circle"/> instance
         /// </summary>
         /// <param name="core">Engine Core</param>
-        public Rectangle(Core core)
+        public Circle(Core core)
         {
             _Core = core;
             Visible = true;
@@ -125,7 +125,7 @@ namespace BlackCoat.Entities.Shapes
 
         // Methods #########################################################################
         /// <summary>
-        /// Updates the <see cref="Rectangle"/> using its applied Role.
+        /// Updates the <see cref="Circle"/> using its applied Role.
         /// Can be overridden by derived classes.
         /// </summary>
         /// <param name="deltaT">Current game-time</param>
@@ -135,7 +135,7 @@ namespace BlackCoat.Entities.Shapes
         }
 
         /// <summary>
-        /// Draws the <see cref="Rectangle"/> if it is visible.
+        /// Draws the <see cref="Circle"/> if it is visible.
         /// Can be overridden by derived classes.
         /// </summary>
         public virtual void Draw()
@@ -145,17 +145,17 @@ namespace BlackCoat.Entities.Shapes
 
         // Collision Implementation ########################################################
         /// <summary>
-        /// Determines if this <see cref="Rectangle"/> contains the defined point
+        /// Determines if this <see cref="Circle"/> contains the defined point
         /// </summary>
         /// <param name="point">The point to check</param>
-        /// <returns>True when the point is inside the <see cref="Rectangle"/></returns>
+        /// <returns>True when the point is inside the <see cref="Circle"/></returns>
         public virtual bool Collide(Vector2f point)
         {
             return _Core.CollisionSystem.CheckCollision(point, this);
         }
 
         /// <summary>
-        /// Determines if this <see cref="Rectangle"/> is colliding with another <see cref="ICollisionShape"/>
+        /// Determines if this <see cref="Circle"/> is colliding with another <see cref="ICollisionShape"/>
         /// </summary>
         /// <param name="other">The other <see cref="ICollisionShape"/></param>
         /// <returns>True when the objetcs overlap or touch</returns>
@@ -166,7 +166,7 @@ namespace BlackCoat.Entities.Shapes
 
         // Roles ###########################################################################
         /// <summary>
-        /// Assigns a new Role to the <see cref="Rectangle"/> without removing the current one.
+        /// Assigns a new Role to the <see cref="Circle"/> without removing the current one.
         /// Can be overridden by derived classes.
         /// </summary>
         /// <param name="role">The Role to assign</param>
@@ -180,7 +180,7 @@ namespace BlackCoat.Entities.Shapes
         }
 
         /// <summary>
-        /// Assigns a new Role to the <see cref="Rectangle"/> after removing the current one.
+        /// Assigns a new Role to the <see cref="Circle"/> after removing the current one.
         /// Can be overridden by derived classes.
         /// </summary>
         /// <param name="role">The Role to assign</param>
@@ -196,7 +196,7 @@ namespace BlackCoat.Entities.Shapes
         }
 
         /// <summary>
-        /// Removes the currently active Role from this <see cref="Rectangle"/>
+        /// Removes the currently active Role from this <see cref="Circle"/>
         /// Can be overridden by derived classes.
         /// </summary>
         /// <returns>The removed role if there was one - otherwhise null</returns>

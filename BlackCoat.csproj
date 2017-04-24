@@ -75,6 +75,7 @@
     <Compile Include="Entities\Animation\BlittingAnimation.cs" />
     <Compile Include="Entities\Animation\FrameAnimation.cs" />
     <Compile Include="Entities\BaseEntity.cs" />
+    <Compile Include="Entities\Shapes\Circle.cs" />
     <Compile Include="Entities\Shapes\Polygon.cs" />
     <Compile Include="Interfaces\IEntity.cs" />
     <Compile Include="Entities\Container.cs" />

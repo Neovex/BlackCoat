@@ -1,7 +1,8 @@
 ﻿using System;
-using BlackCoat.Collision;
+
 using SFML.Graphics;
 using SFML.System;
+using BlackCoat.Collision;
 
 namespace BlackCoat.Entities.Shapes
 {
@@ -93,12 +94,12 @@ namespace BlackCoat.Entities.Shapes
         /// </summary>
         public override void Draw(RenderTarget target, RenderStates states)
         {
-            Draw();
+            Draw(); // TODO : FIX THIS
         }
 
         // Collision Implementation ########################################################
         /// <summary>
-        /// Determines if this <see cref="Line"/> is contains the defined point
+        /// Determines if this <see cref="Line"/> contains the defined point
         /// </summary>
         /// <param name="point">The point to check</param>
         /// <returns>True when the point is on the <see cref="Line"/></returns>
