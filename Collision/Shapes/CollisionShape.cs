@@ -27,16 +27,16 @@ namespace BlackCoat.Collision
         }
 
         /// <summary>
-        /// Determines if this object is contains the defined point
+        /// Determines if this  <see cref="CollisionShape"/> contains the defined point
         /// </summary>
         /// <param name="point">The point to check</param>
         /// <returns>True when the point is inside the object</returns>
         public abstract bool Collide(Vector2f point);
 
         /// <summary>
-        /// Determines if this object is colliding with the defined other
+        /// Determines if this <see cref="CollisionShape"/> is colliding with another <see cref="ICollisionShape"/>
         /// </summary>
-        /// <param name="other">The other object</param>
+        /// <param name="other">The other <see cref="ICollisionShape"/></param>
         /// <returns>True when the objetcs overlap or touch</returns>
         public abstract bool Collide(ICollisionShape other);
     }

@@ -41,7 +41,7 @@ namespace BlackCoat.Collision
         }
 
         /// <summary>
-        /// Determines if this <see cref="GraphicCollisionShape"/> is contains the defined point
+        /// Determines if this <see cref="GraphicCollisionShape"/> contains the defined point
         /// </summary>
         /// <param name="point">The point to check</param>
         /// <returns>True when the point is inside the <see cref="GraphicCollisionShape"/></returns>

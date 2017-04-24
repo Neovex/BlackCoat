@@ -5,8 +5,8 @@ namespace BlackCoat.Collision
     /// <summary>
     /// Represents a simple Rectangle for Collision Detection.
     /// </summary>
-    /// <seealso cref="BlackCoat.Collision.CollisionShape" />
-    /// <seealso cref="BlackCoat.Collision.IRectangle" />
+    /// <seealso cref="BlackCoat.Collision.CollisionShape"/>
+    /// <seealso cref="BlackCoat.Collision.IRectangle"/>
     public class RectangleCollisionShape : CollisionShape, IRectangle
     {
         /// <summary>
@@ -29,16 +29,17 @@ namespace BlackCoat.Collision
         /// Initializes a new instance of the <see cref="RectangleCollisionShape"/> class.
         /// </summary>
         /// <param name="collisionSystem">The collision system used for collision checking.</param>
-        /// <param name="position">The Rectangle position.</param>
-        /// <param name="size">The Rectangle size.</param>
+        /// <param name="position">The <see cref="RectangleCollisionShape"/> position.</param>
+        /// <param name="size">The <see cref="RectangleCollisionShape"/> size.</param>
         public RectangleCollisionShape(CollisionSystem collisionSystem, Vector2f position, Vector2f size) : base(collisionSystem)
         {
             Position = position;
             Size = size;
         }
 
+
         /// <summary>
-        /// Determines if this <see cref="RectangleCollisionShape"/> is contains the defined point
+        /// Determines if this <see cref="RectangleCollisionShape"/> contains the defined point
         /// </summary>
         /// <param name="point">The point to check</param>
         /// <returns>True when the point is inside the <see cref="RectangleCollisionShape"/></returns>

@@ -67,7 +67,10 @@
     <Compile Include="Collision\Interfaces\ICollisionShape.cs" />
     <Compile Include="Collision\Interfaces\ICollidable.cs" />
     <Compile Include="Collision\Geometry.cs" />
+    <Compile Include="Collision\Shapes\PolygonCollisionShape.cs" />
     <Compile Include="Collision\Shapes\CollisionShape.cs" />
+    <Compile Include="Collision\Shapes\CircleCollisionShape.cs" />
+    <Compile Include="Collision\Shapes\LineCollisionShape.cs" />
     <Compile Include="Collision\Shapes\RectangleCollisionShape.cs" />
     <Compile Include="Collision\Shapes\GraphicCollisionShape.cs" />
     <Compile Include="Constants.cs" />

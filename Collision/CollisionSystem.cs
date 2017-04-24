@@ -54,11 +54,19 @@ namespace BlackCoat.Collision
         }
 
         //POINT
+        /// <summary>
+        /// Determines if objects touch or intersect.
+        /// </summary>
+        /// <returns>True when the objects touch or intersect.</returns>
         public virtual bool CheckCollision(Vector2f a, Vector2f b)
         {
             return a.ToLocal(b).LengthSquared() <= 1;
         }
 
+        /// <summary>
+        /// Determines if objects touch or intersect.
+        /// </summary>
+        /// <returns>True when the objects touch or intersect.</returns>
         public virtual bool CheckCollision(Vector2f a, ILine b)
         {
             var p = a.ToLocal(b.Start);
@@ -70,16 +78,29 @@ namespace BlackCoat.Collision
             return !(projectedLength < 0 || projectedLength > localEnd.DotProduct(axis));
         }
 
+        /// <summary>
+        /// Determines if objects touch or intersect.
+        /// </summary>
+        /// <returns>True when the objects touch or intersect.</returns>
         public virtual bool CheckCollision(Vector2f a, ICircle b)
         {
             return a.ToLocal(b.Position).LengthSquared() <= b.Radius * b.Radius;
         }
 
+        /// <summary>
+        /// Determines if objects touch or intersect.
+        /// </summary>
+        /// <returns>True when the objects touch or intersect.</returns>
         public virtual bool CheckCollision(Vector2f a, IRectangle b)
         {
             return !(a.X < b.Position.X || a.Y < b.Position.Y || a.X > b.Position.X + b.Size.X || a.Y > b.Position.Y + b.Size.Y);
         }
 
+        /// <summary>
+        /// Determines if objects touch or intersect.
+        /// </summary>
+        /// <param name="offset">Optional offset to be taken into account when comparing projection values</param>
+        /// <returns>True when the objects touch or intersect.</returns>
         public virtual bool CheckCollision(Vector2f a, IPolygon b, double offset = 0)
         {
             var v = a.ToLocal(b.Position);
@@ -88,11 +109,19 @@ namespace BlackCoat.Collision
 
 
         //CIRCLE
+        /// <summary>
+        /// Determines if objects touch or intersect.
+        /// </summary>
+        /// <returns>True when the objects touch or intersect.</returns>
         public virtual bool CheckCollision(ICircle a, ICircle b)
         {
             return a.Radius * a.Radius + b.Radius * b.Radius <= a.Position.ToLocal(b.Position).LengthSquared();
         }
 
+        /// <summary>
+        /// Determines if objects touch or intersect.
+        /// </summary>
+        /// <returns>True when the objects touch or intersect.</returns>
         public virtual bool CheckCollision(ICircle a, ILine b)
         {
             var localEnd = b.End.ToLocal(b.Start);
@@ -104,6 +133,10 @@ namespace BlackCoat.Collision
                    Intersect(productN - a.Radius, productN + a.Radius, 0, (float)localEnd.DotProduct(axis));
         }
 
+        /// <summary>
+        /// Determines if objects touch or intersect.
+        /// </summary>
+        /// <returns>True when the objects touch or intersect.</returns>
         public virtual bool CheckCollision(ICircle a, IRectangle b)
         {
             var rectPoints = CalcRectVerticies(b);
@@ -114,7 +147,8 @@ namespace BlackCoat.Collision
                 && Intersect(a.Position.Y - a.Radius, a.Position.Y + a.Radius, rectPoints[0].Y, rectPoints[2].Y);
         }
 
-        public virtual bool CheckCollision(ICircle circle, IRectangle rect, bool alternate)
+        /*
+        public virtual bool CheckCollision(ICircle circle, IRectangle rect)
         {
             var circleDistance = new Vector2f();
             circleDistance.X = Math.Abs(circle.Position.X - rect.Position.X);
@@ -132,7 +166,12 @@ namespace BlackCoat.Collision
 
             return (cornerDistance_sq <= (circle.Radius * circle.Radius));
         }
+        */
 
+        /// <summary>
+        /// Determines if objects touch or intersect.
+        /// </summary>
+        /// <returns>True when the objects touch or intersect.</returns>
         public virtual bool CheckCollision(ICircle a, IPolygon b)
         {
             var pGlobalPoints = b.Points.AsParallel().Select(p => p.ToGlobal(b.Position)).ToArray();
@@ -142,6 +181,10 @@ namespace BlackCoat.Collision
 
 
         //RECT
+        /// <summary>
+        /// Determines if objects touch or intersect.
+        /// </summary>
+        /// <returns>True when the objects touch or intersect.</returns>
         public virtual bool CheckCollision(IRectangle a, ILine b)
         {
             var localEnd = b.End.ToLocal(b.Start);
@@ -153,12 +196,20 @@ namespace BlackCoat.Collision
                    Intersect(limitN.X, limitN.Y, 0, (float)localEnd.DotProduct(axis));
         }
 
+        /// <summary>
+        /// Determines if objects touch or intersect.
+        /// </summary>
+        /// <returns>True when the objects touch or intersect.</returns>
         public virtual bool CheckCollision(IRectangle a, IRectangle b)
         {
             return Intersect(a.Position.X, a.Position.X + a.Size.X, b.Position.X, b.Position.X + b.Size.X)
                 && Intersect(a.Position.Y, a.Position.Y + a.Size.Y, b.Position.Y, b.Position.Y + b.Size.Y);
         }
 
+        /// <summary>
+        /// Determines if objects touch or intersect.
+        /// </summary>
+        /// <returns>True when the objects touch or intersect.</returns>
         public virtual bool CheckCollision(IRectangle a, IPolygon b)
         {
             var rectPoints = CalcRectVerticies(a);
@@ -187,6 +238,10 @@ namespace BlackCoat.Collision
 
 
         // POLY
+        /// <summary>
+        /// Determines if objects touch or intersect.
+        /// </summary>
+        /// <returns>True when the objects touch or intersect.</returns>
         public virtual Boolean CheckCollision(IPolygon a, IPolygon b)
         {
             var aGlobalPoints = a.Points.AsParallel().Select(p => p.ToGlobal(a.Position)).ToArray();
@@ -221,6 +276,10 @@ namespace BlackCoat.Collision
                 .Any(limits => Intersect(limits.limitA.X, limits.limitA.Y, limits.limitB.X, limits.limitB.Y));
         }
 
+        /// <summary>
+        /// Determines if objects touch or intersect.
+        /// </summary>
+        /// <returns>True when the objects touch or intersect.</returns>
         public virtual bool CheckCollision(IPolygon a, ILine b)
         {
             var localEnd = b.End.ToLocal(b.Start);
@@ -234,6 +293,10 @@ namespace BlackCoat.Collision
 
 
         // LINES
+        /// <summary>
+        /// Determines if objects touch or intersect.
+        /// </summary>
+        /// <returns>True when the objects touch or intersect.</returns>
         public virtual bool CheckCollision(ILine a, ILine b)
         {
             var localEnd = a.End.ToLocal(a.Start);
@@ -249,6 +312,10 @@ namespace BlackCoat.Collision
 
 
         // MAPPERS
+        /// <summary>
+        /// Determines if objects touch or intersect.
+        /// </summary>
+        /// <returns>True when the objects touch or intersect.</returns>
         public virtual bool CheckCollision(ICollisionShape self, ICollisionShape other)
         {
             switch (self.CollisionGeometry)
@@ -261,6 +328,10 @@ namespace BlackCoat.Collision
             return HandlUnknownShape(self);
         }
 
+        /// <summary>
+        /// Determines if objects touch or intersect.
+        /// </summary>
+        /// <returns>True when the objects touch or intersect.</returns>
         public virtual bool CheckCollision(ILine line, ICollisionShape other)
         {
             switch (other.CollisionGeometry)
@@ -272,6 +343,10 @@ namespace BlackCoat.Collision
             }
             return HandlUnknownShape(other);
         }
+        /// <summary>
+        /// Determines if objects touch or intersect.
+        /// </summary>
+        /// <returns>True when the objects touch or intersect.</returns>
         public virtual bool CheckCollision(ICircle circle, ICollisionShape other)
         {
             switch (other.CollisionGeometry)
@@ -283,6 +358,10 @@ namespace BlackCoat.Collision
             }
             return HandlUnknownShape(other);
         }
+        /// <summary>
+        /// Determines if objects touch or intersect.
+        /// </summary>
+        /// <returns>True when the objects touch or intersect.</returns>
         public virtual bool CheckCollision(IRectangle rect, ICollisionShape other)
         {
             switch (other.CollisionGeometry)
@@ -294,6 +373,10 @@ namespace BlackCoat.Collision
             }
             return HandlUnknownShape(other);
         }
+        /// <summary>
+        /// Determines if objects touch or intersect.
+        /// </summary>
+        /// <returns>True when the objects touch or intersect.</returns>
         public virtual bool CheckCollision(IPolygon poly, ICollisionShape other)
         {
             switch (other.CollisionGeometry)
@@ -306,6 +389,7 @@ namespace BlackCoat.Collision
             return HandlUnknownShape(other);
         }
 
+        // Helpermethod to handle invalid shape combinations - should never happen
         protected virtual bool HandlUnknownShape(ICollisionShape shape)
         {
             Log.Error("Invalid collision shape", shape, shape?.CollisionGeometry);
