@@ -153,7 +153,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Animation\Animation.cd" />
+    <None Include="AssetHandling\AssetHandling.cd" />
     <None Include="Collision\Collision.cd" />
+    <None Include="CoreSystems.cd" />
+    <None Include="Entities\Entities.cd" />
+    <None Include="Input\Input.cd" />
+    <None Include="StateManagement\StateManagement.cd" />
   </ItemGroup>
   <ItemGroup />
 </Project>

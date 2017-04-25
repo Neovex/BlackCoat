@@ -1,0 +1,56 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="BlackCoat.Input">
+    <Position X="0.5" Y="0.5" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>IAACgBAMAAAChQmACAABAAAAAAAgAgAAAYAIQRliAAA=</HashCode>
+      <FileName>Input\Input.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BlackCoat.TextEnteredEventArgs">
+    <Position X="2.5" Y="0.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAACACAAAA=</HashCode>
+      <FileName>Input\TextEnteredEventArgs.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BlackCoat.InputMapping.ComplexInputMap&lt;TMappedOperation&gt;" BaseTypeListCollapsed="true">
+    <Position X="4.75" Y="0.5" Width="3" />
+    <TypeIdentifier>
+      <HashCode>AAEAABABACAAAICAABAACAAAAQAAAAAAgAAoAAAAAAg=</HashCode>
+      <FileName>Input\Mapping\ComplexInputMap.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Field Name="_ScrollActions" />
+      <Field Name="_MouseActions" />
+      <Field Name="_KeyboardActions" />
+    </ShowAsCollectionAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="BlackCoat.InputMapping.MappedOperation&lt;TCondition, TOperation&gt;">
+    <Position X="9" Y="0.5" Width="3.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAACIAAAAQAAAAAAAAAAACAAAAAAAAEAAAAA=</HashCode>
+      <FileName>Input\Mapping\MappedOperation.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BlackCoat.InputMapping.SimpleInputMap&lt;TMappedOperation&gt;" BaseTypeListCollapsed="true">
+    <Position X="12.75" Y="0.5" Width="3.25" />
+    <TypeIdentifier>
+      <HashCode>AQAQABARACAAAICAABABCAQAAQAAAAAAgIAoAQgAIAg=</HashCode>
+      <FileName>Input\Mapping\SimpleInputMap.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Enum Name="BlackCoat.InputMapping.ScrollDirection">
+    <Position X="2.5" Y="2.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAI=</HashCode>
+      <FileName>Input\Mapping\SimpleInputMap.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

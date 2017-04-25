@@ -1,0 +1,117 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="BlackCoat.Core">
+    <Position X="3.5" Y="0.5" Width="2.25" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Properties" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>CgQgEAAIgSAIgoAAAiAAQAgATAQABBgAIAIQACEGAIM=</HashCode>
+      <FileName>Core.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_Console" />
+      <Field Name="_Timer" />
+      <Property Name="AnimationManager" />
+      <Property Name="CollisionSystem" />
+      <Property Name="Random" />
+      <Property Name="StateManager" />
+      <Property Name="DefaultDevice" />
+      <Property Name="DefaultFont" />
+      <Property Name="DefaultView" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="BlackCoat.Tools.Console" Collapsed="true">
+    <Position X="1" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAQAACAAAIQCQACABBQAQABAgAEAAAAAAAACAAAA=</HashCode>
+      <FileName>Tools\Console.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SFML.Graphics.RenderWindow" Collapsed="true">
+    <Position X="0.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier />
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="System.Diagnostics.Stopwatch" Collapsed="true">
+    <Position X="0.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="BlackCoat.Animation.AnimationManager" Collapsed="true">
+    <Position X="7.75" Y="1.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAACAAgAAAAAAAgAAAIAQAAAAAAgAAAAAAEBI=</HashCode>
+      <FileName>Animation\AnimationManager.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Field Name="_ActiveAnimations" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="BlackCoat.Collision.CollisionSystem" Collapsed="true">
+    <Position X="7.75" Y="2.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAIAAEIAEAAAAAAAAAACBAAAAAAgAAAA=</HashCode>
+      <FileName>Collision\CollisionSystem.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BlackCoat.Tools.RandomHelper" Collapsed="true">
+    <Position X="7.75" Y="3.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAA=</HashCode>
+      <FileName>Tools\RandomHelper.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BlackCoat.StateManager" Collapsed="true">
+    <Position X="7.75" Y="0.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAQAAABAAAAABgAQAAAAACAAAABAAAAAAAIAAAAAACA=</HashCode>
+      <FileName>StateManagement\StateManager.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_CurrentState" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="BlackCoat.BaseGamestate" Collapsed="true">
+    <Position X="11.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EgQhhAAAAAACAgEEBQACAAwAAoBAAAAAAQMAAAAAAKA=</HashCode>
+      <FileName>StateManagement\BaseGamestate.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Layer_Game" />
+      <Property Name="TextureManager" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="BlackCoat.Animation.Animation" Collapsed="true">
+    <Position X="11.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAQgACAAQAAgAAIAAAQAAAAAAAIAAAQAAAAAAAEAAAA=</HashCode>
+      <FileName>Animation\Animation.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SFML.Graphics.Font" Collapsed="true">
+    <Position X="0.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="SFML.Graphics.View" Collapsed="true">
+    <Position X="0.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="BlackCoat.Entities.Layer" Collapsed="true">
+    <Position X="14" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAIAgAAIAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Entities\Layer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BlackCoat.TextureManager" Collapsed="true">
+    <Position X="14.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAAAAIAAAAABAAAAAAAAAAAAAAAAAACAAAAAAAA=</HashCode>
+      <FileName>AssetHandling\TextureManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

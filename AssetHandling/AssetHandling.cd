@@ -1,0 +1,56 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="BlackCoat.AssetManager&lt;T&gt;">
+    <Position X="6" Y="0.5" Width="1.75" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAgAAAADAAIAAAAAAAgCAAAAAAAAAAAAACABACAAA=</HashCode>
+      <FileName>AssetHandling\AssetManager.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="BlackCoat.FontManager" Collapsed="true">
+    <Position X="5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>AssetHandling\FontManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BlackCoat.MusicManager" Collapsed="true">
+    <Position X="9.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>AssetHandling\MusicManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BlackCoat.SfxManager" Collapsed="true">
+    <Position X="2.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>AssetHandling\SfxManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BlackCoat.TextureManager" Collapsed="true">
+    <Position X="7.25" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAAAAIAAAAABAAAAAAAAAAAAAAAAAACAAAAAAAA=</HashCode>
+      <FileName>AssetHandling\TextureManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BlackCoat.BaseGamestate" Collapsed="true">
+    <Position X="5.25" Y="6.25" Width="3.5" />
+    <TypeIdentifier>
+      <HashCode>EgQhhAAAAAACAgEEBQACAAwAAoBAAAAAAQMAAAAAAKA=</HashCode>
+      <FileName>StateManagement\BaseGamestate.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="FontManager" />
+      <Property Name="MusicManager" />
+      <Property Name="SfxManager" />
+      <Property Name="TextureManager" />
+    </ShowAsAssociation>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
