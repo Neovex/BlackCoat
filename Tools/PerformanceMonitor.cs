@@ -36,17 +36,19 @@ namespace BlackCoat.Tools
         /// <param name="core">Engine Core</param>
         internal PerformanceMonitor(Core core) : base(core)
         {
-            var backGround = new Rectangle(_Core);
-            backGround.Size = new Vector2f(120, 65);
-            backGround.Color = Color.Black;
-            backGround.Alpha = 0.5f;
-            AddChild(backGround);
+            AddChild(new Rectangle(_Core)
+            {
+                Size = new Vector2f(120, 65),
+                Color = Color.Black,
+                Alpha = 0.5f
+            });
 
-            _InfoDisplay = new TextItem(_Core);
-            _InfoDisplay.Position = new Vector2f(5, 2);
-            _InfoDisplay.Color = Color.Cyan;
-            _InfoDisplay.CharacterSize = 10;
-            AddChild(_InfoDisplay);
+            AddChild(_InfoDisplay = new TextItem(_Core)
+            {
+                Position = new Vector2f(5, 2),
+                Color = Color.Cyan,
+                CharacterSize = 10
+            });
 
             View = _Core.DefaultView;
         }

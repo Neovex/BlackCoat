@@ -141,6 +141,7 @@ namespace BlackCoat.Entities.Shapes
             Visible = true;
             RenderState = RenderStates.Default;
             _Points = points?.ToList() ?? new List<Vector2f>();
+            Update();
         }
 
 

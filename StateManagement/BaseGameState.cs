@@ -1,15 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using BlackCoat;
 using BlackCoat.Entities;
 using BlackCoat.Tools;
 
 namespace BlackCoat
 {
     /// <summary>
-    /// Basecalss for all Gamestates
+    /// Base class for all Gamestates
     /// </summary>
     public abstract class BaseGamestate
     {
@@ -36,7 +32,7 @@ namespace BlackCoat
 
 
         /// <summary>
-        /// Occurs when the State has been sucessfully initialized.
+        /// Occurs when the State has been successfully initialized.
         /// </summary>
         public event Action Ready = () => { };
 
@@ -119,7 +115,7 @@ namespace BlackCoat
         /// <summary>
         /// Updates the State and its children.
         /// </summary>
-        /// <param name="deltaT">Current Frametime.</param>
+        /// <param name="deltaT">Current frame time.</param>
         internal void UpdateInternal(float deltaT)
         {
             if (!Paused) // TODO: good?
@@ -145,10 +141,11 @@ namespace BlackCoat
             MusicManager.Dispose();
             SfxManager.Dispose();
             TextureManager.Dispose();
+            Log.Debug(Name, "destroyed");
         }
 
         /// <summary>
-        /// Loads the recuired data for this state.
+        /// Loads the required data for this state.
         /// </summary>
         /// <returns>True on success.</returns>
         protected abstract Boolean Load();
@@ -156,7 +153,7 @@ namespace BlackCoat
         /// <summary>
         /// Updates the State and its children.
         /// </summary>
-        /// <param name="deltaT">Current Frametime.</param>
+        /// <param name="deltaT">Current frame time.</param>
         protected abstract void Update(float deltaT);
 
         /// <summary>

@@ -10,7 +10,7 @@ namespace BlackCoat.Entities.Shapes
     /// <summary>
     /// Represents a Circle Primitve
     /// </summary>
-    class Circle : CircleShape, IEntity, ICollidable, ICircle
+    public class Circle : CircleShape, IEntity, ICollidable, ICircle
     {
         // Variables #######################################################################
         protected Core _Core;

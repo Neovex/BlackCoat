@@ -38,7 +38,7 @@ namespace BlackCoat
         }
 
         /// <summary>
-        /// Beginns a state chane. Note: the new state usually becomes active in the next frame.
+        /// Begins a state change. Note: the new state usually becomes active in the next frame.
         /// </summary>
         /// <param name="state">The new state.</param>
         public void ChangeState(BaseGamestate state)
@@ -51,7 +51,7 @@ namespace BlackCoat
         /// <summary>
         /// Updates the current state or executes a state change.
         /// </summary>
-        /// <param name="deltaT">Current Frametime</param>
+        /// <param name="deltaT">Current frame time</param>
         internal void Update(float deltaT)
         {
             if (_CurrentState == _RequestedState)
@@ -90,7 +90,7 @@ namespace BlackCoat
                         Log.Debug("Trying to load new State:", _CurrentState);
                         if (_CurrentState.LoadInternal())
                         {
-                            Log.Debug(_CurrentState, "sucessfully loaded");
+                            Log.Debug(_CurrentState, "successfully loaded");
                             StateChanged.Invoke(_CurrentState);
                         }
                         else

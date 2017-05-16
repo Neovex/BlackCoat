@@ -68,13 +68,13 @@ namespace BlackCoat.Entities.Shapes
         /// Creates a Line instance.
         /// </summary>
         /// <param name="core">Engine Core</param>
-        /// <param name="start">Start Vertex</param>
-        /// <param name="end">End Vertex</param>
-        /// <param name="color">Optional line color - overrides Vertex color</param>
-        public Line(Core core, Vertex start, Vertex end, Color? color = null) : base(core)
+        /// <param name="start">Start Position</param>
+        /// <param name="end">End Position</param>
+        /// <param name="color">Optional line color</param>
+        public Line(Core core, Vector2f start, Vector2f end, Color? color = null) : base(core)
         {
-            Start = start;
-            End = end;
+            Start = new Vertex(start);
+            End = new Vertex(end);
             Color = color ?? Color.Cyan;
             _Verticies = new[] { Start, End };
         }
@@ -86,15 +86,14 @@ namespace BlackCoat.Entities.Shapes
         /// </summary>
         public override void Draw()
         {
+            _Verticies[0] = Start;
+            _Verticies[1] = End;
             _Core.Draw(_Verticies, PrimitiveType.Lines, RenderState);
         }
 
-        /// <summary>
-        /// Unused Function
-        /// </summary>
         public override void Draw(RenderTarget target, RenderStates states)
         {
-            Draw(); // TODO : FIX THIS
+            throw new NotImplementedException(); // FIXME
         }
 
         // Collision Implementation ########################################################
