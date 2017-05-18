@@ -16,29 +16,40 @@ using BlackCoat.Collision;
 namespace BlackCoat
 {
     /// <summary>
-    /// Render Core Class - represents the main controller for all rendering, logic and engine related operations.
+    /// Black Coat Core Class - represents the main controller for all rendering, logic and engine related operations.
     /// This class does not support multi-threading.
     /// </summary>
     public sealed class Core : IDisposable
     {
         // Events ##########################################################################
         /// <summary>
-        /// Update Event is raised for each frame. This event can be used to update external components such as a game instance.
+        /// The Update Event is raised for each frame. This event can be used to update code areas which are not directly linked to the engine itself.
         /// </summary>
         public event Action<float> OnUpdate = d => { };
+
+        /// <summary>
+        /// Occurs when a console command is issued that is not handled by the engine itself.
+        /// </summary>
         public event Func<String, Boolean> ConsoleCommand = c => false;
+
+        /// <summary>
+        /// Occurs when the engine enters or leaves the debug mode.
+        /// </summary>
         public event Action<Boolean> DebugChanged = d => { };
 
         
         // Variables #######################################################################
         private RenderWindow _Device;
         private Stopwatch _Timer;
-        private Tools.Console _Console;
         private Boolean _Debug;
         private CollisionSystem _CollisionSystem;
+        private Tools.Console _Console;
 
 
-        // Properties ######################################################################
+        // Properties ######################################################################        
+        /// <summary>
+        /// Gets or sets a value indicating whether this <see cref="Core"/> is currently in debug mode.
+        /// </summary>
         public Boolean Debug
         {
             get { return _Debug; }
@@ -56,12 +67,12 @@ namespace BlackCoat
         public StateManager StateManager { get; private set; }
         
         /// <summary>
-        /// Animation Manager and Factory. Used primarly to make stuff move.
+        /// Animation Manager and Factory. Used primarily to make stuff move.
         /// </summary>
         public AnimationManager AnimationManager { get; private set; }
 
         /// <summary>
-        /// Offers methods to calculate collisions between geometric primitves. Must never be null.
+        /// Offers methods to calculate collisions between geometric primitives. Must never be null.
         /// </summary>
         public CollisionSystem CollisionSystem
         {
@@ -108,12 +119,12 @@ namespace BlackCoat
         /// <summary>
         /// Creates a new Instance of the BlackCoat Core class
         /// </summary>
-        /// <param name="device">Render Device used by the Core - use of the static creation methods is recommented</param>
+        /// <param name="device">Render Device used by the Core - use of the static creation methods is recommended</param>
         public Core(RenderWindow device)
         {
             Log.Info("Initializing Black Coat Engine...");
 
-            // Init Core Systems
+            // Init Backend
             if (device == null) throw new ArgumentNullException("device");
             _Device = device;
             _Timer = new Stopwatch();
@@ -142,7 +153,7 @@ namespace BlackCoat
             _Console = new Tools.Console(this, _Device);
             _Console.Command += HandleConsoleCommand;
 
-            Log.Info("Engine ready.");
+            Log.Info("Black Coat Engine Creation Completed. - Version", GetType().Assembly.GetName().Version);
         }
         ~Core()
         {
@@ -171,7 +182,7 @@ namespace BlackCoat
         }
 
         /// <summary>
-        /// Sets the icon of the render window and the associated taskbar button.
+        /// Sets the icon of the render window and the associated task bar button.
         /// </summary>
         /// <param name="icon">Texture used to set the icon from</param>
         public void SetRenderWindowIcon(Texture icon)
@@ -190,7 +201,7 @@ namespace BlackCoat
         public void Run()
         {
             if (Disposed) throw new ObjectDisposedException("Core");
-            Log.Info("Black Coat Engine Started - Version", GetType().Assembly.GetName().Version);
+            Log.Info("Engine Started");
             ShowRenderWindow();
             while (_Device.IsOpen)
             {
@@ -336,7 +347,7 @@ namespace BlackCoat
         }
         #endregion
 
-        #region Device Eventhandlers
+        #region Device Event handlers
         private void HandleLostFocus(object sender, EventArgs e)
         {
             _Timer.Stop();
@@ -388,7 +399,7 @@ namespace BlackCoat
         public static RenderWindow DefaultDevice { get { return new RenderWindow(new VideoMode(800, 600), "Default", Styles.Titlebar); } }
 
         /// <summary>
-        /// Initializes a default Graphic Device mimiking the current desktop
+        /// Initializes a default Graphic Device mimicking the current desktop
         /// </summary>
         /// <returns>The desktop device</returns>
         public static RenderWindow DesktopDevice { get { return new RenderWindow(VideoMode.DesktopMode, String.Empty, Styles.Fullscreen); } }
@@ -400,7 +411,7 @@ namespace BlackCoat
         /// <param name="deviceHeight">Height of the Backbuffer</param>
         /// <param name="title">Title of the Renderwindow</param>
         /// <param name="style">Display Style of the Device/Window</param>
-        /// <param name="antialiasing">Determines the Antialiasing</param>
+        /// <param name="antialiasing">Determines the Anti-aliasing</param>
         /// <param name="skipValidityCheck">Skips the device validation (not recommended but required for non-standard resolutions)</param>
         /// <returns>The Initialized RenderWindow or null if the Device could not be created</returns>
         public static RenderWindow CreateDevice(UInt32 deviceWidth, UInt32 deviceHeight, String title, Styles style, UInt32 antialiasing, Boolean skipValidityCheck = false)
@@ -417,7 +428,7 @@ namespace BlackCoat
         /// Initializes a new Graphic Device based on a window or control handle
         /// </summary>
         /// <param name="handle">Handle to create the device on</param>
-        /// <param name="antialiasing">Determines the Antialiasing</param>
+        /// <param name="antialiasing">Determines the Anti-aliasing</param>
         /// <returns>The Initialized RenderWindow instance based on the device</returns>
         public static RenderWindow CreateDevice(IntPtr handle, UInt32 antialiasing)
         {

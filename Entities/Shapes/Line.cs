@@ -7,7 +7,7 @@ using BlackCoat.Collision;
 namespace BlackCoat.Entities.Shapes
 {
     /// <summary>
-    /// Represents a Line Primitve
+    /// Represents a Line Primitive
     /// </summary>
     public class Line : BaseEntity, IEntity, ICollidable, ILine
     {
@@ -53,12 +53,12 @@ namespace BlackCoat.Entities.Shapes
         public virtual Geometry CollisionGeometry => Geometry.Line;
 
         /// <summary>
-        /// Startposition of the <see cref="ILine"/>. Read only.
+        /// Start position of the <see cref="ILine"/>. Read only.
         /// </summary>
         Vector2f ILine.Start => Start.Position;
 
         /// <summary>
-        /// Endposition of the <see cref="ILine"/>. Read only.
+        /// End position of the <see cref="ILine"/>. Read only.
         /// </summary>
         Vector2f ILine.End => End.Position;
 
@@ -82,7 +82,7 @@ namespace BlackCoat.Entities.Shapes
 
         // Methods #########################################################################
         /// <summary>
-        /// Draws the Line respective to its paramters and view
+        /// Draws the Line respective to its parameters and view
         /// </summary>
         public override void Draw()
         {
@@ -111,7 +111,7 @@ namespace BlackCoat.Entities.Shapes
         /// Determines if this <see cref="Line"/> is colliding with another <see cref="ICollisionShape"/>
         /// </summary>
         /// <param name="other">The other <see cref="ICollisionShape"/></param>
-        /// <returns>True when the objetcs overlap or touch</returns>
+        /// <returns>True when the objects overlap or touch</returns>
         public virtual bool Collide(ICollisionShape other)
         {
             return _Core.CollisionSystem.CheckCollision(this, other);

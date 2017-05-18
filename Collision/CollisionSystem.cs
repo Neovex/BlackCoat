@@ -36,8 +36,6 @@ namespace BlackCoat.Collision
         /// <summary>
         /// Finds the shortest Vector between a Circle center and a set of localized points
         /// </summary>
-        /// <param name="points">The points.</param>
-        /// <returns></returns>
         protected virtual Vector2f FindCircleProjectionAxis(IEnumerable<Vector2f> points)
         {
             return points.OrderBy(p => p.LengthSquared()).First().Normalize();
@@ -57,7 +55,7 @@ namespace BlackCoat.Collision
         /// </summary>
         protected virtual Vector2f FindPolyProjectionAxis(int i, IReadOnlyList<Vector2f> points)
         {
-            return (i == points.Count - 1 ? points[0] : points[i + 1]).ToLocal(points[i]).FaceVector(); // TODO : find and check all affected
+            return (i == points.Count - 1 ? points[0] : points[i + 1]).ToLocal(points[i]).FaceVector();
         }
 
         /// <summary>
