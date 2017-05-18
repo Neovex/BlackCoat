@@ -1,31 +1,32 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using BlackCoat;
 
 namespace BlackCoat
 {
     /// <summary>
-    /// Manages the transistions between Gamestates
+    /// Manages the transitions between Gamestates
     /// </summary>
     public sealed class StateManager
     {
+        /// <summary>
+        /// Occurs when a new Gamestate has successfully finished loading an becomes the new active state.
+        /// </summary>
+        public event Action<BaseGamestate> StateChanged = s => { };
+        /// <summary>
+        /// Occurs when a new Gamestate has failed to load.
+        /// </summary>
+        public event Action<BaseGamestate> StateChangeFailed = s => { };
+
+
         private Core _Core;
         private BaseGamestate _CurrentState;
         private BaseGamestate _RequestedState;
+
 
         /// <summary>
         /// Name of the currently active Gamestate. NULL if none active.
         /// </summary>
         public String CurrentState { get { return _CurrentState?.Name; } }
-
-
-        /// <summary>
-        /// Occurs when a new Gamestate has successfully finished loading an becomes the new acive state.
-        /// </summary>
-        public event Action<BaseGamestate> StateChanged = s => { };
-
+        
 
         /// <summary>
         /// Initializes a new instance of the <see cref="StateManager"/> class.
@@ -36,6 +37,7 @@ namespace BlackCoat
             _Core = core;
             Log.Debug(nameof(StateManager), "created");
         }
+
 
         /// <summary>
         /// Begins a state change. Note: the new state usually becomes active in the next frame.
@@ -95,8 +97,10 @@ namespace BlackCoat
                         }
                         else
                         {
-                            Log.Error("Failed to load state", _CurrentState, "resetting state to NULL");
+                            Log.Error("Failed to load state", _CurrentState);
+                            var failedState = _CurrentState;
                             _CurrentState = _RequestedState = null;
+                            StateChangeFailed.Invoke(failedState);
                         }
                     }
                     catch (Exception e)

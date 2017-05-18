@@ -34,8 +34,11 @@ namespace BlackCoat
         /// <summary>
         /// Occurs when the State has been successfully initialized.
         /// </summary>
-        public event Action Ready = () => { };
-
+        public event Action Loaded = () => { };
+        /// <summary>
+        /// Occurs when the State has failed to initialize.
+        /// </summary>
+        public event Action LoadingFailed = () => { };
         /// <summary>
         /// Occurs when the State is about to be destroyed.
         /// </summary>
@@ -107,9 +110,16 @@ namespace BlackCoat
         /// <returns>True on success.</returns>
         internal bool LoadInternal()
         {
-            if (!Load()) return false;
-            Ready.Invoke();
-            return true;
+            if (Load())
+            {
+                Loaded.Invoke();
+                return true;
+            }
+            else
+            {
+                LoadingFailed.Invoke();
+                return false;
+            }
         }
 
         /// <summary>
