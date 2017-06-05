@@ -24,7 +24,7 @@ namespace BlackCoat.Entities
 
         // Properties ######################################################################
         /// <summary>
-        /// Parent Container of the <see cref="IEntity"/>
+        /// Parent Container of the <see cref="Graphic"/>
         /// </summary>
         public Container Parent
         {
@@ -33,7 +33,7 @@ namespace BlackCoat.Entities
         }
 
         /// <summary>
-        /// Determines the Visibility of the <see cref="IEntity"/>
+        /// Determines the Visibility of the <see cref="Graphic"/>
         /// </summary>
         public virtual Boolean Visible { get; set; }
 
@@ -47,9 +47,14 @@ namespace BlackCoat.Entities
         }
 
         /// <summary>
-        /// Renderstate of the <see cref="IEntity"/> 
+        /// Renderstate of the <see cref="Graphic"/> 
         /// </summary>
         public RenderStates RenderState { get; set; }
+
+        /// <summary>
+        /// Target device for rendering
+        /// </summary>
+        public RenderTarget RenderTarget { get; set; }
 
         /// <summary>
         /// Alpha Visibility - 0-1f
@@ -108,6 +113,7 @@ namespace BlackCoat.Entities
         /// Current Role that describes the <see cref="IEntity"/>s Behavior
         /// </summary>
         public Role CurrentRole { get { return _Roles.Count == 0 ? null : _Roles[_Roles.Count - 1]; } }
+
 
 
         // CTOR ############################################################################

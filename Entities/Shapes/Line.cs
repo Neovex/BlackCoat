@@ -13,7 +13,7 @@ namespace BlackCoat.Entities.Shapes
     {
         // Variables #######################################################################
         private Color _Color;
-        private Vertex[] _Verticies;
+        private Vertex[] _Vertices;
 
 
         /// <summary>
@@ -76,7 +76,7 @@ namespace BlackCoat.Entities.Shapes
             Start = new Vertex(start);
             End = new Vertex(end);
             Color = color ?? Color.Cyan;
-            _Verticies = new[] { Start, End };
+            _Vertices = new[] { Start, End };
         }
 
 
@@ -86,14 +86,16 @@ namespace BlackCoat.Entities.Shapes
         /// </summary>
         public override void Draw()
         {
-            _Verticies[0] = Start;
-            _Verticies[1] = End;
-            _Core.Draw(_Verticies, PrimitiveType.Lines, RenderState);
+            _Vertices[0] = Start;
+            _Vertices[1] = End;
+            _Core.Draw(_Vertices, PrimitiveType.Lines, RenderState);
         }
 
         public override void Draw(RenderTarget target, RenderStates states)
         {
-            throw new NotImplementedException(); // FIXME
+            _Vertices[0] = Start;
+            _Vertices[1] = End;
+            target.Draw(_Vertices, PrimitiveType.Lines, states);
         }
 
         // Collision Implementation ########################################################

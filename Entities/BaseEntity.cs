@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using SFML.Graphics;
-using SFML.System;
 
 namespace BlackCoat.Entities
 {
@@ -48,6 +45,11 @@ namespace BlackCoat.Entities
         /// Renderstate of the entity
         /// </summary>
         public virtual RenderStates RenderState { get; set; }
+
+        /// <summary>
+        /// Target device for rendering
+        /// </summary>
+        public virtual RenderTarget RenderTarget { get; set; }
 
         /// <summary>
         /// Blending method used for Rendering

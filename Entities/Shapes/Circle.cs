@@ -50,6 +50,11 @@ namespace BlackCoat.Entities.Shapes
         public virtual RenderStates RenderState { get; set; }
 
         /// <summary>
+        /// Target device for rendering
+        /// </summary>
+        public RenderTarget RenderTarget { get; set; }
+
+        /// <summary>
         /// Fill-color of the <see cref="Circle"/>
         /// </summary>
         public Color Color

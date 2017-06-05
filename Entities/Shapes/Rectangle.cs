@@ -3,12 +3,13 @@ using System.Collections.Generic;
 
 using SFML.System;
 using SFML.Graphics;
+
 using BlackCoat.Collision;
 
 namespace BlackCoat.Entities.Shapes
 {
     /// <summary>
-    /// Represents a Rectangle Primitve
+    /// Represents a Rectangle Primitive
     /// </summary>
     public class Rectangle : RectangleShape, IEntity, ICollidable, IRectangle
     {
@@ -50,7 +51,12 @@ namespace BlackCoat.Entities.Shapes
         public virtual RenderStates RenderState { get; set; }
 
         /// <summary>
-        /// Fillcolor of the <see cref="Rectangle"/>
+        /// Target device for rendering
+        /// </summary>
+        public RenderTarget RenderTarget { get; set; }
+
+        /// <summary>
+        /// Fill color of the <see cref="Rectangle"/>
         /// </summary>
         public Color Color
         {
@@ -158,7 +164,7 @@ namespace BlackCoat.Entities.Shapes
         /// Determines if this <see cref="Rectangle"/> is colliding with another <see cref="ICollisionShape"/>
         /// </summary>
         /// <param name="other">The other <see cref="ICollisionShape"/></param>
-        /// <returns>True when the objetcs overlap or touch</returns>
+        /// <returns>True when the objects overlap or touch</returns>
         public virtual bool Collide(ICollisionShape other)
         {
             return _Core.CollisionSystem.CheckCollision(this, other);
@@ -170,7 +176,7 @@ namespace BlackCoat.Entities.Shapes
         /// Can be overridden by derived classes.
         /// </summary>
         /// <param name="role">The Role to assign</param>
-        /// <param name="supressInitialization">Supress initialization call on assigned role</param>
+        /// <param name="supressInitialization">Suppress initialization call on assigned role</param>
         public virtual void AssignRole(Role role, Boolean supressInitialization = false)
         {
             if (role == null) throw new ArgumentNullException("role");
@@ -184,8 +190,8 @@ namespace BlackCoat.Entities.Shapes
         /// Can be overridden by derived classes.
         /// </summary>
         /// <param name="role">The Role to assign</param>
-        /// <param name="supressInitialization">Supress initialization call on assigned role</param>
-        /// <returns>The removed role if there was one - otherwhise null</returns>
+        /// <param name="supressInitialization">Suppress initialization call on assigned role</param>
+        /// <returns>The removed role if there was one - otherwise null</returns>
         public virtual Role ReplaceRole(Role role, Boolean supressInitialization = false)
         {
             if (role == null) throw new ArgumentNullException("role");
@@ -199,7 +205,7 @@ namespace BlackCoat.Entities.Shapes
         /// Removes the currently active Role from this <see cref="Rectangle"/>
         /// Can be overridden by derived classes.
         /// </summary>
-        /// <returns>The removed role if there was one - otherwhise null</returns>
+        /// <returns>The removed role if there was one - otherwise null</returns>
         public virtual Role RemoveRole()
         {
             if (_Roles.Count == 0) return null;

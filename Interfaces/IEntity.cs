@@ -17,7 +17,7 @@ namespace BlackCoat
         Container Parent { get; set; }
 
         /// <summary>
-        /// Determines the Visisbility of the <see cref="IEntity"/>
+        /// Determines the Visibility of the <see cref="IEntity"/>
         /// </summary>
         Boolean Visible { get; set; }
 
@@ -37,7 +37,7 @@ namespace BlackCoat
         BlendMode BlendMode { get; set; }
 
         /// <summary>
-        /// Gobal Color/Tint of the <see cref="IEntity"/>
+        /// Global Color/Tint of the <see cref="IEntity"/>
         /// </summary>
         Color Color { get; set; }
 
@@ -47,17 +47,22 @@ namespace BlackCoat
         Single Alpha { get; set; }
 
         /// <summary>
-        /// Current Role that descripes the <see cref="IEntity"/>s Behaviour
+        /// Current Role that describes the <see cref="IEntity"/>s Behavior
         /// </summary>
         Role CurrentRole { get; }
+
+        /// <summary>
+        /// Target device for rendering
+        /// </summary>
+        RenderTarget RenderTarget { get; }
 
 
         // Methods ######################################################################
         /// <summary>
         /// Updates the <see cref="IEntity"/> using its applied Role.
-        /// Can be overriden by derived classes.
+        /// Can be overridden by derived classes.
         /// </summary>
-        /// <param name="gameTime">Current gametime</param>
+        /// <param name="gameTime">Current game time</param>
         void Update(Single deltaT);
 
         /// <summary>
@@ -71,21 +76,21 @@ namespace BlackCoat
         /// Assigns a new Role to the <see cref="IEntity"/> without removing the current one.
         /// </summary>
         /// <param name="role">The Role to assign</param>
-        /// <param name="supressInitialization">Supress initialization call on assigned role</param>
+        /// <param name="supressInitialization">Suppress initialization call on assigned role</param>
         void AssignRole(Role role, Boolean supressInitialization = false);
 
         /// <summary>
         /// Assigns a new Role to the <see cref="IEntity"/> after removing the current one.
         /// </summary>
         /// <param name="role">The Role to assign</param>
-        /// <param name="supressInitialization">Supress initialization call on assigned role</param>
-        /// <returns>The removed role if there was one - otherwhise null</returns>
+        /// <param name="supressInitialization">Suppress initialization call on assigned role</param>
+        /// <returns>The removed role if there was one - otherwise null</returns>
         Role ReplaceRole(Role role, Boolean supressInitialization = false);
 
         /// <summary>
         /// Removes the currently active Role from this <see cref="IEntity"/>
         /// </summary>
-        /// <returns>The removed role if there was one - otherwhise null</returns>
+        /// <returns>The removed role if there was one - otherwise null</returns>
         Role RemoveRole();
     }
 }

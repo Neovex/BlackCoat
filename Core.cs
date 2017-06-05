@@ -279,18 +279,22 @@ namespace BlackCoat
         /// <summary>
         /// Draws the provided Entity onto the scene.
         /// </summary>
-        /// <param name="e">The Entity to draw</param>
-        public void Draw(IEntity e)
+        /// <param name="entity">The Entity to draw</param>
+        public void Draw(IEntity entity)
         {
-            if (!e.Visible) return;
-            _Device.SetView(e.View ?? DefaultView);
-            if (e.Parent != null)
+            if (!entity.Visible) return;
+            
+            var state = entity.RenderState;
+            if (entity.Parent != null)
             {
-                var state = e.RenderState;
-                state.Transform = e.Parent.Transform;
-                e.RenderState = state;
+                // create combined Parent transformation and store it in the renderstate
+                // in the libs draw method the combined Parent transformation is multiplied by the entities own transformation
+                state.Transform = entity.Parent.Transform;
             }
-            _Device.Draw(e, e.RenderState);
+
+            var renderTarget = entity.RenderTarget ?? _Device;
+            renderTarget.SetView((entity.View ?? renderTarget?.GetView()) ?? DefaultView);
+            entity.Draw(renderTarget, state);
         }
 
         /// <summary>

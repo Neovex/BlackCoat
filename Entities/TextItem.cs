@@ -40,10 +40,13 @@ namespace BlackCoat.Entities
         }
 
         /// <summary>
-        /// Determines the Visisbility of the Entity
+        /// Determines the Visibility of the Entity
         /// </summary>
         public virtual Boolean Visible { get; set; }
 
+        /// <summary>
+        /// Target Render View
+        /// </summary>
         public View View
         {
             get { return _View ?? (_Parent == null ? _View : _Parent.View); }
@@ -54,6 +57,11 @@ namespace BlackCoat.Entities
         /// Renderstate of the entity
         /// </summary>
         public RenderStates RenderState { get; set; }
+
+        /// <summary>
+        /// Target device for rendering
+        /// </summary>
+        public RenderTarget RenderTarget { get; set; }
 
         /// <summary>
         /// Alpha Value
@@ -90,12 +98,17 @@ namespace BlackCoat.Entities
         public ICollisionShape CollisionShape { get; set; }
 
         /// <summary>
-        /// Current Role that descripes the Entities Behaviour
+        /// Current Role that describes the Entities Behavior
         /// </summary>
         public Role CurrentRole { get { return _Roles.Count == 0 ? null : _Roles[_Roles.Count - 1]; } }
 
 
-        // CTOR ############################################################################
+        // CTOR ############################################################################        
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TextItem"/> class.
+        /// </summary>
+        /// <param name="core">Black Coat Engine Core.</param>
+        /// <param name="font">Initial font.</param>
         public TextItem(Core core, Font font = null)
         {
             _Core = core;
@@ -108,9 +121,9 @@ namespace BlackCoat.Entities
         // Methods #########################################################################
         /// <summary>
         /// Updates the Current Entity using its applied Role.
-        /// Can be overriden by derived classes.
+        /// Can be overridden by derived classes.
         /// </summary>
-        /// <param name="deltaT">Current gametime</param>
+        /// <param name="deltaT">Current game time</param>
         public virtual void Update(Single deltaT)
         {
             for (int i = _Roles.Count - 1; i > -1 && _Roles[i].Update(deltaT); i--);
@@ -130,7 +143,7 @@ namespace BlackCoat.Entities
         /// Assigns a new Role to the Entity without removing the current one.
         /// </summary>
         /// <param name="role">The Role to assign</param>
-        /// <param name="supressInitialization">Supress initialization call on assigned role</param>
+        /// <param name="supressInitialization">Suppress initialization call on assigned role</param>
         public virtual void AssignRole(Role role, Boolean supressInitialization = false)
         {
             if (role == null) throw new ArgumentNullException("role");
@@ -143,8 +156,8 @@ namespace BlackCoat.Entities
         /// Assigns a new Role to the Entity after removing the current one.
         /// </summary>
         /// <param name="role">The Role to assign</param>
-        /// <param name="supressInitialization">Supress initialization call on assigned role</param>
-        /// <returns>The removed role if there was one - otherwhise null</returns>
+        /// <param name="supressInitialization">Suppress initialization call on assigned role</param>
+        /// <returns>The removed role if there was one - otherwise null</returns>
         public virtual Role ReplaceRole(Role role, Boolean supressInitialization = false)
         {
             if (role == null) throw new ArgumentNullException("role");
@@ -157,7 +170,7 @@ namespace BlackCoat.Entities
         /// <summary>
         /// Removes the currently active Role from this Entity
         /// </summary>
-        /// <returns>The removed role if there was one - otherwhise null</returns>
+        /// <returns>The removed role if there was one - otherwise null</returns>
         public virtual Role RemoveRole()
         {
             Role temp = null;
