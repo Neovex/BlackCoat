@@ -1,7 +1,7 @@
 ﻿using System;
 using SFML.System;
 
-namespace BlackCoat.Collision
+namespace BlackCoat.Collision.Shapes
 {
     /// <summary>
     /// Abstract base class of all Collision Shapes

@@ -2,7 +2,7 @@
 using SFML.System;
 using BlackCoat.Entities;
 
-namespace BlackCoat.Collision
+namespace BlackCoat.Collision.Shapes
 {
     /// <summary>
     /// This class provides a Rectangular Collision Shape based on a associated <see cref="Graphic"/> instance.

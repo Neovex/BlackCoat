@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using SFML.Graphics;
 
 using BlackCoat.Collision;
+using BlackCoat.Collision.Shapes;
 
 
 namespace BlackCoat.Entities

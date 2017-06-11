@@ -1,6 +1,6 @@
 ﻿using SFML.System;
 
-namespace BlackCoat.Collision
+namespace BlackCoat.Collision.Shapes
 {
     /// <summary>
     /// Represents a simple Rectangle for Collision Detection.

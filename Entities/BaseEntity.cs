@@ -116,12 +116,12 @@ namespace BlackCoat.Entities
         }
 
         /// <summary>
-        /// Renders the entity into the scene if correctly implemented in derieved classes.
+        /// Renders the entity into the scene if correctly implemented in derived classes.
         /// </summary>
         public abstract void Draw();
 
         /// <summary>
-        /// Renders the entity into the scene if correctly implemented in derieved classes.
+        /// Renders the entity into the scene if correctly implemented in derived classes.
         /// </summary>
         /// <param name="target">Render device</param>
         /// <param name="states">Additional render information</param>
