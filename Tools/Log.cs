@@ -23,6 +23,8 @@ public static class Log
 {
     public static event Action<String> OnLog = Console.WriteLine;
 
+    public static LogLevel Level = LogLevel.Debug;
+
     public static void Debug(params Object[] msgs)
     {
         DoLog(msgs, LogLevel.Debug);
@@ -50,6 +52,8 @@ public static class Log
 
     private static void DoLog(Object[] msgs, LogLevel lvl)
     {
+        if (lvl < Level) return;
+
         var callingMethod = new StackFrame(0).GetMethod();
         var skip = 1;
         while (skip < 8 &&

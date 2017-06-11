@@ -100,6 +100,8 @@ namespace BlackCoat.Entities
         protected BaseEntity(Core core)
         {
             _Core = core;
+            Visible = true;
+            Color = Color.White;
             RenderState = RenderStates.Default;
         }
 
