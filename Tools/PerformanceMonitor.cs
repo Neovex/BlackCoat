@@ -22,11 +22,12 @@ namespace BlackCoat.Tools
         private Queue<Single> _FPS = new Queue<float>();
 #endif
 
-        private const String TimeString = "FPS:   {0}" + Constants.NEW_LINE +
-                                          "FTime: {1}" + Constants.NEW_LINE +
-                                          "Total: {2}" + Constants.NEW_LINE +
-                                          "APC:   {3}" + Constants.NEW_LINE + 
-                                          "AAC:   {4}";
+        private const String TimeString = "FPS: {0}" + Constants.NEW_LINE +
+                                          "FrT: {1}" + Constants.NEW_LINE +
+                                          "Sum: {2}" + Constants.NEW_LINE +
+                                          "DPF: {3}" + Constants.NEW_LINE +
+                                          "APC: {4}" + Constants.NEW_LINE + 
+                                          "AAC: {5}";
 
 
         // CTOR ############################################################################
@@ -38,7 +39,7 @@ namespace BlackCoat.Tools
         {
             AddChild(new Rectangle(_Core)
             {
-                Size = new Vector2f(120, 65),
+                Size = new Vector2f(115, 80),
                 Color = Color.Black,
                 Alpha = 0.5f
             });
@@ -82,6 +83,7 @@ namespace BlackCoat.Tools
 #endif
                                             deltaT,
                                             _Runtime,
+                                            Core.DRAW_CALLS,
                                             Emitter.ACTIVE_PARTICLES,
                                             AnimationManager.ACTIVE_ANIMATIONS);
         }

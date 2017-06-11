@@ -57,6 +57,7 @@ namespace BlackCoat.Tools
             _Display.CharacterSize = _FONT_SIZE;
             AddChild(_Display);
 
+            Visible = false;
             View = new View(_Core.DefaultView);
             UpdateDisplayProportions(View.Size.X, View.Size.Y);
             
@@ -127,6 +128,7 @@ namespace BlackCoat.Tools
         private void Open()
         {
             if (_AnimationRunning) return;
+            Visible = true;
             _AnimationRunning = true;
             _Core.AnimationManager.Run(Position.Y, Position.Y - _Background.Size.Y, 0.4f, v => Position = new Vector2f(Position.X, v), InterpolationType.OutCubic, a =>
             {
@@ -141,6 +143,7 @@ namespace BlackCoat.Tools
             _Core.AnimationManager.Run(Position.Y, Position.Y + _Background.Size.Y, 0.4f, v => Position = new Vector2f(Position.X, v), InterpolationType.OutCubic, a =>
             {
                 _Open = false;
+                Visible = false;
                 _AnimationRunning = false;
             });
         }

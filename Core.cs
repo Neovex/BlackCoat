@@ -21,6 +21,8 @@ namespace BlackCoat
     /// </summary>
     public sealed class Core : IDisposable
     {
+        internal static int DRAW_CALLS = 0;
+
         // Events ##########################################################################
         /// <summary>
         /// The Update Event is raised for each frame. This event can be used to update code areas which are not directly linked to the engine itself.
@@ -267,8 +269,9 @@ namespace BlackCoat
         {
             // Clear Background
             _Device.Clear(ClearColor);
-            
+
             // Draw Scene
+            DRAW_CALLS = 0;
             StateManager.Draw();
             _Console.Draw();
 
@@ -295,17 +298,7 @@ namespace BlackCoat
             var renderTarget = entity.RenderTarget ?? _Device;
             renderTarget.SetView((entity.View ?? renderTarget?.GetView()) ?? DefaultView);
             entity.Draw(renderTarget, state);
-        }
-
-        /// <summary>
-        /// Draws the provided vertex array onto the scene.
-        /// </summary>
-        /// <param name="vertices">Vertex array to draw</param>
-        /// <param name="type">Type of primitives to draw</param>
-        /// <param name="states">Additional state information for rendering</param>
-        public void Draw(Vertex[] vertices, PrimitiveType type, RenderStates states)
-        {
-            _Device.Draw(vertices, type, states);
+            DRAW_CALLS++;
         }
 
         /// <summary>

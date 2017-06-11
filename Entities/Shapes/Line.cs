@@ -86,9 +86,7 @@ namespace BlackCoat.Entities.Shapes
         /// </summary>
         public override void Draw()
         {
-            _Vertices[0] = Start;
-            _Vertices[1] = End;
-            _Core.Draw(_Vertices, PrimitiveType.Lines, RenderState);
+            _Core.Draw(this);
         }
 
         public override void Draw(RenderTarget target, RenderStates states)
