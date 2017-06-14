@@ -30,7 +30,7 @@ namespace BlackCoat
         /// </summary>
         public static Single AngleTowards(this Vector2f from, Vector2f to)
         {
-            return (Single)(Math.Atan2(to.Y - from.Y, to.X - from.X) * Constants.RAD_TO_DEG);
+            return to.ToLocal(from).Angle();
         }
 
         /// <summary>
@@ -38,7 +38,7 @@ namespace BlackCoat
         /// </summary>
         public static Single Angle(this Vector2f vector)
         {
-            return (Single)(Math.Atan2(vector.X, vector.Y) * Constants.RAD_TO_DEG);
+            return (Single)(Math.Atan2(vector.Y, vector.X) * Constants.RAD_TO_DEG);
         }
 
         /// <summary>
@@ -139,6 +139,15 @@ namespace BlackCoat
         public static Double DistanceBetween(this Vector2f v, Vector2f other)
         {
             return v.ToLocal(other).Length();
+        }
+
+        /// <summary>
+        /// Calculates the distance between 2 Vectors but without calculating the square root
+        /// </summary>
+        /// <param name="other">The other Vector</param>
+        public static Double DistanceBetweenSquared(this Vector2f v, Vector2f other)
+        {
+            return v.ToLocal(other).LengthSquared();
         }
 
 
