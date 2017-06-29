@@ -14,21 +14,21 @@ namespace BlackCoat
 
         // State Info
         public String Name { get; protected set; }
-        public Boolean Paused { get; set; }
+        public Boolean Paused { get; protected set; }
 
         // Asset Managers
-        public FontManager FontManager { get; protected set; }
-        public MusicManager MusicManager { get; protected set; }
-        public SfxManager SfxManager { get; protected set; }
-        public TextureManager TextureManager { get; protected set; }
+        protected FontManager FontManager { get; set; }
+        protected MusicManager MusicManager { get; set; }
+        protected SfxManager SfxManager { get; set; }
+        protected TextureManager TextureManager { get; set; }
 
         // Layers
-        public Layer Layer_BG { get; private set; }
-        public Layer Layer_Game { get; private set; }
-        public Layer Layer_Particles { get; private set; }
-        public Layer Layer_Overlay { get; private set; }
-        public Layer Layer_Debug { get; private set; }
-        public Layer Layer_Cursor { get; private set; }
+        protected Layer Layer_BG { get; private set; }
+        protected Layer Layer_Game { get; private set; }
+        protected Layer Layer_Particles { get; private set; }
+        protected Layer Layer_Overlay { get; private set; }
+        protected Layer Layer_Debug { get; private set; }
+        protected Layer Layer_Cursor { get; private set; }
 
 
         /// <summary>
