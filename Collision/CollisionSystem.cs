@@ -55,7 +55,7 @@ namespace BlackCoat.Collision
         /// </summary>
         protected virtual Vector2f FindPolyProjectionAxis(int i, IReadOnlyList<Vector2f> points)
         {
-            return (i == points.Count - 1 ? points[0] : points[i + 1]).ToLocal(points[i]).FaceVector();
+            return points[(i + 1) % points.Count].ToLocal(points[i]).FaceVector();
         }
 
         /// <summary>
@@ -92,6 +92,55 @@ namespace BlackCoat.Collision
 
         //#########################################################################################################################################
 
+        public virtual Vector2f[] Intersections(Vector2f rayOrigin, float rayAngle, ICollisionShape target)
+        {
+            switch (target.CollisionGeometry)
+            {
+                case Geometry.Point:
+                    break;
+                case Geometry.Line:
+                    var line = target as ILine;
+                    return Intersections(rayOrigin, rayAngle, line.Start, line.End);
+                case Geometry.Circle:
+                    break;
+                case Geometry.Rectangle:
+                    break;
+                case Geometry.Polygon:
+                    return Intersections(rayOrigin, rayAngle, target as IPolygon);
+            }
+            HandlUnknownShape(target);
+            return new Vector2f[0];
+        }
+
+        public virtual Vector2f[] Intersections(Vector2f rayOrigin, float rayAngle, Vector2f targetStart, Vector2f targetEnd)
+        {
+            var localStart = targetStart.ToLocal(rayOrigin);
+            var localEnd = targetEnd.ToLocal(rayOrigin);
+
+            if (Intersect(localStart.Angle(), localEnd.Angle(), rayAngle, rayAngle))
+            {
+                var axis = VectorExtensions.VectorFromAngle(rayAngle).FaceVector();
+                var p1 = Math.Abs(localStart.DotProduct(axis));
+                var p2 = Math.Abs(localEnd.DotProduct(axis));
+                var percent = (float)(p1 / (p1 + p2));
+                return new Vector2f[] { targetStart + (targetEnd.ToLocal(targetStart) * percent) }; //test this
+            }
+            return new Vector2f[0];
+        }
+
+        public virtual Vector2f[] Intersections(Vector2f rayOrigin, float rayAngle, IPolygon target)
+        {
+            var angles = target.Points.Select(p => p.ToLocal(rayOrigin).Angle()).OrderBy(v => v).ToArray();
+
+            if (Intersect(angles[0], angles[angles.Length-1], rayAngle, rayAngle))
+            {
+                return target.Points.SelectMany((p, i) => Intersections(rayOrigin, rayAngle, p, target.Points[(i + 1) % target.Points.Count])).ToArray();
+            }
+            return new Vector2f[0];
+        }
+
+        //#########################################################################################################################################
+
         // Collision Calculations
 
         //POINT
@@ -109,7 +158,7 @@ namespace BlackCoat.Collision
         /// </summary>
         /// <param name="tolerance">float tolerance when checking projection values</param>
         /// <returns>True when the objects touch or intersect.</returns>
-        public virtual bool CheckCollision(Vector2f a, ILine b, float tolerance = 1.5f) // passed
+        public virtual bool CheckCollision(Vector2f a, ILine b, float tolerance = Constants.POINT_PROJECTION_TOLERANCE) // passed
         {
             var p = a.ToLocal(b.Start);
             var localEnd = b.End.ToLocal(b.Start);
