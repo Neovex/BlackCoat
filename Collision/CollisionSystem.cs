@@ -96,15 +96,13 @@ namespace BlackCoat.Collision
         {
             switch (target.CollisionGeometry)
             {
-                case Geometry.Point:
-                    break;
                 case Geometry.Line:
                     var line = target as ILine;
                     return Intersections(rayOrigin, rayAngle, line.Start, line.End);
                 case Geometry.Circle:
-                    break;
+                    return Intersections(rayOrigin, rayAngle, target as ICircle);
                 case Geometry.Rectangle:
-                    break;
+                    return Intersections(rayOrigin, rayAngle, target as IRectangle);
                 case Geometry.Polygon:
                     return Intersections(rayOrigin, rayAngle, target as IPolygon);
             }
@@ -116,25 +114,55 @@ namespace BlackCoat.Collision
         {
             var localStart = targetStart.ToLocal(rayOrigin);
             var localEnd = targetEnd.ToLocal(rayOrigin);
+            Sort(localStart.Angle(), localEnd.Angle(), out float min, out float max);
 
-            if (Intersect(localStart.Angle(), localEnd.Angle(), rayAngle, rayAngle))
+            if (Intersect(min, max, rayAngle, rayAngle))
             {
                 var axis = VectorExtensions.VectorFromAngle(rayAngle).FaceVector();
                 var p1 = Math.Abs(localStart.DotProduct(axis));
                 var p2 = Math.Abs(localEnd.DotProduct(axis));
                 var percent = (float)(p1 / (p1 + p2));
-                return new Vector2f[] { targetStart + (targetEnd.ToLocal(targetStart) * percent) }; //test this
+                return new Vector2f[] { targetStart + (targetEnd.ToLocal(targetStart) * percent) };
             }
             return new Vector2f[0];
         }
 
-        public virtual Vector2f[] Intersections(Vector2f rayOrigin, float rayAngle, IPolygon target)
+        public virtual Vector2f[] Intersections(Vector2f rayOrigin, float rayAngle, ICircle circle)
         {
-            var angles = target.Points.Select(p => p.ToLocal(rayOrigin).Angle()).OrderBy(v => v).ToArray();
+            // Check along ray as projection axis
+            var localCircleCenter = circle.Position.ToLocal(rayOrigin);
+            var axis = VectorExtensions.VectorFromAngle(rayAngle);
+            var projection = localCircleCenter.DotProduct(axis);
+            if(projection - circle.Radius < 0 && projection + circle.Radius < 0) return new Vector2f[0];
+            // Check perpenticular axis
+            var faceProjection = localCircleCenter.DotProduct(axis.FaceVector());
+            if(faceProjection < -circle.Radius || faceProjection > circle.Radius) return new Vector2f[0];
+            // Calculate intersections
+            var result = (float)Math.Sqrt(circle.Radius * circle.Radius - faceProjection * faceProjection);
+            //if (Math.Abs(Math.Abs(result) - circle.Radius) < Constants.POINT_PROJECTION_TOLERANCE) { } tangends currently not relevant
+            var results = new[] { new Vector2f((float)faceProjection, result), new Vector2f((float)faceProjection, -result) };
+            return results.Where(p => p.Y + projection >= 0).Select(p => VectorExtensions.VectorFromAngle(p.Angle() + rayAngle - 90, circle.Radius).ToGlobal(circle.Position)).ToArray();
+        }
 
-            if (Intersect(angles[0], angles[angles.Length-1], rayAngle, rayAngle))
+        public virtual Vector2f[] Intersections(Vector2f rayOrigin, float rayAngle, IRectangle rectangle)
+        {
+            var points = CalcRectVerticies(rectangle);
+            var angles = points.Select(p => p.ToLocal(rayOrigin).Angle()).OrderBy(v => v).ToArray();
+
+            if (Intersect(angles[0], angles[angles.Length - 1], rayAngle, rayAngle))
             {
-                return target.Points.SelectMany((p, i) => Intersections(rayOrigin, rayAngle, p, target.Points[(i + 1) % target.Points.Count])).ToArray();
+                return points.SelectMany((p, i) => Intersections(rayOrigin, rayAngle, p, points[(i + 1) % points.Length])).ToArray();
+            }
+            return new Vector2f[0];
+        }
+
+        public virtual Vector2f[] Intersections(Vector2f rayOrigin, float rayAngle, IPolygon polygon)
+        {
+            var angles = polygon.Points.Select(p => p.ToGlobal(polygon.Position).ToLocal(rayOrigin).Angle()).OrderBy(v => v).ToArray();
+
+            if (Intersect(angles[0], angles[angles.Length - 1], rayAngle, rayAngle))
+            {
+                return polygon.Points.SelectMany((p, i) => Intersections(rayOrigin, rayAngle, p.ToGlobal(polygon.Position), polygon.Points[(i + 1) % polygon.Points.Count].ToGlobal(polygon.Position))).ToArray();
             }
             return new Vector2f[0];
         }
