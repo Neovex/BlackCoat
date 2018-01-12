@@ -1,4 +1,5 @@
 ﻿using System;
+using SFML.System;
 
 namespace BlackCoat.Tools
 {
@@ -22,7 +23,7 @@ namespace BlackCoat.Tools
         /// </summary>
         /// <param name="min">Minimum value</param>
         /// <param name="max">Maximum value</param>
-        /// <returns>A random number between the bounds</returns>
+        /// <returns>A random number within the bounds</returns>
         public Single NextFloat(float min, float max)
         {
             // Prechecks
@@ -38,6 +39,32 @@ namespace BlackCoat.Tools
             do ret = (float)NextDouble() * max;
             while (ret < min);
             return ret;
+        }
+
+
+        /// <summary>
+        /// Generates a Vector with random coordinates
+        /// </summary>
+        /// <param name="min">Minimum value for x and y</param>
+        /// <param name="max">Maximum value for x and y</param>
+        /// <returns>A Vector within the bounds</returns>
+        public Vector2f NextVector(float min, float max)
+        {
+            return NextVector(min, max, min, max);
+        }
+        /// <summary>
+        /// Generates a Vector with random coordinates
+        /// </summary>
+        /// <param name="xmin">Minimum value for x</param>
+        /// <param name="xmax">Maximum value for x</param>
+        /// <param name="ymin">Minimum value for y</param>
+        /// <param name="ymax">Maximum value for y</param>
+        /// <returns>
+        /// A Vector within the bounds
+        /// </returns>
+        public Vector2f NextVector(float xmin, float xmax, float ymin, float ymax)
+        {
+            return new Vector2f(NextFloat(xmin, xmax), NextFloat(ymin, ymax));
         }
     }
 }

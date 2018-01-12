@@ -38,7 +38,9 @@ namespace BlackCoat
         /// </summary>
         public static Single Angle(this Vector2f vector)
         {
-            return (Single)(Math.Atan2(vector.Y, vector.X) * Constants.RAD_TO_DEG);
+            var angle = Math.Atan2(vector.Y, vector.X) * Constants.RAD_TO_DEG;
+            if (angle < 0) angle += 360;
+            return (Single)angle;
         }
 
         /// <summary>

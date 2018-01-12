@@ -51,7 +51,7 @@ namespace BlackCoat
         /// <param name="core">Engine core.</param>
         /// <param name="name">State name.</param>
         /// <param name="root">Optional Asset root path.</param>
-        public BaseGamestate(Core core, String name = null, String root = "")
+        public BaseGamestate(Core core, String name = null, String root = "") // todo : a single root for all assets does not seem to be so great - recheck that
         {
             // Init
             _Core = core;

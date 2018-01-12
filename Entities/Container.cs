@@ -56,7 +56,7 @@ namespace BlackCoat.Entities
         /// Retrieves the entity at the given index
         /// </summary>
         /// <param name="i">Entity index</param>
-        /// <returns>The requested Entity if found otherwhise null</returns>
+        /// <returns>The requested Entity if found otherwise null</returns>
         public virtual IEntity GetChildFromIndex(Int32 i)
         {
             return i > -1 && i < _Childs.Count ? _Childs[i] : null;
@@ -68,7 +68,7 @@ namespace BlackCoat.Entities
         /// <param name="child">The request child entity</param>
         /// <returns>The index of the child or -1 if it is not contained</returns>
         public virtual Int32 GetChildIndex(IEntity child)
-        {   
+        {
             return _Childs.IndexOf(child);
         }
 
@@ -76,16 +76,25 @@ namespace BlackCoat.Entities
         /// Determines if the given entity is child of this container
         /// </summary>
         /// <param name="child">Entity to check</param>
-        /// <returns>True if the entity is child of this container otherwhise false</returns>
+        /// <returns>True if the entity is child of this container otherwise false</returns>
         public virtual Boolean HasChild(IEntity child)
         {
             return _Childs.Contains(child);
         }
 
         /// <summary>
-        /// Updates the Entity Space and all chiilds using their respecitve roles
+        /// Clears all entities from this container.
         /// </summary>
-        /// <param name="deltaT">Current gametime</param>
+        public virtual void Clear()
+        {
+            foreach (var child in _Childs) child.Parent = null;
+            _Childs.Clear();
+        }
+
+        /// <summary>
+        /// Updates the container and all subsequent entities along the scene graph using their respective roles
+        /// </summary>
+        /// <param name="deltaT">Last frame duration</param>
         override public void Update(Single deltaT)
         {
             base.Update(deltaT);
@@ -93,7 +102,7 @@ namespace BlackCoat.Entities
         }
 
         /// <summary>
-        /// Draws the Graphic of the Entity Space and its childs if it is visible
+        /// Draws the Graphic of the container and all subsequent entities along the scene graph
         /// </summary>
         override public void Draw()
         {

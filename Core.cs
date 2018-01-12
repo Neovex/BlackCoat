@@ -39,7 +39,7 @@ namespace BlackCoat
         /// </summary>
         public event Action<Boolean> DebugChanged = d => { };
 
-        
+
         // Variables #######################################################################
         private RenderWindow _Device;
         private Stopwatch _Timer;
@@ -48,7 +48,7 @@ namespace BlackCoat
         private Tools.Console _Console;
 
 
-        // Properties ######################################################################        
+        // Properties ######################################################################
         /// <summary>
         /// Gets or sets a value indicating whether this <see cref="Core"/> is currently in debug mode.
         /// </summary>
@@ -62,12 +62,12 @@ namespace BlackCoat
         /// Random Number Generator with float and integer support.
         /// </summary>
         public RandomHelper Random { get; private set; }
-        
+
         /// <summary>
         /// Game State Manager. Manages the current Gamestate as well as Gamestate transitions.
         /// </summary>
         public StateManager StateManager { get; private set; }
-        
+
         /// <summary>
         /// Animation Manager and Factory. Used primarily to make stuff move.
         /// </summary>
@@ -90,27 +90,27 @@ namespace BlackCoat
         /// Color used to clear the screen of the contents from the last rendered frame.
         /// </summary>
         public Color ClearColor { get; set; }
-        
+
         /// <summary>
         /// Determines if the render window is no longer in focus.
         /// </summary>
         public Boolean FocusLost { get; private set; }
-        
+
         /// <summary>
         /// Determines if the Engine Core has been disposed.
         /// </summary>
         public Boolean Disposed { get; private set; }
-        
+
         /// <summary>
         /// Size of the current Render Device
         /// </summary>
         public Vector2u DeviceSize { get { return _Device.Size; } }
-        
+
         /// <summary>
         /// Default Render View - uses full with and height of the rendering device.
         /// </summary>
         internal View DefaultView { get { return _Device.DefaultView; } }
-        
+
         /// <summary>
         /// Default font of the Engine. The <see cref="TextItem"/> class needs it to display text when no font is loaded.
         /// </summary>
@@ -245,7 +245,7 @@ namespace BlackCoat
             if (Disposed) throw new ObjectDisposedException("Core");
             _Device.Close();
         }
-        
+
         /// <summary>
         /// Calls the Update methods of the SceneGraph Hierarchy
         /// </summary>
@@ -286,7 +286,7 @@ namespace BlackCoat
         public void Draw(IEntity entity)
         {
             if (!entity.Visible) return;
-            
+
             var state = entity.RenderState;
             if (entity.Parent != null)
             {
