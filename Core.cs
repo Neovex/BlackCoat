@@ -55,7 +55,24 @@ namespace BlackCoat
         public Boolean Debug
         {
             get { return _Debug; }
-            set { ToggleDebug(value); }
+            set
+            {
+                if (_Debug != value)
+                {
+                    _Debug = value;
+                    if (_Debug)
+                    {
+                        _Device.KeyPressed += QuitOnEsc;
+                        Log.Info("Debug enabled");
+                    }
+                    else
+                    {
+                        _Device.KeyPressed -= QuitOnEsc;
+                        Log.Info("Debug disabled");
+                    }
+                    DebugChanged.Invoke(_Debug);
+                }
+            }
         }
 
         /// <summary>
@@ -317,10 +334,11 @@ namespace BlackCoat
                     return;
                 case "togglefullscreen":
                 case "tfs":
-                    Log.Warning("togglefullscreen - not yet implemented");
+                    Log.Warning("togglefullscreen - not yet implemented"); // TODO
                     return;
+                case "toggledebug":
                 case "debug":
-                    ToggleDebug(!Debug);
+                    Debug = !Debug;
                     return;
             }
 
@@ -332,12 +350,6 @@ namespace BlackCoat
         }
 
         #region Debug Handler
-        private void ToggleDebug(Boolean value)
-        {
-            _Debug = value;
-            if (_Debug) _Device.KeyPressed += QuitOnEsc;
-            else _Device.KeyPressed -= QuitOnEsc;
-        }
         private void QuitOnEsc(object s, KeyEventArgs e)
         {
             if (e.Code == Keyboard.Key.Escape) Exit();

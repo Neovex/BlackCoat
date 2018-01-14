@@ -76,16 +76,16 @@ namespace BlackCoat.Tools
 
             _InfoDisplay.Text = String.Format(TimeString,
 # if !AVERAGE_FPS
-                                            1 / deltaT,
-#endif
-#if AVERAGE_FPS
-                                            _FPS.Sum() / _FPS.Count,
-#endif
-                                            deltaT,
-                                            _Runtime,
-                                            Core.DRAW_CALLS,
-                                            Emitter.ACTIVE_PARTICLES,
-                                            AnimationManager.ACTIVE_ANIMATIONS);
+                                              1 / deltaT,
+#endif                                        
+#if AVERAGE_FPS                               
+                                              _FPS.Sum() / _FPS.Count,
+#endif                                        
+                                              deltaT,
+                                              _Runtime,
+                                              Core.DRAW_CALLS,
+                                              Emitter.ACTIVE_PARTICLES,
+                                              AnimationManager.ACTIVE_ANIMATIONS);
         }
     }
 }

@@ -17,10 +17,10 @@ namespace BlackCoat
         public Boolean Paused { get; protected set; }
 
         // Asset Managers
-        protected FontManager FontManager { get; set; }
-        protected MusicManager MusicManager { get; set; }
-        protected SfxManager SfxManager { get; set; }
         protected TextureManager TextureManager { get; set; }
+        protected MusicManager MusicManager { get; set; }
+        protected FontManager FontManager { get; set; }
+        protected SfxManager SfxManager { get; set; }
 
         // Layers
         protected Layer Layer_BG { get; private set; }
@@ -46,22 +46,35 @@ namespace BlackCoat
 
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="BaseGamestate"/> class.
+        /// Initializes a new instance of the <see cref="BaseGamestate" /> class.
         /// </summary>
         /// <param name="core">Engine core.</param>
-        /// <param name="name">State name.</param>
-        /// <param name="root">Optional Asset root path.</param>
-        public BaseGamestate(Core core, String name = null, String root = "") // todo : a single root for all assets does not seem to be so great - recheck that
+        /// <param name="name">Optional name of the state.</param>
+        /// <param name="assetRoot">Optional Asset root path.</param>
+        public BaseGamestate(Core core, String name = null, String assetRoot = "") : this(core, name, assetRoot, assetRoot, assetRoot, assetRoot)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BaseGamestate" /> class.
+        /// </summary>
+        /// <param name="core">Engine core.</param>
+        /// <param name="name">Name of the state.</param>
+        /// <param name="textures">Texture root path.</param>
+        /// <param name="music">Music root path.</param>
+        /// <param name="fonts">Font root path.</param>
+        /// <param name="sfx">Sound effects root path.</param>
+        public BaseGamestate(Core core, String name, String textures, String music, String fonts, String sfx)
         {
             // Init
             _Core = core;
             Name = String.IsNullOrWhiteSpace(name) ? GetType().Name : name;
 
             // Create Asset Managers
-            FontManager = new FontManager(root);
-            MusicManager = new MusicManager(root);
-            SfxManager = new SfxManager(root);
-            TextureManager = new TextureManager(root);
+            TextureManager = new TextureManager(textures);
+            MusicManager = new MusicManager(music);
+            FontManager = new FontManager(fonts);
+            SfxManager = new SfxManager(sfx);
 
             // Create Default Layer Structure
             // Game Layer
@@ -73,7 +86,7 @@ namespace BlackCoat
             Layer_Debug = new Layer(_Core);
             Layer_Cursor = new Layer(_Core);
 
-            // Handle Debug Overlay
+            // Initialize Debug Overlay
             HandleDebugChanged(_Core.Debug);
             _Core.DebugChanged += HandleDebugChanged;
         }
