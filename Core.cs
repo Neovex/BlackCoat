@@ -144,8 +144,7 @@ namespace BlackCoat
             Log.Info("Initializing Black Coat Engine...");
 
             // Init Backend
-            if (device == null) throw new ArgumentNullException("device");
-            _Device = device;
+            _Device = device ?? throw new ArgumentNullException(nameof(device));
             _Timer = new Stopwatch();
 
             // Init Defaults
@@ -153,6 +152,7 @@ namespace BlackCoat
             FocusLost = false;
             Disposed = false;
             DefaultFont = new Font(Resources.Squares_Bold_Free);
+            DefaultFont.PreloadDefaultCodepage();
 
             // Device Events
             _Device.Closed += new EventHandler(_Device_Closed);

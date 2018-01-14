@@ -77,7 +77,7 @@ namespace BlackCoat
         internal static void Reset()
         {
             _MouseButtons.Clear();
-            _KeyboardKeys.Clear();
+            _KeyboardKeys.Clear();// fixme up events
         }
 
 

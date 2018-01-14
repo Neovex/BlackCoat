@@ -41,11 +41,6 @@ namespace BlackCoat.Tools
         /// <param name="device">Render Device</param>
         internal Console(Core core, RenderWindow device) : base(core)
         {
-            Log.OnLog += LogMessage;
-            Input.KeyPressed += HandleKeyPressed;
-            Input.TextEntered += HandleTextEntered;
-            device.Resized += Device_Resized;
-
             _Background = new Rectangle(_Core);
             _Background.Color = Color.Black;
             _Background.Alpha = 0.6f;
@@ -60,6 +55,11 @@ namespace BlackCoat.Tools
             Visible = false;
             View = new View(_Core.DefaultView);
             UpdateDisplayProportions(View.Size.X, View.Size.Y);
+
+            Log.OnLog += LogMessage;
+            Input.KeyPressed += HandleKeyPressed;
+            Input.TextEntered += HandleTextEntered;
+            device.Resized += Device_Resized;
             
             Log.Debug("Engine", nameof(Console), "ready");
         }
