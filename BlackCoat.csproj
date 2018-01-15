@@ -54,11 +54,12 @@
     <Compile Include="Animation\ValueAnimation.cs" />
     <Compile Include="Animation\Animation.cs" />
     <Compile Include="Animation\Timer.cs" />
-    <Compile Include="AssetHandling\AssetManager.cs" />
+    <Compile Include="AssetHandling\AssetLoader.cs" />
+    <Compile Include="AssetHandling\FontLoader.cs" />
+    <Compile Include="AssetHandling\MusicLoader.cs" />
+    <Compile Include="AssetHandling\SfxLoader.cs" />
     <Compile Include="AssetHandling\SfxManager.cs" />
-    <Compile Include="AssetHandling\MusicManager.cs" />
-    <Compile Include="AssetHandling\FontManager.cs" />
-    <Compile Include="AssetHandling\TextureManager.cs" />
+    <Compile Include="AssetHandling\TextureLoader.cs" />
     <Compile Include="Collision\CollisionSystem.cs" />
     <Compile Include="Collision\Interfaces\IPolygon.cs" />
     <Compile Include="Collision\Interfaces\ICircle.cs" />

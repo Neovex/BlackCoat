@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using SFML.Graphics;
-using SFML.Audio;
 
 namespace BlackCoat
 {
@@ -11,7 +9,7 @@ namespace BlackCoat
     /// Asset management class. Handles loading/unloading of assets located in a specified root folder.
     /// Multiple instances of the AssetManager class can be used to simplify asset memory management.
     /// </summary>
-    public class AssetManager<T> : IDisposable where T : class, IDisposable
+    public class AssetLoader<T> : IDisposable where T : class, IDisposable
     {
         // Variables #######################################################################
         protected String[] _FileEndings;
@@ -20,7 +18,7 @@ namespace BlackCoat
 
         // Properties ######################################################################
         /// <summary>
-        /// The supported file endings by this <see cref="AssetManager{T}"/> instance
+        /// The supported file endings by this <see cref="AssetLoader{T}"/> instance
         /// </summary>
         public IEnumerable<String> FileEndings { get { return _FileEndings; } }
 
@@ -43,13 +41,13 @@ namespace BlackCoat
         /// </summary>
         /// <param name="supportedFileEndings">List of File Endings this manager is supposed to support (i.e: .jpg)</param>
         /// <param name="assetRoot">Optional root path of the managed asset folder</param>
-        public AssetManager(IEnumerable<String> supportedFileEndings, String assetRoot = "")
+        internal AssetLoader(IEnumerable<String> supportedFileEndings, String assetRoot = "")
         {
             RootFolder = assetRoot;
             _FileEndings = new[] { String.Empty }.Concat(supportedFileEndings).Distinct().ToArray();
         }
 
-        ~AssetManager()
+        ~AssetLoader()
         {
             if (!Disposed) Dispose();
         }

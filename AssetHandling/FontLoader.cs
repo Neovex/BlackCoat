@@ -1,25 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
-using SFML.Audio;
+using SFML.Graphics;
 
 namespace BlackCoat
 {
     /// <summary>
-    /// Music management class. Handles loading/unloading of unmanaged Music resources.
+    /// Font management class. Handles loading/unloading of unmanaged font resources.
     /// </summary>
-    public class MusicManager : AssetManager<Music>
+    public class FontLoader : AssetLoader<Font>
     {
         // Statics #########################################################################
-        public static readonly IEnumerable<String> AvailableFormats = new[] { ".wav", ".ogg", ".flac" };
+        public static readonly IEnumerable<String> AvailableFormats = new[] { ".ttf", ".cff", ".fnt", ".ttf", ".otf", ".eot" };
 
 
         // CTOR ############################################################################
         /// <summary>
-        /// Creates a new instance of the AssetManager class.
+        /// Creates a new instance of the FontLoader class.
         /// </summary>
-        /// <param name="core">Engine Core</param>
         /// <param name="assetRoot">Optional root path of the managed asset folder</param>
-        public MusicManager(String assetRoot = "") : base(AvailableFormats, assetRoot)
+        public FontLoader(String assetRoot = "") : base(AvailableFormats, assetRoot)
         {
         }
     }

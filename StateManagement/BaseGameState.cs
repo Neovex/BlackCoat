@@ -17,10 +17,10 @@ namespace BlackCoat
         public Boolean Paused { get; protected set; }
 
         // Asset Managers
-        protected TextureManager TextureManager { get; set; }
-        protected MusicManager MusicManager { get; set; }
-        protected FontManager FontManager { get; set; }
-        protected SfxManager SfxManager { get; set; }
+        protected TextureLoader TextureManager { get; set; }
+        protected MusicLoader MusicManager { get; set; }
+        protected FontLoader FontManager { get; set; }
+        protected SfxLoader SfxManager { get; set; }
 
         // Layers
         protected Layer Layer_BG { get; private set; }
@@ -71,10 +71,10 @@ namespace BlackCoat
             Name = String.IsNullOrWhiteSpace(name) ? GetType().Name : name;
 
             // Create Asset Managers
-            TextureManager = new TextureManager(textures);
-            MusicManager = new MusicManager(music);
-            FontManager = new FontManager(fonts);
-            SfxManager = new SfxManager(sfx);
+            TextureManager = new TextureLoader(textures);
+            MusicManager = new MusicLoader(music);
+            FontManager = new FontLoader(fonts);
+            SfxManager = new SfxLoader(sfx);
 
             // Create Default Layer Structure
             // Game Layer

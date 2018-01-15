@@ -9,7 +9,7 @@ namespace BlackCoat
     /// <summary>
     /// Texture management class. Handles loading/unloading of unmanaged Texture resources.
     /// </summary>
-    public class TextureManager : AssetManager<Texture>
+    public class TextureLoader : AssetLoader<Texture>
     {
         // Statics #########################################################################
         public static readonly IEnumerable<String> AvailableFormats = new[] { ".bmp", ".png", ".tga", ".jpg", ".gif", ".psd", ".hdr", ".pic" };
@@ -24,11 +24,11 @@ namespace BlackCoat
 
         // CTOR ############################################################################
         /// <summary>
-        /// Creates a new instance of the TextureManager class.
+        /// Creates a new instance of the TextureLoader class.
         /// </summary>
         /// <param name="assetRoot">Optional root path of the managed asset folder</param>
         /// <param name="smoothTextures">Determines if a smoothing should be applied onto newly loaded Textures</param>
-        public TextureManager(String assetRoot = "", Boolean smoothTextures = false) : base(AvailableFormats, assetRoot)
+        public TextureLoader(String assetRoot = "", Boolean smoothTextures = false) : base(AvailableFormats, assetRoot)
         {
             SmoothTextures = smoothTextures;
         }
@@ -57,11 +57,11 @@ namespace BlackCoat
         public Texture Load(string name, System.Drawing.Bitmap bmp)
         {
             // Sanity
-            if (Disposed) throw new ObjectDisposedException("TextureManager");
-            if (name == null) throw new ArgumentNullException("name");
+            if (Disposed) throw new ObjectDisposedException(nameof(TextureLoader));
+            if (name == null) throw new ArgumentNullException(nameof(name));
             if (_Assets.ContainsKey(name)) return _Assets[name];
-            if (bmp == null) throw new ArgumentNullException("bmp");
-            if (bmp.Size.Width > Texture.MaximumSize || bmp.Size.Height > Texture.MaximumSize) throw new ArgumentException($"Bimtap size exceeds capabilities of current Grafik adapter: {Texture.MaximumSize} px");
+            if (bmp == null) throw new ArgumentNullException(nameof(bmp));
+            if (bmp.Size.Width > Texture.MaximumSize || bmp.Size.Height > Texture.MaximumSize) throw new ArgumentException($"Bitmap size exceeds capabilities of graphic adapter: {Texture.MaximumSize} px");
             // Conversion
             Byte[] data = null;
             using (var strm = new MemoryStream())
@@ -86,7 +86,7 @@ namespace BlackCoat
             if (_Assets.ContainsKey(name)) return _Assets[name];
             var c = new Color((Byte)((color >> 0x10) & 0xff),
                               (Byte)((color >> 0x08) & 0xff),
-                              (Byte)(color & 0xff),
+                              (Byte) (color & 0xff),
                               (Byte)((color >> 0x18) & 0xff));
             var img = new Texture(new Image(width, height, c));
             if (!String.IsNullOrEmpty(name)) _Assets.Add(name, img);
