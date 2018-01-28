@@ -82,6 +82,32 @@ namespace BlackCoat
             return null;
         }
 
+        /// <summary>
+        /// Loads all compatible files in the root directory.
+        /// </summary>
+        /// <param name="logErrors">Determines if errors should be logged</param>
+        /// <returns>Array containing the names of all successfully loaded files</returns>
+        public virtual String[] LoadAllFilesInDirectory(bool logErrors = false)
+        {
+            var assetNames = new List<String>();
+            foreach (var file in Directory.EnumerateFiles(RootFolder))
+            {
+                try
+                {
+                    var asset = (T)Activator.CreateInstance(typeof(T), new object[] { file });
+                    var name = Path.GetFileNameWithoutExtension(file);
+                    _Assets.Add(name, asset);
+                    assetNames.Add(name);
+                }
+                catch (Exception e)
+                {
+                    if(logErrors) Log.Error("Could not load", file, "because of", e);
+                    if (!SupressLoadingErrors) throw;
+                }
+            }
+            return assetNames.ToArray();
+        }
+
         private String ResolveFileEndings(string name)
         {
             var path = _FileEndings.Select(f => Path.Combine(RootFolder, String.Concat(name, f))).FirstOrDefault(f => File.Exists(f));

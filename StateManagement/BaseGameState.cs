@@ -17,10 +17,10 @@ namespace BlackCoat
         public Boolean Paused { get; protected set; }
 
         // Asset Managers
-        protected TextureLoader TextureManager { get; set; }
-        protected MusicLoader MusicManager { get; set; }
-        protected FontLoader FontManager { get; set; }
-        protected SfxLoader SfxManager { get; set; }
+        protected TextureLoader TextureLoader { get; set; }
+        protected MusicLoader MusicLoader { get; set; }
+        protected FontLoader FontLoader { get; set; }
+        protected SfxLoader SfxLoader { get; set; }
 
         // Layers
         protected Layer Layer_BG { get; private set; }
@@ -71,10 +71,10 @@ namespace BlackCoat
             Name = String.IsNullOrWhiteSpace(name) ? GetType().Name : name;
 
             // Create Asset Managers
-            TextureManager = new TextureLoader(textures);
-            MusicManager = new MusicLoader(music);
-            FontManager = new FontLoader(fonts);
-            SfxManager = new SfxLoader(sfx);
+            TextureLoader = new TextureLoader(textures);
+            MusicLoader = new MusicLoader(music);
+            FontLoader = new FontLoader(fonts);
+            SfxLoader = new SfxLoader(sfx);
 
             // Create Default Layer Structure
             // Game Layer
@@ -160,10 +160,10 @@ namespace BlackCoat
         {
             OnDestroy.Invoke();
             Destroy();
-            FontManager.Dispose();
-            MusicManager.Dispose();
-            SfxManager.Dispose();
-            TextureManager.Dispose();
+            FontLoader.Dispose();
+            MusicLoader.Dispose();
+            SfxLoader.Dispose();
+            TextureLoader.Dispose();
             Log.Debug(Name, "destroyed");
         }
 

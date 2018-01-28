@@ -36,8 +36,8 @@ namespace BlackCoat
         /// <returns>True on success.</returns>
         protected override bool Load()
         {
-            _BgTex = TextureManager.Load("bg", Resources.Loader);
-            _Sound = SfxManager.Load("snd", Resources.BCPad);
+            _BgTex = TextureLoader.Load("bg", Resources.Loader);
+            _Sound = SfxLoader.Load("snd", Resources.BCPad);
 
             _Bg = new Graphic(_Core);
             _Bg.Texture = _BgTex;
@@ -67,8 +67,8 @@ namespace BlackCoat
         {
             Input.KeyPressed -= HandleKeyPressed;
             Layer_BG.RemoveChild(_Bg);
-            TextureManager.Release("bg");
-            SfxManager.Release("snd");
+            TextureLoader.Release("bg");
+            SfxLoader.Release("snd");
         }
     }
 }
