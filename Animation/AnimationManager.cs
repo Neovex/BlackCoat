@@ -37,39 +37,58 @@ namespace BlackCoat.Animation
         /// Runs the provided Animation
         /// </summary>
         /// <param name="Animation">Animation to start</param>
-        public void Start(Animation Animation)
+        public void Run(Animation Animation)
         {
             if (_ActiveAnimations.Contains(Animation) || _AnimationsToAdd.Contains(Animation)) throw new InvalidOperationException("Animation cannot be added twice");
             if (Animation.Finished) throw new InvalidOperationException("Animations cannot be reused");
-            Animation.Complete += HandleAnimationCompleted;
+            Animation.AnimationComplete += HandleAnimationCompleted;
             _AnimationsToAdd.Add(Animation);
 
             ACTIVE_ANIMATIONS++;
         }
 
         /// <summary>
-        /// Creates a new timebased Animation and runs it.
+        /// Creates a new time-based Animation and runs it.
         /// </summary>
         /// <param name="startValue">Value to start the Animation from</param>
         /// <param name="targetValue">Value to Animation to</param>
         /// <param name="duration">Animation duration in fractal seconds</param>
+        /// <param name="onComplete">Optional delegate called when the Animation has finished</param>
         /// <param name="onUpdate">Optional delegate providing the last interpolated value</param>
         /// <param name="interpolation">Optional delegate to interpolate the Animation</param>
-        /// <param name="onComplete">Optional delegate called when the Animation has finished</param>
-        /// <param name="tag">Optional Object that contains additional data</param>
-        /// <returns>An instance of <see cref="TimeAnimation"/></returns>
-        public TimeAnimation Run(float startValue, float targetValue, float duration, Action<float> onUpdate = null, InterpolationType interpolation = InterpolationType.Linear, Action<Animation> onComplete = null, object tag = null)
+        public void Run(float startValue, float targetValue, float duration, Action onComplete, Action<float> onUpdate = null, InterpolationType interpolation = InterpolationType.Linear)
         {
             var animation = new TimeAnimation(startValue, targetValue, duration, Interpolation.Get(interpolation));
+            animation.Complete += onComplete;
             if (onUpdate != null) animation.Update += onUpdate;
-            if (onComplete != null) animation.Complete += onComplete;
+            Run(animation);
+        }
+        
+        /// <summary>
+        /// Creates a new time-based Animation and runs it.
+        /// </summary>
+        /// <param name="startValue">Value to start the Animation from</param>
+        /// <param name="targetValue">Value to Animation to</param>
+        /// <param name="duration">Animation duration in fractal seconds</param>
+        /// <param name="onComplete">Optional delegate called when the Animation has finished</param>
+        /// <param name="onUpdate">Optional delegate providing the last interpolated value</param>
+        /// <param name="interpolation">Optional delegate to interpolate the Animation</param>
+        /// <param name="tag">Optional Object that contains additional data</param>
+        /// <returns>
+        /// An instance of <see cref="TimeAnimation" />
+        /// </returns>
+        public TimeAnimation RunAdvanced(float startValue, float targetValue, float duration, Action<Animation> onComplete, Action<float> onUpdate = null, InterpolationType interpolation = InterpolationType.Linear, object tag = null)
+        {
+            var animation = new TimeAnimation(startValue, targetValue, duration, Interpolation.Get(interpolation));
+            animation.AnimationComplete += onComplete;
+            if (onUpdate != null) animation.Update += onUpdate;
             animation.Tag = tag;
-            Start(animation);
+            Run(animation);
             return animation;
         }
 
         /// <summary>
-        /// Creates a new valuebased Animation and runs it.
+        /// Creates a new value-based Animation and runs it.
         /// </summary>
         /// <param name="getter">Delegate to retrieve the current value</param>
         /// <param name="setter">Delegate providing the last interpolated value</param>
@@ -78,13 +97,14 @@ namespace BlackCoat.Animation
         /// <param name="onComplete">Optional delegate called when the Animation has finished</param>
         /// <param name="tag">Optional Object that contains additional data</param>
         /// <returns>An instance of <see cref="ValueAnimation"/></returns>
-        public ValueAnimation Run(Func<float> getter, Action<float> setter, float targetValue, float modifier = 100, Action<Animation> onComplete = null, object tag = null)
+        public ValueAnimation RunAdvanced(Func<float> getter, Action<float> setter, float targetValue, float modifier = 100, Action onComplete = null, Action<Animation> onAnimationComplete = null, object tag = null)
         {
             var animation = new ValueAnimation(getter, targetValue, modifier);
             animation.Update += setter;
             if (onComplete != null) animation.Complete += onComplete;
+            if (onAnimationComplete != null) animation.AnimationComplete += onAnimationComplete;
             animation.Tag = tag;
-            Start(animation);
+            Run(animation);
             return animation;
         }
 
@@ -93,16 +113,19 @@ namespace BlackCoat.Animation
         /// </summary>
         /// <param name="time">Time to wait in fractal seconds</param>
         /// <param name="onComplete">Delegate called when the timer has finished</param>
+        /// <param name="onTimerComplete">Delegate called when the timer has finished</param>
         /// <param name="onUpdate">Optional delegate providing the last interpolated value</param>
         /// <param name="tag">Optional Object that contains additional data</param>
-        /// <returns>An instance of <see cref="Timer"/></returns>
-        public Timer Wait(float time, Action<Animation> onComplete, Action<float> onUpdate = null, object tag = null)
+        /// <returns>
+        /// An instance of <see cref="Timer" /></returns>
+        public Timer Wait(float time, Action onComplete, Action<Animation> onTimerComplete = null, Action<float> onUpdate = null, object tag = null)
         {
             var timer = new Timer(time);
             if (onUpdate != null) timer.Update += onUpdate;
             timer.Complete += onComplete;
+            if (onTimerComplete != null) timer.AnimationComplete += onTimerComplete;
             timer.Tag = tag;
-            Start(timer);
+            Run(timer);
             return timer;
         }
 
@@ -133,11 +156,11 @@ namespace BlackCoat.Animation
         /// <summary>
         /// Handler for completed Animations
         /// </summary>
-        /// <param name="Animation">Animation that is finished or canceled</param>
-        private void HandleAnimationCompleted(Animation Animation)
+        /// <param name="animation">Animation that is finished or canceled</param>
+        private void HandleAnimationCompleted(Animation animation)
         {
-            Animation.Complete -= HandleAnimationCompleted;
-            _AnimationsToRemove.Add(Animation);
+            animation.AnimationComplete -= HandleAnimationCompleted;
+            _AnimationsToRemove.Add(animation);
 
             ACTIVE_ANIMATIONS--;
         }

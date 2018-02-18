@@ -10,7 +10,11 @@ namespace BlackCoat.Animation
         /// <summary>
         /// Occurs when the Timer reached its assigned target value and is therefore complete.
         /// </summary>
-        public event Action<Animation> Complete = (t) => { };
+        public event Action Complete = () => { };
+        /// <summary>
+        /// Occurs when the Timer reached its assigned target value and is therefore complete.
+        /// </summary>
+        public event Action<Animation> AnimationComplete = (t) => { };
         /// <summary>
         /// Occurs on each update cycle of the Animation with the interpolated value
         /// </summary>
@@ -54,18 +58,22 @@ namespace BlackCoat.Animation
         {
             if (Finished) return;
             Finished = true;
-            Complete(this);
+            OnComplete();
         }
 
         /// <summary>
         /// Raises the Update Event
         /// </summary>
         /// <param name="value">Current Animation Value</param>
-        protected void OnUpdate(float value) { Update(value); }
+        protected void OnUpdate(float value) => Update(value);
 
         /// <summary>
         /// Raises the Complete Event
         /// </summary>
-        protected void OnComplete() { Complete(this); }
+        protected void OnComplete()
+        {
+            Complete.Invoke();
+            AnimationComplete.Invoke(this);
+        }
     }
 }

@@ -160,14 +160,14 @@ namespace BlackCoat
             return new Vector2i((int)v.X, (int)v.Y);
         }
 
-        public static Vector2i ToVector2i(this Vector2u v)
-        {
-            return new Vector2i((int)v.X, (int)v.Y);
-        }
-
         public static Vector2u ToVector2u(this Vector2f v)
         {
             return new Vector2u((uint)v.X, (uint)v.Y);
+        }
+
+        public static Vector3f ToVector3f(this Vector2f v)
+        {
+            return new Vector3f(v.X, 0, v.Y);
         }
 
         public static Vector2u ToVector2u(this Vector2i v)
@@ -178,6 +178,11 @@ namespace BlackCoat
         public static Vector2f ToVector2f(this Vector2i v)
         {
             return new Vector2f(v.X, v.Y);
+        }
+
+        public static Vector2i ToVector2i(this Vector2u v)
+        {
+            return new Vector2i((int)v.X, (int)v.Y);
         }
 
         public static Vector2f ToVector2f(this Vector2u v)

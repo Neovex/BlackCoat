@@ -18,6 +18,7 @@ namespace BlackCoat.Entities
         protected Core _Core;
         private Container _Parent;
         private Single _Alpha = 255;
+        private bool _Visible;
         protected View _View;
         private ICollisionShape _CollisionShape;
         protected List<Role> _Roles = new List<Role>();
@@ -36,7 +37,11 @@ namespace BlackCoat.Entities
         /// <summary>
         /// Determines the Visibility of the <see cref="Graphic"/>
         /// </summary>
-        public virtual Boolean Visible { get; set; }
+        public virtual Boolean Visible
+        {
+            get { return _Visible && (_Parent == null ? true : _Parent.Visible); }
+            set { _Visible = value; }
+        }
 
         /// <summary>
         /// Target Render View

@@ -155,9 +155,10 @@ namespace BlackCoat
             DefaultFont.PreloadDefaultCodepage();
 
             // Device Events
-            _Device.Closed += new EventHandler(_Device_Closed);
-            _Device.LostFocus += new EventHandler(HandleLostFocus);
-            _Device.GainedFocus += new EventHandler(HandleGainedFocus);
+            _Device.Resized += HandleWindowResized;
+            _Device.Closed += HandleWindowClose;
+            _Device.LostFocus += HandleLostFocus;
+            _Device.GainedFocus += HandleGainedFocus;
 
             // Init Subsystems
             Random = new RandomHelper();
@@ -174,6 +175,7 @@ namespace BlackCoat
 
             Log.Info("Black Coat Engine Creation Completed. - Version", GetType().Assembly.GetName().Version);
         }
+
         ~Core()
         {
             if (!Disposed) Dispose();
@@ -357,6 +359,18 @@ namespace BlackCoat
         #endregion
 
         #region Device Event handlers
+        private void HandleWindowResized(object sender, SizeEventArgs e)
+        {
+            // TODO : device resize
+            Log.Fatal("Resize not handled!");
+        }
+
+        private void HandleWindowClose(object sender, EventArgs e)
+        {
+            // Needed for when the close button is clicked
+            Exit();
+        }
+
         private void HandleLostFocus(object sender, EventArgs e)
         {
             _Timer.Stop();
@@ -368,11 +382,6 @@ namespace BlackCoat
         {
             FocusLost = false;
             _Timer.Start();
-        }
-
-        private void _Device_Closed(object sender, EventArgs e)
-        {
-            Exit();
         }
         #endregion
 

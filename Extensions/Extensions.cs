@@ -8,7 +8,7 @@ namespace BlackCoat
     /// </summary>
     public static class Extensions
     {
-        private static readonly String _DefaultCodepage = "123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ.:-_,;#'+*~´`\\?ß=()&/$%\"§!^°";
+        private static readonly String _DefaultCodepage = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ.:-_,;#'+*~´`\\?ß=()&/$%\"§!^°";
 
         /// <summary>
         /// Pre-renders the font texture for all glyphs of the default code page.

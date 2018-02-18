@@ -17,6 +17,7 @@ namespace BlackCoat
         private SfxLoader _Loader;
         private Dictionary<String, Sound> _Sounds;
         private Dictionary<String, Int32> _ActiveSounds;
+        List<Sound> bla = new List<Sound>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SfxManager" /> class.
@@ -94,7 +95,7 @@ namespace BlackCoat
             // Adjust sound
             sound.Volume = volume;
             sound.RelativeToListener = !spatial;
-            sound.Position = ConvertTo3D(position);
+            sound.Position = position.ToVector3f();
             sound.MinDistance = volumeDropoffStartDistance;
             sound.Attenuation = volumeDropoffFactor;
 
@@ -111,9 +112,10 @@ namespace BlackCoat
             if (_Sounds.TryGetValue(name, out Sound sound))
             {
                 sound = new Sound(sound);
-                if (position.HasValue) sound.Position = ConvertTo3D(position.Value);
+                if (position.HasValue) sound.Position = position.Value.ToVector3f();
                 //_ActiveSounds[name]++; // FIXME
                 sound.Play();
+                bla.Add(sound);
             }
             else
             {
@@ -124,16 +126,6 @@ namespace BlackCoat
         private void Update(float obj)
         {
             _ActiveSounds.Clear();
-        }
-
-        /// <summary>
-        /// Converts a 2d Vector into 3D space.
-        /// </summary>
-        /// <param name="v">The source vector.</param>
-        /// <returns>Converted 3D vector</returns>
-        private Vector3f ConvertTo3D(Vector2f v)
-        {
-            return new Vector3f(v.X, 0, v.Y);
         }
     }
 }

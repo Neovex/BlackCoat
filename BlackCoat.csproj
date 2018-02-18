@@ -56,6 +56,7 @@
     <Compile Include="Animation\Timer.cs" />
     <Compile Include="AssetHandling\AssetLoader.cs" />
     <Compile Include="AssetHandling\FontLoader.cs" />
+    <Compile Include="AssetHandling\ManagedSound.cs" />
     <Compile Include="AssetHandling\MusicLoader.cs" />
     <Compile Include="AssetHandling\SfxLoader.cs" />
     <Compile Include="AssetHandling\SfxManager.cs" />
@@ -79,6 +80,7 @@
     <Compile Include="Entities\Animation\BlittingAnimation.cs" />
     <Compile Include="Entities\Animation\FrameAnimation.cs" />
     <Compile Include="Entities\BaseEntity.cs" />
+    <Compile Include="Entities\CursorLayer.cs" />
     <Compile Include="Entities\Shapes\Circle.cs" />
     <Compile Include="Entities\Shapes\Polygon.cs" />
     <Compile Include="Interfaces\IEntity.cs" />
@@ -135,24 +137,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\SFML.Net\src\Audio\sfml-audio.csproj">
-      <Project>{0B202C4D-A457-47FE-84A3-031DD878C6BE}</Project>
-      <Name>sfml-audio</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SFML.Net\src\Graphics\sfml-graphics.csproj">
-      <Project>{46786269-57B9-48E7-AA4F-8F4D84609FE6}</Project>
-      <Name>sfml-graphics</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SFML.Net\src\System\sfml-system.csproj">
-      <Project>{31D24303-F6A9-4D53-BB03-A73EDCB3186D}</Project>
-      <Name>sfml-system</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SFML.Net\src\Window\sfml-window.csproj">
-      <Project>{D17DE83D-A592-461F-8AF2-53F9E22E1D0F}</Project>
-      <Name>sfml-window</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Animation\Animation.cd" />
     <None Include="AssetHandling\AssetHandling.cd" />
     <None Include="Collision\Collision.cd" />
@@ -161,5 +145,22 @@
     <None Include="Input\Input.cd" />
     <None Include="StateManagement\StateManagement.cd" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\SFML.Net\src\Audio\sfml-audio.csproj">
+      <Project>{0b202c4d-a457-47fe-84a3-031dd878c6be}</Project>
+      <Name>sfml-audio</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SFML.Net\src\Graphics\sfml-graphics.csproj">
+      <Project>{46786269-57b9-48e7-aa4f-8f4d84609fe6}</Project>
+      <Name>sfml-graphics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SFML.Net\src\System\sfml-system.csproj">
+      <Project>{31d24303-f6a9-4d53-bb03-a73edcb3186d}</Project>
+      <Name>sfml-system</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SFML.Net\src\Window\sfml-window.csproj">
+      <Project>{d17de83d-a592-461f-8af2-53f9e22e1d0f}</Project>
+      <Name>sfml-window</Name>
+    </ProjectReference>
+  </ItemGroup>
 </Project>

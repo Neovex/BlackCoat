@@ -11,7 +11,9 @@ namespace BlackCoat
     public class SfxLoader : AssetLoader<SoundBuffer>
     {
         // Statics #########################################################################
-        public static readonly IEnumerable<String> AvailableFormats = new[] { ".wav", ".ogg", ".flac" };
+        public static readonly IEnumerable<String> AvailableFormats =
+            new[] { ".ogg", ".wav", ".flac", ".aiff", ".au", ".raw", ".paf", ".svx", ".nist", ".voc", ".ircam",
+                ".w64", ".mat4", ".mat5", ".pvf", ".htk", ".sds", ".avr", ".sd2", ".caf", ".wve", ".mpc2k", ".rf64" };
 
 
         // CTOR ############################################################################

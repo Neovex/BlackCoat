@@ -1,6 +1,8 @@
 ﻿using System;
 using BlackCoat.Entities;
 using BlackCoat.Tools;
+using SFML.Graphics;
+using SFML.System;
 
 namespace BlackCoat
 {
@@ -28,7 +30,7 @@ namespace BlackCoat
         protected Layer Layer_Particles { get; private set; }
         protected Layer Layer_Overlay { get; private set; }
         protected Layer Layer_Debug { get; private set; }
-        protected Layer Layer_Cursor { get; private set; }
+        protected CursorLayer Layer_Cursor { get; private set; }
 
 
         /// <summary>
@@ -84,7 +86,7 @@ namespace BlackCoat
             Layer_Overlay = new Layer(_Core);
             // System Layer
             Layer_Debug = new Layer(_Core);
-            Layer_Cursor = new Layer(_Core);
+            Layer_Cursor = new CursorLayer(_Core);
 
             // Initialize Debug Overlay
             HandleDebugChanged(_Core.Debug);
@@ -187,5 +189,15 @@ namespace BlackCoat
         /// <summary>Returns a <see cref="System.String" /> that represents this instance.</summary>
         /// <returns>A <see cref="System.String" /> that represents this instance.</returns>
         public override string ToString() => $"{base.ToString()} \"{Name}\"";
+        
+        /// <summary>
+        /// Replaces the pointer with a texture or restores the original system pointer.
+        /// </summary>
+        /// <param name="texture">The texture to replace the pointer or null to restore system default.</param>
+        /// <param name="origin">The optional origin of the texture.</param>
+        public void SetPointer(Texture texture, Vector2f origin = new Vector2f())
+        {
+            Layer_Cursor.SetPointerTexture(texture, origin);
+        }
     }
 }

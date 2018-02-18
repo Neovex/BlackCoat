@@ -18,7 +18,8 @@ namespace BlackCoat
         private BaseGamestate _NextState;
         private Graphic _Bg;
         private Texture _BgTex;
-        private SoundBuffer _Sound;
+        private SoundBuffer _SoundBuffer;
+        private Sound _Sound;
         private Boolean _Done = false;
 
         public BlackCoatIntro(Core core, BaseGamestate nextState):base(core, "BlackCoatIntro")
@@ -37,20 +38,30 @@ namespace BlackCoat
         protected override bool Load()
         {
             _BgTex = TextureLoader.Load("bg", Resources.Loader);
-            _Sound = SfxLoader.Load("snd", Resources.BCPad);
+            _SoundBuffer = SfxLoader.Load("snd", Resources.BCPad);
+            _Sound = new Sound(_SoundBuffer);
 
-            _Bg = new Graphic(_Core);
-            _Bg.Texture = _BgTex;
-            _Bg.Scale = new Vector2f(0.5f, 0.5f);
+            if (_BgTex == null || _SoundBuffer == null) return false;
+
+            _Bg = new Graphic(_Core)
+            {
+                Texture = _BgTex,
+                Alpha = 0,
+                Scale = new Vector2f(0.5f, 0.5f) // TODO : double check scale
+            };
             Layer_BG.AddChild(_Bg);
 
             Input.KeyPressed += HandleKeyPressed;
-            _Core.AnimationManager.Run(0, 1, 6, v => _Bg.Alpha = v, InterpolationType.Linear, a => _Done = true);
-            // TODO : fix timing & scale
-            var snd = new Sound(_Sound);
-            snd.Play();
+            _Core.AnimationManager.Wait(1, Start);
 
-            return _BgTex != null && _Sound != null;
+            return true;
+        }
+
+        private void Start()
+        {
+            if (_Done) return;
+            _Sound.Play();
+            _Core.AnimationManager.Run(0, 1, 4.5f, () => _Done = true, v => _Bg.Alpha = v);
         }
 
         private void HandleKeyPressed(Keyboard.Key key)
@@ -60,7 +71,11 @@ namespace BlackCoat
 
         protected override void Update(float deltaT)
         {
-            if (_Done) _Core.StateManager.ChangeState(_NextState);
+            if (_Done)
+            {
+                _Sound.Stop();
+                _Core.StateManager.ChangeState(_NextState);
+            }
         }
 
         protected override void Destroy()
