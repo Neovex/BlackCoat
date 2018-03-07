@@ -16,8 +16,8 @@ namespace BlackCoat.Entities
         // Variables #######################################################################
         protected Core _Core;
         private Container _Parent;
-        protected List<Role> _Roles = new List<Role>();
-        protected View _View = null;
+        private Boolean _Visible;
+        private View _View;
 
 
         // Properties ######################################################################
@@ -40,16 +40,20 @@ namespace BlackCoat.Entities
         }
 
         /// <summary>
-        /// Determines the Visibility of the Entity
+        /// Determines the Visibility of the <see cref="Graphic"/>
         /// </summary>
-        public virtual Boolean Visible { get; set; }
+        public virtual Boolean Visible
+        {
+            get { return _Visible && (_Parent == null ? true : _Parent.Visible); }
+            set { _Visible = value; }
+        }
 
         /// <summary>
         /// Target Render View
         /// </summary>
         public View View
         {
-            get { return _View ?? (_Parent == null ? _View : _Parent.View); }
+            get { return (_View ?? _Parent?.View) ?? _View; }
             set { _View = value; }
         }
 
@@ -64,22 +68,22 @@ namespace BlackCoat.Entities
         public RenderTarget RenderTarget { get; set; }
 
         /// <summary>
-        /// Alpha Value
+        /// Alpha Visibility - 0-1f
         /// </summary>
         public Single Alpha
         {
-            get { return 255 / Color.A; }
+            get { return Color.A / 255f; }
             set
             {
-                Byte b = (Byte)(value * 255);
+                if (_Parent != null) value *= _Parent.Alpha;
                 var color = Color;
-                color.A = b;
+                color.A = (Byte)(value * 255f);
                 Color = color;
             }
         }
 
         /// <summary>
-        /// Blending method used for Rendering
+        /// Blend method for Rendering
         /// </summary>
         public virtual BlendMode BlendMode
         {
@@ -93,14 +97,23 @@ namespace BlackCoat.Entities
         }
 
         /// <summary>
+        /// Shader for Rendering
+        /// </summary>
+        public virtual Shader Shader
+        {
+            get { return RenderState.Shader; }
+            set
+            {
+                var state = RenderState;
+                state.Shader = value;
+                RenderState = state;
+            }
+        }
+
+        /// <summary>
         /// Gets or sets the collision shape for collision detection
         /// </summary>
         public ICollisionShape CollisionShape { get; set; }
-
-        /// <summary>
-        /// Current Role that describes the Entities Behavior
-        /// </summary>
-        public Role CurrentRole { get { return _Roles.Count == 0 ? null : _Roles[_Roles.Count - 1]; } }
 
 
         // CTOR ############################################################################        
@@ -113,20 +126,19 @@ namespace BlackCoat.Entities
         {
             _Core = core;
             Visible = true;
-            Font = font ?? _Core.DefaultFont;
             RenderState = RenderStates.Default;
+            Font = font ?? _Core.DefaultFont;
         }
 
 
         // Methods #########################################################################
         /// <summary>
-        /// Updates the Current Entity using its applied Role.
+        /// Updates the <see cref="TextItem"/>.
         /// Can be overridden by derived classes.
         /// </summary>
         /// <param name="deltaT">Current game time</param>
         public virtual void Update(Single deltaT)
         {
-            for (int i = _Roles.Count - 1; i > -1 && _Roles[i].Update(deltaT); i--);
         }
 
         /// <summary>
@@ -135,52 +147,6 @@ namespace BlackCoat.Entities
         public virtual void Draw()
         {
             _Core.Draw(this);
-        }
-
-
-        // Roles #########################################################################
-        /// <summary>
-        /// Assigns a new Role to the Entity without removing the current one.
-        /// </summary>
-        /// <param name="role">The Role to assign</param>
-        /// <param name="supressInitialization">Suppress initialization call on assigned role</param>
-        public virtual void AssignRole(Role role, Boolean supressInitialization = false)
-        {
-            if (role == null) throw new ArgumentNullException("role");
-            role.Target = this;
-            if (!supressInitialization) role.Initialize();
-            _Roles.Add(role);
-        }
-
-        /// <summary>
-        /// Assigns a new Role to the Entity after removing the current one.
-        /// </summary>
-        /// <param name="role">The Role to assign</param>
-        /// <param name="supressInitialization">Suppress initialization call on assigned role</param>
-        /// <returns>The removed role if there was one - otherwise null</returns>
-        public virtual Role ReplaceRole(Role role, Boolean supressInitialization = false)
-        {
-            if (role == null) throw new ArgumentNullException("role");
-            Role temp = RemoveRole();
-            AssignRole(role);
-            if (!supressInitialization) role.Initialize();
-            return temp;
-        }
-
-        /// <summary>
-        /// Removes the currently active Role from this Entity
-        /// </summary>
-        /// <returns>The removed role if there was one - otherwise null</returns>
-        public virtual Role RemoveRole()
-        {
-            Role temp = null;
-            if (_Roles.Count != 0)
-            {
-                temp = _Roles[_Roles.Count - 1];
-                _Roles.RemoveAt(_Roles.Count - 1);
-                temp.Target = null;
-            }
-            return temp;
         }
     }
 }

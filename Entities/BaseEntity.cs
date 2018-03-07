@@ -12,9 +12,8 @@ namespace BlackCoat.Entities
         // Variables #######################################################################
         protected Core _Core;
         private Container _Parent;
-        protected List<Role> _Roles = new List<Role>();
-        protected Single _Alpha = 255;
-        protected View _View = null;
+        private Boolean _Visible;
+        private View _View;
 
 
         // Properties ######################################################################
@@ -30,14 +29,18 @@ namespace BlackCoat.Entities
         /// <summary>
         /// Determines the Visibility of the Entity
         /// </summary>
-        public virtual Boolean Visible { get; set; }
+        public virtual Boolean Visible
+        {
+            get { return _Visible && (_Parent == null ? true : _Parent.Visible); }
+            set { _Visible = value; }
+        }
 
         /// <summary>
         /// Target Render View
         /// </summary>
         public virtual View View
         {
-            get { return _View ?? (_Parent == null ? _View : _Parent.View); }
+            get { return (_View ?? _Parent?.View) ?? _View; }
             set { _View = value; }
         }
 
@@ -50,6 +53,26 @@ namespace BlackCoat.Entities
         /// Target device for rendering
         /// </summary>
         public virtual RenderTarget RenderTarget { get; set; }
+
+        /// <summary>
+        /// Entity Color or Tint
+        /// </summary>
+        public abstract Color Color { get; set; }
+
+        /// <summary>
+        /// Alpha Visibility - 0-1f
+        /// </summary>
+        public Single Alpha
+        {
+            get { return Color.A / 255f; }
+            set
+            {
+                if (_Parent != null) value *= _Parent.Alpha;
+                var color = Color;
+                color.A = (Byte)(value * 255f);
+                Color = color;
+            }
+        }
 
         /// <summary>
         /// Blending method used for Rendering
@@ -66,114 +89,55 @@ namespace BlackCoat.Entities
         }
 
         /// <summary>
-        /// Entity Color or Tint
+        /// Shader for Rendering
         /// </summary>
-        public abstract Color Color { get; set; }
-
-        /// <summary>
-        /// Alpha Visibility - 0-1f
-        /// </summary>
-        public virtual Single Alpha
+        public virtual Shader Shader
         {
-            get { return Color.A == 0 ? 0 : _Alpha / 255f; }
+            get { return RenderState.Shader; }
             set
             {
-                _Alpha = (_Parent == null ? value : value * _Parent.Alpha) * 255;
-                if (_Alpha < 0) _Alpha = 0;
-                var color = Color;
-                color.A = (Byte)_Alpha;
-                Color = color;
+                var state = RenderState;
+                state.Shader = value;
+                RenderState = state;
             }
         }
-
-        /// <summary>
-        /// Current Role that describes the Entities Behavior
-        /// </summary>
-        public Role CurrentRole { get { return _Roles.Count == 0 ? null : _Roles[_Roles.Count - 1]; } }
 
 
         // CTOR ############################################################################
         /// <summary>
-        /// Initializes a new instance of the <see cref="Graphic"/> class.
+        /// Initializes a new instance of the <see cref="BaseEntity"/> class.
         /// </summary>
         /// <param name="core">The render core.</param>
         protected BaseEntity(Core core)
         {
             _Core = core;
             Visible = true;
-            Color = Color.White;
             RenderState = RenderStates.Default;
+            Color = Color.White;
         }
 
 
         // Methods #########################################################################
         /// <summary>
-        /// Updates the Current Entity using its applied Role(s).
+        /// Updates the <see cref="IEntity"/>.
         /// Can be overridden by derived classes.
         /// </summary>
         /// <param name="deltaT">Current game-time</param>
-        public virtual void Update(Single deltaT)
+        public virtual void Update(Single deltaT) { }
+
+        /// <summary>
+        /// Renders the <see cref="IEntity"/> into the scene.
+        /// </summary>
+        public virtual void Draw()
         {
-            for (int i = _Roles.Count - 1; i > -1 && _Roles[i].Update(deltaT); i--);
+            _Core.Draw(this);
         }
 
         /// <summary>
-        /// Renders the entity into the scene if correctly implemented in derived classes.
-        /// </summary>
-        public abstract void Draw();
-
-        /// <summary>
-        /// Renders the entity into the scene if correctly implemented in derived classes.
+        /// Renders the <see cref="IEntity"/> into the scene.
         /// </summary>
         /// <param name="target">Render device</param>
         /// <param name="states">Additional render information</param>
         public abstract void Draw(RenderTarget target, RenderStates states);
-
-
-        // Roles #########################################################################
-        /// <summary>
-        /// Assigns a new Role to the Entity without removing the current one.
-        /// Can be overridden by derived classes.
-        /// </summary>
-        /// <param name="role">The Role to assign</param>
-        /// <param name="supressInitialization">Suppress initialization call on assigned role</param>
-        public virtual void AssignRole(Role role, Boolean supressInitialization = false)
-        {
-            if (role == null) throw new ArgumentNullException("role");
-            role.Target = this;
-            if (!supressInitialization) role.Initialize();
-            _Roles.Add(role);
-        }
-
-        /// <summary>
-        /// Assigns a new Role to the Entity after removing the current one.
-        /// Can be overridden by derived classes.
-        /// </summary>
-        /// <param name="role">The Role to assign</param>
-        /// <param name="supressInitialization">Suppress initialization call on assigned role</param>
-        /// <returns>The removed role if there was one - otherwise null</returns>
-        public virtual Role ReplaceRole(Role role, Boolean supressInitialization = false)
-        {
-            if (role == null) throw new ArgumentNullException("role");
-            var ret = RemoveRole();
-            AssignRole(role, true);
-            if (!supressInitialization) role.Initialize();
-            return ret;
-        }
-
-        /// <summary>
-        /// Removes the currently active Role from this Entity
-        /// Can be overridden by derived classes.
-        /// </summary>
-        /// <returns>The removed role if there was one - otherwise null</returns>
-        public virtual Role RemoveRole()
-        {
-            if (_Roles.Count == 0) return null;
-
-            var temp = _Roles[_Roles.Count - 1];
-            _Roles.Remove(temp);
-            temp.Target = null;
-            return temp;
-        }
     }
 }

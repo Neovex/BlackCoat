@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-
 using SFML.Graphics;
-
 using BlackCoat.Collision;
 using BlackCoat.Collision.Shapes;
 
@@ -17,11 +14,9 @@ namespace BlackCoat.Entities
         // Variables #######################################################################
         protected Core _Core;
         private Container _Parent;
-        private Single _Alpha = 255;
-        private bool _Visible;
-        protected View _View;
+        private Boolean _Visible;
+        private View _View;
         private ICollisionShape _CollisionShape;
-        protected List<Role> _Roles = new List<Role>();
 
 
         // Properties ######################################################################
@@ -48,7 +43,7 @@ namespace BlackCoat.Entities
         /// </summary>
         public View View
         {
-            get { return _View ?? (_Parent == null ? _View : _Parent.View); }
+            get { return (_View ?? _Parent?.View) ?? _View; }
             set { _View = value; }
         }
 
@@ -65,15 +60,14 @@ namespace BlackCoat.Entities
         /// <summary>
         /// Alpha Visibility - 0-1f
         /// </summary>
-        public virtual Single Alpha
+        public Single Alpha
         {
-            get { return Color.A == 0 ? 0 : _Alpha / 255f; }
+            get { return Color.A / 255f; }
             set
             {
-                _Alpha =  (_Parent == null ? value : value * _Parent.Alpha) * 255;
-                if (_Alpha < 0) _Alpha = 0;
+                if (_Parent != null) value *= _Parent.Alpha;
                 var color = Color;
-                color.A = (Byte)_Alpha;
+                color.A = (Byte)(value * 255f);
                 Color = color;
             }
         }
@@ -115,11 +109,6 @@ namespace BlackCoat.Entities
             set { _CollisionShape = value; }
         }
 
-        /// <summary>
-        /// Current Role that describes the <see cref="IEntity"/>s Behavior
-        /// </summary>
-        public Role CurrentRole { get { return _Roles.Count == 0 ? null : _Roles[_Roles.Count - 1]; } }
-
 
 
         // CTOR ############################################################################
@@ -137,13 +126,12 @@ namespace BlackCoat.Entities
 
         // Methods #########################################################################
         /// <summary>
-        /// Updates the Current Entity using its applied Role.
+        /// Updates the <see cref="Graphic"/>.
         /// Can be overridden by derived classes.
         /// </summary>
         /// <param name="deltaT">Current game-time</param>
         public virtual void Update(Single deltaT)
         {
-            for (int i = _Roles.Count - 1; i > -1 && _Roles[i].Update(deltaT); i--);
         }
 
         /// <summary>
@@ -153,53 +141,6 @@ namespace BlackCoat.Entities
         public virtual void Draw()
         {
             _Core.Draw(this);
-        }
-
-
-        // Roles #########################################################################
-        /// <summary>
-        /// Assigns a new Role to the Entity without removing the current one.
-        /// Can be overridden by derived classes.
-        /// </summary>
-        /// <param name="role">The Role to assign</param>
-        /// <param name="supressInitialization">Suppress initialization call on assigned role</param>
-        public virtual void AssignRole(Role role, Boolean supressInitialization = false)
-        {
-            if (role == null) throw new ArgumentNullException("role");
-            role.Target = this;
-            if (!supressInitialization) role.Initialize();
-            _Roles.Add(role);
-        }
-
-        /// <summary>
-        /// Assigns a new Role to the Entity after removing the current one.
-        /// Can be overridden by derived classes.
-        /// </summary>
-        /// <param name="role">The Role to assign</param>
-        /// <param name="supressInitialization">Suppress initialization call on assigned role</param>
-        /// <returns>The removed role if there was one - otherwise null</returns>
-        public virtual Role ReplaceRole(Role role, Boolean supressInitialization = false)
-        {
-            if (role == null) throw new ArgumentNullException("role");
-            var ret = RemoveRole();
-            AssignRole(role, true);
-            if (!supressInitialization) role.Initialize();
-            return ret;
-        }
-
-        /// <summary>
-        /// Removes the currently active Role from this Entity
-        /// Can be overridden by derived classes.
-        /// </summary>
-        /// <returns>The removed role if there was one - otherwise null</returns>
-        public virtual Role RemoveRole()
-        {
-            if (_Roles.Count == 0) return null;
-
-            var temp = _Roles[_Roles.Count - 1];
-            _Roles.Remove(temp);
-            temp.Target = null;
-            return temp;
         }
     }
 }

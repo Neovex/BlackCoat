@@ -130,22 +130,22 @@ namespace BlackCoat.Tools
             if (_AnimationRunning) return;
             Visible = true;
             _AnimationRunning = true;
-            _Core.AnimationManager.RunAdvanced(Position.Y, Position.Y - _Background.Size.Y, 0.4f, a =>
+            _Core.AnimationManager.RunAdvanced(Position.Y, Position.Y - _Background.Size.Y, 0.4f, v => Position = new Vector2f(Position.X, v), a =>
             {
                 _Open = true;
                 _AnimationRunning = false;
-            }, v => Position = new Vector2f(Position.X, v), InterpolationType.OutCubic);
+            }, InterpolationType.OutCubic);
         }
         private void Close()
         {
             if (_AnimationRunning) return;
             _AnimationRunning = true;
-            _Core.AnimationManager.RunAdvanced(Position.Y, Position.Y + _Background.Size.Y, 0.4f, a =>
+            _Core.AnimationManager.RunAdvanced(Position.Y, Position.Y + _Background.Size.Y, 0.4f, v => Position = new Vector2f(Position.X, v), a =>
             {
                 _Open = false;
                 Visible = false;
                 _AnimationRunning = false;
-            }, v => Position = new Vector2f(Position.X, v), InterpolationType.OutCubic);
+            }, InterpolationType.OutCubic);
         }
     }
 }

@@ -6,14 +6,20 @@ using SFML.System;
 namespace BlackCoat.Entities.Animation
 {
     /// <summary>
-    /// Animated Graphic Entity. Utilizes a single blitted Texture for all Frames.
+    /// Animated Graphic Entity. Utilizes a single Texture for all frames of the animation.
     /// </summary>
     public class BlittingAnimation:Graphic
     {
+        // Events ##########################################################################
+        /// <summary>
+        /// Occurs when the animation completes and returns to its first frame.
+        /// </summary>
+        public event Action AnimationComplete = () => { };
+
+
         // Variables #######################################################################
-        protected Int32 _CurrentFrame = -1;
+        protected Int32 _CurrentFrame;
         protected IntRect[] _Frames;
-        protected Vector2u _FrameSize;
         protected Single _FrameTime;
 
 
@@ -21,19 +27,20 @@ namespace BlackCoat.Entities.Animation
         /// <summary>
         /// Duration of one frame
         /// </summary>
-        public virtual Single FrameDuration { get; set; }
+        public virtual Single FrameDuration { get; protected set; }
 
         /// <summary>
-        /// Texture of this Sprite
+        /// Gets or sets a value indicating whether this <see cref="BlittingAnimation"/> is paused.
         /// </summary>
-        public new Texture Texture
+        public virtual Boolean Paused { get; set; }
+
+        /// <summary>
+        /// Gets or sets the index of current frame.
+        /// </summary>
+        public int CurrentFrame
         {
-            get { return base.Texture; }
-            set
-            {
-                base.Texture = value;
-                RecalculateFrames();
-            }
+            get => _CurrentFrame;
+            set => TextureRect = _Frames[_CurrentFrame = value];
         }
 
 
@@ -42,20 +49,26 @@ namespace BlackCoat.Entities.Animation
         /// Creates a new Instance of the BlittingAnimation class.
         /// </summary>
         /// <param name="core">Engine Core</param>
-        /// <param name="frameSize">Size of a single frame inside the blitted texture</param>
-        public BlittingAnimation(Core core, Vector2u frameSize) : base(core)
+        /// <param name="frameDuration">Duration of one frame</param>
+        /// <param name="texture">The texture containing all frames</param>
+        /// <param name="frameSize">Size of a single frame inside the texture</param>
+        public BlittingAnimation(Core core, Single frameDuration, Texture texture, Vector2u frameSize) : this(core, frameDuration, texture, CalculateFrames(texture, frameSize))
         {
-            _FrameSize = frameSize;
         }
 
         /// <summary>
         /// Creates a new Instance of the BlittingAnimation class.
         /// </summary>
         /// <param name="core">Engine Core</param>
-        /// <param name="frames">Determines the frame locations of the animation frames inside the blitted texture</param>
-        public BlittingAnimation(Core core, IntRect[] frames) : base(core)
+        /// <param name="frameDuration">Duration of one frame</param>
+        /// <param name="texture">The texture containing all frames</param>
+        /// <param name="frames">Determines the frame locations of the animation frames inside the texture</param>
+        public BlittingAnimation(Core core, Single frameDuration, Texture texture, IntRect[] frames) : base(core)
         {
+            FrameDuration = frameDuration;
+            Texture = texture;
             _Frames = frames;
+            CurrentFrame = 0;
         }
 
 
@@ -67,32 +80,40 @@ namespace BlackCoat.Entities.Animation
         public override void Update(float deltaT)
         {
             base.Update(deltaT);
+            if (Paused) return;
             _FrameTime -= deltaT;
             while (_FrameTime <= 0)
             {
                 _FrameTime += FrameDuration;
-                if (++_CurrentFrame >= _Frames.Length) _CurrentFrame = 0;
-                TextureRect = _Frames[_CurrentFrame];
+                if (CurrentFrame + 1 >= _Frames.Length)
+                {
+                    CurrentFrame = 0;
+                    AnimationComplete.Invoke();
+                }
+                else
+                {
+                    CurrentFrame++;
+                }
             }
         }
 
         /// <summary>
         /// Rebuilds the animation frame info based on the current texture
         /// </summary>
-        /// <returns>True on success</returns>
-        protected virtual Boolean RecalculateFrames()
+        protected static IntRect[] CalculateFrames(Texture texture, Vector2u frameSize)
         {
-            if (Texture == null || _FrameSize.X == 0 || _FrameSize.Y == 0) return false;
+            if (texture == null) throw new ArgumentNullException(nameof(texture));
+            if (frameSize.X == 0 || frameSize.Y == 0) throw new ArgumentException(nameof(frameSize));
+
             var list = new List<IntRect>();
-            for (UInt32 y = 0; y < Texture.Size.Y; y += _FrameSize.Y)
+            for (UInt32 y = 0; y < texture.Size.Y; y += frameSize.Y)
             {
-                for (UInt32 x = 0; x < Texture.Size.X; x += _FrameSize.X)
+                for (UInt32 x = 0; x < texture.Size.X; x += frameSize.X)
                 {
-                    list.Add(new IntRect((Int32)x, (Int32)y, (Int32)_FrameSize.X, (Int32)_FrameSize.Y));
+                    list.Add(new IntRect((Int32)x, (Int32)y, (Int32)frameSize.X, (Int32)frameSize.Y));
                 }
             }
-            _Frames = list.ToArray();
-            return true;
+            return list.ToArray();
         }
     }
 }

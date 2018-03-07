@@ -32,6 +32,11 @@ namespace BlackCoat
         RenderStates RenderState { get; set; }
 
         /// <summary>
+        /// Shader for Rendering
+        /// </summary>
+        Shader Shader { get; set; }
+
+        /// <summary>
         /// Blending method used for Rendering
         /// </summary>
         BlendMode BlendMode { get; set; }
@@ -45,11 +50,6 @@ namespace BlackCoat
         /// Alpha Visibility - 0-1f
         /// </summary>
         Single Alpha { get; set; }
-
-        /// <summary>
-        /// Current Role that describes the <see cref="IEntity"/>s Behavior
-        /// </summary>
-        Role CurrentRole { get; }
 
         /// <summary>
         /// Target device for rendering
@@ -69,28 +69,5 @@ namespace BlackCoat
         /// Renders the <see cref="IEntity"/> into the scene
         /// </summary>
         void Draw();
-
-
-        // Roles ########################################################################
-        /// <summary>
-        /// Assigns a new Role to the <see cref="IEntity"/> without removing the current one.
-        /// </summary>
-        /// <param name="role">The Role to assign</param>
-        /// <param name="supressInitialization">Suppress initialization call on assigned role</param>
-        void AssignRole(Role role, Boolean supressInitialization = false);
-
-        /// <summary>
-        /// Assigns a new Role to the <see cref="IEntity"/> after removing the current one.
-        /// </summary>
-        /// <param name="role">The Role to assign</param>
-        /// <param name="supressInitialization">Suppress initialization call on assigned role</param>
-        /// <returns>The removed role if there was one - otherwise null</returns>
-        Role ReplaceRole(Role role, Boolean supressInitialization = false);
-
-        /// <summary>
-        /// Removes the currently active Role from this <see cref="IEntity"/>
-        /// </summary>
-        /// <returns>The removed role if there was one - otherwise null</returns>
-        Role RemoveRole();
     }
 }

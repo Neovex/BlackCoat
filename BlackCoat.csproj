@@ -81,8 +81,11 @@
     <Compile Include="Entities\Animation\FrameAnimation.cs" />
     <Compile Include="Entities\BaseEntity.cs" />
     <Compile Include="Entities\CursorLayer.cs" />
+    <Compile Include="Entities\Roles\TextRoleHost.cs" />
+    <Compile Include="Entities\Roles\GraphicRoleHost.cs" />
     <Compile Include="Entities\Shapes\Circle.cs" />
     <Compile Include="Entities\Shapes\Polygon.cs" />
+    <Compile Include="Interfaces\IRoleHost.cs" />
     <Compile Include="Interfaces\IEntity.cs" />
     <Compile Include="Entities\Container.cs" />
     <Compile Include="Entities\Shapes\Line.cs" />
@@ -105,7 +108,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Role.cs" />
+    <Compile Include="Entities\Roles\Role.cs" />
     <Compile Include="StateManagement\BaseGamestate.cs" />
     <Compile Include="StateManagement\BlackCoatIntro.cs" />
     <Compile Include="StateManagement\StateManager.cs" />

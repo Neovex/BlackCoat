@@ -17,6 +17,7 @@ namespace BlackCoat
         // State Info
         public String Name { get; protected set; }
         public Boolean Paused { get; protected set; }
+        public float TimeModifier { get; set; }
 
         // Asset Managers
         protected TextureLoader TextureLoader { get; set; }
@@ -71,6 +72,8 @@ namespace BlackCoat
             // Init
             _Core = core;
             Name = String.IsNullOrWhiteSpace(name) ? GetType().Name : name;
+            Paused = false;
+            TimeModifier = 1;
 
             // Create Asset Managers
             TextureLoader = new TextureLoader(textures);
@@ -145,10 +148,10 @@ namespace BlackCoat
         {
             if (!Paused) // TODO: good?
             {
-                Layer_BG.Update(deltaT);
-                Layer_Game.Update(deltaT);
-                Layer_Particles.Update(deltaT);
-                Layer_Overlay.Update(deltaT);
+                Layer_BG.Update(deltaT * TimeModifier);
+                Layer_Game.Update(deltaT * TimeModifier);
+                Layer_Particles.Update(deltaT * TimeModifier);
+                Layer_Overlay.Update(deltaT * TimeModifier);
             }
             Layer_Debug.Update(deltaT);
             Layer_Cursor.Update(deltaT);

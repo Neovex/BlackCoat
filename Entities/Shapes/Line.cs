@@ -84,11 +84,6 @@ namespace BlackCoat.Entities.Shapes
         /// <summary>
         /// Draws the Line respective to its parameters and view
         /// </summary>
-        public override void Draw()
-        {
-            _Core.Draw(this);
-        }
-
         public override void Draw(RenderTarget target, RenderStates states)
         {
             _Vertices[0] = Start;
@@ -115,6 +110,17 @@ namespace BlackCoat.Entities.Shapes
         public virtual bool Collide(ICollisionShape other)
         {
             return _Core.CollisionSystem.CheckCollision(this, other);
+        }
+
+        /// <summary>
+        /// Returns a <see cref="System.String" /> that represents this instance.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="System.String" /> that represents this instance.
+        /// </returns>
+        public override string ToString()
+        {
+            return $"[{nameof(Line)}] Start({Start}) End ({End})";
         }
     }
 }

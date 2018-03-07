@@ -131,7 +131,7 @@ namespace BlackCoat
         /// <summary>
         /// Default font of the Engine. The <see cref="TextItem"/> class needs it to display text when no font is loaded.
         /// </summary>
-        internal Font DefaultFont { get; private set; }
+        public Font DefaultFont { get; private set; }
 
 
         // CTOR ############################################################################
@@ -152,7 +152,7 @@ namespace BlackCoat
             FocusLost = false;
             Disposed = false;
             DefaultFont = new Font(Resources.Squares_Bold_Free);
-            DefaultFont.PreloadDefaultCodepage();
+            for (uint i = 4; i <= 32; i += 2) InitializeFontHack(DefaultFont, i); // HACK
 
             // Device Events
             _Device.Resized += HandleWindowResized;
@@ -179,6 +179,15 @@ namespace BlackCoat
         ~Core()
         {
             if (!Disposed) Dispose();
+        }
+
+        // HACK
+        public void InitializeFontHack(Font font, uint charSize = 10, bool bold = false)
+        {
+            var text = new Text("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ.:-_,;#'+*~´`\\?ß=()&/$%\"§!^°", font, charSize);
+            if (bold) text.Style = Text.Styles.Bold;
+            text.Draw(_Device, RenderStates.Default);
+            text.Dispose();
         }
 
 
@@ -314,9 +323,33 @@ namespace BlackCoat
                 state.Transform = entity.Parent.Transform;
             }
 
-            var renderTarget = entity.RenderTarget ?? _Device;
-            renderTarget.SetView((entity.View ?? renderTarget?.GetView()) ?? DefaultView);
-            entity.Draw(renderTarget, state);
+            if (entity.RenderTarget == null)
+            {
+                if (entity.View != null)
+                {
+                    _Device.SetView(entity.View);
+                    entity.Draw(_Device, state);
+                    _Device.SetView(DefaultView);
+                }
+                else
+                {
+                    entity.Draw(_Device, state);
+                }
+            }
+            else // handling custom render targets
+            {
+                if (entity.View != null)
+                {
+                    var restore = entity.RenderTarget.GetView();
+                    entity.RenderTarget.SetView(entity.View);
+                    entity.Draw(entity.RenderTarget, state);
+                    entity.RenderTarget.SetView(restore);
+                }
+                else
+                {
+                    entity.Draw(entity.RenderTarget, state);
+                }
+            }
             DRAW_CALLS++;
         }
 

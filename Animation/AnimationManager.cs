@@ -37,7 +37,7 @@ namespace BlackCoat.Animation
         /// Runs the provided Animation
         /// </summary>
         /// <param name="Animation">Animation to start</param>
-        public void Run(Animation Animation)
+        public void Start(Animation Animation)
         {
             if (_ActiveAnimations.Contains(Animation) || _AnimationsToAdd.Contains(Animation)) throw new InvalidOperationException("Animation cannot be added twice");
             if (Animation.Finished) throw new InvalidOperationException("Animations cannot be reused");
@@ -53,15 +53,15 @@ namespace BlackCoat.Animation
         /// <param name="startValue">Value to start the Animation from</param>
         /// <param name="targetValue">Value to Animation to</param>
         /// <param name="duration">Animation duration in fractal seconds</param>
+        /// <param name="onUpdate">Delegate providing the last interpolated value</param>
         /// <param name="onComplete">Optional delegate called when the Animation has finished</param>
-        /// <param name="onUpdate">Optional delegate providing the last interpolated value</param>
         /// <param name="interpolation">Optional delegate to interpolate the Animation</param>
-        public void Run(float startValue, float targetValue, float duration, Action onComplete, Action<float> onUpdate = null, InterpolationType interpolation = InterpolationType.Linear)
+        public void Run(float startValue, float targetValue, float duration, Action<float> onUpdate, Action onComplete = null, InterpolationType interpolation = InterpolationType.Linear)
         {
             var animation = new TimeAnimation(startValue, targetValue, duration, Interpolation.Get(interpolation));
-            animation.Complete += onComplete;
-            if (onUpdate != null) animation.Update += onUpdate;
-            Run(animation);
+            animation.Update += onUpdate;
+            if (onComplete != null) animation.Complete += onComplete;
+            Start(animation);
         }
         
         /// <summary>
@@ -70,20 +70,20 @@ namespace BlackCoat.Animation
         /// <param name="startValue">Value to start the Animation from</param>
         /// <param name="targetValue">Value to Animation to</param>
         /// <param name="duration">Animation duration in fractal seconds</param>
+        /// <param name="onUpdate">Delegate providing the last interpolated value</param>
         /// <param name="onComplete">Optional delegate called when the Animation has finished</param>
-        /// <param name="onUpdate">Optional delegate providing the last interpolated value</param>
         /// <param name="interpolation">Optional delegate to interpolate the Animation</param>
         /// <param name="tag">Optional Object that contains additional data</param>
         /// <returns>
         /// An instance of <see cref="TimeAnimation" />
         /// </returns>
-        public TimeAnimation RunAdvanced(float startValue, float targetValue, float duration, Action<Animation> onComplete, Action<float> onUpdate = null, InterpolationType interpolation = InterpolationType.Linear, object tag = null)
+        public TimeAnimation RunAdvanced(float startValue, float targetValue, float duration, Action<float> onUpdate, Action<Animation> onComplete = null, InterpolationType interpolation = InterpolationType.Linear, object tag = null)
         {
             var animation = new TimeAnimation(startValue, targetValue, duration, Interpolation.Get(interpolation));
-            animation.AnimationComplete += onComplete;
-            if (onUpdate != null) animation.Update += onUpdate;
+            animation.Update += onUpdate;
+            if (onComplete != null) animation.AnimationComplete += onComplete;
             animation.Tag = tag;
-            Run(animation);
+            Start(animation);
             return animation;
         }
 
@@ -104,7 +104,7 @@ namespace BlackCoat.Animation
             if (onComplete != null) animation.Complete += onComplete;
             if (onAnimationComplete != null) animation.AnimationComplete += onAnimationComplete;
             animation.Tag = tag;
-            Run(animation);
+            Start(animation);
             return animation;
         }
 
@@ -125,7 +125,7 @@ namespace BlackCoat.Animation
             timer.Complete += onComplete;
             if (onTimerComplete != null) timer.AnimationComplete += onTimerComplete;
             timer.Tag = tag;
-            Run(timer);
+            Start(timer);
             return timer;
         }
 
