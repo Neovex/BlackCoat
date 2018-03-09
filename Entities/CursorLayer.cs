@@ -6,40 +6,40 @@ namespace BlackCoat.Entities
 {
     public class CursorLayer : Layer
     {
-        private Graphic _Pointer;
+        private Graphic Cursor;
 
         // CTOR ############################################################################
         internal CursorLayer(Core core) : base(core)
         {
-            AddChild(_Pointer = new Graphic(_Core) { Visible = false });
+            AddChild(Cursor = new Graphic(_Core) { Visible = false });
         }
 
 
         // Methods #########################################################################
         public override void Update(Single deltaT)
         {
-            _Pointer.Position = Input.MousePosition;
             base.Update(deltaT);
+            Cursor.Position = Input.MousePosition;
         }
 
         /// <summary>
-        /// Replaces the pointer with a texture or restores the original system pointer.
+        /// Replaces the system cursor with a texture or restores the original.
         /// </summary>
-        /// <param name="texture">The texture to replace the pointer or null to restore system default.</param>
+        /// <param name="texture">The texture to replace the cursor or null to restore system default.</param>
         /// <param name="origin">The optional origin of the texture.</param>
-        public void SetPointerTexture(Texture texture, Vector2f origin = new Vector2f())
+        public void SetCursor(Texture texture, Vector2f origin = new Vector2f())
         {
             if (texture == null)
             {
                 Input.MouseVisible = true;
-                _Pointer.Visible = false;
+                Cursor.Visible = false;
             }
             else
             {
-                _Pointer.Texture = texture;
-                _Pointer.Origin = origin;
+                Cursor.Texture = texture;
+                Cursor.Origin = origin;
                 Input.MouseVisible = false;
-                _Pointer.Visible = true;
+                Cursor.Visible = true;
             }
         }
     }

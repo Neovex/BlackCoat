@@ -24,7 +24,7 @@ namespace BlackCoat.ParticleSystem
 
         // Properties ######################################################################
         /// <summary>
-        /// Determines if the Emitter as Triggert
+        /// Determines if the Emitter has been triggered
         /// </summary>
         public virtual Boolean IsTriggered { get; protected set; }
         // Spawn Infos
@@ -63,7 +63,7 @@ namespace BlackCoat.ParticleSystem
         // Methods #########################################################################
         /// <summary>
         /// Notifies the Emitter to begin emitting particles.
-        /// Can be overriden by derived classes.
+        /// Can be overridden by derived classes.
         /// </summary>
         public virtual void Trigger()
         {
@@ -71,8 +71,8 @@ namespace BlackCoat.ParticleSystem
         }
 
         /// <summary>
-        /// Notifies the Emitter that the specified particle exceedet its TTL.
-        /// Can be overriden by derived classes.
+        /// Notifies the Emitter that the specified particle exceeded its TTL.
+        /// Can be overridden by derived classes.
         /// </summary>
         /// <param name="particle">The "dead" particle</param>
         public virtual void DeactivateParticle(Particle particle)
@@ -84,9 +84,9 @@ namespace BlackCoat.ParticleSystem
 
         /// <summary>
         /// Updates the Emitter.
-        /// Can be overriden by derived classes.
+        /// Can be overridden by derived classes.
         /// </summary>
-        /// <param name="deltaT">Current gametime</param>
+        /// <param name="deltaT">Current game-time</param>
         public override void Update(Single deltaT)
         {
             // Update Self
@@ -119,7 +119,7 @@ namespace BlackCoat.ParticleSystem
                     ACTIVE_PARTICLES++;
                 }
             }
-            // Update Childs
+            // Update base
             base.Update(deltaT);
         }
     }

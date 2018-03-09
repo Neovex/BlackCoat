@@ -16,8 +16,6 @@ namespace BlackCoat
 
         // State Info
         public String Name { get; protected set; }
-        public Boolean Paused { get; protected set; }
-        public float TimeModifier { get; set; }
 
         // Asset Managers
         protected TextureLoader TextureLoader { get; set; }
@@ -72,8 +70,6 @@ namespace BlackCoat
             // Init
             _Core = core;
             Name = String.IsNullOrWhiteSpace(name) ? GetType().Name : name;
-            Paused = false;
-            TimeModifier = 1;
 
             // Create Asset Managers
             TextureLoader = new TextureLoader(textures);
@@ -146,13 +142,10 @@ namespace BlackCoat
         /// <param name="deltaT">Current frame time.</param>
         internal void UpdateInternal(float deltaT)
         {
-            if (!Paused) // TODO: good?
-            {
-                Layer_BG.Update(deltaT * TimeModifier);
-                Layer_Game.Update(deltaT * TimeModifier);
-                Layer_Particles.Update(deltaT * TimeModifier);
-                Layer_Overlay.Update(deltaT * TimeModifier);
-            }
+            Layer_BG.Update(deltaT);
+            Layer_Game.Update(deltaT);
+            Layer_Particles.Update(deltaT);
+            Layer_Overlay.Update(deltaT);
             Layer_Debug.Update(deltaT);
             Layer_Cursor.Update(deltaT);
             Update(deltaT);
@@ -192,15 +185,12 @@ namespace BlackCoat
         /// <summary>Returns a <see cref="System.String" /> that represents this instance.</summary>
         /// <returns>A <see cref="System.String" /> that represents this instance.</returns>
         public override string ToString() => $"{base.ToString()} \"{Name}\"";
-        
+
         /// <summary>
-        /// Replaces the pointer with a texture or restores the original system pointer.
+        /// Replaces the cursor with a texture or restores the original.
         /// </summary>
-        /// <param name="texture">The texture to replace the pointer or null to restore system default.</param>
+        /// <param name="texture">The texture to replace the cursor or null to restore system default.</param>
         /// <param name="origin">The optional origin of the texture.</param>
-        public void SetPointer(Texture texture, Vector2f origin = new Vector2f())
-        {
-            Layer_Cursor.SetPointerTexture(texture, origin);
-        }
+        public void SetCursor(Texture texture, Vector2f origin = new Vector2f()) => Layer_Cursor.SetCursor(texture, origin);
     }
 }

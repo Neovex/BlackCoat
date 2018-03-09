@@ -113,17 +113,28 @@ namespace BlackCoat.Animation
         /// </summary>
         /// <param name="time">Time to wait in fractal seconds</param>
         /// <param name="onComplete">Delegate called when the timer has finished</param>
-        /// <param name="onTimerComplete">Delegate called when the timer has finished</param>
+        /// <returns>
+        public void Wait(float time, Action onComplete)
+        {
+            var timer = new Timer(time);
+            timer.Complete += onComplete;
+            Start(timer);
+        }
+
+        /// <summary>
+        /// Creates a new Waiting Timer
+        /// </summary>
+        /// <param name="time">Time to wait in fractal seconds</param>
+        /// <param name="onComplete">Delegate called when the timer has finished</param>
         /// <param name="onUpdate">Optional delegate providing the last interpolated value</param>
         /// <param name="tag">Optional Object that contains additional data</param>
         /// <returns>
         /// An instance of <see cref="Timer" /></returns>
-        public Timer Wait(float time, Action onComplete, Action<Animation> onTimerComplete = null, Action<float> onUpdate = null, object tag = null)
+        public Timer Wait(float time, Action<Animation> onComplete, Action<float> onUpdate = null, object tag = null)
         {
             var timer = new Timer(time);
+            timer.AnimationComplete += onComplete;
             if (onUpdate != null) timer.Update += onUpdate;
-            timer.Complete += onComplete;
-            if (onTimerComplete != null) timer.AnimationComplete += onTimerComplete;
             timer.Tag = tag;
             Start(timer);
             return timer;

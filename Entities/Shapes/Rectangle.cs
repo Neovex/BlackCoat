@@ -18,6 +18,7 @@ namespace BlackCoat.Entities.Shapes
         private Container _Parent;
         private Boolean _Visible;
         private View _View;
+        private float _Alpha;
 
 
         // Properties ######################################################################
@@ -72,12 +73,13 @@ namespace BlackCoat.Entities.Shapes
         /// </summary>
         public virtual Single Alpha
         {
-            get { return Color.A / 255f; }
+            get { return _Alpha; }
             set
             {
+                _Alpha = value = Math.Max(0, value);
                 if (_Parent != null) value *= _Parent.Alpha;
                 var color = Color;
-                color.A = (Byte)(value * 255f);
+                color.A = (Byte)(value * 255);
                 Color = color;
             }
         }
@@ -130,6 +132,7 @@ namespace BlackCoat.Entities.Shapes
         public Rectangle(Core core)
         {
             _Core = core;
+            _Alpha = 1;
             Visible = true;
             RenderState = RenderStates.Default;
         }
