@@ -91,6 +91,14 @@ namespace BlackCoat.Entities.Shapes
             target.Draw(_Vertices, PrimitiveType.Lines, states);
         }
 
+        /// <summary>
+        /// Updates the <see cref="Line" />.
+        /// </summary>
+        /// <param name="deltaT">Current game-time</param>
+        public override void Update(float deltaT)
+        {
+        }
+
         // Collision Implementation ########################################################
         /// <summary>
         /// Determines if this <see cref="Line"/> contains the defined point

@@ -31,6 +31,7 @@
     <WarningLevel>4</WarningLevel>
     <PlatformTarget>x86</PlatformTarget>
     <Prefer32Bit>false</Prefer32Bit>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -61,6 +62,12 @@
     <Compile Include="AssetHandling\SfxLoader.cs" />
     <Compile Include="AssetHandling\SfxManager.cs" />
     <Compile Include="AssetHandling\TextureLoader.cs" />
+    <Compile Include="InvalidStateException.cs" />
+    <Compile Include="ParticleSystem\BaseEmitter.cs" />
+    <Compile Include="ParticleSystem\CompoundEmitter.cs" />
+    <Compile Include="ParticleSystem\Emitter.cs" />
+    <Compile Include="ParticleSystem\PixelEmitter.cs" />
+    <Compile Include="ParticleSystem\BasicParticle.cs" />
     <Compile Include="Collision\CollisionSystem.cs" />
     <Compile Include="Collision\Interfaces\IPolygon.cs" />
     <Compile Include="Collision\Interfaces\ICircle.cs" />
@@ -100,8 +107,14 @@
     <Compile Include="Input\Mapping\SimpleInputMap.cs" />
     <Compile Include="Input\TextEnteredEventArgs.cs" />
     <Compile Include="Interfaces\ITransformable.cs" />
-    <Compile Include="ParticleSystem\Emitter.cs" />
+    <Compile Include="ParticleSystem\old\OldEmitter.cs" />
     <Compile Include="ParticleSystem\Particle.cs" />
+    <Compile Include="ParticleSystem\ParticleDepthLayer.cs" />
+    <None Include="ParticleSystem\old\ParticleGroup.cs" />
+    <Compile Include="ParticleSystem\ParticleEmitterHost.cs" />
+    <Compile Include="ParticleSystem\ParticleTextureLayer.cs" />
+    <Compile Include="ParticleSystem\old\VelocityParticle.cs" />
+    <Compile Include="ParticleSystem\VertexRenderer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -146,6 +159,7 @@
     <None Include="CoreSystems.cd" />
     <None Include="Entities\Entities.cd" />
     <None Include="Input\Input.cd" />
+    <None Include="ParticleSystem\Particles.cd" />
     <None Include="StateManagement\StateManagement.cd" />
   </ItemGroup>
   <ItemGroup>

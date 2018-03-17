@@ -84,7 +84,8 @@ namespace BlackCoat.Tools
                                               deltaT,
                                               _Runtime,
                                               Core.DRAW_CALLS,
-                                              Emitter.ACTIVE_PARTICLES,
+                                              //OldEmitter.ACTIVE_PARTICLES,
+                                              BasicParticle._PARTICLES,
                                               AnimationManager.ACTIVE_ANIMATIONS);
         }
     }

@@ -1,34 +1,33 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
   <Class Name="BlackCoat.BaseGamestate">
-    <Position X="3.5" Y="0.5" Width="1.5" />
+    <Position X="3.75" Y="0.5" Width="1.5" />
     <Members>
       <Property Name="Layer_BG" Hidden="true" />
       <Property Name="Layer_Cursor" Hidden="true" />
       <Property Name="Layer_Debug" Hidden="true" />
       <Property Name="Layer_Game" Hidden="true" />
       <Property Name="Layer_Overlay" Hidden="true" />
-      <Property Name="Layer_Particles" Hidden="true" />
     </Members>
     <Compartments>
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>EgQhhAAAAAACAgEEBQACAAwAAoBAAAAAAQMAAAAAAKA=</HashCode>
+      <HashCode>EgQVhAAAAAECAiAEAQACAAwAAgBAAAAAAAMAAAAAIDA=</HashCode>
       <FileName>StateManagement\BaseGamestate.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="BlackCoat.BlackCoatIntro" Collapsed="true">
-    <Position X="3.5" Y="6" Width="1.5" />
+  <Class Name="BlackCoat.BlackCoatIntro">
+    <Position X="6" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAQAgAAAAAAAAACAAAAAAIACAABAAQAAAAEAAAgAAAA=</HashCode>
+      <HashCode>AAQAgAAAACAAAACAAAAAAIACAABAAQAAACEAAAgAAAA=</HashCode>
       <FileName>StateManagement\BlackCoatIntro.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="BlackCoat.StateManager">
-    <Position X="0.5" Y="1.75" Width="1.5" />
+    <Position X="0.5" Y="1.75" Width="1.75" />
     <TypeIdentifier>
-      <HashCode>AAQAAABAAAAABgAQAAAAACAAAABAAAAAAAIAAAAAACA=</HashCode>
+      <HashCode>AAQAAABAAAAABgAQQAIAAAAAAABAAAAAAAIAAAAAACA=</HashCode>
       <FileName>StateManagement\StateManager.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -37,9 +36,9 @@
     </ShowAsAssociation>
   </Class>
   <Class Name="BlackCoat.Core" Collapsed="true">
-    <Position X="0.5" Y="0.5" Width="1.5" />
+    <Position X="0.5" Y="0.5" Width="1.75" />
     <TypeIdentifier>
-      <HashCode>CgQgEAAIgSAIgoAAAiAAQAgATAQABBgAIAIQACEGAIM=</HashCode>
+      <HashCode>CgQgEAAIgSAIgoAAAiAAQAgATARBJBgBIAIAACEGAIM=</HashCode>
       <FileName>Core.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>

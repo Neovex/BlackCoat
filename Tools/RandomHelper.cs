@@ -27,8 +27,8 @@ namespace BlackCoat.Tools
         public Single NextFloat(float min, float max)
         {
             // Prechecks
-            if (min > max) throw new ArgumentException();
             if (min == max) return max;
+            if (min > max) throw new ArgumentException();
 
             // Negative cases
             if (max < 0) return NextFloat(max * -1, min * -1) * -1;

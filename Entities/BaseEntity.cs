@@ -58,12 +58,12 @@ namespace BlackCoat.Entities
         /// <summary>
         /// Entity Color or Tint
         /// </summary>
-        public abstract Color Color { get; set; }
+        public abstract Color Color { get; set; } // TODO: consider removal
 
         /// <summary>
         /// Alpha Visibility - 0-1f
         /// </summary>
-        public Single Alpha
+        public Single Alpha // TODO: consider removal
         {
             get { return _Alpha; }
             set
@@ -123,18 +123,14 @@ namespace BlackCoat.Entities
         // Methods #########################################################################
         /// <summary>
         /// Updates the <see cref="IEntity"/>.
-        /// Can be overridden by derived classes.
         /// </summary>
         /// <param name="deltaT">Current game-time</param>
-        public virtual void Update(Single deltaT) { }
+        public abstract void Update(Single deltaT);
 
         /// <summary>
         /// Renders the <see cref="IEntity"/> into the scene.
         /// </summary>
-        public virtual void Draw()
-        {
-            _Core.Draw(this);
-        }
+        public virtual void Draw() => _Core.Draw(this);
 
         /// <summary>
         /// Renders the <see cref="IEntity"/> into the scene.

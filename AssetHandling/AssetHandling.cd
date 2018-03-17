@@ -1,56 +1,66 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
-  <Class Name="BlackCoat.AssetManager&lt;T&gt;">
+  <Class Name="BlackCoat.AssetLoader&lt;T&gt;">
     <Position X="6" Y="0.5" Width="1.75" />
     <Compartments>
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>AAAAgAAAADAAIAAAAAAAgCAAAAAAAAAAAAACABACAAA=</HashCode>
-      <FileName>AssetHandling\AssetManager.cs</FileName>
+      <HashCode>AAAAggAAADAAIAAAAAAAgCAAAAAAAAAAAAACABACAAA=</HashCode>
+      <FileName>AssetHandling\AssetLoader.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
-  <Class Name="BlackCoat.FontManager" Collapsed="true">
+  <Class Name="BlackCoat.FontLoader" Collapsed="true">
     <Position X="5" Y="4.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>AssetHandling\FontManager.cs</FileName>
+      <FileName>AssetHandling\FontLoader.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="BlackCoat.MusicManager" Collapsed="true">
+  <Class Name="BlackCoat.MusicLoader" Collapsed="true">
     <Position X="9.5" Y="4.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>AssetHandling\MusicManager.cs</FileName>
+      <FileName>AssetHandling\MusicLoader.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="BlackCoat.SfxManager" Collapsed="true">
-    <Position X="2.75" Y="4.75" Width="1.5" />
+  <Class Name="BlackCoat.SfxManager">
+    <Position X="0.5" Y="4.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAgAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAQAIAAAAAAAAAAAAAAEAAAAEAIAAEEAgAQAAAAQAAA=</HashCode>
       <FileName>AssetHandling\SfxManager.cs</FileName>
     </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_Loader" />
+    </ShowAsAssociation>
   </Class>
-  <Class Name="BlackCoat.TextureManager" Collapsed="true">
+  <Class Name="BlackCoat.TextureLoader" Collapsed="true">
     <Position X="7.25" Y="4.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAgAAAAIAAAAABAAAAAAAAAAAAAAAAAACAAAAAAAA=</HashCode>
-      <FileName>AssetHandling\TextureManager.cs</FileName>
+      <FileName>AssetHandling\TextureLoader.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="BlackCoat.BaseGamestate" Collapsed="true">
     <Position X="5.25" Y="6.25" Width="3.5" />
     <TypeIdentifier>
-      <HashCode>EgQhhAAAAAACAgEEBQACAAwAAoBAAAAAAQMAAAAAAKA=</HashCode>
+      <HashCode>EgQVhAAAAAECAiAEAQACAAwAAgBAAAAAAAMAAAAAIDA=</HashCode>
       <FileName>StateManagement\BaseGamestate.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
-      <Property Name="FontManager" />
-      <Property Name="MusicManager" />
-      <Property Name="SfxManager" />
-      <Property Name="TextureManager" />
+      <Property Name="FontLoader" />
+      <Property Name="MusicLoader" />
+      <Property Name="SfxLoader" />
+      <Property Name="TextureLoader" />
     </ShowAsAssociation>
+  </Class>
+  <Class Name="BlackCoat.SfxLoader" Collapsed="true">
+    <Position X="3.25" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>AssetHandling\SfxLoader.cs</FileName>
+    </TypeIdentifier>
   </Class>
   <Font Name="Segoe UI" Size="9" />
 </ClassDiagram>

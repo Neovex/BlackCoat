@@ -26,7 +26,6 @@ namespace BlackCoat
         // Layers
         protected Layer Layer_BG { get; private set; }
         protected Layer Layer_Game { get; private set; }
-        protected Layer Layer_Particles { get; private set; }
         protected Layer Layer_Overlay { get; private set; }
         protected Layer Layer_Debug { get; private set; }
         protected CursorLayer Layer_Cursor { get; private set; }
@@ -81,7 +80,6 @@ namespace BlackCoat
             // Game Layer
             Layer_BG = new Layer(_Core);
             Layer_Game = new Layer(_Core);
-            Layer_Particles = new Layer(_Core);
             Layer_Overlay = new Layer(_Core);
             // System Layer
             Layer_Debug = new Layer(_Core);
@@ -112,7 +110,6 @@ namespace BlackCoat
         {
             Layer_BG.Draw();
             Layer_Game.Draw();
-            Layer_Particles.Draw();
             Layer_Overlay.Draw();
             Layer_Debug.Draw();
             Layer_Cursor.Draw();
@@ -144,7 +141,6 @@ namespace BlackCoat
         {
             Layer_BG.Update(deltaT);
             Layer_Game.Update(deltaT);
-            Layer_Particles.Update(deltaT);
             Layer_Overlay.Update(deltaT);
             Layer_Debug.Update(deltaT);
             Layer_Cursor.Update(deltaT);

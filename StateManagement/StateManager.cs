@@ -25,8 +25,8 @@ namespace BlackCoat
         /// <summary>
         /// Name of the currently active Gamestate. NULL if none active.
         /// </summary>
-        public String CurrentState { get { return _CurrentState?.Name; } }
-        
+        public String CurrentStateName => _CurrentState?.Name;
+
 
         /// <summary>
         /// Initializes a new instance of the <see cref="StateManager"/> class.
