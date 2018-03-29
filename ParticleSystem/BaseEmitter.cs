@@ -1,97 +1,156 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using SFML.Graphics;
 using SFML.System;
 
 namespace BlackCoat.ParticleSystem
 {
-    public abstract class BaseEmitter
+    /// <summary>
+    /// Emitter base class <seealso cref="Particles.cd"/>
+    /// </summary>
+    /// <seealso cref="BlackCoat.BlackCoatBase" />
+    public abstract class BaseEmitter : BlackCoatBase
     {
-        protected static Dictionary<Guid, Stack<BasicParticle>> INSTANCE_POOL { get; }
-        static BaseEmitter() => INSTANCE_POOL = new Dictionary<Guid, Stack<BasicParticle>>();
+        static BaseEmitter() => INSTANCE_POOL = new Dictionary<Guid, Stack<BaseParticle>>();
+        private static Dictionary<Guid, Stack<BaseParticle>> INSTANCE_POOL { get; }
 
-
-        protected List<BasicParticle> _Particles;
+        private VertexRenderer _VertexRenderer;
+        private List<BaseParticle> _Particles;
 
 
         /// <summary>
-        /// Determines if the Emitter has been triggered
+        /// Gets the depth of this instance within the <see cref="ParticleEmitterHost"/> hierarchy
         /// </summary>
-        public virtual Boolean IsTriggered { get; protected set; }
-        
-        public CompoundEmitter CompoundParent { get; internal set; }
-        public abstract Vector2f Position { get; set; }
-        public abstract float Rotation { get; set; }
+        public int Depth { get; }
+        /// <summary>
+        /// Gets or sets the default Particle Lifetime.
+        /// </summary>
+        public float DefaultTTL { get; set; }
+        /// <summary>
+        /// Gets or sets the position of this instance.
+        /// </summary>
+        public virtual Vector2f Position { get; set; }
+        /// <summary>
+        /// Gets or sets the rotation of this instance.
+        /// </summary>
+        public virtual float Rotation { get; set; }
+        /// <summary>
+        /// Gets a value indicating whether this instance is initialized.
+        /// </summary>
+        public bool IsInitialized => _VertexRenderer != null;
+        public abstract Guid ParticleTypeGuid { get; }
 
 
-        public BaseEmitter()
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BaseEmitter"/> class.
+        /// </summary>
+        /// <param name="core">The engine core.</param>
+        /// <param name="depth">The optional hierarchical depth.</param>
+        public BaseEmitter(Core core, int depth = 0) : base(core)
         {
-            _Particles = new List<BasicParticle>();
+            Depth = depth;
+            DefaultTTL = 1;
+            _Particles = new List<BaseParticle>();
         }
 
         /// <summary>
-        /// Notifies the Emitter to begin emitting particles.
+        /// Adds a particle to the emitter. With default TTL.
         /// </summary>
-        public void Trigger()
+        /// <param name="particle">The particle to add.</param>
+        protected void AddParticle(BaseParticle particle)
         {
-            IsTriggered = true;
-            Triggered();
+            AddParticle(particle, DefaultTTL);
+        }
+        /// <summary>
+        /// Adds a particle to the emitter.
+        /// </summary>
+        /// <param name="particle">The particle to add.</param>
+        /// <param name="ttl">The TTL of the particle.</param>
+        protected void AddParticle(BaseParticle particle, float ttl)
+        {
+            particle.Initialize(_VertexRenderer.Reserve(), ttl);
+            _Particles.Add(particle);
         }
 
         /// <summary>
-        /// Updates the Emitter.
+        /// Updates the Emitter and its particles.
         /// </summary>
         /// <param name="deltaT">Current game-time</param>
-        public void Update(Single deltaT)
+        public unsafe void Update(Single deltaT)
         {
             UpdateInternal(deltaT);
-            /*for (int i = _Particles.Count - 1; i >= 0; i--)
+
+            fixed (Vertex* vPtr = _VertexRenderer.Verticies)
             {
-                if (_Particles[i].Update(deltaT))
+                for (int i = _Particles.Count - 1; i >= 0; i--)
                 {
-                    //AddToCache(_Particles[i]);
-                    _Particles[i].Free();
-                    _Particles.RemoveAt(i);
+                    if (_Particles[i].Update(deltaT, vPtr))
+                    {
+                        _VertexRenderer.Free(_Particles[i].Index);
+                        _Particles[i].Release(vPtr);
+                        AddToCache(_Particles[i]);
+                        // O(1) Swap Removal - faster removal but destroys order which is not important here
+                        _Particles[i] = _Particles[_Particles.Count - 1];
+                        _Particles.RemoveAt(_Particles.Count - 1);
+                    }
                 }
-            }*/
-            for (int i = 0; i < _Particles.Count; i++)
-            {
-                var particle = _Particles[i];
-                if (particle.TTL > 0) particle.Update(deltaT);
             }
         }
-        
-        protected void Destroy()
+
+        /// <summary>
+        /// Updates only the Emitter logic.
+        /// </summary>
+        /// <param name="deltaT">Current game-time</param>
+        protected abstract void UpdateInternal(float deltaT);
+
+        /// <summary>
+        /// Initializes the Emitter assigning it with specified vertex renderer.
+        /// </summary>
+        /// <param name="vertexRenderer">The vertex renderer this Emitter should use.</param>
+        internal void Initialize(VertexRenderer vertexRenderer)
         {
-            for (int i = 0; i < _Particles.Count; i++)
+            _VertexRenderer = vertexRenderer ?? throw new ArgumentNullException(nameof(vertexRenderer));
+        }
+
+        /// <summary>
+        /// Recycles this instance and clears all Particles.
+        /// </summary>
+        internal unsafe void Cleanup()
+        {
+            fixed (Vertex* vPtr = _VertexRenderer.Verticies)
             {
-                AddToCache(_Particles[i]);
+                for (int i = 0; i < _Particles.Count; i++)
+                {
+                    _Particles[i].Release(vPtr);
+                    AddToCache(_Particles[i]);
+                }
             }
             _Particles.Clear();
         }
 
-        protected abstract void Triggered();
-        protected abstract void UpdateInternal(float deltaT);
 
-
-        // Cache Handling
-        protected void AddToCache(BasicParticle particle)
+        // Cache Handling        
+        /// <summary>
+        /// Adds to a particle to the instance cache.
+        /// </summary>
+        /// <param name="particle">The particle.</param>
+        protected void AddToCache(BaseParticle particle)
         {
-            Guid typeId = GetType().GUID;
-            if (!INSTANCE_POOL.ContainsKey(typeId))
+            if (!INSTANCE_POOL.ContainsKey(ParticleTypeGuid))
             {
-                INSTANCE_POOL.Add(typeId, new Stack<BasicParticle>());
+                INSTANCE_POOL.Add(ParticleTypeGuid, new Stack<BaseParticle>());
             }
-            INSTANCE_POOL[typeId].Push(particle);
-            particle.Free();
+            INSTANCE_POOL[ParticleTypeGuid].Push(particle);
         }
-        protected BasicParticle RetrieveFromCache()
+
+        /// <summary>
+        /// Retrieves a particle from cache.
+        /// </summary>
+        /// <returns>A particle of the type this emitter is associated with.</returns>
+        protected BaseParticle RetrieveFromCache()
         {
-            Guid typeId = GetType().GUID;
-            if (!INSTANCE_POOL.ContainsKey(typeId)) return null;
-            var pool = INSTANCE_POOL[typeId];
+            if (!INSTANCE_POOL.ContainsKey(ParticleTypeGuid)) return null;
+            var pool = INSTANCE_POOL[ParticleTypeGuid];
             if (pool.Count == 0) return null;
             return pool.Pop();
         }

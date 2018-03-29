@@ -5,7 +5,7 @@ using SFML.System;
 
 namespace BlackCoat.ParticleSystem
 {
-    public class CompoundEmitter : BaseEmitter
+    public class CompositeEmitter : BaseEmitter
     {
         private List<BaseEmitter> _Emitters;
 
@@ -33,8 +33,9 @@ namespace BlackCoat.ParticleSystem
             }
         }
 
+        public override Guid ParticleTypeGuid => throw new InvalidOperationException();
 
-        public CompoundEmitter(IEnumerable<BaseEmitter> emitters = null)
+        public CompositeEmitter(Core core, IEnumerable<BaseEmitter> emitters = null):base(core)
         {
             _Emitters = emitters?.ToList() ?? new List<BaseEmitter>();
         }
@@ -43,24 +44,16 @@ namespace BlackCoat.ParticleSystem
         public void Add(PixelEmitter emitter)
         {
             if (emitter == null) throw new ArgumentNullException(nameof(emitter));
-            if (IsTriggered) throw new InvalidStateException();
-            emitter.CompoundParent = this;
+            emitter.Composition = this;
             _Emitters.Add(emitter);
         }
 
         public void Remove(PixelEmitter emitter)
         {
             if (emitter == null) throw new ArgumentNullException(nameof(emitter));
-            if (emitter.CompoundParent != this) throw new ArgumentException(nameof(emitter));
-            if (IsTriggered) throw new InvalidStateException();
-            emitter.CompoundParent = null;
+            if (emitter.Composition != this) throw new ArgumentException(nameof(emitter));
+            emitter.Composition = null;
             _Emitters.Remove(emitter);
-        }
-
-
-        protected override void Triggered()
-        {
-            foreach (var emitter in _Emitters) emitter.Trigger();
         }
 
         protected override void UpdateInternal(float deltaT)

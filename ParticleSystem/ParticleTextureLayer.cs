@@ -15,21 +15,21 @@ namespace BlackCoat.ParticleSystem
         public BlendMode BlendMode { get; set; }
 
 
-        public ParticleTextureLayer(Texture texture, BlendMode blendMode) : base(4)
+        public ParticleTextureLayer(Core core, Texture texture, BlendMode blendMode) : base(core, 4)
         {
             Texture = texture;
             BlendMode = blendMode;
         }
 
 
-        public void Add(Emitter emitter)
+        public void Add(TextureEmitter emitter)
         {
-            emitter.VertexRenderer = this;
+            emitter.Initialize(this);
         }
 
-        public void Remove(Emitter emitter)
+        public void Remove(TextureEmitter emitter)
         {
-            emitter.VertexRenderer = null;
+            emitter.Cleanup();
         }
 
         public override void Draw(RenderTarget target, RenderStates states)

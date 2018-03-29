@@ -71,7 +71,7 @@ namespace BlackCoat.Entities
                 _Alpha = value = Math.Max(0, value);
                 if (_Parent != null) value *= _Parent.Alpha;
                 var color = Color;
-                color.A = (Byte)(value * 255);
+                color.A = (Byte)(value * Byte.MaxValue);
                 Color = color;
             }
         }

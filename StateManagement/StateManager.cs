@@ -5,7 +5,7 @@ namespace BlackCoat
     /// <summary>
     /// Manages the transitions between Gamestates
     /// </summary>
-    public sealed class StateManager
+    public sealed class StateManager : BlackCoatBase
     {
         /// <summary>
         /// Occurs when a new Gamestate has successfully finished loading an becomes the new active state.
@@ -16,8 +16,7 @@ namespace BlackCoat
         /// </summary>
         public event Action<BaseGamestate> StateChangeFailed = s => { };
 
-
-        private Core _Core;
+        
         private BaseGamestate _CurrentState;
         private BaseGamestate _RequestedState;
 
@@ -32,9 +31,8 @@ namespace BlackCoat
         /// Initializes a new instance of the <see cref="StateManager"/> class.
         /// </summary>
         /// <param name="core">The Engine Core.</param>
-        internal StateManager(Core core)
+        internal StateManager(Core core) : base(core)
         {
-            _Core = core;
             Log.Debug(nameof(StateManager), "created");
         }
 

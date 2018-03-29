@@ -1,21 +1,33 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
-  <Class Name="BlackCoat.ParticleSystem.Particle">
-    <Position X="7.25" Y="5.25" Width="1.5" />
+  <Comment CommentText="Emitter Host Structure">
+    <Position X="7.718" Y="0.5" Height="0.389" Width="7.846" />
+  </Comment>
+  <Comment CommentText="Particles">
+    <Position X="16.413" Y="0.5" Height="0.413" Width="3.942" />
+  </Comment>
+  <Comment CommentText="Emitter">
+    <Position X="0.5" Y="0.5" Height="0.403" Width="6.45" />
+  </Comment>
+  <Class Name="BlackCoat.ParticleSystem.TextureParticle">
+    <Position X="16.5" Y="4.5" Width="1.75" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>ParticleSystem\Particle.cs</FileName>
+      <HashCode>AAAAAAAAAUAQAAAgAAAAAAAAAgAAAAAAEAAAAABAAAA=</HashCode>
+      <FileName>ParticleSystem\TextureParticle.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="BlackCoat.ParticleSystem.ParticleEmitterHost">
-    <Position X="0.75" Y="0.5" Width="1.75" />
+    <Position X="7.75" Y="1.25" Width="1.75" />
     <AssociationLine Name="_Emitters" Type="BlackCoat.ParticleSystem.BaseEmitter" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
       <Path>
-        <Point X="0.75" Y="1.417" />
-        <Point X="0.375" Y="1.417" />
-        <Point X="0.375" Y="12.529" />
-        <Point X="3.25" Y="12.529" />
+        <Point X="7.75" Y="2.477" />
+        <Point X="7.375" Y="2.477" />
+        <Point X="7.375" Y="6.262" />
+        <Point X="6.75" Y="6.262" />
       </Path>
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.138" Y="-0.287" />
+      </MemberNameLabel>
     </AssociationLine>
     <TypeIdentifier>
       <HashCode>AgQAAAAAAAAAAgAAAAAABAAAAAAAAAAAAgAAgAAQAAA=</HashCode>
@@ -27,7 +39,7 @@
     </ShowAsCollectionAssociation>
   </Class>
   <Class Name="BlackCoat.ParticleSystem.ParticleDepthLayer">
-    <Position X="5" Y="0.5" Width="1.75" />
+    <Position X="10.75" Y="1.25" Width="1.75" />
     <TypeIdentifier>
       <HashCode>AApAAAAAAAAAAgAAAAAABAAAAAAAAAAgAAAAAAAAAAA=</HashCode>
       <FileName>ParticleSystem\ParticleDepthLayer.cs</FileName>
@@ -37,60 +49,135 @@
     </ShowAsCollectionAssociation>
   </Class>
   <Class Name="BlackCoat.ParticleSystem.ParticleTextureLayer">
-    <Position X="8.5" Y="0.5" Width="1.75" />
+    <Position X="13.75" Y="1.25" Width="1.75" />
     <TypeIdentifier>
       <HashCode>AAJAAAAAAAAAAgAAAAAABAAgAAAAAAAAAAIAAAAAAAA=</HashCode>
       <FileName>ParticleSystem\ParticleTextureLayer.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="BlackCoat.ParticleSystem.BasicParticle">
-    <Position X="7.25" Y="7.5" Width="1.5" />
+  <Class Name="BlackCoat.ParticleSystem.BasicTextureParticle">
+    <Position X="16.5" Y="1.25" Width="1.75" />
     <TypeIdentifier>
-      <HashCode>AAQhAAAAAAAAAQAgAAAAAAAAAAAAAAAAAAAEgAAUAAY=</HashCode>
-      <FileName>ParticleSystem\BasicParticle.cs</FileName>
+      <HashCode>AAAAAAABAAAAAQAAAAAAAQAAAgIAAAAAgAAAAAAAAAA=</HashCode>
+      <FileName>ParticleSystem\BasicTextureParticle.cs</FileName>
+      <NewMemberFileName>ParticleSystem\BasicPixelParticle.cs</NewMemberFileName>
     </TypeIdentifier>
   </Class>
   <Class Name="BlackCoat.ParticleSystem.BaseEmitter">
-    <Position X="3.25" Y="9.75" Width="1.75" />
+    <Position X="5" Y="6" Width="1.75" />
     <TypeIdentifier>
-      <HashCode>gAQAAAAAAAAAAJggAAAAAAAgAgBAAAAAwAAgAABAAAA=</HashCode>
+      <HashCode>gAQBAAAAACAAAYAgAAAAAAAgAgAAAAAggAAgBEAAAAA=</HashCode>
       <FileName>ParticleSystem\BaseEmitter.cs</FileName>
     </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_VertexRenderer" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Field Name="_Particles" />
+    </ShowAsCollectionAssociation>
   </Class>
-  <Class Name="BlackCoat.ParticleSystem.CompoundEmitter">
-    <Position X="0.75" Y="5.25" Width="1.75" />
+  <Class Name="BlackCoat.ParticleSystem.CompositeEmitter">
+    <Position X="5" Y="1.25" Width="1.75" />
     <TypeIdentifier>
-      <HashCode>AAIAAAAAAAAQAIggAIAAhAAAAgAAAAAAAAAAAAAQAAA=</HashCode>
-      <FileName>ParticleSystem\CompoundEmitter.cs</FileName>
+      <HashCode>AAIAAAAAAAAQAYAgAIAAhAAAAgAAAAAAAAAAAAAQAAA=</HashCode>
+      <FileName>ParticleSystem\CompositeEmitter.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="BlackCoat.ParticleSystem.Emitter">
-    <Position X="3.25" Y="5.25" Width="1.75" />
+  <Class Name="BlackCoat.ParticleSystem.BasicTextureEmitter">
+    <Position X="0.5" Y="1.25" Width="1.75" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAIAAAAAAAA=</HashCode>
-      <FileName>ParticleSystem\Emitter.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="BlackCoat.ParticleSystem.PixelEmitter" Collapsed="true">
-    <Position X="3.25" Y="7.5" Width="1.75" />
-    <TypeIdentifier>
-      <HashCode>QAABAAAAACAAAIghgAgAAAAAggAAAAAgAAAAAAAAAAA=</HashCode>
-      <FileName>ParticleSystem\PixelEmitter.cs</FileName>
+      <HashCode>AAACAAAIAAAAERABAAgAAAAAAgAAAAIAAAAEAgBEAAA=</HashCode>
+      <FileName>ParticleSystem\BasicTextureEmitter.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="BlackCoat.Entities.BaseEntity" Collapsed="true">
-    <Position X="0.75" Y="3.25" Width="1.75" />
+    <Position X="7.75" Y="4.5" Width="1.75" />
     <TypeIdentifier>
       <HashCode>QAQAAAAAAAABAwAAICAAQAAgAAABABAIAAIAgAAQAAA=</HashCode>
       <FileName>Entities\BaseEntity.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="1.117" />
   </Class>
-  <Class Name="BlackCoat.ParticleSystem.VertexRenderer" Collapsed="true">
-    <Position X="6.75" Y="4" Width="1.5" />
+  <Class Name="BlackCoat.ParticleSystem.VertexRenderer">
+    <Position X="12" Y="4.5" Width="2.25" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAABgAAAAgEAAAAAAAAAAAAAAACAIAAIAI=</HashCode>
+      <HashCode>AAAAAAAAAAAABgAAAAgAAIAAAAAAAAAAAAACAIAAIAI=</HashCode>
       <FileName>ParticleSystem\VertexRenderer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BlackCoat.BlackCoatBase">
+    <Position X="12.25" Y="8" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAA=</HashCode>
+      <FileName>BlackCoatBase.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BlackCoat.ParticleSystem.BaseParticle">
+    <Position X="16.5" Y="8" Width="1.75" />
+    <InheritanceLine Type="BlackCoat.BlackCoatBase" FixedToPoint="true">
+      <Path>
+        <Point X="14" Y="8.364" />
+        <Point X="16.5" Y="8.364" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>QAQgAgAAAAAAAQAAAAAggAAAAgAIAAAAAAEAABBAAAA=</HashCode>
+      <FileName>ParticleSystem\BaseParticle.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BlackCoat.ParticleSystem.PixelParticle">
+    <Position X="18.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAABAAAA=</HashCode>
+      <FileName>ParticleSystem\PixelParticle.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BlackCoat.ParticleSystem.BasicPixelParticle">
+    <Position X="18.75" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAQAAAAAAAQAAAgIAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ParticleSystem\BasicPixelParticle.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BlackCoat.ParticleSystem.PixelEmitter">
+    <Position X="2.75" Y="6" Width="1.75" />
+    <InheritanceLine Type="BlackCoat.ParticleSystem.BaseEmitter" FixedFromPoint="true">
+      <Path>
+        <Point X="5" Y="6.422" />
+        <Point X="4.5" Y="6.422" />
+      </Path>
+    </InheritanceLine>
+    <AssociationLine Name="Composition" Type="BlackCoat.ParticleSystem.CompositeEmitter" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="4.125" Y="6" />
+        <Point X="4.125" Y="5.628" />
+        <Point X="5.625" Y="5.628" />
+        <Point X="5.625" Y="4.924" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.238" Y="0.436" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAgAAAAAA=</HashCode>
+      <FileName>ParticleSystem\PixelEmitter.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Composition" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="BlackCoat.ParticleSystem.BasicPixelEmitter">
+    <Position X="2.75" Y="1.25" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAIAAAAERABAAgAAAAAAgAAAAIAAAAEAABEAAA=</HashCode>
+      <FileName>ParticleSystem\BasicPixelEmitter.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BlackCoat.ParticleSystem.TextureEmitter">
+    <Position X="0.5" Y="6" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAIAAAAgAAAAABAAAAIAAAgAAAA=</HashCode>
+      <FileName>ParticleSystem\TextureEmitter.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Font Name="Segoe UI" Size="9" />

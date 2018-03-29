@@ -16,7 +16,7 @@ namespace BlackCoat.ParticleSystem
         public bool IsEmpty => _TextureLayers.Count == 0 && Verticies == null;
 
 
-        public ParticleDepthLayer(int depth) : base(1)
+        public ParticleDepthLayer(Core core, int depth) : base(core, 1)
         {
             Depth = depth;
             _TextureLayers = new List<ParticleTextureLayer>();
@@ -25,14 +25,14 @@ namespace BlackCoat.ParticleSystem
 
         internal void Add(PixelEmitter emitter)
         {
-            if (emitter is Emitter)
+            if (emitter is TextureEmitter)
             {
-                var e = emitter as Emitter;
+                var e = emitter as TextureEmitter;
                 var layer = _TextureLayers.FirstOrDefault(l => l.Texture == e.Texture);
 
                 if (layer == null)
                 {
-                    layer = new ParticleTextureLayer(e.Texture, e.BlendMode);
+                    layer = new ParticleTextureLayer(_Core, e.Texture, e.BlendMode);
                     _TextureLayers.Add(layer);
                 }
 
@@ -40,22 +40,22 @@ namespace BlackCoat.ParticleSystem
             }
             else
             {
-                emitter.VertexRenderer = this;
+                emitter.Initialize(this);
             }
         }
 
-        internal void Remove(PixelEmitter emitter)
+        internal void Remove(BaseEmitter emitter)
         {
-            if (emitter is Emitter)
+            if (emitter is TextureEmitter)
             {
-                var e = emitter as Emitter;
+                var e = emitter as TextureEmitter;
                 var layer = _TextureLayers.First(l => l.Texture == e.Texture);
                 layer.Remove(e);
                 if (layer.IsEmpty) _TextureLayers.Remove(layer);
             }
             else
             {
-                emitter.VertexRenderer = null;
+                emitter.Cleanup();
             }
         }
 

@@ -126,7 +126,7 @@ namespace BlackCoat
         /// <summary>
         /// Default Render View - uses full with and height of the rendering device.
         /// </summary>
-        internal View DefaultView { get { return _Device.DefaultView; } }
+        internal View DefaultView { get; private set; }
 
         /// <summary>
         /// Default font of the Engine. The <see cref="TextItem"/> class needs it to display text when no font is loaded.
@@ -151,6 +151,7 @@ namespace BlackCoat
             ClearColor = Color.Black;
             FocusLost = false;
             Disposed = false;
+            DefaultView = _Device.DefaultView;
             DefaultFont = new Font(Resources.Squares_Bold_Free);
             for (uint i = 4; i <= 32; i += 2) InitializeFontHack(DefaultFont, i); // HACK
 

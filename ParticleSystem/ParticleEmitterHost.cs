@@ -29,9 +29,9 @@ namespace BlackCoat.ParticleSystem
             if (emitter == null) throw new ArgumentNullException(nameof(emitter));
 
             _Emitters.Add(emitter);
-            if (emitter is CompoundEmitter)
+            if (emitter is CompositeEmitter)
             {
-                foreach (var e in (emitter as CompoundEmitter).Emitters)
+                foreach (var e in (emitter as CompositeEmitter).Emitters)
                 {
                     AddEmitter(e);
                 }
@@ -41,7 +41,7 @@ namespace BlackCoat.ParticleSystem
                 var pix = emitter as PixelEmitter;
                 if (!_DepthLayers.ContainsKey(pix.Depth))
                 {
-                    _DepthLayers.Add(pix.Depth, new ParticleDepthLayer(pix.Depth));
+                    _DepthLayers.Add(pix.Depth, new ParticleDepthLayer(_Core, pix.Depth));
                 }
                 _DepthLayers[pix.Depth].Add(pix);
             }
@@ -51,9 +51,9 @@ namespace BlackCoat.ParticleSystem
         {
             if(emitter == null) throw new ArgumentNullException(nameof(emitter));
             _Emitters.Remove(emitter);
-            if (emitter is CompoundEmitter)
+            if (emitter is CompositeEmitter)
             {
-                foreach (var e in (emitter as CompoundEmitter).Emitters)
+                foreach (var e in (emitter as CompositeEmitter).Emitters)
                 {
                     Remove(e);
                 }

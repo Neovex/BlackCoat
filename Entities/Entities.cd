@@ -6,7 +6,7 @@
   <Comment CommentText="Common Interfaces">
     <Position X="6.75" Y="0.5" Height="0.354" Width="1.44" />
   </Comment>
-  <Comment CommentText="Automated Vertex Entities">
+  <Comment CommentText="Vertex Entities">
     <Position X="10.51" Y="0.5" Height="0.354" Width="1.669" />
   </Comment>
   <Comment CommentText="Animations">
@@ -15,11 +15,14 @@
   <Comment CommentText="Scenegraph Components">
     <Position X="4.99" Y="2.302" Height="0.5" Width="1.023" />
   </Comment>
-  <Comment CommentText="Custom Vertex Entities">
-    <Position X="10.656" Y="4.062" Height="0.354" Width="1.575" />
+  <Comment CommentText="Gamestate">
+    <Position X="6.719" Y="4.052" Height="0.354" Width="1.575" />
+  </Comment>
+  <Comment CommentText="New Role Management">
+    <Position X="14.895" Y="0.5" Height="0.354" Width="1.669" />
   </Comment>
   <Class Name="BlackCoat.Entities.TextItem" Collapsed="true" BaseTypeListCollapsed="true">
-    <Position X="11.5" Y="3" Width="1.5" />
+    <Position X="11.75" Y="3" Width="1.5" />
     <TypeIdentifier>
       <HashCode>QAQAAAAAAAABAwAAICAAQAAgAAgBABAIAAIACAAQAAA=</HashCode>
       <FileName>Entities\TextItem.cs</FileName>
@@ -49,12 +52,12 @@
     </TypeIdentifier>
   </Class>
   <Class Name="BlackCoat.Entities.BaseEntity" Collapsed="true">
-    <Position X="10.75" Y="5" Width="1.5" />
+    <Position X="9.75" Y="6.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>QAQAAAAAAAABAwAAICAAQAAgAAABABAIAAIAgAAQAAA=</HashCode>
       <FileName>Entities\BaseEntity.cs</FileName>
     </TypeIdentifier>
-    <Lollipop Position="0.2" />
+    <Lollipop Position="1.117" />
   </Class>
   <Class Name="BlackCoat.Entities.Shapes.Circle" Collapsed="true" BaseTypeListCollapsed="true">
     <Position X="9.75" Y="1.5" Width="1.5" />
@@ -65,15 +68,15 @@
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="BlackCoat.Entities.Shapes.Line" Collapsed="true">
-    <Position X="10.75" Y="6.5" Width="1.5" />
+    <Position X="9.75" Y="4.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAIAAAAIACAAAgAUAAAAAAQAAAgKgAAAAAAAgAAAAAA=</HashCode>
+      <HashCode>AAYAAAAIACAAAgAUAAAAAAQAAAgKgAAAAAAAgAAAAAA=</HashCode>
       <FileName>Entities\Shapes\Line.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.887" />
   </Class>
   <Class Name="BlackCoat.Entities.Shapes.Polygon" Collapsed="true" BaseTypeListCollapsed="true">
-    <Position X="11.5" Y="1.5" Width="1.5" />
+    <Position X="11.75" Y="1.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>QCQAIAAAAAABgwAQKCAAQAQgAAgBABAIgAIAgAAQAAA=</HashCode>
       <FileName>Entities\Shapes\Polygon.cs</FileName>
@@ -103,31 +106,32 @@
     </TypeIdentifier>
   </Class>
   <Class Name="BlackCoat.BaseGamestate">
-    <Position X="6.75" Y="4" Width="1.5" />
-    <AssociationLine Name="Layer_Debug" Type="BlackCoat.Entities.Layer" FixedFromPoint="true">
+    <Position X="6.75" Y="4.75" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Properties" Collapsed="true" />
+    </Compartments>
+    <AssociationLine Name="Layer_BG" Type="BlackCoat.Entities.Layer" FixedFromPoint="true">
       <Path>
-        <Point X="6.75" Y="6.75" />
-        <Point X="5.5" Y="6.75" />
-      </Path>
-    </AssociationLine>
-    <AssociationLine Name="Layer_BG" Type="BlackCoat.Entities.Layer" FixedFromPoint="true" FixedToPoint="true">
-      <Path>
-        <Point X="6.75" Y="4.875" />
-        <Point X="6.375" Y="4.875" />
-        <Point X="6.375" Y="4.875" />
-        <Point X="5.5" Y="4.875" />
-      </Path>
-    </AssociationLine>
-    <AssociationLine Name="Layer_Overlay" Type="BlackCoat.Entities.Layer" FixedFromPoint="true">
-      <Path>
-        <Point X="6.75" Y="6.125" />
-        <Point X="5.5" Y="6.125" />
+        <Point X="6.75" Y="5.25" />
+        <Point X="5.5" Y="5.25" />
       </Path>
     </AssociationLine>
     <AssociationLine Name="Layer_Game" Type="BlackCoat.Entities.Layer" FixedFromPoint="true">
       <Path>
-        <Point X="6.75" Y="5.5" />
-        <Point X="5.5" Y="5.5" />
+        <Point X="6.75" Y="5.562" />
+        <Point X="5.5" Y="5.562" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="Layer_Overlay" Type="BlackCoat.Entities.Layer" FixedFromPoint="true">
+      <Path>
+        <Point X="6.75" Y="5.894" />
+        <Point X="5.5" Y="5.894" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="Layer_Debug" Type="BlackCoat.Entities.Layer" FixedFromPoint="true">
+      <Path>
+        <Point X="6.75" Y="6.206" />
+        <Point X="5.5" Y="6.206" />
       </Path>
     </AssociationLine>
     <TypeIdentifier>
@@ -136,10 +140,10 @@
     </TypeIdentifier>
     <ShowAsAssociation>
       <Property Name="Layer_BG" />
-      <Property Name="Layer_Cursor" />
-      <Property Name="Layer_Debug" />
       <Property Name="Layer_Game" />
       <Property Name="Layer_Overlay" />
+      <Property Name="Layer_Debug" />
+      <Property Name="Layer_Cursor" />
     </ShowAsAssociation>
   </Class>
   <Class Name="BlackCoat.Entities.CursorLayer" Collapsed="true">
@@ -155,6 +159,53 @@
       <FileName>Entities\CursorLayer.cs</FileName>
     </TypeIdentifier>
   </Class>
+  <Class Name="BlackCoat.Entities.Roles.GraphicRoleHost" Collapsed="true">
+    <Position X="14" Y="3" Width="1.5" />
+    <InheritanceLine Type="BlackCoat.Entities.Container" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="4.875" Y="3.691" />
+        <Point X="4.875" Y="3.925" />
+        <Point X="13.625" Y="3.925" />
+        <Point X="13.625" Y="3.312" />
+        <Point X="14" Y="3.312" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAAAAAAAAAAAAQQAAAAAAAAAQAAAAAAA=</HashCode>
+      <FileName>Entities\Roles\GraphicRoleHost.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="BlackCoat.Entities.Roles.Role" Collapsed="true">
+    <Position X="16" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAQAAAAAAAAAAAQAACAAAAAKABAAAAAA=</HashCode>
+      <FileName>Entities\Roles\Role.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BlackCoat.Entities.Roles.TextRoleHost" Collapsed="true">
+    <Position X="14" Y="1.5" Width="1.5" />
+    <InheritanceLine Type="BlackCoat.Entities.TextItem" FixedFromPoint="true">
+      <Path>
+        <Point X="13" Y="3" />
+        <Point X="13" Y="2.566" />
+        <Point X="14.75" Y="2.566" />
+        <Point X="14.75" Y="2.191" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAAAAAAAAAAAAQQAAAAAAAAAQAAAAAAA=</HashCode>
+      <FileName>Entities\Roles\TextRoleHost.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="BlackCoat.ParticleSystem.ParticleEmitterHost" Collapsed="true">
+    <Position X="11.75" Y="4.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AgQAAAAAAAAAAgAAAAAABAAAAAAAAAAAAgAAgAAQAAA=</HashCode>
+      <FileName>ParticleSystem\ParticleEmitterHost.cs</FileName>
+    </TypeIdentifier>
+  </Class>
   <Interface Name="BlackCoat.IEntity" Collapsed="true">
     <Position X="6.75" Y="2.75" Width="1.5" />
     <TypeIdentifier>
@@ -167,6 +218,13 @@
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAIAgAAIAQAQAAAAAAAAAAAAAAAgAAAA=</HashCode>
       <FileName>Interfaces\ITransformable.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="BlackCoat.IRoleHost" Collapsed="true">
+    <Position X="16" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAQQAAAAAAAAAQAAAAAAA=</HashCode>
+      <FileName>Interfaces\IRoleHost.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Font Name="Segoe UI" Size="9" />

@@ -7,54 +7,51 @@ using SFML.Graphics;
 
 namespace BlackCoat.ParticleSystem
 {
-    public abstract class VertexRenderer
+    public abstract class VertexRenderer : BlackCoatBase
     {
-        private const int _GROW_MULTIPLIER = 1000;
+        private const int _GROWTH_MULTIPLIER = 1000;
 
         private readonly int _GroupSize;
-        private List<int> _FreeIndices;
+        private Stack<int> _FreeIndices;
 
         internal Vertex[] Verticies;
 
 
-        public VertexRenderer(int groupSize)
+        public VertexRenderer(Core core, int groupSize) : base(core)
         {
             _GroupSize = groupSize;
-            _FreeIndices = new List<int>();
+            _FreeIndices = new Stack<int>();
             Verticies = new Vertex[0];
         }
-        
+
         public int Reserve()
         {
             if (_FreeIndices.Count == 0)
             {
                 var oldSize = Verticies.Length;
-                var newSize = oldSize + _GroupSize * _GROW_MULTIPLIER;
+                var newSize = oldSize + _GroupSize * _GROWTH_MULTIPLIER;
                 Array.Resize(ref Verticies, newSize);
                 for (int i = oldSize + _GroupSize; i < Verticies.Length; i += _GroupSize)
                 {
-                    _FreeIndices.Add(i);
+                    _FreeIndices.Push(i);
                 }
-                ClearVerticies(oldSize + _GroupSize, (newSize-oldSize) - _GroupSize);
+                ClearVerticies(oldSize + _GroupSize, (newSize - oldSize) - _GroupSize);
                 return oldSize;
             }
             else
             {
-                var index = _FreeIndices[0];
-                _FreeIndices.RemoveAt(0);
-                return index;
+                return _FreeIndices.Pop();
             }
         }
 
-        public void Free(int index)
+        internal void Free(int index)
         {
-            _FreeIndices.Add(index);
-            ClearVerticies(index, _GroupSize);
+            _FreeIndices.Push(index);
         }
 
         private void ClearVerticies(int first, int ammount)
         {
-            for (int i = first; i < first+ammount; i++) // performance?
+            for (int i = first; i < first + ammount; i++)
             {
                 Verticies[i].Color.A = 0;
             }

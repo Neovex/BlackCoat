@@ -42,6 +42,7 @@
     <WarningLevel>4</WarningLevel>
     <PlatformTarget>x86</PlatformTarget>
     <Prefer32Bit>false</Prefer32Bit>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
@@ -62,12 +63,18 @@
     <Compile Include="AssetHandling\SfxLoader.cs" />
     <Compile Include="AssetHandling\SfxManager.cs" />
     <Compile Include="AssetHandling\TextureLoader.cs" />
+    <Compile Include="BlackCoatBase.cs" />
     <Compile Include="InvalidStateException.cs" />
     <Compile Include="ParticleSystem\BaseEmitter.cs" />
-    <Compile Include="ParticleSystem\CompoundEmitter.cs" />
-    <Compile Include="ParticleSystem\Emitter.cs" />
+    <Compile Include="ParticleSystem\TextureEmitter.cs" />
     <Compile Include="ParticleSystem\PixelEmitter.cs" />
-    <Compile Include="ParticleSystem\BasicParticle.cs" />
+    <Compile Include="ParticleSystem\BasicTextureParticle.cs" />
+    <Compile Include="ParticleSystem\BasicPixelParticle.cs" />
+    <Compile Include="ParticleSystem\BasicPixelEmitter.cs" />
+    <Compile Include="ParticleSystem\PixelParticle.cs" />
+    <Compile Include="ParticleSystem\CompositeEmitter.cs" />
+    <Compile Include="ParticleSystem\BasicTextureEmitter.cs" />
+    <Compile Include="ParticleSystem\BaseParticle.cs" />
     <Compile Include="Collision\CollisionSystem.cs" />
     <Compile Include="Collision\Interfaces\IPolygon.cs" />
     <Compile Include="Collision\Interfaces\ICircle.cs" />
@@ -107,13 +114,10 @@
     <Compile Include="Input\Mapping\SimpleInputMap.cs" />
     <Compile Include="Input\TextEnteredEventArgs.cs" />
     <Compile Include="Interfaces\ITransformable.cs" />
-    <Compile Include="ParticleSystem\old\OldEmitter.cs" />
-    <Compile Include="ParticleSystem\Particle.cs" />
+    <Compile Include="ParticleSystem\TextureParticle.cs" />
     <Compile Include="ParticleSystem\ParticleDepthLayer.cs" />
-    <None Include="ParticleSystem\old\ParticleGroup.cs" />
     <Compile Include="ParticleSystem\ParticleEmitterHost.cs" />
     <Compile Include="ParticleSystem\ParticleTextureLayer.cs" />
-    <Compile Include="ParticleSystem\old\VelocityParticle.cs" />
     <Compile Include="ParticleSystem\VertexRenderer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
@@ -129,6 +133,7 @@
     <Compile Include="Extensions\Extensions.cs" />
     <Compile Include="Tools\Heading.cs" />
     <Compile Include="Tools\Log.cs" />
+    <Compile Include="Tools\MathHelper.cs" />
     <Compile Include="Tools\PerformanceMonitor.cs" />
     <Compile Include="Tools\RandomHelper.cs" />
     <Compile Include="Animation\Interpolation.cs" />
