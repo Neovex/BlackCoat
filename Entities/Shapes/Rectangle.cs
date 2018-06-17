@@ -34,9 +34,9 @@ namespace BlackCoat.Entities.Shapes
         /// <summary>
         /// Determines the visibility of the <see cref="Rectangle"/>
         /// </summary>
-        public virtual Boolean Visible
+        public Boolean Visible
         {
-            get { return _Visible && (_Parent == null ? true : _Parent.Visible); }
+            get { return _Visible && (_Parent == null || _Parent.Visible); }
             set { _Visible = value; }
         }
 
@@ -45,8 +45,17 @@ namespace BlackCoat.Entities.Shapes
         /// </summary>
         public View View
         {
-            get { return (_View ?? _Parent?.View) ?? _View; }
+            get { return _View ?? _Parent?.View; }
             set { _View = value; }
+        }
+
+        /// <summary>
+        /// Alpha Visibility - 0-1f
+        /// </summary>
+        public Single Alpha
+        {
+            get { return _Alpha * (Parent == null ? 1 : _Parent.Alpha); }
+            set { _Alpha = value; }
         }
 
         /// <summary>
@@ -66,22 +75,6 @@ namespace BlackCoat.Entities.Shapes
         {
             get { return FillColor; }
             set { FillColor = value; }
-        }
-
-        /// <summary>
-        /// Alpha Value (0-1f)
-        /// </summary>
-        public virtual Single Alpha
-        {
-            get { return _Alpha; }
-            set
-            {
-                _Alpha = value = Math.Max(0, value);
-                if (_Parent != null) value *= _Parent.Alpha;
-                var color = Color;
-                color.A = (Byte)(value * 255);
-                Color = color;
-            }
         }
 
         /// <summary>

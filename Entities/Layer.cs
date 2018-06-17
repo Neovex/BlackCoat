@@ -1,5 +1,6 @@
 ﻿using System;
 using SFML.System;
+using SFML.Graphics;
 
 namespace BlackCoat.Entities
 {
@@ -13,9 +14,12 @@ namespace BlackCoat.Entities
         /// Gets or sets the time multiplier. Default Value 1. Changing this value will slow down or speed up all time based entities on this <see cref="Layer"/>
         /// </summary>
         public float TimeMultiplier { get; set; }
-        public new Vector2f Position { set { } } // disabled
-        public new float Rotation { set { } } // disabled
-        public new Vector2f Scale { set { } } // disabled
+
+        // Disabled Properties
+        public new Vector2f Position { set { throw new Exception("Invalid Operation"); } }
+        public new float Rotation    { set { throw new Exception("Invalid Operation"); } }
+        public new Vector2f Scale    { set { throw new Exception("Invalid Operation"); } }
+        public new Texture Texture   { set { throw new Exception("Invalid Operation"); } }
 
 
         // CTOR ############################################################################

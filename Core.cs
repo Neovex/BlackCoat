@@ -319,36 +319,41 @@ namespace BlackCoat
             var state = entity.RenderState;
             if (entity.Parent != null)
             {
-                // create combined Parent transformation and store it in the renderstate
-                // in the libs draw method the combined Parent transformation is multiplied by the entities own transformation
+                // get transformation inheritance of all parents and update the renderstate
+                // in the SFML draw method the combined Parent transformations are multiplied by the entities own transformation
                 state.Transform = entity.Parent.Transform;
+
+                // get alpha inheritance and update the entities color alpha component
+                var color = entity.Color;
+                color.A = (Byte)(entity.Alpha * Byte.MaxValue);
+                entity.Color = color;
             }
 
             if (entity.RenderTarget == null)
             {
-                if (entity.View != null)
+                if (entity.View == null) // view inheritance is handled by the property
+                {
+                    entity.Draw(_Device, state);
+                }
+                else
                 {
                     _Device.SetView(entity.View);
                     entity.Draw(_Device, state);
                     _Device.SetView(DefaultView);
                 }
-                else
-                {
-                    entity.Draw(_Device, state);
-                }
             }
-            else // handling custom render targets
+            else // handle custom render targets
             {
-                if (entity.View != null)
+                if (entity.View == null)
+                {
+                    entity.Draw(entity.RenderTarget, state);
+                }
+                else
                 {
                     var restore = entity.RenderTarget.GetView();
                     entity.RenderTarget.SetView(entity.View);
                     entity.Draw(entity.RenderTarget, state);
                     entity.RenderTarget.SetView(restore);
-                }
-                else
-                {
-                    entity.Draw(entity.RenderTarget, state);
                 }
             }
             DRAW_CALLS++;
