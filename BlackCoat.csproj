@@ -64,6 +64,7 @@
     <Compile Include="AssetHandling\SfxManager.cs" />
     <Compile Include="AssetHandling\TextureLoader.cs" />
     <Compile Include="BlackCoatBase.cs" />
+    <Compile Include="Collision\Shapes\BasicTextCollisionShape.cs" />
     <Compile Include="InvalidStateException.cs" />
     <Compile Include="ParticleSystem\BaseEmitter.cs" />
     <Compile Include="ParticleSystem\TextureEmitter.cs" />
@@ -88,7 +89,7 @@
     <Compile Include="Collision\Shapes\CircleCollisionShape.cs" />
     <Compile Include="Collision\Shapes\LineCollisionShape.cs" />
     <Compile Include="Collision\Shapes\RectangleCollisionShape.cs" />
-    <Compile Include="Collision\Shapes\GraphicCollisionShape.cs" />
+    <Compile Include="Collision\Shapes\BasicGraphicCollisionShape.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="Core.cs" />
     <Compile Include="Entities\Animation\BlittingAnimation.cs" />

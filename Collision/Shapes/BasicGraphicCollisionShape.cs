@@ -9,7 +9,7 @@ namespace BlackCoat.Collision.Shapes
     /// </summary>
     /// <seealso cref="BlackCoat.Collision.CollisionShape" />
     /// <seealso cref="BlackCoat.Collision.IRectangle" />
-    public class GraphicCollisionShape : CollisionShape, IRectangle
+    public class BasicGraphicCollisionShape : CollisionShape, IRectangle
     {
         private Graphic _Graphic;
 
@@ -30,31 +30,30 @@ namespace BlackCoat.Collision.Shapes
 
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="GraphicCollisionShape"/> class.
+        /// Initializes a new instance of the <see cref="BasicGraphicCollisionShape"/> class.
         /// </summary>
         /// <param name="collisionSystem">The collision system used for collision checking.</param>
-        /// <param name="graphic">The <see cref="Graphic"/> that will be associated with this <see cref="GraphicCollisionShape"/>.</param>
-        public GraphicCollisionShape(CollisionSystem collisionSystem, Graphic graphic) : base(collisionSystem)
+        /// <param name="graphic">The <see cref="Graphic"/> that will be associated with this <see cref="BasicGraphicCollisionShape"/>.</param>
+        public BasicGraphicCollisionShape(CollisionSystem collisionSystem, Graphic graphic) : base(collisionSystem)
         {
-            if (graphic == null) throw new ArgumentNullException(nameof(graphic));
-            _Graphic = graphic;
+            _Graphic = graphic ?? throw new ArgumentNullException(nameof(graphic));
         }
 
         /// <summary>
-        /// Determines if this <see cref="GraphicCollisionShape"/> contains the defined point
+        /// Determines if this <see cref="BasicGraphicCollisionShape"/> contains the defined point
         /// </summary>
         /// <param name="point">The point to check</param>
-        /// <returns>True when the point is inside the <see cref="GraphicCollisionShape"/></returns>
+        /// <returns>True when the point is inside the <see cref="BasicGraphicCollisionShape"/></returns>
         override public bool Collide(Vector2f point)
         {
             return _CollisionSystem.CheckCollision(point, this);
         }
 
         /// <summary>
-        /// Determines if this <see cref="GraphicCollisionShape"/> is colliding with another <see cref="ICollisionShape"/>
+        /// Determines if this <see cref="BasicGraphicCollisionShape"/> is colliding with another <see cref="ICollisionShape"/>
         /// </summary>
         /// <param name="other">The other <see cref="ICollisionShape"/></param>
-        /// <returns>True when the objetcs overlap or touch</returns>
+        /// <returns>True when the objects overlap or touch</returns>
         override public bool Collide(ICollisionShape other)
         {
             return _CollisionSystem.CheckCollision(this, other);

@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-
 using SFML.Graphics;
-
 using BlackCoat.Collision;
+using BlackCoat.Collision.Shapes;
 
 
 namespace BlackCoat.Entities
@@ -19,6 +17,7 @@ namespace BlackCoat.Entities
         private Boolean _Visible;
         private View _View;
         private float _Alpha;
+        private ICollisionShape _CollisionShape;
 
 
         // Properties ######################################################################
@@ -108,18 +107,24 @@ namespace BlackCoat.Entities
         /// <summary>
         /// Gets or sets the collision shape for collision detection
         /// </summary>
-        public ICollisionShape CollisionShape { get; set; }
+        public ICollisionShape CollisionShape
+        {
+            get { return _CollisionShape ?? (_CollisionShape = new BasicTextCollisionShape(_Core.CollisionSystem, this)); }
+            set { _CollisionShape = value; }
+        }
 
 
         // CTOR ############################################################################        
         /// <summary>
-        /// Initializes a new instance of the <see cref="TextItem"/> class.
+        /// Initializes a new instance of the <see cref="TextItem" /> class.
         /// </summary>
         /// <param name="core">Black Coat Engine Core.</param>
+        /// <param name="text">The text to display.</param>
         /// <param name="font">Initial font.</param>
-        public TextItem(Core core, Font font = null)
+        public TextItem(Core core, String text = "", Font font = null)
         {
             _Core = core;
+            Text = text;
             _Alpha = 1;
             Visible = true;
             RenderState = RenderStates.Default;

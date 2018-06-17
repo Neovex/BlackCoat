@@ -100,7 +100,7 @@ namespace BlackCoat.Entities
         /// </summary>
         public ICollisionShape CollisionShape
         {
-            get { return _CollisionShape ?? (_CollisionShape = new GraphicCollisionShape(_Core.CollisionSystem, this)); }
+            get { return _CollisionShape ?? (_CollisionShape = new BasicGraphicCollisionShape(_Core.CollisionSystem, this)); }
             set { _CollisionShape = value; }
         }
 
