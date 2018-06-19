@@ -47,9 +47,10 @@ namespace BlackCoat
             {
                 Texture = _BgTex,
                 Alpha = 0,
-                Scale = new Vector2f(0.5f, 0.5f) // TODO : double check scale
             };
             Layer_BG.AddChild(_Bg);
+            _Bg.Scale /= 2; // TODO : double check scale
+            _Bg.Position = _Core.DeviceSize.ToVector2f() / 2 - _Bg.Texture.Size.ToVector2f() * _Bg.Scale.X / 2;
 
             Input.KeyPressed += HandleKeyPressed;
             _Core.AnimationManager.Wait(1, Start);
@@ -61,7 +62,8 @@ namespace BlackCoat
         {
             if (_Done) return;
             _Sound.Play();
-            _Core.AnimationManager.Run(0, 1, 4.5f, v => _Bg.Alpha = v, () => _Done = true);
+            _Core.AnimationManager.Run(0, 1, 4.5f, v => _Bg.Alpha = v);
+            _Core.AnimationManager.Wait(6, () => _Core.AnimationManager.Run(1, 0, 1f, v => _Bg.Alpha = v, () => _Done = true));
         }
 
         private void HandleKeyPressed(Keyboard.Key key)

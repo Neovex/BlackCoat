@@ -12,6 +12,7 @@ namespace BlackCoat
     public abstract class BaseGamestate
     {
         protected Core _Core;
+        private Boolean _Destroyed;
         private PerformanceMonitor _PerformanceMonitor;
 
         // State Info
@@ -29,7 +30,6 @@ namespace BlackCoat
         protected Layer Layer_Overlay { get; private set; }
         protected Layer Layer_Debug { get; private set; }
         protected CursorLayer Layer_Cursor { get; private set; }
-
 
         /// <summary>
         /// Occurs when the State has been successfully initialized.
@@ -85,13 +85,15 @@ namespace BlackCoat
             Layer_Debug = new Layer(_Core);
             Layer_Cursor = new CursorLayer(_Core);
 
-            // Initialize Debug Overlay
+            // Handle Debug Features
             HandleDebugChanged(_Core.Debug);
             _Core.DebugChanged += HandleDebugChanged;
         }
 
+
         private void HandleDebugChanged(bool debug)
         {
+            // Show / Hide Performance Monitor
             if (debug)
             {
                 _PerformanceMonitor = _PerformanceMonitor ?? new PerformanceMonitor(_Core);
@@ -101,6 +103,12 @@ namespace BlackCoat
             {
                 Layer_Debug.RemoveChild(_PerformanceMonitor);
             }
+
+            // Pass debug mode on to the asset managers
+            TextureLoader.Debug = debug;
+            MusicLoader.Debug = debug;
+            FontLoader.Debug = debug;
+            SfxLoader.Debug = debug;
         }
 
         /// <summary>
@@ -121,6 +129,8 @@ namespace BlackCoat
         /// <returns>True on success.</returns>
         internal bool LoadInternal()
         {
+            if (_Destroyed) throw new InvalidStateException($"Attempt to load destroyed state {Name}");
+
             if (Load())
             {
                 Loaded.Invoke();
@@ -152,12 +162,17 @@ namespace BlackCoat
         /// </summary>
         internal void DestroyInternal()
         {
+            _Destroyed = true;
+            _Core.DebugChanged -= HandleDebugChanged;
+
             OnDestroy.Invoke();
             Destroy();
+
             FontLoader.Dispose();
             MusicLoader.Dispose();
             SfxLoader.Dispose();
             TextureLoader.Dispose();
+
             Log.Debug(Name, "destroyed");
         }
 

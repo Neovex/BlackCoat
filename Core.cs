@@ -46,6 +46,7 @@ namespace BlackCoat
         private Boolean _Debug;
         private CollisionSystem _CollisionSystem;
         private Tools.Console _Console;
+        private int _FrameDelay;
 
 
         // Properties ######################################################################
@@ -239,13 +240,14 @@ namespace BlackCoat
                 _Device.DispatchEvents();
                 if (FocusLost) // pause updating & relieve host machine
                 {
-                    Thread.Sleep(1);
+                    Thread.Sleep(100);
                 }
                 else // run updates
                 {
                     var deltaT = (float)(_Timer.Elapsed.TotalMilliseconds / 1000d);// fractal second
                     _Timer.Restart();
                     Update(deltaT);
+                    if (_FrameDelay >= 0) Thread.Sleep(_FrameDelay);
                 }
                 Draw();
             }
@@ -388,6 +390,16 @@ namespace BlackCoat
             {
                 Log.Warning("Unknown Command:", cmd);
             }
+        }
+
+        /// <summary>
+        /// Actives the frame break mechanism. USE WITH CAUTON!
+        /// This will severely reduce FPS hence reduce stress on host machine.
+        /// </summary>
+        /// <param name="delay">-1 Disabled; 0 minimal frame drop; 50 or more will cut FPS in half or worse use at on risk; >100 goodbye fps hello spf</param>
+        public void EnableFrameBreak(int delay = 20)
+        {
+            _FrameDelay = delay;
         }
 
         #region Debug Handler

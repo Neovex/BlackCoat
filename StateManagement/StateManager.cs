@@ -104,7 +104,10 @@ namespace BlackCoat
                     catch (Exception e)
                     {
                         Log.Error("Failed to load state", _CurrentState, "Reason:", e);
+                        var failedState = _CurrentState;
                         _CurrentState = _RequestedState = null;
+                        StateChangeFailed.Invoke(failedState);
+                        if (_Core.Debug) throw;
                     }
                 }
                 Log.Info("Gamestate change completed. New State:", _CurrentState);

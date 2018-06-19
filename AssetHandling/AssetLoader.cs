@@ -1,7 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Collections.Generic;
 
 namespace BlackCoat
 {
@@ -27,7 +27,11 @@ namespace BlackCoat
         /// </summary>
         public String RootFolder { get; set; }
 
-        public Boolean SupressLoadingErrors { get; set; }
+        /// <summary>
+        /// Determines whether this asset loader should operate in debug mode.
+        /// Setting this value to <c>true</c> will cause loading exceptions to be thrown instead of being handled internally.
+        /// </summary>
+        public Boolean Debug { get; set; }
 
         /// <summary>
         /// Gets a value indicating whether this AssetManager is disposed.
@@ -77,7 +81,7 @@ namespace BlackCoat
             catch (Exception e)
             {
                 Log.Error("Could not load asset", name, "from", param, "because of", e);
-                if (!SupressLoadingErrors) throw;
+                if (Debug) throw;
             }
             return null;
         }
@@ -102,7 +106,7 @@ namespace BlackCoat
                 catch (Exception e)
                 {
                     if(logErrors) Log.Error("Could not load", file, "because of", e);
-                    if (!SupressLoadingErrors) throw;
+                    if (Debug) throw;
                 }
             }
             return assetNames.ToArray();
@@ -134,6 +138,7 @@ namespace BlackCoat
         public void Dispose()
         {
             if (Disposed) return;
+            Disposed = true;
 
             foreach (var kvp in _Assets)
             {
@@ -143,12 +148,10 @@ namespace BlackCoat
                 }
                 catch (Exception e)
                 {
-                    Log.Error("Failed to dipose", kvp.Key, "Reason:", e);
+                    Log.Error("Failed to dispose", kvp.Key, "Reason:", e);
                 }
             }
             _Assets.Clear();
-
-            Disposed = true;
         }
     }
 }
