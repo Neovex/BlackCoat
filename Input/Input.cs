@@ -9,110 +9,187 @@ using SFML.System;
 namespace BlackCoat
 {
     /// <summary>
-    /// Collects available input data and provides useful events for custom input handlers
+    /// Provides all available input data along with events for custom input handlers.
     /// </summary>
-    public static class Input
+    public class Input
     {
+        public static Input DEFAULT { get; private set; }
+
         // Variables #######################################################################
-        private static RenderWindow _Device;
-        private static Vector2f _MousePosition;
-        private static Boolean _MouseVisible;
-        private static List<Mouse.Button> _MouseButtons = new List<Mouse.Button>();
-        private static List<Keyboard.Key> _KeyboardKeys = new List<Keyboard.Key>();
+        private RenderWindow _Device;
+        private Vector2f _MousePosition;
+        private Boolean _MouseVisible;
+        private List<Mouse.Button> _MouseButtons;
+        private List<Keyboard.Key> _KeyboardKeys;
+        
+        private Boolean _MousePositionEnabled;
+        private Boolean _MouseEnabled;
+        private Boolean _KeyboardEnabled;
 
 
         // Properties ######################################################################
-        public static Boolean Shift { get { return IsKeyDown(Keyboard.Key.LShift) || IsKeyDown(Keyboard.Key.RShift); } }
-        public static Boolean Control { get { return IsKeyDown(Keyboard.Key.LControl) || IsKeyDown(Keyboard.Key.RControl); } }
-        public static Boolean Alt { get { return IsKeyDown(Keyboard.Key.LAlt) || IsKeyDown(Keyboard.Key.RAlt); } }
+        public Boolean Shift => IsKeyDown(Keyboard.Key.LShift) || IsKeyDown(Keyboard.Key.RShift);
+        public Boolean Control => IsKeyDown(Keyboard.Key.LControl) || IsKeyDown(Keyboard.Key.RControl);
+        public Boolean Alt => IsKeyDown(Keyboard.Key.LAlt) || IsKeyDown(Keyboard.Key.RAlt);
 
-        public static Vector2f MousePosition { get { return _MousePosition; } }
-        public static Single MouseWheelDelta { get; private set; }
+        public Vector2f MousePosition => _MousePosition;
+        public Single MouseWheelDelta { get; private set; }
 
-        public static Boolean MouseVisible
+        public Boolean MouseVisible
         {
-            get { return _MouseVisible; }
-            set { _Device.SetMouseCursorVisible(_MouseVisible = value); }
+            get => _MouseVisible;
+            set => _Device.SetMouseCursorVisible(_MouseVisible = value);
+        }
+        
+        public Boolean Enabled
+        {
+            get => MousePositionEnabled && MouseEnabled && KeyboardEnabled;
+            set => MousePositionEnabled = MouseEnabled = KeyboardEnabled = value;
+        }
+
+        public Boolean MousePositionEnabled
+        {
+            get => _MousePositionEnabled;
+            set
+            {
+                if (_MousePositionEnabled == value) return;
+                if (_MousePositionEnabled = value)
+                {
+                    _Device.MouseMoved += HandleMouseMoved;
+                }
+                else
+                {
+                    _Device.MouseMoved -= HandleMouseMoved;
+                }
+            }
+        }
+
+        public Boolean MouseEnabled
+        {
+            get => _MouseEnabled;
+            set
+            {
+                if (_MouseEnabled == value) return;
+                if (_MouseEnabled = value)
+                {
+                    ResetMouse();
+                    _Device.MouseButtonPressed += HandleMouseButtonPressed;
+                    _Device.MouseButtonReleased += HandleMouseButtonReleased;
+                    _Device.MouseWheelScrolled += HandleMouseWheelScrolled;
+                }
+                else
+                {
+                    _Device.MouseButtonPressed -= HandleMouseButtonPressed;
+                    _Device.MouseButtonReleased -= HandleMouseButtonReleased;
+                    _Device.MouseWheelScrolled -= HandleMouseWheelScrolled;
+                }
+            }
+        }
+
+        public Boolean KeyboardEnabled
+        {
+            get => _KeyboardEnabled;
+            set
+            {
+                if (_KeyboardEnabled == value) return;
+                if (_KeyboardEnabled = value)
+                {
+                    ResetKeyboard();
+                    _Device.KeyPressed += HandleKeyPressed;
+                    _Device.KeyReleased += HandleKeyReleased;
+                    _Device.TextEntered += HandleTextEntered;
+                }
+                else
+                {
+                    _Device.KeyPressed -= HandleKeyPressed;
+                    _Device.KeyReleased -= HandleKeyReleased;
+                    _Device.TextEntered -= HandleTextEntered;
+                }
+            }
         }
 
 
         // Events ##########################################################################
-        public static event Action<Vector2u> DeviceResized = v => { };
-        public static event Action<Vector2f> MouseMoved = p => { };
-        public static event Action<Mouse.Button> MouseButtonPressed = b => { };
-        public static event Action<Mouse.Button> MouseButtonReleased = b => { };
-        public static event Action<Single> MouseWheelScrolled = d => { };
-        public static event Action<Keyboard.Key> KeyPressed = k => { };
-        public static event Action<Keyboard.Key> KeyReleased = k => { };
-        public static event Action<TextEnteredEventArgs> TextEntered = t => { };
+        public event Action<Vector2f> MouseMoved = p => { };
+        public event Action<Mouse.Button> MouseButtonPressed = b => { };
+        public event Action<Mouse.Button> MouseButtonReleased = b => { };
+        public event Action<Single> MouseWheelScrolled = d => { };
+        public event Action<Keyboard.Key> KeyPressed = k => { };
+        public event Action<Keyboard.Key> KeyReleased = k => { };
+        public event Action<TextEnteredEventArgs> TextEntered = t => { };
+
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Input"/> class.
+        /// </summary>
+        /// <param name="device">Renderwindow as event provider</param>
+        public Input(Core core)
+        {
+            if (DEFAULT == null) DEFAULT = this;
+
+            // Init Class
+            _Device = core.Device;
+            _MouseVisible = true;
+            _MouseButtons = new List<Mouse.Button>();
+            _KeyboardKeys = new List<Keyboard.Key>();
+            core.FocusLost += HandleCoreFocusLost;
+
+            // Subscribe to input events
+            Enabled = true;
+
+            // TODO Joysticks & Game-pads:
+            //_Device.JoystickButtonPressed...
+        }
 
 
         // Methods #########################################################################
-        
-        // Internal Management
-
-        /// <summary>
-        /// Initializes the Input class.
-        /// Starts listening to all available input events.
-        /// </summary>
-        /// <param name="device">Renderwindow as event provider</param>
-        internal static void Initialize(RenderWindow device)
-        {
-            _Device = device;
-            _Device.Resized += HandleDeviceResized;
-            _Device.MouseMoved += HandleMouseMoved;
-            _Device.MouseButtonPressed += HandleMouseButtonPressed;
-            _Device.MouseButtonReleased += HandleMouseButtonReleased;
-            _Device.MouseWheelScrolled += HandleMouseWheelScrolled;
-            _Device.KeyPressed += HandleKeyPressed;
-            _Device.KeyReleased += HandleKeyReleased;
-            _Device.TextEntered += HandleTextEntered;
-            
-            Log.Debug(nameof(Input), "management initialized");
-        }
-
         /// <summary>
         /// Resets all cached input states.
         /// </summary>
-        internal static void Reset()
+        private void HandleCoreFocusLost()
         {
+            ResetMouse();
+            ResetKeyboard();
+        }
+
+        private void ResetMouse()
+        {
+            MouseWheelDelta = 0;
+            _MouseButtons.ForEach(b => HandleMouseButtonReleased(this, new MouseButtonEventArgs(new MouseButtonEvent() { Button = b })));
             _MouseButtons.Clear();
-            _KeyboardKeys.Clear();// fixme up events
         }
 
-
-        // Render Window
-        private static void HandleDeviceResized(object sender, SizeEventArgs e)
+        private void ResetKeyboard()
         {
-            DeviceResized(new Vector2u(e.Width, e.Height));
+            _KeyboardKeys.ForEach(c => HandleKeyReleased(this, new KeyEventArgs(new KeyEvent() { Code = c })));
+            _KeyboardKeys.Clear();
         }
-        // TODO : FOCUS LOST
 
         // Mouse
-        public static Boolean IsMButtonDown(Mouse.Button button) { return _MouseButtons.Contains(button); }
-        public static Boolean IsLMButtonDown() { return _MouseButtons.Contains(Mouse.Button.Left); }
-        public static Boolean IsRMButtonDown() { return _MouseButtons.Contains(Mouse.Button.Right); }
+        public Boolean IsMButtonDown(Mouse.Button button) { return _MouseButtons.Contains(button); }
+        public Boolean IsLMButtonDown() { return _MouseButtons.Contains(Mouse.Button.Left); }
+        public Boolean IsRMButtonDown() { return _MouseButtons.Contains(Mouse.Button.Right); }
 
-        private static void HandleMouseButtonPressed(object sender, MouseButtonEventArgs e)
+        private void HandleMouseButtonPressed(object sender, MouseButtonEventArgs e)
         {
             if (!_MouseButtons.Contains(e.Button)) _MouseButtons.Add(e.Button);
             MouseButtonPressed(e.Button);
         }
 
-        private static void HandleMouseButtonReleased(object sender, MouseButtonEventArgs e)
+        private void HandleMouseButtonReleased(object sender, MouseButtonEventArgs e)
         {
             if (_MouseButtons.Contains(e.Button)) _MouseButtons.Remove(e.Button);
             MouseButtonReleased(e.Button);
         }
 
-        private static void HandleMouseMoved(object sender, MouseMoveEventArgs e)
+        private void HandleMouseMoved(object sender, MouseMoveEventArgs e)
         {
             _MousePosition.X = e.X;
             _MousePosition.Y = e.Y;
             MouseMoved(_MousePosition);
         }
 
-        private static void HandleMouseWheelScrolled(object sender, MouseWheelScrollEventArgs e)
+        private void HandleMouseWheelScrolled(object sender, MouseWheelScrollEventArgs e)
         {
             MouseWheelDelta = e.Delta;
             MouseWheelScrolled(MouseWheelDelta);
@@ -120,28 +197,29 @@ namespace BlackCoat
 
 
         // Keyboard
-        public static Boolean IsKeyDown(Keyboard.Key key) { return _KeyboardKeys.Contains(key); }
+        public Boolean IsKeyDown(Keyboard.Key key) { return _KeyboardKeys.Contains(key); }
 
-        private static void HandleKeyPressed(object sender, KeyEventArgs e)
+        private void HandleKeyPressed(object sender, KeyEventArgs e)
         {
-            if (e.Code == Keyboard.Key.BackSpace) TextEntered(new TextEnteredEventArgs(true));
+            // Handle special keys for text input
+            if (e.Code == Keyboard.Key.BackSpace) TextEntered(new TextEnteredEventArgs(true, false));
+            else if (e.Code == Keyboard.Key.Delete) TextEntered(new TextEnteredEventArgs(false, true));
+
             if (IsKeyDown(e.Code)) return;
             _KeyboardKeys.Add(e.Code);
             KeyPressed(e.Code);
         }
 
-        private static void HandleKeyReleased(object sender, KeyEventArgs e)
+        private void HandleKeyReleased(object sender, KeyEventArgs e)
         {
             if (!IsKeyDown(e.Code)) return;
             _KeyboardKeys.Remove(e.Code);
             KeyReleased(e.Code);
         }
 
-        private static void HandleTextEntered(object sender, TextEventArgs e)
+        private void HandleTextEntered(object sender, TextEventArgs e)
         {
             if (e.Unicode.All(c => !Char.IsControl(c))) TextEntered(new TextEnteredEventArgs(e.Unicode));
         }
-
-        // TODO : Joystick/Gamepad
     }
 }

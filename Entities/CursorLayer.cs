@@ -19,7 +19,7 @@ namespace BlackCoat.Entities
         public override void Update(Single deltaT)
         {
             base.Update(deltaT);
-            Cursor.Position = Input.MousePosition;
+            Cursor.Position = _Core.Input.MousePosition;
         }
 
         /// <summary>
@@ -31,14 +31,14 @@ namespace BlackCoat.Entities
         {
             if (texture == null)
             {
-                Input.MouseVisible = true;
+                _Core.Input.MouseVisible = true;
                 Cursor.Visible = false;
             }
             else
             {
                 Cursor.Texture = texture;
                 Cursor.Origin = origin;
-                Input.MouseVisible = false;
+                _Core.Input.MouseVisible = false;
                 Cursor.Visible = true;
             }
         }

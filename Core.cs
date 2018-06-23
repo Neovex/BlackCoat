@@ -39,6 +39,21 @@ namespace BlackCoat
         /// </summary>
         public event Action<Boolean> DebugChanged = d => { };
 
+        /// <summary>
+        /// Occurs when the size of the current render device has changed.
+        /// </summary>
+        public event Action<Vector2u> DeviceResized = v => { };
+
+        /// <summary>
+        /// Occurs when the current render device has lost its focus.
+        /// </summary>
+        public event Action FocusLost = () => { };
+
+        /// <summary>
+        /// Occurs when the current render device (re)gained its focus.
+        /// </summary>
+        public event Action FocusGained = () => { };
+
 
         // Variables #######################################################################
         private RenderWindow _Device;
@@ -105,14 +120,19 @@ namespace BlackCoat
         }
 
         /// <summary>
+        /// Provides all available input data along with events for custom input handlers.
+        /// </summary>
+        public Input Input { get; }
+
+        /// <summary>
         /// Color used to clear the screen of the contents from the last rendered frame.
         /// </summary>
         public Color ClearColor { get; set; }
 
         /// <summary>
-        /// Determines if the render window is no longer in focus.
+        /// Determines if the current render device has focus.
         /// </summary>
-        public Boolean FocusLost { get; private set; }
+        public Boolean HasFocus { get; private set; }
 
         /// <summary>
         /// Determines if the Engine Core has been disposed.
@@ -120,9 +140,9 @@ namespace BlackCoat
         public Boolean Disposed { get; private set; }
 
         /// <summary>
-        /// Size of the current Render Device
+        /// Default font of the Engine. The <see cref="TextItem"/> class needs it to display text when no font is loaded.
         /// </summary>
-        public Vector2u DeviceSize { get { return _Device.Size; } }
+        public Font DefaultFont { get; private set; }
 
         /// <summary>
         /// Default Render View - uses full with and height of the rendering device.
@@ -130,9 +150,14 @@ namespace BlackCoat
         internal View DefaultView { get; private set; }
 
         /// <summary>
-        /// Default font of the Engine. The <see cref="TextItem"/> class needs it to display text when no font is loaded.
+        /// Current Rendering Device
         /// </summary>
-        public Font DefaultFont { get; private set; }
+        internal RenderWindow Device => _Device;
+
+        /// <summary>
+        /// Size of the current Render Device
+        /// </summary>
+        public Vector2u DeviceSize => _Device.Size;
 
 
         // CTOR ############################################################################
@@ -150,14 +175,14 @@ namespace BlackCoat
 
             // Init Defaults
             ClearColor = Color.Black;
-            FocusLost = false;
+            HasFocus = true;
             Disposed = false;
             DefaultView = _Device.DefaultView;
             DefaultFont = new Font(Resources.Squares_Bold_Free);
             for (uint i = 4; i <= 32; i += 2) InitializeFontHack(DefaultFont, i); // HACK
 
-            // Device Events
-            _Device.Resized += HandleWindowResized;
+            // Core-relevant Device Events
+            _Device.Resized += HandleDeviceResized;
             _Device.Closed += HandleWindowClose;
             _Device.LostFocus += HandleLostFocus;
             _Device.GainedFocus += HandleGainedFocus;
@@ -169,7 +194,8 @@ namespace BlackCoat
             CollisionSystem = new CollisionSystem();
 
             // Init Input
-            Input.Initialize(_Device);
+            Input = new Input(this);
+            Log.Debug("Default Input ready");
 
             // Init Console
             _Console = new Tools.Console(this, _Device);
@@ -238,16 +264,16 @@ namespace BlackCoat
             while (_Device.IsOpen)
             {
                 _Device.DispatchEvents();
-                if (FocusLost) // pause updating & relieve host machine
-                {
-                    Thread.Sleep(100);
-                }
-                else // run updates
+                if (HasFocus) // run updates
                 {
                     var deltaT = (float)(_Timer.Elapsed.TotalMilliseconds / 1000d);// fractal second
                     _Timer.Restart();
                     Update(deltaT);
                     if (_FrameDelay >= 0) Thread.Sleep(_FrameDelay);
+                }
+                else // pause updating & relieve host machine
+                {
+                    Thread.Sleep(100);
                 }
                 Draw();
             }
@@ -410,10 +436,9 @@ namespace BlackCoat
         #endregion
 
         #region Device Event handlers
-        private void HandleWindowResized(object sender, SizeEventArgs e)
+        private void HandleDeviceResized(object sender, SizeEventArgs e)
         {
-            // TODO : device resize
-            Log.Fatal("Resize not handled!");
+            DeviceResized(new Vector2u(e.Width, e.Height));
         }
 
         private void HandleWindowClose(object sender, EventArgs e)
@@ -425,13 +450,14 @@ namespace BlackCoat
         private void HandleLostFocus(object sender, EventArgs e)
         {
             _Timer.Stop();
-            FocusLost = true;
-            Input.Reset();
+            HasFocus = false;
+            FocusLost.Invoke();
         }
 
         private void HandleGainedFocus(object sender, EventArgs e)
         {
-            FocusLost = false;
+            HasFocus = true;
+            FocusGained.Invoke();
             _Timer.Start();
         }
         #endregion

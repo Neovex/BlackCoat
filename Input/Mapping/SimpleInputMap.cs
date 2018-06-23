@@ -14,17 +14,15 @@ namespace BlackCoat.InputMapping
     /// <seealso cref="System.IDisposable" />
     public class SimpleInputMap<TMappedOperation> : IDisposable
     {
+        private Input _Input;
+        private Boolean _Enabled;
+
         private Dictionary<Keyboard.Key, TMappedOperation> _KeyboardActions;
         private Dictionary<Mouse.Button, TMappedOperation> _MouseActions;
         private Boolean _ScrollUpActionSet;
         private TMappedOperation _ScrollUpAction;
         private Boolean _ScrollDownActionSet;
         private TMappedOperation _ScrollDownAction;
-
-        /// <summary>
-        /// Gets a value indicating whether this <see cref="SimpleInputMap{TMappedOperation}"/> is enabled.
-        /// </summary>
-        public Boolean Enabled { get; private set; }
         
         /// <summary>
         /// Gets the name of this instance.
@@ -32,20 +30,33 @@ namespace BlackCoat.InputMapping
         public String Name { get; private set; }
 
         /// <summary>
+        /// Gets or sets a value indicating whether this <see cref="SimpleInputMap{TMappedOperation}"/> is enabled.
+        /// </summary>
+        public Boolean Enabled
+        {
+            get => _Enabled;
+            set
+            {
+                if (value) Enable();
+                else Disable();
+            }
+        }
+
+
+        /// <summary>
         /// Occurs when a mapped operation is invoked.
         /// </summary>
         public event Action<TMappedOperation, Boolean> MappedOperationInvoked = (a, b) => { };
-
-
+        
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SimpleInputMap{TMappedOperation}"/> class.
         /// </summary>
-        public SimpleInputMap(string name)
+        public SimpleInputMap(Input eventSource, string name)
         {
+            _Input = eventSource ?? throw new ArgumentNullException(nameof(eventSource));
             if (String.IsNullOrEmpty(name)) throw new ArgumentException(nameof(name));
             Name = name;
-            Log.Debug(nameof(SimpleInputMap<TMappedOperation>), Name, "created");
 
             _KeyboardActions = new Dictionary<Keyboard.Key, TMappedOperation>();
             _MouseActions = new Dictionary<Mouse.Button, TMappedOperation>();
@@ -53,6 +64,7 @@ namespace BlackCoat.InputMapping
             _ScrollDownActionSet = false;
 
             Enable();
+            Log.Debug(nameof(SimpleInputMap<TMappedOperation>), Name, "created");
         }
         ~SimpleInputMap()
         {
@@ -65,12 +77,12 @@ namespace BlackCoat.InputMapping
         /// </summary>
         public void Enable()
         {
-            Input.MouseButtonPressed += HandleMouseButtonPressed;
-            Input.MouseButtonReleased += HandleMouseButtonReleased;
-            Input.MouseWheelScrolled += HandleMouseWheelScrolled;
-            Input.KeyPressed += HandleKeyPressed;
-            Input.KeyReleased += HandleKeyReleased;
-            Enabled = true;
+            _Input.MouseButtonPressed += HandleMouseButtonPressed;
+            _Input.MouseButtonReleased += HandleMouseButtonReleased;
+            _Input.MouseWheelScrolled += HandleMouseWheelScrolled;
+            _Input.KeyPressed += HandleKeyPressed;
+            _Input.KeyReleased += HandleKeyReleased;
+            _Enabled = true;
         }
 
         /// <summary>
@@ -78,12 +90,12 @@ namespace BlackCoat.InputMapping
         /// </summary>
         public void Disable()
         {
-            Input.MouseButtonPressed -= HandleMouseButtonPressed;
-            Input.MouseButtonReleased -= HandleMouseButtonReleased;
-            Input.MouseWheelScrolled -= HandleMouseWheelScrolled;
-            Input.KeyPressed -= HandleKeyPressed;
-            Input.KeyReleased -= HandleKeyReleased;
-            Enabled = false;
+            _Input.MouseButtonPressed -= HandleMouseButtonPressed;
+            _Input.MouseButtonReleased -= HandleMouseButtonReleased;
+            _Input.MouseWheelScrolled -= HandleMouseWheelScrolled;
+            _Input.KeyPressed -= HandleKeyPressed;
+            _Input.KeyReleased -= HandleKeyReleased;
+            _Enabled = false;
         }
 
         /// <summary>
@@ -162,8 +174,7 @@ namespace BlackCoat.InputMapping
 
         private void RaiseMappedOperationInvoked<TKey>(Dictionary<TKey, TMappedOperation> lookup, TKey key, Boolean activate)
         {
-            TMappedOperation operation;
-            if (lookup.TryGetValue(key, out operation))
+            if (lookup.TryGetValue(key, out TMappedOperation operation))
             {
                 MappedOperationInvoked.Invoke(operation, activate);
             }

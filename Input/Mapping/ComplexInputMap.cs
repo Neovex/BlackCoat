@@ -14,6 +14,7 @@ namespace BlackCoat.InputMapping
     /// <seealso cref="System.IDisposable" />
     public class ComplexInputMap<TMappedOperation> : IDisposable
     {
+        private Input _Input;
         private List<MappedOperation<Keyboard.Key, TMappedOperation>> _KeyboardActions;
         private List<MappedOperation<Mouse.Button, TMappedOperation>> _MouseActions;
         private List<MappedOperation<float, TMappedOperation>> _ScrollActions;
@@ -33,13 +34,14 @@ namespace BlackCoat.InputMapping
         /// <summary>
         /// Initializes a new instance of the <see cref="ComplexInputMap{TMappedOperation}"/> class.
         /// </summary>
-        public ComplexInputMap()
+        public ComplexInputMap(Input eventSource)
         {
-            Log.Debug("created");
+            _Input = eventSource ?? throw new ArgumentNullException(nameof(eventSource));
             _KeyboardActions = new List<MappedOperation<Keyboard.Key, TMappedOperation>>();
             _MouseActions = new List<MappedOperation<Mouse.Button, TMappedOperation>>();
             _ScrollActions = new List<MappedOperation<float, TMappedOperation>>();
             Enable();
+            Log.Debug("created");
         }
         ~ComplexInputMap()
         {
@@ -51,8 +53,8 @@ namespace BlackCoat.InputMapping
         /// </summary>
         public void Enable()
         {
-            Input.MouseButtonPressed += HandleMouseButtonPressed;
-            Input.KeyPressed += HandleKeyPressed;
+            _Input.MouseButtonPressed += HandleMouseButtonPressed;
+            _Input.KeyPressed += HandleKeyPressed;
             Enabled = true;
         }
 
@@ -61,8 +63,8 @@ namespace BlackCoat.InputMapping
         /// </summary>
         public void Disable()
         {
-            Input.MouseButtonPressed -= HandleMouseButtonPressed;
-            Input.KeyPressed -= HandleKeyPressed;
+            _Input.MouseButtonPressed -= HandleMouseButtonPressed;
+            _Input.KeyPressed -= HandleKeyPressed;
             Enabled = false;
         }
 
@@ -74,7 +76,7 @@ namespace BlackCoat.InputMapping
         /// <returns>The created InputAction</returns>
         public MappedOperation<Keyboard.Key, TMappedOperation> AddKeyboardMapping(Keyboard.Key[] keys, TMappedOperation action)
         {
-            var a = new MappedOperation<Keyboard.Key, TMappedOperation>(keys, action, Input.IsKeyDown);
+            var a = new MappedOperation<Keyboard.Key, TMappedOperation>(keys, action, _Input.IsKeyDown);
             a.Invoked += RaiseMappedOperationInvoked;
             _KeyboardActions.Add(a);
             return a;
@@ -88,7 +90,7 @@ namespace BlackCoat.InputMapping
         /// <returns>The created InputAction</returns>
         public MappedOperation<Mouse.Button, TMappedOperation> AddMouseMapping(Mouse.Button[] buttons, TMappedOperation action)
         {
-            var a = new MappedOperation<Mouse.Button, TMappedOperation>(buttons, action, Input.IsMButtonDown);
+            var a = new MappedOperation<Mouse.Button, TMappedOperation>(buttons, action, _Input.IsMButtonDown);
             a.Invoked += RaiseMappedOperationInvoked;
             _MouseActions.Add(a);
             return a;

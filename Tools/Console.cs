@@ -57,8 +57,8 @@ namespace BlackCoat.Tools
             UpdateDisplayProportions(View.Size.X, View.Size.Y);
 
             Log.OnLog += LogMessage;
-            Input.KeyPressed += HandleKeyPressed;
-            Input.TextEntered += HandleTextEntered;
+            _Core.Input.KeyPressed += HandleKeyPressed;
+            _Core.Input.TextEntered += HandleTextEntered;
             device.Resized += Device_Resized;
             
             Log.Debug("Engine", nameof(Console), "ready");
@@ -68,7 +68,7 @@ namespace BlackCoat.Tools
         // Methods #########################################################################
         private void HandleKeyPressed(Keyboard.Key key)
         {
-            if (Input.Control && Input.Shift && key == Keyboard.Key.Num1)
+            if (_Core.Input.Control && _Core.Input.Shift && key == Keyboard.Key.Num1)
             {
                 if (_Open) Close();
                 else Open();

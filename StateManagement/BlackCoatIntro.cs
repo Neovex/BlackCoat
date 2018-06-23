@@ -1,15 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using BlackCoat.Properties;
-using BlackCoat.Tools;
 using SFML.Graphics;
-using SFML.Audio;
-using BlackCoat.Entities;
-using BlackCoat.Animation;
 using SFML.Window;
-using SFML.System;
+using SFML.Audio;
+using BlackCoat.Properties;
+using BlackCoat.Entities;
 
 namespace BlackCoat
 {
@@ -27,12 +21,12 @@ namespace BlackCoat
             _NextState = nextState;
             if (_NextState == null)
             {
-                Log.Fatal("Engine Intro initialized without followup state");
+                Log.Fatal("Engine Intro initialized without follow up state");
             }
         }
 
         /// <summary>
-        /// Loads the recuired data for this state.
+        /// Loads the required data for this state.
         /// </summary>
         /// <returns>True on success.</returns>
         protected override bool Load()
@@ -52,7 +46,7 @@ namespace BlackCoat
             _Bg.Scale /= 2; // TODO : double check scale
             _Bg.Position = _Core.DeviceSize.ToVector2f() / 2 - _Bg.Texture.Size.ToVector2f() * _Bg.Scale.X / 2;
 
-            Input.KeyPressed += HandleKeyPressed;
+            _Core.Input.KeyPressed += HandleKeyPressed;
             _Core.AnimationManager.Wait(1, Start);
 
             return true;
@@ -82,7 +76,7 @@ namespace BlackCoat
 
         protected override void Destroy()
         {
-            Input.KeyPressed -= HandleKeyPressed;
+            _Core.Input.KeyPressed -= HandleKeyPressed;
             Layer_BG.RemoveChild(_Bg);
             TextureLoader.Release("bg");
             SfxLoader.Release("snd");
