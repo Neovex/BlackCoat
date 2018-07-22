@@ -168,9 +168,9 @@ namespace BlackCoat
             OnDestroy.Invoke();
             Destroy();
 
+            SfxLoader.Dispose();
             FontLoader.Dispose();
             MusicLoader.Dispose();
-            SfxLoader.Dispose();
             TextureLoader.Dispose();
 
             Log.Debug(Name, "destroyed");

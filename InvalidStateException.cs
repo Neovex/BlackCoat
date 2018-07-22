@@ -2,7 +2,7 @@
 
 namespace BlackCoat
 {
-    class InvalidStateException : Exception
+    public class InvalidStateException : Exception
     {
         public InvalidStateException() : base("Source instance was in an invalid state for the attempted operation")
         {

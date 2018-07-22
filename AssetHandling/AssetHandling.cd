@@ -1,51 +1,57 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Comment CommentText="&lt;-- Creates">
+    <Position X="1.947" Y="3.967" Height="0.291" Width="0.855" />
+  </Comment>
   <Class Name="BlackCoat.AssetLoader&lt;T&gt;">
-    <Position X="6.25" Y="0.5" Width="1.75" />
+    <Position X="8.5" Y="0.5" Width="1.75" />
     <Compartments>
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>AAAAggAAADAAIAAAAAAAgCAAAAAAAAAAAAACABACAAA=</HashCode>
+      <HashCode>AAAAggAAADAAIIAAAAAAgCAAAAAAAAAAAAACABACAAA=</HashCode>
       <FileName>AssetHandling\AssetLoader.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="BlackCoat.FontLoader" Collapsed="true">
-    <Position X="5.25" Y="4.75" Width="1.5" />
+    <Position X="7.5" Y="4.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>AssetHandling\FontLoader.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="BlackCoat.MusicLoader" Collapsed="true">
-    <Position X="9.75" Y="4.75" Width="1.5" />
+    <Position X="12" Y="4.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>AssetHandling\MusicLoader.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="BlackCoat.SfxManager">
-    <Position X="0.5" Y="3.75" Width="1.5" />
+    <Position X="2.75" Y="4.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAQAIAAAAAAAAAAAAAAEAAAAEAIAAEEAgAQAAAAQAAA=</HashCode>
+      <HashCode>AAAAAQAAAAAAAABAAAAEAAAAAAIAQEEAgAQAAAAAAAA=</HashCode>
       <FileName>AssetHandling\SfxManager.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
       <Field Name="_Loader" />
     </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Field Name="_SoundLibrary" />
+    </ShowAsCollectionAssociation>
   </Class>
   <Class Name="BlackCoat.TextureLoader" Collapsed="true">
-    <Position X="7.5" Y="4.75" Width="1.5" />
+    <Position X="9.75" Y="4.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAgAAAAIAAAAABAAAAAAAAAAAAAAAAAACAAAAAAAA=</HashCode>
       <FileName>AssetHandling\TextureLoader.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="BlackCoat.BaseGamestate" Collapsed="true">
-    <Position X="5.5" Y="6.25" Width="3.5" />
+    <Position X="7.75" Y="6.25" Width="3.5" />
     <TypeIdentifier>
-      <HashCode>EgQVhAAAAAECAiAEAQACAAwAAgBAAAAAAAMAAAAAIDA=</HashCode>
+      <HashCode>EgQVhAAAAEECAiAEAQACAAwAAgBAAAAAAAMAAAAAIDA=</HashCode>
       <FileName>StateManagement\BaseGamestate.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -56,11 +62,30 @@
     </ShowAsAssociation>
   </Class>
   <Class Name="BlackCoat.SfxLoader" Collapsed="true">
-    <Position X="3" Y="4.75" Width="1.5" />
+    <Position X="5.25" Y="4.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAgAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>AssetHandling\SfxLoader.cs</FileName>
     </TypeIdentifier>
+  </Class>
+  <Class Name="SFML.Audio.Sound" Collapsed="true">
+    <Position X="0.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="BlackCoat.ManagedSound">
+    <Position X="0.5" Y="4.25" Width="1.5" />
+    <AssociationLine Name="_INSTANCES" Type="BlackCoat.ManagedSound">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="-0.281" Y="0.368" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAgAAAAAAAAACAAABBABAAAAAAAAAAAAIA=</HashCode>
+      <FileName>AssetHandling\ManagedSound.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Field Name="_INSTANCES" />
+    </ShowAsCollectionAssociation>
   </Class>
   <Font Name="Segoe UI" Size="9" />
 </ClassDiagram>

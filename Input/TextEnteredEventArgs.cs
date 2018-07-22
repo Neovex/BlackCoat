@@ -68,9 +68,9 @@ namespace BlackCoat
                 original = String.Empty;
                 index = 0;
             }
-            else if (index < 0)
+            else if (index < 0) // remove this block when deprecated UpdateText is removed
             {
-                index = original.Length; // remove this block when deprecated UpdateText is removed
+                index = original.Length;
             }
 
             // Modify

@@ -70,9 +70,9 @@ namespace BlackCoat
             set
             {
                 if (_MouseEnabled == value) return;
+                ResetMouse();
                 if (_MouseEnabled = value)
                 {
-                    ResetMouse();
                     _Device.MouseButtonPressed += HandleMouseButtonPressed;
                     _Device.MouseButtonReleased += HandleMouseButtonReleased;
                     _Device.MouseWheelScrolled += HandleMouseWheelScrolled;
@@ -92,9 +92,9 @@ namespace BlackCoat
             set
             {
                 if (_KeyboardEnabled == value) return;
+                ResetKeyboard();
                 if (_KeyboardEnabled = value)
                 {
-                    ResetKeyboard();
                     _Device.KeyPressed += HandleKeyPressed;
                     _Device.KeyReleased += HandleKeyReleased;
                     _Device.TextEntered += HandleTextEntered;
@@ -155,14 +155,18 @@ namespace BlackCoat
         private void ResetMouse()
         {
             MouseWheelDelta = 0;
-            _MouseButtons.ForEach(b => HandleMouseButtonReleased(this, new MouseButtonEventArgs(new MouseButtonEvent() { Button = b })));
-            _MouseButtons.Clear();
+            for (int i = _MouseButtons.Count - 1; i >= 0; i--)
+            {
+                HandleMouseButtonReleased(this, new MouseButtonEventArgs(new MouseButtonEvent() { Button = _MouseButtons[i] }));
+            }
         }
 
         private void ResetKeyboard()
         {
-            _KeyboardKeys.ForEach(c => HandleKeyReleased(this, new KeyEventArgs(new KeyEvent() { Code = c })));
-            _KeyboardKeys.Clear();
+            for (int i = _KeyboardKeys.Count - 1; i >= 0; i--)
+            {
+                HandleKeyReleased(this, new KeyEventArgs(new KeyEvent() { Code = _KeyboardKeys[i] }));
+            }
         }
 
         // Mouse

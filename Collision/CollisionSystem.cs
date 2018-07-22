@@ -115,7 +115,7 @@ namespace BlackCoat.Collision
                 case Geometry.Polygon:
                     return Raycast(rayOrigin, rayAngle, target as IPolygon);
             }
-            HandlUnknownShape(target);
+            HandleUnknownShape(target);
             return new Vector2f[0];
         }
 
@@ -466,7 +466,7 @@ namespace BlackCoat.Collision
                 case Geometry.Rectangle: return CheckCollision(self as IRectangle, other);
                 case Geometry.Polygon: return CheckCollision(self as IPolygon, other);
             }
-            return HandlUnknownShape(self);
+            return HandleUnknownShape(self);
         }
 
         /// <summary>
@@ -482,7 +482,7 @@ namespace BlackCoat.Collision
                 case Geometry.Rectangle: return CheckCollision(other as IRectangle, line);
                 case Geometry.Polygon: return CheckCollision(other as IPolygon, line);
             }
-            return HandlUnknownShape(other);
+            return HandleUnknownShape(other);
         }
         /// <summary>
         /// Determines if objects touch or intersect.
@@ -497,7 +497,7 @@ namespace BlackCoat.Collision
                 case Geometry.Rectangle: return CheckCollision(circle, other as IRectangle);
                 case Geometry.Polygon: return CheckCollision(circle, other as IPolygon);
             }
-            return HandlUnknownShape(other);
+            return HandleUnknownShape(other);
         }
         /// <summary>
         /// Determines if objects touch or intersect.
@@ -512,7 +512,7 @@ namespace BlackCoat.Collision
                 case Geometry.Rectangle: return CheckCollision(rect, other as IRectangle);
                 case Geometry.Polygon: return CheckCollision(rect, other as IPolygon);
             }
-            return HandlUnknownShape(other);
+            return HandleUnknownShape(other);
         }
         /// <summary>
         /// Determines if objects touch or intersect.
@@ -527,11 +527,11 @@ namespace BlackCoat.Collision
                 case Geometry.Rectangle: return CheckCollision(other as IRectangle, poly);
                 case Geometry.Polygon: return CheckCollision(poly, other as IPolygon);
             }
-            return HandlUnknownShape(other);
+            return HandleUnknownShape(other);
         }
 
         // Helper method to handle invalid shape combinations - should never happen
-        protected virtual bool HandlUnknownShape(ICollisionShape shape)
+        protected virtual bool HandleUnknownShape(ICollisionShape shape)
         {
             Log.Error("Invalid collision shape", shape, shape?.CollisionGeometry);
             if (RaiseCollisionExceptions) throw new Exception("Invalid collision shape");
