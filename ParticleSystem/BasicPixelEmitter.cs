@@ -1,10 +1,13 @@
 ﻿using System;
-using SFML.Graphics;
 using SFML.System;
 
 namespace BlackCoat.ParticleSystem
 {
-    public class BasicPixelEmitter : PixelEmitter
+    /// <summary>
+    /// Very basic Emitter that continuously emits pixel particles when triggered.
+    /// </summary>
+    /// <seealso cref="BlackCoat.ParticleSystem.PixelEmitter" />
+    public sealed class BasicPixelEmitter : PixelEmitter
     {
         private static readonly Guid _GUID = typeof(BasicPixelParticle).GUID;
 
@@ -20,17 +23,30 @@ namespace BlackCoat.ParticleSystem
         public Boolean Loop { get; set; }
         public bool IsTriggered { get; private set; }
 
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BasicPixelEmitter"/> class.
+        /// </summary>
+        /// <param name="core">The engine core.</param>
+        /// <param name="depth">The optional hierarchical depth.</param>
         public BasicPixelEmitter(Core core, int depth = 0):base(core, depth)
         {
         }
-        
 
+
+        /// <summary>
+        /// Triggers this instance. Causing it to start emitting particles.
+        /// </summary>
         public void Trigger()
         {
             IsTriggered = true;
         }
 
-        protected override void UpdateInternal(float deltaT)
+        /// <summary>
+        /// Updates Emitter logic.
+        /// </summary>
+        /// <param name="deltaT">Current game-time</param>
+        protected override void Update(float deltaT)
         {
             if (IsTriggered)
             {

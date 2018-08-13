@@ -170,6 +170,11 @@ namespace BlackCoat
             return new Vector3f(v.X, 0, v.Y);
         }
 
+        public static Vector2f ToVector2f(this Vector3f v)
+        {
+            return new Vector2f(v.X, v.Z);
+        }
+
         public static Vector2u ToVector2u(this Vector2i v)
         {
             return new Vector2u((uint)v.X, (uint)v.Y);

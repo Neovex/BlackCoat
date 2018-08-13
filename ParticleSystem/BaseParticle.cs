@@ -4,6 +4,10 @@ using SFML.Graphics;
 
 namespace BlackCoat.ParticleSystem
 {
+    /// <summary>
+    /// Abstract base class of all Particle Classes using the Black Coat Particle System
+    /// </summary>
+    /// <seealso cref="BlackCoat.BlackCoatBase" />
     public abstract class BaseParticle : BlackCoatBase
     {
         internal static int _PARTICLES = 0;
@@ -14,10 +18,16 @@ namespace BlackCoat.ParticleSystem
         protected Color _Color;
         protected float _Alpha;
 
-
+        /// <summary>
+        /// Assigned particle index. Required by the <see cref="VertexRenderer"/>
+        /// </summary>
         internal int Index => _Index;
 
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BaseParticle"/> class.
+        /// </summary>
+        /// <param name="core">The Engine core.</param>
         public BaseParticle(Core core) : base(core)
         {
             _Index = -1;
@@ -26,6 +36,11 @@ namespace BlackCoat.ParticleSystem
         }
 
 
+        /// <summary>
+        /// Initializes the <see cref="BaseParticle"/>.
+        /// </summary>
+        /// <param name="index">The index of the first vertex.</param>
+        /// <param name="ttl">The particle lifetime.</param>
         internal void Initialize(int index, float ttl)
         {
             _PARTICLES++;
@@ -33,6 +48,10 @@ namespace BlackCoat.ParticleSystem
             _TTL = ttl;
         }
 
+        /// <summary>
+        /// Releases the <see cref="BaseParticle"/> clearing up all used recourses.
+        /// </summary>
+        /// <param name="vPtr">Root vertex of the <see cref="VertexRenderer"/></param>
         internal unsafe void Release(Vertex* vPtr)
         {
             Clear(vPtr + _Index);
@@ -41,13 +60,30 @@ namespace BlackCoat.ParticleSystem
             _TTL = -1;
         }
 
-        protected abstract unsafe void Clear(Vertex* vPtr);
-        protected abstract unsafe bool UpdateInternal(float deltaT, Vertex* vPtr);
-
+        /// <summary>
+        /// Updates the particle with the behavior defined by inherited classes.
+        /// </summary>
+        /// <param name="deltaT">Current Frame Time.</param>
+        /// <param name="vPtr">Root vertex of the <see cref="VertexRenderer"/></param>
+        /// <returns>True if the particle needs to be removed otherwise false.</returns>
         internal unsafe bool Update(float deltaT, Vertex* vPtr)
         {
             _Color.A = (byte)(_Alpha * Byte.MaxValue);
             return (_TTL -= deltaT) < 0 || UpdateInternal(deltaT, vPtr + _Index);
         }
+
+        /// <summary>
+        /// Resets the used vertices into a neutral/reusable state.
+        /// </summary>
+        /// <param name="vPtr">First vertex of this particle</param>
+        protected abstract unsafe void Clear(Vertex* vPtr);
+
+        /// <summary>
+        /// Updates the particle with the behavior defined by inherited classes.
+        /// </summary>
+        /// <param name="deltaT">Current Frame Time.</param>
+        /// <param name="vPtr">First vertex of this particle</param>
+        /// <returns>True if the particle needs to be removed otherwise false.</returns>
+        protected abstract unsafe bool UpdateInternal(float deltaT, Vertex* vPtr);
     }
 }

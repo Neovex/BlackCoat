@@ -1,14 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using SFML.Graphics;
 using SFML.System;
 
 namespace BlackCoat.ParticleSystem
 {
-    public class BasicTextureEmitter : TextureEmitter
+    /// <summary>
+    /// Very basic Emitter that continuously emits texture particles when triggered.
+    /// </summary>
+    /// <seealso cref="BlackCoat.ParticleSystem.TextureEmitter" />
+    public sealed class BasicTextureEmitter : TextureEmitter
     {
         private static readonly Guid _GUID = typeof(BasicTextureParticle).GUID;
 
@@ -26,17 +26,32 @@ namespace BlackCoat.ParticleSystem
         public Boolean Loop { get; set; }
         public bool IsTriggered { get; private set; }
 
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BasicTextureEmitter"/> class.
+        /// </summary>
+        /// <param name="core">The engine core.</param>
+        /// <param name="texture">The texture for all particles.</param>
+        /// <param name="blendMode">The particle blend mode.</param>
+        /// <param name="depth">The optional hierarchical depth.</param>
         public BasicTextureEmitter(Core core, Texture texture, BlendMode blendMode, int depth = 0) : base(core, texture, blendMode, depth)
         {
         }
 
 
+        /// <summary>
+        /// Triggers this instance. Causing it to start emitting particles.
+        /// </summary>
         public void Trigger()
         {
             IsTriggered = true;
         }
 
-        protected override void UpdateInternal(float deltaT)
+        /// <summary>
+        /// Updates Emitter logic.
+        /// </summary>
+        /// <param name="deltaT">Current game-time</param>
+        protected override void Update(float deltaT)
         {
             if (IsTriggered)
             {

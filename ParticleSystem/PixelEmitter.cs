@@ -1,9 +1,12 @@
 ﻿using SFML.Graphics;
-using SFML.System;
 
 namespace BlackCoat.ParticleSystem
 {
-    public abstract class PixelEmitter: BaseEmitter
+    /// <summary>
+    /// Abstract base class for pixel based Emitters
+    /// </summary>
+    /// <seealso cref="BlackCoat.ParticleSystem.BaseEmitter" />
+    public abstract class PixelEmitter : BaseEmitter
     {
         /// <summary>
         /// Gets or sets the color for the particles.
@@ -16,6 +19,11 @@ namespace BlackCoat.ParticleSystem
         public CompositeEmitter Composition { get; internal set; }
 
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PixelEmitter"/> class.
+        /// </summary>
+        /// <param name="core">The engine core.</param>
+        /// <param name="depth">The optional hierarchical depth.</param>
         public PixelEmitter(Core core, int depth = 0):base(core, depth)
         {
             Color = Color.White;

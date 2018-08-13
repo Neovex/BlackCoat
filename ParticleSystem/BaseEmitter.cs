@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using SFML.Graphics;
 using SFML.System;
+using SFML.Graphics;
 
 namespace BlackCoat.ParticleSystem
 {
@@ -76,9 +76,11 @@ namespace BlackCoat.ParticleSystem
         /// Updates the Emitter and its particles.
         /// </summary>
         /// <param name="deltaT">Current game-time</param>
-        public unsafe void Update(Single deltaT)
+        internal virtual unsafe void UpdateInternal(Single deltaT)
         {
-            UpdateInternal(deltaT);
+            if (!IsInitialized) throw new InvalidStateException();
+
+            Update(deltaT);
 
             fixed (Vertex* vPtr = _VertexRenderer.Verticies)
             {
@@ -101,7 +103,7 @@ namespace BlackCoat.ParticleSystem
         /// Updates only the Emitter logic.
         /// </summary>
         /// <param name="deltaT">Current game-time</param>
-        protected abstract void UpdateInternal(float deltaT);
+        protected abstract void Update(float deltaT);
 
         /// <summary>
         /// Initializes the Emitter assigning it with specified vertex renderer.

@@ -25,18 +25,15 @@ namespace BlackCoat.ParticleSystem
 
         internal void Add(PixelEmitter emitter)
         {
-            if (emitter is TextureEmitter)
+            if (emitter is TextureEmitter texEmitter)
             {
-                var e = emitter as TextureEmitter;
-                var layer = _TextureLayers.FirstOrDefault(l => l.Texture == e.Texture);
-
+                var layer = _TextureLayers.FirstOrDefault(l => l.Texture == texEmitter.Texture);
                 if (layer == null)
                 {
-                    layer = new ParticleTextureLayer(_Core, e.Texture, e.BlendMode);
+                    layer = new ParticleTextureLayer(_Core, texEmitter.Texture, texEmitter.BlendMode);
                     _TextureLayers.Add(layer);
                 }
-
-                layer.Add(e);
+                layer.Add(texEmitter);
             }
             else
             {
@@ -46,11 +43,10 @@ namespace BlackCoat.ParticleSystem
 
         internal void Remove(BaseEmitter emitter)
         {
-            if (emitter is TextureEmitter)
+            if (emitter is TextureEmitter texEmitter)
             {
-                var e = emitter as TextureEmitter;
-                var layer = _TextureLayers.First(l => l.Texture == e.Texture);
-                layer.Remove(e);
+                var layer = _TextureLayers.First(l => l.Texture == texEmitter.Texture);
+                layer.Remove(texEmitter);
                 if (layer.IsEmpty) _TextureLayers.Remove(layer);
             }
             else

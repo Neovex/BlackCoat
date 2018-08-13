@@ -21,8 +21,8 @@
     <AssociationLine Name="_Emitters" Type="BlackCoat.ParticleSystem.BaseEmitter" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
       <Path>
         <Point X="7.75" Y="2.477" />
-        <Point X="7.375" Y="2.477" />
-        <Point X="7.375" Y="6.262" />
+        <Point X="7.247" Y="2.477" />
+        <Point X="7.247" Y="6.262" />
         <Point X="6.75" Y="6.262" />
       </Path>
       <MemberNameLabel ManuallyPlaced="true">
@@ -79,14 +79,14 @@
   <Class Name="BlackCoat.ParticleSystem.CompositeEmitter">
     <Position X="5" Y="1.25" Width="1.75" />
     <TypeIdentifier>
-      <HashCode>AAIAAAAAAAAQAYAgAIAAhAAAAgAAAAAAAAAAAAAQAAA=</HashCode>
+      <HashCode>AAYAAAAAAAAQAYAgAAAAhEAAAgAACAAAAAAAAAAQAAA=</HashCode>
       <FileName>ParticleSystem\CompositeEmitter.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="BlackCoat.ParticleSystem.BasicTextureEmitter">
     <Position X="0.5" Y="1.25" Width="1.75" />
     <TypeIdentifier>
-      <HashCode>AAACAAAIAAAAERABAAgAAAAAAgAAAAIAAAAEAgBEAAA=</HashCode>
+      <HashCode>AAQCAAAIAAAAERABAAgAAAAAAAAAAAIAAAAEAgBEAAA=</HashCode>
       <FileName>ParticleSystem\BasicTextureEmitter.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -114,12 +114,6 @@
   </Class>
   <Class Name="BlackCoat.ParticleSystem.BaseParticle">
     <Position X="16.5" Y="8" Width="1.75" />
-    <InheritanceLine Type="BlackCoat.BlackCoatBase" FixedToPoint="true">
-      <Path>
-        <Point X="14" Y="8.364" />
-        <Point X="16.5" Y="8.364" />
-      </Path>
-    </InheritanceLine>
     <TypeIdentifier>
       <HashCode>QAQgAgAAAAAAAQAAAAAggAAAAgAIAAAAAAEAABBAAAA=</HashCode>
       <FileName>ParticleSystem\BaseParticle.cs</FileName>
@@ -141,21 +135,15 @@
   </Class>
   <Class Name="BlackCoat.ParticleSystem.PixelEmitter">
     <Position X="2.75" Y="6" Width="1.75" />
-    <InheritanceLine Type="BlackCoat.ParticleSystem.BaseEmitter" FixedFromPoint="true">
+    <AssociationLine Name="Composition" Type="BlackCoat.ParticleSystem.CompositeEmitter" FixedFromPoint="true" FixedToPoint="true">
       <Path>
-        <Point X="5" Y="6.422" />
-        <Point X="4.5" Y="6.422" />
-      </Path>
-    </InheritanceLine>
-    <AssociationLine Name="Composition" Type="BlackCoat.ParticleSystem.CompositeEmitter" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
-      <Path>
-        <Point X="4.125" Y="6" />
-        <Point X="4.125" Y="5.628" />
-        <Point X="5.625" Y="5.628" />
-        <Point X="5.625" Y="4.924" />
+        <Point X="4" Y="6" />
+        <Point X="4" Y="5.684" />
+        <Point X="5.688" Y="5.684" />
+        <Point X="5.688" Y="5.309" />
       </Path>
       <MemberNameLabel ManuallyPlaced="true">
-        <Position X="0.238" Y="0.436" />
+        <Position X="0.068" Y="0.133" />
       </MemberNameLabel>
     </AssociationLine>
     <TypeIdentifier>
@@ -169,7 +157,7 @@
   <Class Name="BlackCoat.ParticleSystem.BasicPixelEmitter">
     <Position X="2.75" Y="1.25" Width="1.75" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAIAAAAERABAAgAAAAAAgAAAAIAAAAEAABEAAA=</HashCode>
+      <HashCode>AAQAAAAIAAAAERABAAgAAAAAAAAAAAIAAAAEAABEAAA=</HashCode>
       <FileName>ParticleSystem\BasicPixelEmitter.cs</FileName>
     </TypeIdentifier>
   </Class>
