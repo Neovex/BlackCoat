@@ -11,7 +11,7 @@ namespace BlackCoat.ParticleSystem
     /// <seealso cref="BlackCoat.ParticleSystem.BaseEmitter" />
     public class CompositeEmitter : BaseEmitter
     {
-        private List<BaseEmitter> _Emitters;
+        protected List<BaseEmitter> _Emitters;
         private ParticleEmitterHost _Host;
         private Vector2f _Position;
         private Single _Rotation;

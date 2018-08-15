@@ -45,6 +45,8 @@ namespace BlackCoat
         /// <param name="root">Optional: root folder path when different from the default asset root.</param>
         public void LoadFromDirectory(string root = null)
         {
+            if (_Loader.Disposed) throw new ObjectDisposedException(nameof(_Loader));
+
             var oldRoot = _Loader.RootFolder;
             if (root != null) _Loader.RootFolder = root;
             var sounds = _Loader.LoadAllFilesInDirectory();
@@ -75,6 +77,8 @@ namespace BlackCoat
         /// <returns>A copy of the loaded sound</returns>
         public ManagedSound Create(String name, float volume = 100, bool spatial = false, Vector2f position = new Vector2f(), float volumeDropoffStartDistance = 500, float volumeDropoffFactor = 10)
         {
+            if (_Loader.Disposed) throw new ObjectDisposedException(nameof(_Loader));
+
             if (!_SoundLibrary.TryGetValue(name, out Sound sound)) // Sound not in library?
             {
                 sound = new Sound(_Loader.Load(name)); // -> create
@@ -103,6 +107,8 @@ namespace BlackCoat
         /// <returns>A copy of the loaded sound</returns>
         public void AddToLibrary(String name, float volume = 100, bool spatial = false, Vector2f position = new Vector2f(), float volumeDropoffStartDistance = 500, float volumeDropoffFactor = 10)
         {
+            if (_Loader.Disposed) throw new ObjectDisposedException(nameof(_Loader));
+
             if (!_SoundLibrary.TryGetValue(name, out Sound sound)) // Sound not in library?
             {
                 sound = new Sound(_Loader.Load(name)); // -> create
@@ -123,6 +129,7 @@ namespace BlackCoat
         /// <returns>The sound effect</returns>
         public ManagedSound Get(String name)
         {
+            if (_Loader.Disposed) throw new ObjectDisposedException(nameof(_Loader));
             return new ManagedSound(_SoundLibrary[name]);
         }
 
@@ -133,6 +140,8 @@ namespace BlackCoat
         /// <param name="position">Optional position of the sound. Only relevant when sound was created as a spatial sound.</param>
         public void Play(String name, Vector2f? position = null)
         {
+            if (_Loader.Disposed) throw new ObjectDisposedException(nameof(_Loader));
+
             if (_SoundLibrary.TryGetValue(name, out Sound sound))
             {
                 sound = new ManagedSound(sound);
