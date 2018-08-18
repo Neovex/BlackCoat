@@ -34,7 +34,7 @@ namespace BlackCoat.ParticleSystem
         override protected unsafe bool UpdateInternal(float deltaT, Vertex* vPtr)
         {
             vPtr->Position = _Position;
-            vPtr->Color = _Color;
+            vPtr->Color = _Color; // Alpha component is updated in base class
             return false;
         }
     }

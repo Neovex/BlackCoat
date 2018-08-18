@@ -1,16 +1,19 @@
-﻿using SFML.Graphics;
+﻿using System;
+using SFML.Graphics;
 using SFML.System;
 
 namespace BlackCoat.ParticleSystem
 {
     /// <summary>
-    /// Simple Pixel Particle Implementation. Supports simple movement and blending.
+    /// Simple Pixel Particle Implementation. Supports simple movement and alpha blending.
     /// </summary>
     /// <seealso cref="BlackCoat.ParticleSystem.PixelParticle" />
     public class BasicPixelParticle : PixelParticle
     {
         protected Vector2f _Velocity;
         protected Vector2f _Acceleration;
+        protected Single _AlphaFade;
+        protected Boolean _UseAlphaAsTTL;
 
 
         /// <summary>
@@ -25,12 +28,18 @@ namespace BlackCoat.ParticleSystem
         /// <summary>
         /// Initializes the particle with the provided animation parameters.
         /// </summary>
-        public virtual void Initialize(Vector2f position, Color color, Vector2f velocity, Vector2f acceleration)
+        public virtual void Initialize(Vector2f position, ParticleAnimationInfo info)
         {
-            _Position = position;
-            _Color = color;
-            _Velocity = velocity;
-            _Acceleration = acceleration;
+            // init particle
+            _Position = position + info.Offset;
+            _Color = info.Color;
+            _Alpha = info.Alpha;
+
+            // init movement
+            _Velocity = info.Velocity;
+            _Acceleration = info.Acceleration;
+            _AlphaFade = info.AlphaFade;
+            _UseAlphaAsTTL = info.UseAlphaAsTTL;
         }
 
         /// <summary>
@@ -43,7 +52,8 @@ namespace BlackCoat.ParticleSystem
         {
             _Velocity += _Acceleration * deltaT;
             _Position += _Velocity * deltaT;
-            return base.UpdateInternal(deltaT, vPtr);
+            _Alpha += _AlphaFade * deltaT;
+            return base.UpdateInternal(deltaT, vPtr) || (_UseAlphaAsTTL && _Alpha <= 0);
         }
     }
 }

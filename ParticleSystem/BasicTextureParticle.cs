@@ -13,7 +13,9 @@ namespace BlackCoat.ParticleSystem
         protected Vector2f _Velocity;
         protected Vector2f _Acceleration;
         protected Single _RotationVelocity;
-        protected Single _Blending;
+        protected Single _AlphaFade;
+        protected Vector2f _ScaleVelocity;
+        protected Boolean _UseAlphaAsTTL;
 
 
         /// <summary>
@@ -27,26 +29,27 @@ namespace BlackCoat.ParticleSystem
         /// <summary>
         /// Initializes the particle with the provided animation parameters.
         /// </summary>
-        public virtual void Initialize(Texture texture, Vector2f position, Vector2f origin, Vector2f scale, float rotation, Color color, Single alpha,
-                                       Vector2f velocity, Vector2f acceleration, Single rotationVelocity, Single blending)
+        public virtual void Initialize(Texture texture, Vector2f position, TextureParticleAnimationInfo info)
         {
-            // init base class properties
+            // init particle
             _Texture = texture;
             _TextureRect.Width = (int)_Texture.Size.X;
             _TextureRect.Height = (int)_Texture.Size.Y;
             _Position = position;
-            _Origin = origin;
-            _Scale = scale;
-            _Rotation = rotation; // todo: simplify - to much mods for this class?
-            _Color = color;
-            _Alpha = alpha;
+            _Origin = info.Origin;
+            _Scale = info.Scale;
+            _Rotation = info.Rotation;
+            _Color = info.Color;
+            _Alpha = info.Alpha;
 
             // init movement
-            _Velocity = velocity;
-            _Acceleration = acceleration;
-            _RotationVelocity = rotationVelocity;
-            _Blending = blending;
-        }
+            _Velocity = info.Velocity;
+            _Acceleration = info.Acceleration;
+            _RotationVelocity = info.RotationVelocity;
+            _AlphaFade = info.AlphaFade;
+            _UseAlphaAsTTL = info.UseAlphaAsTTL;
+            _ScaleVelocity = info.ScaleVelocity;
+    }
 
         /// <summary>
         /// Updates the particle animation.
@@ -58,9 +61,10 @@ namespace BlackCoat.ParticleSystem
         {
             _Velocity += _Acceleration * deltaT;
             _Position += _Velocity * deltaT;
+            _Alpha += _AlphaFade * deltaT;
             _Rotation += _RotationVelocity * deltaT;
-            _Alpha += _Blending * deltaT;
-            return base.UpdateInternal(deltaT, vPtr);
+            _Scale += _ScaleVelocity * deltaT;
+            return base.UpdateInternal(deltaT, vPtr) || (_UseAlphaAsTTL && _Alpha <= 0);
         }
     }
 }

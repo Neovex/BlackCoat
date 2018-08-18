@@ -14,22 +14,23 @@ namespace BlackCoat
         protected Core _Core;
         private Boolean _Destroyed;
         private PerformanceMonitor _PerformanceMonitor;
+        private PropertyInspector _PropertyInspector;
 
         // State Info
         public String Name { get; protected set; }
 
         // Asset Managers
-        protected TextureLoader TextureLoader { get; set; }
-        protected MusicLoader MusicLoader { get; set; }
-        protected FontLoader FontLoader { get; set; }
-        protected SfxLoader SfxLoader { get; set; }
+        protected internal TextureLoader TextureLoader { get; set; }
+        protected internal MusicLoader MusicLoader { get; set; }
+        protected internal FontLoader FontLoader { get; set; }
+        protected internal SfxLoader SfxLoader { get; set; }
 
         // Layers
-        protected Layer Layer_BG { get; private set; }
-        protected Layer Layer_Game { get; private set; }
-        protected Layer Layer_Overlay { get; private set; }
-        protected Layer Layer_Debug { get; private set; }
-        protected CursorLayer Layer_Cursor { get; private set; }
+        protected internal Layer Layer_BG { get; private set; }
+        protected internal Layer Layer_Game { get; private set; }
+        protected internal Layer Layer_Overlay { get; private set; }
+        protected internal Layer Layer_Debug { get; private set; }
+        protected internal CursorLayer Layer_Cursor { get; private set; }
 
         /// <summary>
         /// Occurs when the State has been successfully initialized.
@@ -88,6 +89,7 @@ namespace BlackCoat
             // Handle Debug Features
             HandleDebugChanged(_Core.Debug);
             _Core.DebugChanged += HandleDebugChanged;
+            _Core.ConsoleCommand += HandleConsoleCommand;
         }
 
 
@@ -109,6 +111,20 @@ namespace BlackCoat
             MusicLoader.Debug = debug;
             FontLoader.Debug = debug;
             SfxLoader.Debug = debug;
+        }
+
+        private bool HandleConsoleCommand(string cmd)
+        {
+            if (_Core.Debug && cmd == "inspect")
+            {
+                // Enable Inspector Tool Window
+                _PropertyInspector = _PropertyInspector ?? new PropertyInspector();
+                _PropertyInspector.Clear();
+                _PropertyInspector.Add(this);
+                _PropertyInspector.Show();
+                return true;
+            }
+            return false;
         }
 
         /// <summary>
@@ -164,6 +180,9 @@ namespace BlackCoat
         {
             _Destroyed = true;
             _Core.DebugChanged -= HandleDebugChanged;
+            _Core.ConsoleCommand -= HandleConsoleCommand;
+
+            _PropertyInspector?.Destroy();
 
             OnDestroy.Invoke();
             Destroy();

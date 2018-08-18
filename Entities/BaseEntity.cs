@@ -102,7 +102,7 @@ namespace BlackCoat.Entities
         /// <summary>
         /// Initializes a new instance of the <see cref="BaseEntity"/> class.
         /// </summary>
-        /// <param name="core">The render core.</param>
+        /// <param name="core">The engine core.</param>
         protected BaseEntity(Core core)
         {
             _Core = core;

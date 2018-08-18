@@ -67,8 +67,10 @@
     <Compile Include="Collision\Shapes\BasicTextCollisionShape.cs" />
     <Compile Include="InvalidStateException.cs" />
     <Compile Include="ParticleSystem\BaseEmitter.cs" />
+    <Compile Include="ParticleSystem\ITriggerEmitter.cs" />
+    <Compile Include="ParticleSystem\TextureParticleAnimationInfo.cs" />
+    <Compile Include="ParticleSystem\ParticleAnimationInfo.cs" />
     <Compile Include="ParticleSystem\TextureEmitter.cs" />
-    <Compile Include="ParticleSystem\PixelEmitter.cs" />
     <Compile Include="ParticleSystem\BasicTextureParticle.cs" />
     <Compile Include="ParticleSystem\BasicPixelParticle.cs" />
     <Compile Include="ParticleSystem\BasicPixelEmitter.cs" />
@@ -136,11 +138,19 @@
     <Compile Include="Tools\Log.cs" />
     <Compile Include="Tools\MathHelper.cs" />
     <Compile Include="Tools\PerformanceMonitor.cs" />
+    <Compile Include="Tools\PropertyInspector.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Tools\PropertyInspector.Designer.cs">
+      <DependentUpon>PropertyInspector.cs</DependentUpon>
+    </Compile>
     <Compile Include="Tools\RandomHelper.cs" />
     <Compile Include="Animation\Interpolation.cs" />
     <Compile Include="Animation\TimeAnimation.cs" />
     <Compile Include="Animation\AnimationManager.cs" />
     <Compile Include="Extensions\VectorExtensions.cs" />
+    <Compile Include="Tools\ColorConverter.cs" />
+    <Compile Include="Tools\Vector2Converter.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -149,6 +159,7 @@
     </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
@@ -156,6 +167,9 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tools\PropertyInspector.resx">
+      <DependentUpon>PropertyInspector.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

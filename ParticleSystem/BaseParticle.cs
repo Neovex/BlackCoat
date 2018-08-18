@@ -37,10 +37,10 @@ namespace BlackCoat.ParticleSystem
 
 
         /// <summary>
-        /// Initializes the <see cref="BaseParticle"/>.
+        /// Initializes the <see cref="BaseParticle" />.
         /// </summary>
         /// <param name="index">The index of the first vertex.</param>
-        /// <param name="ttl">The particle lifetime.</param>
+        /// <param name="ttl">The particles maximum lifetime.</param>
         internal void Initialize(int index, float ttl)
         {
             _PARTICLES++;

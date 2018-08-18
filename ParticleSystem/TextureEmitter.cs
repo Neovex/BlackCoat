@@ -7,13 +7,10 @@ namespace BlackCoat.ParticleSystem
     /// Abstract base class for all texture based emitter classes.
     /// </summary>
     /// <seealso cref="BlackCoat.ParticleSystem.PixelEmitter" />
-    public abstract class TextureEmitter : PixelEmitter
+    public abstract class TextureEmitter : BaseEmitter
     {
         public Texture Texture { get; private set; }
         public BlendMode BlendMode { get; private set; }
-        public Vector2f Origin { get; set; }
-        public Vector2f Scale { get; set; }
-        public float Alpha { get; set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TextureEmitter"/> class.
@@ -26,8 +23,6 @@ namespace BlackCoat.ParticleSystem
         {
             Texture = texture;
             BlendMode = blendMode;
-            Scale = new Vector2f(1, 1);
-            Alpha = 1f;
         }
     }
 }

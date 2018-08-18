@@ -19,26 +19,25 @@ namespace BlackCoat.ParticleSystem
 
 
         /// <summary>
+        /// Gets the particle type <see cref="Guid"/> this emitter is associated with.
+        /// </summary>
+        public abstract Guid ParticleTypeGuid { get; }
+        /// <summary>
         /// Gets the depth of this instance within the <see cref="ParticleEmitterHost"/> hierarchy
         /// </summary>
         public int Depth { get; }
-        /// <summary>
-        /// Gets or sets the default Particle Lifetime.
-        /// </summary>
-        public float DefaultTTL { get; set; }
         /// <summary>
         /// Gets or sets the position of this instance.
         /// </summary>
         public virtual Vector2f Position { get; set; }
         /// <summary>
-        /// Gets or sets the rotation of this instance.
-        /// </summary>
-        public virtual float Rotation { get; set; }
-        /// <summary>
         /// Gets a value indicating whether this instance is initialized.
         /// </summary>
         public bool IsInitialized => _VertexRenderer != null;
-        public abstract Guid ParticleTypeGuid { get; }
+        /// <summary>
+        /// Parent Emitter when part of a composition
+        /// </summary>
+        public CompositeEmitter Composition { get; internal set; }
 
 
         /// <summary>
@@ -48,24 +47,15 @@ namespace BlackCoat.ParticleSystem
         /// <param name="depth">The optional hierarchical depth.</param>
         public BaseEmitter(Core core, int depth = 0) : base(core)
         {
-            Depth = depth;
-            DefaultTTL = 1;
             _Particles = new List<BaseParticle>();
+            Depth = depth;
         }
 
-        /// <summary>
-        /// Adds a particle to the emitter. With default TTL.
-        /// </summary>
-        /// <param name="particle">The particle to add.</param>
-        protected void AddParticle(BaseParticle particle)
-        {
-            AddParticle(particle, DefaultTTL);
-        }
         /// <summary>
         /// Adds a particle to the emitter.
         /// </summary>
         /// <param name="particle">The particle to add.</param>
-        /// <param name="ttl">The TTL of the particle.</param>
+        /// <param name="ttl">The particles maximum lifetime.</param>
         protected void AddParticle(BaseParticle particle, float ttl)
         {
             particle.Initialize(_VertexRenderer.Reserve(), ttl);

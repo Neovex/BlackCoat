@@ -1,46 +1,67 @@
 ﻿using System;
 using SFML.Graphics;
-using SFML.System;
 
 namespace BlackCoat.ParticleSystem
 {
     /// <summary>
     /// Very basic Emitter that continuously emits texture particles when triggered.
     /// </summary>
+    /// <seealso cref="BlackCoat.ParticleSystem.ITriggerEmitter" />
     /// <seealso cref="BlackCoat.ParticleSystem.TextureEmitter" />
-    public sealed class BasicTextureEmitter : TextureEmitter
+    public sealed class BasicTextureEmitter : TextureEmitter, ITriggerEmitter
     {
         private static readonly Guid _GUID = typeof(BasicTextureParticle).GUID;
-
-        private Single _SpawnTimer;
-
-        // Emitter / Particle Infos
         public override Guid ParticleTypeGuid => _GUID;
-        public Vector2f Velocity { get; set; }
-        public Vector2f Acceleration { get; set; }
-        public float  RotationVelocity { get; set; }
-        public float  Blending { get; set; }
-        // Spawn Infos
-        public Single SpawnRate { get; set; }
-        public Int32 ParticlesPerSpawn { get; set; }
-        public Boolean Loop { get; set; }
-        public bool IsTriggered { get; private set; }
+        private Single _SpawnTimer;
 
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="BasicTextureEmitter"/> class.
+        /// Gets a value indicating whether this instance is currently triggered.
+        /// </summary>
+        public Boolean IsTriggered { get; private set; }
+        /// <summary>
+        /// The amount of particles that should be emitted during spawn phase.
+        /// </summary>
+        public Int32 ParticlesPerSpawn { get; set; }
+        /// <summary>
+        /// Particle animation information for particle initialization.
+        /// </summary>
+        public TextureParticleAnimationInfo ParticleInfo { get; private set; }
+        /// <summary>
+        /// Gets or sets a value indicating whether this <see cref="BasicTextureEmitter"/> is looping.
+        /// This determines if the emitter needs to be re-triggered or runs continuously.
+        /// </summary>
+        public Boolean Loop { get; set; }
+        /// <summary>
+        /// Only relevant when loop = true. The spawn rate defines the time between each spawn phases.
+        /// </summary>
+        public Single SpawnRate { get; set; }
+
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BasicTextureEmitter" /> class.
         /// </summary>
         /// <param name="core">The engine core.</param>
         /// <param name="texture">The texture for all particles.</param>
-        /// <param name="blendMode">The particle blend mode.</param>
+        /// <param name="particlesPerSpawn">The amount of particles that should be emitted during spawn phase.</param>
+        /// <param name="info">Particle animation information.</param>
+        /// <param name="loop">Determines if the emitter needs to be re-triggered or runs continuously.</param>
+        /// <param name="spawnrate">Only relevant when loop = true. The spawn rate defines the time between each spawn phases.</param>
+        /// <param name="blendMode">Optional particle blend mode. Defaults to Alpha Blending.</param>
         /// <param name="depth">The optional hierarchical depth.</param>
-        public BasicTextureEmitter(Core core, Texture texture, BlendMode blendMode, int depth = 0) : base(core, texture, blendMode, depth)
+        public BasicTextureEmitter(Core core, Texture texture, Int32 particlesPerSpawn, TextureParticleAnimationInfo info,
+                                   Boolean loop = false, Single spawnrate = 0, BlendMode? blendMode = null, int depth = 0) :
+                                   base(core, texture, blendMode ?? BlendMode.Alpha, depth)
         {
+            ParticlesPerSpawn = particlesPerSpawn;
+            ParticleInfo = info ?? throw new ArgumentNullException(nameof(info));
+            Loop = loop;
+            SpawnRate = spawnrate;
         }
 
 
         /// <summary>
-        /// Triggers this instance. Causing it to start emitting particles.
+        /// Triggers the emitter. Causing it to start emitting particles.
         /// </summary>
         public void Trigger()
         {
@@ -64,8 +85,8 @@ namespace BlackCoat.ParticleSystem
                     for (int i = 0; i < ParticlesPerSpawn; i++)
                     {
                         var particle = RetrieveFromCache() as BasicTextureParticle ?? new BasicTextureParticle(_Core);
-                        particle.Initialize(Texture, Position, Origin, Scale, Rotation, Color, Alpha, Velocity, Acceleration, RotationVelocity, Blending);
-                        AddParticle(particle);
+                        particle.Initialize(Texture, Position, ParticleInfo);
+                        AddParticle(particle, ParticleInfo.TTL);
                     }
                 }
             }

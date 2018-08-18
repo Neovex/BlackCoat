@@ -9,12 +9,12 @@ namespace BlackCoat.ParticleSystem
     /// Represents a composition of multiple emitters.
     /// </summary>
     /// <seealso cref="BlackCoat.ParticleSystem.BaseEmitter" />
-    public class CompositeEmitter : BaseEmitter
+    public class CompositeEmitter : BaseEmitter, ITriggerEmitter
     {
         protected List<BaseEmitter> _Emitters;
         private ParticleEmitterHost _Host;
         private Vector2f _Position;
-        private Single _Rotation;
+        private Vector2f _PositionOffset;
 
         /// <summary>
         /// Always returns an empty <see cref="Guid"/> because Composites don't have particles.
@@ -44,22 +44,23 @@ namespace BlackCoat.ParticleSystem
             set
             {
                 _Position = value;
-                foreach (var emitter in _Emitters) emitter.Position = _Position;
+                foreach (var emitter in _Emitters) emitter.Position = _Position + _PositionOffset;
+            }
+        }
+        /// <summary>
+        /// Gets or sets the position offset for all child emitters.
+        /// </summary>
+        public Vector2f PositionOffset
+        {
+            get => _PositionOffset;
+            set
+            {
+                _PositionOffset = value;
+                Position = _Position;
             }
         }
 
-        /// <summary>
-        /// Gets or sets the rotation of this instance.
-        /// </summary>
-        public override float Rotation
-        {
-            get => _Rotation;
-            set
-            {
-                _Rotation = value;
-                foreach (var emitter in _Emitters) emitter.Rotation = _Rotation;
-            }
-        }
+        internal IEnumerable<BaseEmitter> Emitters => _Emitters;
 
 
         /// <summary>
@@ -78,7 +79,7 @@ namespace BlackCoat.ParticleSystem
         /// </summary>
         /// <param name="emitter">The emitter to add</param>
         /// <exception cref="ArgumentNullException">emitter</exception>
-        public void Add(PixelEmitter emitter)
+        public void Add(BaseEmitter emitter)
         {
             if (emitter == null) throw new ArgumentNullException(nameof(emitter));
             emitter.Composition = this;
@@ -92,13 +93,23 @@ namespace BlackCoat.ParticleSystem
         /// <param name="emitter">The emitter to remove</param>
         /// <exception cref="ArgumentNullException">emitter</exception>
         /// <exception cref="ArgumentException">emitter</exception>
-        public void Remove(PixelEmitter emitter)
+        public void Remove(BaseEmitter emitter)
         {
             if (emitter == null) throw new ArgumentNullException(nameof(emitter));
             if (emitter.Composition != this) throw new ArgumentException(nameof(emitter));
             emitter.Composition = null;
             _Emitters.Remove(emitter);
             if (_Host != null) _Host.Remove(emitter);
+        }
+
+        /// <summary>
+        /// Triggers the composite. Causing its child emitters to start emitting particles.
+        /// </summary>
+        public void Trigger()
+        {
+            foreach (var emitter in _Emitters)
+                if (emitter is ITriggerEmitter e)
+                    e.Trigger();
         }
 
         internal override void UpdateInternal(float deltaT)

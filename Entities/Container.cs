@@ -13,7 +13,7 @@ namespace BlackCoat.Entities
     public class Container : Graphic
     {
         // Variables #######################################################################
-        protected List<IEntity> _Childs = new List<IEntity>();
+        protected internal List<IEntity> _Childs = new List<IEntity>();
 
 
         // Properties ######################################################################

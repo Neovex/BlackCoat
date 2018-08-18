@@ -31,6 +31,7 @@ namespace BlackCoat
 
         /// <summary>
         /// Occurs when a console command is issued that is not handled by the engine itself.
+        /// Expected return value: true when the command could be processed otherwise false.
         /// </summary>
         public event Func<String, Boolean> ConsoleCommand = c => false;
 
@@ -393,7 +394,7 @@ namespace BlackCoat
         /// <param name="cmd">Console input</param>
         private void HandleConsoleCommand(String cmd)
         {
-            // Handle Core Commands first
+            // Check for Core commands first
             switch (cmd.ToLower())
             {
                 case "exit":
@@ -405,7 +406,6 @@ namespace BlackCoat
                 case "tfs":
                     Log.Warning("togglefullscreen - not yet implemented"); // TODO
                     return;
-                case "toggledebug":
                 case "debug":
                     Debug = !Debug;
                     return;
@@ -419,7 +419,7 @@ namespace BlackCoat
         }
 
         /// <summary>
-        /// Actives the frame break mechanism. USE WITH CAUTON!
+        /// Activates the frame break mechanism. USE WITH CAUTON!
         /// This will severely reduce FPS hence reduce stress on host machine.
         /// </summary>
         /// <param name="delay">-1 Disabled; 0 minimal frame drop; 50 or more will cut FPS in half or worse use at on risk; >100 goodbye fps hello spf</param>
