@@ -30,10 +30,20 @@ namespace BlackCoat
         /// <param name="angle">Direction</param>
         /// <param name="length">Optional length</param>
         /// <returns>A new Vector</returns>
-        public static Vector2f VectorFromLookup(float angle, float length = 1)
+        public static Vector2f VectorFromAngleLookup(float angle, float length = 1)
         {
             if (length == 0) return default(Vector2f);
             return new Vector2f(MathHelper.Cos(angle) * length, MathHelper.Sin(angle) * length);
+        }
+
+        /// <summary>
+        /// Creates a new <see cref="Vector2f"/> with x and y component equal.
+        /// </summary>
+        /// <param name="value">Value for x AND y component</param>
+        /// <returns>A new Vector</returns>
+        public static Vector2f VectorFromValue(float value)
+        {
+            return new Vector2f(value, value);
         }
 
 

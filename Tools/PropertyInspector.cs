@@ -76,9 +76,6 @@ namespace BlackCoat.Tools
                     Add(host.DepthLayers, graphNode);
                     Add(host.Emitters, graphNode);
                 break;
-                case ParticleDepthLayer layer:
-                    Add(layer.TextureLayers, graphNode);
-                break;
             }
 
             _SceneGraph.Nodes[0].Expand();

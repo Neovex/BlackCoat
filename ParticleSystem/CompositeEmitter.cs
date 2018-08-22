@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using SFML.System;
+using SFML.Graphics;
 
 namespace BlackCoat.ParticleSystem
 {
@@ -56,7 +57,7 @@ namespace BlackCoat.ParticleSystem
             set
             {
                 _PositionOffset = value;
-                Position = _Position;
+                foreach (var emitter in _Emitters) emitter.Position = _Position + _PositionOffset;
             }
         }
 
@@ -68,7 +69,7 @@ namespace BlackCoat.ParticleSystem
         /// </summary>
         /// <param name="core">The engine core.</param>
         /// <param name="emitters">Optional initial child emitters.</param>
-        public CompositeEmitter(Core core, IEnumerable<BaseEmitter> emitters = null):base(core)
+        public CompositeEmitter(Core core, IEnumerable<BaseEmitter> emitters = null):base(core, PrimitiveType.Points)
         {
             _Emitters = emitters?.ToList() ?? new List<BaseEmitter>();
         }
@@ -120,6 +121,11 @@ namespace BlackCoat.ParticleSystem
         protected override void Update(float deltaT)
         {
             // not needed - child emitters are updated by the emitter host
+        }
+
+        internal override void Cleanup()
+        {
+            // not needed - child emitters are destroyed by the emitter host
         }
     }
 }

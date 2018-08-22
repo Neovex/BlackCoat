@@ -131,7 +131,6 @@
             this.Name = "PropertyInspector";
             this.ShowInTaskbar = false;
             this.Text = "Property Inspector";
-            this.TopMost = true;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.PropertyEditor_FormClosing);
             this._MenuStrip.ResumeLayout(false);
             this._MenuStrip.PerformLayout();

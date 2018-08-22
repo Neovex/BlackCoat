@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using SFML.Graphics;
 using BlackCoat.Entities;
@@ -11,8 +12,8 @@ namespace BlackCoat.ParticleSystem
     /// <seealso cref="BlackCoat.Entities.BaseEntity" />
     public class ParticleEmitterHost : BaseEntity
     {
-        private List<BaseEmitter> _Emitters;
-        private SortedList<int, ParticleDepthLayer> _DepthLayers;
+        private readonly List<BaseEmitter> _Emitters;
+        private readonly SortedList<int, List<VertexRenderer>> _DepthLayers;
 
         /// <summary>
         /// The Color of the <see cref="ParticleEmitterHost"/> has no effect on emitters.
@@ -27,11 +28,11 @@ namespace BlackCoat.ParticleSystem
         public ParticleEmitterHost(Core core) : base(core)
         {
             _Emitters = new List<BaseEmitter>();
-            _DepthLayers = new SortedList<int, ParticleDepthLayer>();
+            _DepthLayers = new SortedList<int, List<VertexRenderer>>();
         }
 
-        internal IEnumerable<ParticleDepthLayer> DepthLayers => _DepthLayers.Values;
         internal IEnumerable<BaseEmitter> Emitters => _Emitters;
+        internal IEnumerable<VertexRenderer> DepthLayers => _DepthLayers.Values.SelectMany(l => l);
 
         /// <summary>
         /// Adds an emitter to the host.
@@ -42,18 +43,29 @@ namespace BlackCoat.ParticleSystem
         {
             if (emitter == null) throw new ArgumentNullException(nameof(emitter));
 
+            if (_Emitters.Contains(emitter)) return;
             _Emitters.Add(emitter);
+
             if (emitter is CompositeEmitter composite)
             {
                 composite.Host = this;
             }
             else
             {
-                if (!_DepthLayers.ContainsKey(emitter.Depth))
+                if (!_DepthLayers.TryGetValue(emitter.Depth, out List<VertexRenderer> layer))
                 {
-                    _DepthLayers.Add(emitter.Depth, new ParticleDepthLayer(_Core, emitter.Depth));
+                    layer = new List<VertexRenderer>();
+                    _DepthLayers.Add(emitter.Depth, layer);
                 }
-                _DepthLayers[emitter.Depth].Add(emitter);
+
+                var vertexRenderer = layer.FirstOrDefault(vr => vr.IsCompatibleWith(emitter));
+                if (vertexRenderer == null)
+                {
+                    vertexRenderer = new VertexRenderer(_Core, emitter.PrimitiveType, emitter.BlendMode, emitter.Texture);
+                    layer.Add(vertexRenderer);
+                }
+                vertexRenderer.AssociatedEmitters++;
+                emitter.Initialize(vertexRenderer);
             }
         }
 
@@ -65,31 +77,22 @@ namespace BlackCoat.ParticleSystem
         public void Remove(BaseEmitter emitter)
         {
             if(emitter == null) throw new ArgumentNullException(nameof(emitter));
+
+            if (!_Emitters.Contains(emitter)) return;
             _Emitters.Remove(emitter);
+            emitter.Cleanup();
+
             if (emitter is CompositeEmitter composite)
             {
                 composite.Host = null;
             }
             else
             {
-                _DepthLayers[emitter.Depth].Remove(emitter);
-                if (_DepthLayers[emitter.Depth].IsEmpty)
-                {
-                    _DepthLayers.Remove(emitter.Depth);
-                }
-            }
-        }
-
-        /// <summary>
-        /// Renders the <see cref="IEntity" /> into the scene.
-        /// </summary>
-        /// <param name="target">Render device</param>
-        /// <param name="states">Additional render information</param>
-        public override void Draw(RenderTarget target, RenderStates states)
-        {
-            foreach (var layer in _DepthLayers.Values)
-            {
-                layer.Draw(target, states);
+                var layer = _DepthLayers[emitter.Depth];
+                var vertexRenderer = layer.First(vr => vr.IsCompatibleWith(emitter));
+                vertexRenderer.AssociatedEmitters--;
+                if (vertexRenderer.AssociatedEmitters == 0) layer.Remove(vertexRenderer);
+                if (layer.Count == 0) _DepthLayers.Remove(emitter.Depth);
             }
         }
 
@@ -102,6 +105,22 @@ namespace BlackCoat.ParticleSystem
             foreach (var emitter in _Emitters)
             {
                 emitter.UpdateInternal(deltaT);
+            }
+        }
+
+        /// <summary>
+        /// Renders the <see cref="IEntity" /> into the scene.
+        /// </summary>
+        /// <param name="target">Render device</param>
+        /// <param name="states">Additional render information</param>
+        public override void Draw(RenderTarget target, RenderStates states)
+        {
+            foreach (var layer in _DepthLayers.Values)
+            {
+                foreach (var vertexRenderer in layer)
+                {
+                    vertexRenderer.Draw(target, states);
+                }
             }
         }
     }

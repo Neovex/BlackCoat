@@ -70,7 +70,6 @@
     <Compile Include="ParticleSystem\ITriggerEmitter.cs" />
     <Compile Include="ParticleSystem\TextureParticleAnimationInfo.cs" />
     <Compile Include="ParticleSystem\ParticleAnimationInfo.cs" />
-    <Compile Include="ParticleSystem\TextureEmitter.cs" />
     <Compile Include="ParticleSystem\BasicTextureParticle.cs" />
     <Compile Include="ParticleSystem\BasicPixelParticle.cs" />
     <Compile Include="ParticleSystem\BasicPixelEmitter.cs" />
@@ -118,9 +117,7 @@
     <Compile Include="Input\TextEnteredEventArgs.cs" />
     <Compile Include="Interfaces\ITransformable.cs" />
     <Compile Include="ParticleSystem\TextureParticle.cs" />
-    <Compile Include="ParticleSystem\ParticleDepthLayer.cs" />
     <Compile Include="ParticleSystem\ParticleEmitterHost.cs" />
-    <Compile Include="ParticleSystem\ParticleTextureLayer.cs" />
     <Compile Include="ParticleSystem\VertexRenderer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">

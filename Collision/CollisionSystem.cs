@@ -121,6 +121,8 @@ namespace BlackCoat.Collision
 
         public virtual Vector2f[] Raycast(Vector2f rayOrigin, float rayAngle, Vector2f targetStart, Vector2f targetEnd)
         {
+            if (rayAngle < 0) throw new ArgumentOutOfRangeException(nameof(rayAngle), rayAngle, "Angle must be positive.");
+
             var localStart = targetStart.ToLocal(rayOrigin);
             var localEnd = targetEnd.ToLocal(rayOrigin);
 
@@ -150,6 +152,8 @@ namespace BlackCoat.Collision
 
         public virtual Vector2f[] Raycast(Vector2f rayOrigin, float rayAngle, ICircle circle)
         {
+            if (rayAngle < 0) throw new ArgumentOutOfRangeException(nameof(rayAngle), rayAngle, "Angle must be positive.");
+
             // Check along ray as projection axis
             var localCircleCenter = circle.Position.ToLocal(rayOrigin);
             var axis = VectorExtensions.VectorFromAngle(rayAngle);

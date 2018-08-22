@@ -27,6 +27,18 @@ namespace BlackCoat.ParticleSystem
         /// </summary>
         public int Depth { get; }
         /// <summary>
+        /// Gets the type of the particle primitive.
+        /// </summary>
+        public PrimitiveType PrimitiveType { get; }
+        /// <summary>
+        /// Gets the particle blend mode.
+        /// </summary>
+        public BlendMode BlendMode { get; }
+        /// <summary>
+        /// Gets the texture mapped onto the vertices. Can be null.
+        /// </summary>
+        public Texture Texture { get; }
+        /// <summary>
         /// Gets or sets the position of this instance.
         /// </summary>
         public virtual Vector2f Position { get; set; }
@@ -41,15 +53,31 @@ namespace BlackCoat.ParticleSystem
 
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="BaseEmitter" /> class.
+        /// </summary>
+        /// <param name="core">The engine core.</param>
+        /// <param name="primitiveType">Type of the particle primitive.</param>
+        /// <param name="texture">Optional Texture to be mapped onto the vertices.</param>
+        public BaseEmitter(Core core, PrimitiveType primitiveType, Texture texture = null) : this(core, 0, primitiveType, BlendMode.Alpha, texture)
+        {
+        }
+        /// <summary>
         /// Initializes a new instance of the <see cref="BaseEmitter"/> class.
         /// </summary>
         /// <param name="core">The engine core.</param>
-        /// <param name="depth">The optional hierarchical depth.</param>
-        public BaseEmitter(Core core, int depth = 0) : base(core)
+        /// <param name="depth">The depth defining the render hierarchy.</param>
+        /// <param name="primitiveType">Type of the particle primitive.</param>
+        /// <param name="blendMode">The particle blend mode.</param>
+        /// <param name="texture">Optional Texture to be mapped onto the vertices.</param>
+        public BaseEmitter(Core core, int depth, PrimitiveType primitiveType, BlendMode blendMode, Texture texture = null) : base(core)
         {
             _Particles = new List<BaseParticle>();
             Depth = depth;
+            PrimitiveType = primitiveType;
+            BlendMode = blendMode;
+            Texture = texture;
         }
+
 
         /// <summary>
         /// Adds a particle to the emitter.
@@ -107,7 +135,7 @@ namespace BlackCoat.ParticleSystem
         /// <summary>
         /// Recycles this instance and clears all Particles.
         /// </summary>
-        internal unsafe void Cleanup()
+        internal virtual unsafe void Cleanup()
         {
             fixed (Vertex* vPtr = _VertexRenderer.Verticies)
             {

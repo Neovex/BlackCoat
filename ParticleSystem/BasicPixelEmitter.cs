@@ -1,5 +1,5 @@
 ﻿using System;
-using SFML.System;
+using SFML.Graphics;
 
 namespace BlackCoat.ParticleSystem
 {
@@ -20,40 +20,20 @@ namespace BlackCoat.ParticleSystem
         /// </summary>
         public Boolean IsTriggered { get; private set; }
         /// <summary>
-        /// The amount of particles that should be emitted during spawn phase.
-        /// </summary>
-        public Int32 ParticlesPerSpawn { get; set; }
-        /// <summary>
         /// Particle animation information for particle initialization.
         /// </summary>
         public ParticleAnimationInfo ParticleInfo { get; private set; }
-        /// <summary>
-        /// Gets or sets a value indicating whether this <see cref="BasicTextureEmitter"/> is looping.
-        /// This determines if the emitter needs to be re-triggered or runs continuously.
-        /// </summary>
-        public Boolean Loop { get; set; }
-        /// <summary>
-        /// Only relevant when loop = true. The spawn rate defines the time between each spawn phases.
-        /// </summary>
-        public Single SpawnRate { get; set; }
 
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BasicPixelEmitter" /> class.
         /// </summary>
         /// <param name="core">The engine core.</param>
-        /// <param name="particlesPerSpawn">The amount of particles that should be emitted during spawn phase.</param>
         /// <param name="info">The optional particle animation information.</param>
-        /// <param name="loop">Determines if the emitter needs to be re-triggered or runs continuously.</param>
-        /// <param name="spawnrate">Only relevant when loop = true. The spawn rate defines the time between each spawn phases.</param>
         /// <param name="depth">The optional hierarchical depth.</param>
-        public BasicPixelEmitter(Core core, Int32 particlesPerSpawn, ParticleAnimationInfo info,
-                                 Boolean loop = false, Single spawnrate = 0, int depth = 0) : base(core, depth)
+        public BasicPixelEmitter(Core core, ParticleAnimationInfo info, int depth = 0) : base(core, depth, PrimitiveType.Points, BlendMode.Alpha)
         {
-            ParticlesPerSpawn = particlesPerSpawn;
             ParticleInfo = info ?? throw new ArgumentNullException(nameof(info));
-            Loop = loop;
-            SpawnRate = spawnrate;
         }
 
 
@@ -76,10 +56,11 @@ namespace BlackCoat.ParticleSystem
                 _SpawnTimer -= deltaT;
                 if (_SpawnTimer < 0)
                 {
-                    _SpawnTimer = SpawnRate;
-                    IsTriggered = Loop;
+                    _SpawnTimer = ParticleInfo.SpawnRate;
+                    IsTriggered = ParticleInfo.Loop;
 
-                    for (int i = 0; i < ParticlesPerSpawn; i++)
+                    var amount = ParticleInfo.ParticlesPerSpawn;
+                    for (int i = 0; i < amount; i++)
                     {
                         var particle = RetrieveFromCache() as BasicPixelParticle ?? new BasicPixelParticle(_Core);
                         particle.Initialize(Position, ParticleInfo);

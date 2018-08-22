@@ -35,5 +35,10 @@ namespace BlackCoat
         {
             return (int)(rotation * (_LOOKUP_SIZE / 360f) + 0.5f) & (_LOOKUP_SIZE - 1);
         }
+
+        public static float ValidateAngle(float angle)
+        {
+            return (angle %= 360) < 0 ? angle + 360 : angle;
+        }
     }
 }
