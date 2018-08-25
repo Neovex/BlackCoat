@@ -8,7 +8,7 @@ namespace BlackCoat.ParticleSystem
     /// Abstract base class of all Particle Classes using the Black Coat Particle System
     /// </summary>
     /// <seealso cref="BlackCoat.BlackCoatBase" />
-    public abstract class BaseParticle : BlackCoatBase
+    public abstract class ParticleBase : BlackCoatBase
     {
         internal static int _PARTICLES = 0;
 
@@ -19,16 +19,16 @@ namespace BlackCoat.ParticleSystem
         protected float _Alpha;
 
         /// <summary>
-        /// Assigned particle index. Required by the <see cref="VertexRenderer"/>
+        /// Assigned particle index. Required by the <see cref="ParticleVertexRenderer"/>
         /// </summary>
         internal int Index => _Index;
 
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="BaseParticle"/> class.
+        /// Initializes a new instance of the <see cref="ParticleBase"/> class.
         /// </summary>
         /// <param name="core">The Engine core.</param>
-        public BaseParticle(Core core) : base(core)
+        public ParticleBase(Core core) : base(core)
         {
             _Index = -1;
             _Color = Color.White;
@@ -37,7 +37,7 @@ namespace BlackCoat.ParticleSystem
 
 
         /// <summary>
-        /// Initializes the <see cref="BaseParticle" />.
+        /// Initializes the <see cref="ParticleBase" />.
         /// </summary>
         /// <param name="index">The index of the first vertex.</param>
         /// <param name="ttl">The particles maximum lifetime.</param>
@@ -49,9 +49,9 @@ namespace BlackCoat.ParticleSystem
         }
 
         /// <summary>
-        /// Releases the <see cref="BaseParticle"/> clearing up all used recourses.
+        /// Releases the <see cref="ParticleBase"/> clearing up all used recourses.
         /// </summary>
-        /// <param name="vPtr">Root vertex of the <see cref="VertexRenderer"/></param>
+        /// <param name="vPtr">Root vertex of the <see cref="ParticleVertexRenderer"/></param>
         internal unsafe void Release(Vertex* vPtr)
         {
             Clear(vPtr + _Index);
@@ -64,7 +64,7 @@ namespace BlackCoat.ParticleSystem
         /// Updates the particle with the behavior defined by inherited classes.
         /// </summary>
         /// <param name="deltaT">Current Frame Time.</param>
-        /// <param name="vPtr">Root vertex of the <see cref="VertexRenderer"/></param>
+        /// <param name="vPtr">Root vertex of the <see cref="ParticleVertexRenderer"/></param>
         /// <returns>True if the particle needs to be removed otherwise false.</returns>
         internal unsafe bool Update(float deltaT, Vertex* vPtr)
         {

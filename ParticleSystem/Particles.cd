@@ -12,24 +12,24 @@
   <Comment CommentText="Contains &gt;&gt;">
     <Position X="9.699" Y="1.585" Height="0.291" Width="1.004" />
   </Comment>
-  <Class Name="BlackCoat.ParticleSystem.TextureParticle">
-    <Position X="13.5" Y="5.5" Width="1.75" />
+  <Class Name="BlackCoat.ParticleSystem.TextureParticleBase">
+    <Position X="13.5" Y="5.25" Width="1.75" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAUAQAAAgAAAAAAAAAgAAAAAAEAAAAABAAAA=</HashCode>
-      <FileName>ParticleSystem\TextureParticle.cs</FileName>
+      <HashCode>AAAAACAAAEAQAAAgAAAAAAAAAgAAAAAAEAAAAABAAAA=</HashCode>
+      <FileName>ParticleSystem\TextureParticleBase.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="BlackCoat.ParticleSystem.ParticleEmitterHost">
     <Position X="7.5" Y="1.25" Width="1.75" />
-    <AssociationLine Name="_Emitters" Type="BlackCoat.ParticleSystem.BaseEmitter" FixedFromPoint="true" FixedToPoint="true">
+    <AssociationLine Name="_Emitters" Type="BlackCoat.ParticleSystem.EmitterBase" FixedFromPoint="true" FixedToPoint="true">
       <Path>
         <Point X="7.5" Y="2.672" />
         <Point X="7.125" Y="2.672" />
-        <Point X="7.125" Y="11.774" />
-        <Point X="4.5" Y="11.774" />
+        <Point X="7.125" Y="12.965" />
+        <Point X="5" Y="12.965" />
       </Path>
       <MemberNameLabel ManuallyPlaced="true">
-        <Position X="0.499" Y="0.199" />
+        <Position X="2.204" Y="0.517" />
       </MemberNameLabel>
     </AssociationLine>
     <TypeIdentifier>
@@ -40,141 +40,178 @@
       <Field Name="_Emitters" />
     </ShowAsCollectionAssociation>
   </Class>
-  <Class Name="BlackCoat.ParticleSystem.BasicTextureParticle">
+  <Class Name="BlackCoat.ParticleSystem.TextureParticle">
     <Position X="13.5" Y="1.25" Width="1.75" />
     <TypeIdentifier>
       <HashCode>AAAAAAABAAAAAUAAAAAAAQAAAgIAAAAAAAAAAAAAAgE=</HashCode>
-      <FileName>ParticleSystem\BasicTextureParticle.cs</FileName>
-      <NewMemberFileName>ParticleSystem\BasicPixelParticle.cs</NewMemberFileName>
+      <FileName>ParticleSystem\TextureParticle.cs</FileName>
     </TypeIdentifier>
+    <Lollipop Position="0.2" />
   </Class>
-  <Class Name="BlackCoat.ParticleSystem.BaseEmitter">
-    <Position X="2.75" Y="11.5" Width="1.75" />
-    <InheritanceLine Type="BlackCoat.BlackCoatBase" FixedToPoint="true">
+  <Class Name="BlackCoat.ParticleSystem.EmitterBase">
+    <Position X="3.25" Y="12" Width="1.75" />
+    <InheritanceLine Type="BlackCoat.BlackCoatBase" FixedFromPoint="true" FixedToPoint="true">
       <Path>
-        <Point X="11.875" Y="10.805" />
-        <Point X="11.875" Y="12.812" />
-        <Point X="4.5" Y="12.812" />
+        <Point X="12.125" Y="14" />
+        <Point X="12.125" Y="13.586" />
+        <Point X="5" Y="13.586" />
       </Path>
     </InheritanceLine>
-    <AssociationLine Name="_VertexRenderer" Type="BlackCoat.ParticleSystem.VertexRenderer" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+    <AssociationLine Name="_Particles" Type="BlackCoat.ParticleSystem.ParticleBase" FixedFromPoint="true" FixedToPoint="true">
       <Path>
-        <Point X="4.5" Y="12.25" />
-        <Point X="10.206" Y="12.25" />
-        <Point X="10.206" Y="4.916" />
-        <Point X="11" Y="4.916" />
+        <Point X="5" Y="16" />
+        <Point X="15.438" Y="16" />
+        <Point X="15.438" Y="13.059" />
       </Path>
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="-0.966" Y="0.047" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <AssociationLine Name="Composition" Type="BlackCoat.ParticleSystem.EmitterComposition" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="5" Y="12.483" />
+        <Point X="6.25" Y="12.483" />
+        <Point X="6.25" Y="9.886" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.087" Y="2.261" />
+      </MemberNameLabel>
     </AssociationLine>
     <TypeIdentifier>
       <HashCode>gAQBAAAAAAAACQAgAAAAAAAgAgAAAAAggAIgBEAIAAA=</HashCode>
-      <FileName>ParticleSystem\BaseEmitter.cs</FileName>
+      <FileName>ParticleSystem\EmitterBase.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
-      <Field Name="_VertexRenderer" />
       <Property Name="Composition" />
     </ShowAsAssociation>
     <ShowAsCollectionAssociation>
       <Field Name="_Particles" />
     </ShowAsCollectionAssociation>
   </Class>
-  <Class Name="BlackCoat.ParticleSystem.CompositeEmitter">
-    <Position X="2.75" Y="5.5" Width="1.75" />
+  <Class Name="BlackCoat.ParticleSystem.EmitterComposition">
+    <Position X="5" Y="5.25" Width="1.75" />
+    <InheritanceLine Type="BlackCoat.ParticleSystem.EmitterBase" ManuallyRouted="true">
+      <Path>
+        <Point X="4.125" Y="12" />
+        <Point X="4.125" Y="11.348" />
+        <Point X="5.875" Y="11.348" />
+        <Point X="5.875" Y="9.886" />
+      </Path>
+    </InheritanceLine>
     <TypeIdentifier>
       <HashCode>AAYAAAAAAAAAARAgAIAAhEAAEgAACAAAAAAAAEAQAAA=</HashCode>
-      <FileName>ParticleSystem\CompositeEmitter.cs</FileName>
+      <FileName>ParticleSystem\EmitterComposition.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.367" />
   </Class>
-  <Class Name="BlackCoat.ParticleSystem.BasicTextureEmitter">
-    <Position X="0.5" Y="5.5" Width="1.75" />
+  <Class Name="BlackCoat.ParticleSystem.TextureEmitter">
+    <Position X="0.5" Y="5.25" Width="1.75" />
     <TypeIdentifier>
-      <HashCode>AAQAAAAAAAAAEZAAAAAAAAAAAAAAAAIAAAAAAABAAAA=</HashCode>
-      <FileName>ParticleSystem\BasicTextureEmitter.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ParticleSystem\TextureEmitter.cs</FileName>
     </TypeIdentifier>
-    <ShowAsAssociation>
-      <Property Name="ParticleInfo" />
-    </ShowAsAssociation>
-    <Lollipop Position="0.95" />
   </Class>
-  <Class Name="BlackCoat.Entities.BaseEntity">
-    <Position X="7.5" Y="5.5" Width="1.75" />
+  <Class Name="BlackCoat.Entities.EntityBase">
+    <Position X="7.5" Y="5.25" Width="1.75" />
     <TypeIdentifier>
       <HashCode>QAQAAAAAAAABAwAAICAAQAAgAAABABAIAAIAgAAQAAA=</HashCode>
-      <FileName>Entities\BaseEntity.cs</FileName>
+      <FileName>Entities\EntityBase.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="1.117" />
   </Class>
-  <Class Name="BlackCoat.ParticleSystem.VertexRenderer">
-    <Position X="11" Y="1.25" Width="1.75" />
+  <Class Name="BlackCoat.VertexRenderer">
+    <Position X="11.25" Y="5.25" Width="1.75" />
     <TypeIdentifier>
-      <HashCode>AABAAAAAAAAABgAAAAAAAIAwAAAAgAAAAAICAIAYAAI=</HashCode>
-      <FileName>ParticleSystem\VertexRenderer.cs</FileName>
+      <HashCode>AABAAAAAAAAABgAAAAAAAAAgAAAAAAAAAAIAAAAIAAA=</HashCode>
+      <FileName>VertexRenderer.cs</FileName>
+      <NewMemberFileName>ParticleSystem\VertexRenderer.cs</NewMemberFileName>
     </TypeIdentifier>
   </Class>
   <Class Name="BlackCoat.BlackCoatBase">
-    <Position X="11" Y="9.25" Width="1.75" />
+    <Position X="11.25" Y="14" Width="1.75" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAA=</HashCode>
       <FileName>BlackCoatBase.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="BlackCoat.ParticleSystem.BaseParticle">
-    <Position X="13.5" Y="9.25" Width="1.75" />
+  <Class Name="BlackCoat.ParticleSystem.ParticleBase">
+    <Position X="14.5" Y="9" Width="2" />
+    <InheritanceLine Type="BlackCoat.BlackCoatBase" FixedToPoint="true">
+      <Path>
+        <Point X="12.125" Y="14" />
+        <Point X="12.125" Y="13.586" />
+        <Point X="15.125" Y="13.586" />
+        <Point X="15.125" Y="13.059" />
+      </Path>
+    </InheritanceLine>
     <TypeIdentifier>
       <HashCode>QAQgAgAAAAAAAQAAAAAggAAAAgAIAAAAAAEAABBAAAA=</HashCode>
-      <FileName>ParticleSystem\BaseParticle.cs</FileName>
+      <FileName>ParticleSystem\ParticleBase.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BlackCoat.ParticleSystem.PixelParticleBase">
+    <Position X="15.75" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAABAAAA=</HashCode>
+      <FileName>ParticleSystem\PixelParticleBase.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="BlackCoat.ParticleSystem.PixelParticle">
-    <Position X="15.75" Y="5.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAABAAAA=</HashCode>
-      <FileName>ParticleSystem\PixelParticle.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="BlackCoat.ParticleSystem.BasicPixelParticle">
-    <Position X="15.75" Y="1.25" Width="1.5" />
+    <Position X="15.75" Y="1.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAUAAAAAAAQAAAgIAAAAAAAAAAAAAAAE=</HashCode>
-      <FileName>ParticleSystem\BasicPixelParticle.cs</FileName>
+      <FileName>ParticleSystem\PixelParticle.cs</FileName>
     </TypeIdentifier>
+    <Lollipop Position="0.2" />
   </Class>
-  <Class Name="BlackCoat.ParticleSystem.BasicPixelEmitter">
-    <Position X="5" Y="5.5" Width="1.75" />
-    <AssociationLine Name="ParticleInfo" Type="BlackCoat.ParticleSystem.ParticleAnimationInfo" FixedFromPoint="true">
-      <Path>
-        <Point X="5.562" Y="5.5" />
-        <Point X="5.562" Y="4.728" />
-      </Path>
-    </AssociationLine>
-    <TypeIdentifier>
-      <HashCode>AAQAAAAAAAAAEZAAAAAAAAAAAAAAAAIAAAAAAABAAAA=</HashCode>
-      <FileName>ParticleSystem\BasicPixelEmitter.cs</FileName>
-    </TypeIdentifier>
-    <ShowAsAssociation>
-      <Property Name="ParticleInfo" />
-    </ShowAsAssociation>
-    <Lollipop Position="0.731" />
-  </Class>
-  <Class Name="BlackCoat.ParticleSystem.TextureParticleAnimationInfo">
+  <Class Name="BlackCoat.ParticleSystem.TextureParticleInitializationInfo">
     <Position X="0.5" Y="1.25" Width="1.75" />
     <TypeIdentifier>
-      <HashCode>CAACAAAAAAAAAIAAAAIAAAAAAAAAAAAAAAAAAAgAAAA=</HashCode>
-      <FileName>ParticleSystem\TextureParticleAnimationInfo.cs</FileName>
+      <HashCode>CAACAAAAAAAAAIAAAAIAAAAAAAAAAAAAAAIAAAgAAAA=</HashCode>
+      <FileName>ParticleSystem\TextureParticleInitializationInfo.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="BlackCoat.ParticleSystem.ParticleAnimationInfo">
-    <Position X="5" Y="1.25" Width="1.75" />
+  <Class Name="BlackCoat.ParticleSystem.PixelParticleInitializationInfo">
+    <Position X="2.75" Y="1.25" Width="1.75" />
     <TypeIdentifier>
       <HashCode>AIAAAAAIAAAAAAABAAgAAAAAAAAAABAAAAAEgAAEgAQ=</HashCode>
-      <FileName>ParticleSystem\ParticleAnimationInfo.cs</FileName>
+      <FileName>ParticleSystem\PixelParticleInitializationInfo.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BlackCoat.ParticleSystem.Emitter&lt;Tparticle, TInfo&gt;">
+    <Position X="1.5" Y="7.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAQCAAAAAAAAEZAAAAAAAAAAIAAAAAIAAAAAAABAAAA=</HashCode>
+      <FileName>ParticleSystem\Emitter.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="1.305" />
+  </Class>
+  <Class Name="BlackCoat.ParticleSystem.PixelEmitter">
+    <Position X="2.75" Y="5.25" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ParticleSystem\PixelEmitter.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BlackCoat.ParticleSystem.ParticleVertexRenderer">
+    <Position X="11.25" Y="1.25" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAIAQAAAAgAAAAAACAIAQAAI=</HashCode>
+      <FileName>ParticleSystem\ParticleVertexRenderer.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Interface Name="BlackCoat.ParticleSystem.ITriggerEmitter">
-    <Position X="2.75" Y="2.25" Width="1.75" />
+    <Position X="5" Y="1.25" Width="1.75" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>ParticleSystem\ITriggerEmitter.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="BlackCoat.ParticleSystem.IInitializableByInfo&lt;T&gt;">
+    <Position X="5" Y="2.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ParticleSystem\IInitializableByInfo.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Font Name="Segoe UI" Size="9" />

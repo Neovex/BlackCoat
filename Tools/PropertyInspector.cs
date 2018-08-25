@@ -48,7 +48,7 @@ namespace BlackCoat.Tools
             // Add SubItems of known collections / hierarchies
             switch (item)
             {
-                case BaseGamestate state:
+                case Gamestate state:
                     if (graphNode.Text != state.Name) graphNode.Text = $"{graphNode.Text} \"{state.Name}\"";
                     Add(state.TextureLoader, graphNode); // CH - also: add scene graph ~.o
                     Add(state.MusicLoader, graphNode);
@@ -63,13 +63,13 @@ namespace BlackCoat.Tools
                 case Entities.Container container:
                     Add(container._Childs, graphNode);
                 break;
-                case CompositeEmitter composite:
+                case EmitterComposition composite:
                     Add(composite.Emitters, graphNode);
                 break;
-                case BasicPixelEmitter pix:
+                case PixelEmitter pix:
                     Add(pix.ParticleInfo, graphNode);
                 break;
-                case BasicTextureEmitter tex:
+                case TextureEmitter tex:
                     Add(tex.ParticleInfo, graphNode);
                 break;
                 case ParticleEmitterHost host:

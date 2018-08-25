@@ -3,7 +3,7 @@ using SFML.System;
 
 namespace BlackCoat.ParticleSystem
 {
-    public class ParticleAnimationInfo
+    public class PixelParticleInitializationInfo
     {
         /// <summary>
         /// Lifetime of the particles.
@@ -30,7 +30,7 @@ namespace BlackCoat.ParticleSystem
         public virtual float AlphaFade { get; set; }
         public virtual bool UseAlphaAsTTL { get; set; }
 
-        public ParticleAnimationInfo()
+        public PixelParticleInitializationInfo()
         {
             TTL = 1;
             ParticlesPerSpawn = 1;

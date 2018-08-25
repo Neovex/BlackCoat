@@ -85,7 +85,7 @@ namespace BlackCoat.Tools
                                               _Runtime,
                                               Core.DRAW_CALLS,
                                               //OldEmitter.ACTIVE_PARTICLES,
-                                              BaseParticle._PARTICLES,
+                                              ParticleBase._PARTICLES,
                                               AnimationManager.ACTIVE_ANIMATIONS);
         }
     }

@@ -9,15 +9,15 @@ namespace BlackCoat.ParticleSystem
     /// <summary>
     /// This class represents the bridge between the Particle System and the State/Entity scene graph.
     /// </summary>
-    /// <seealso cref="BlackCoat.Entities.BaseEntity" />
-    public class ParticleEmitterHost : BaseEntity
+    /// <seealso cref="BlackCoat.Entities.EntityBase" />
+    public sealed class ParticleEmitterHost : EntityBase
     {
-        private readonly List<BaseEmitter> _Emitters;
-        private readonly SortedList<int, List<VertexRenderer>> _DepthLayers;
+        private readonly List<EmitterBase> _Emitters;
+        private readonly SortedList<int, List<ParticleVertexRenderer>> _DepthLayers;
 
         /// <summary>
         /// The Color of the <see cref="ParticleEmitterHost"/> has no effect on emitters.
-        /// Use the appropriate color property of the corresponding <see cref="ParticleAnimationInfo"/> of each emitter.
+        /// Use the appropriate color property of the corresponding <see cref="PixelParticleInitializationInfo"/> of each emitter.
         /// </summary>
         public override Color Color { get; set; }
 
@@ -27,41 +27,41 @@ namespace BlackCoat.ParticleSystem
         /// <param name="core">The engine core.</param>
         public ParticleEmitterHost(Core core) : base(core)
         {
-            _Emitters = new List<BaseEmitter>();
-            _DepthLayers = new SortedList<int, List<VertexRenderer>>();
+            _Emitters = new List<EmitterBase>();
+            _DepthLayers = new SortedList<int, List<ParticleVertexRenderer>>();
         }
 
-        internal IEnumerable<BaseEmitter> Emitters => _Emitters;
-        internal IEnumerable<VertexRenderer> DepthLayers => _DepthLayers.Values.SelectMany(l => l);
+        internal IEnumerable<EmitterBase> Emitters => _Emitters;
+        internal IEnumerable<ParticleVertexRenderer> DepthLayers => _DepthLayers.Values.SelectMany(l => l);
 
         /// <summary>
         /// Adds an emitter to the host.
         /// </summary>
         /// <param name="emitter">The emitter to add.</param>
         /// <exception cref="ArgumentNullException">emitter</exception>
-        public void AddEmitter(BaseEmitter emitter)
+        public void AddEmitter(EmitterBase emitter)
         {
             if (emitter == null) throw new ArgumentNullException(nameof(emitter));
 
             if (_Emitters.Contains(emitter)) return;
             _Emitters.Add(emitter);
 
-            if (emitter is CompositeEmitter composite)
+            if (emitter is EmitterComposition composite)
             {
                 composite.Host = this;
             }
             else
             {
-                if (!_DepthLayers.TryGetValue(emitter.Depth, out List<VertexRenderer> layer))
+                if (!_DepthLayers.TryGetValue(emitter.Depth, out List<ParticleVertexRenderer> layer))
                 {
-                    layer = new List<VertexRenderer>();
+                    layer = new List<ParticleVertexRenderer>();
                     _DepthLayers.Add(emitter.Depth, layer);
                 }
 
                 var vertexRenderer = layer.FirstOrDefault(vr => vr.IsCompatibleWith(emitter));
                 if (vertexRenderer == null)
                 {
-                    vertexRenderer = new VertexRenderer(_Core, emitter.PrimitiveType, emitter.BlendMode, emitter.Texture);
+                    vertexRenderer = new ParticleVertexRenderer(_Core, emitter.PrimitiveType, emitter.BlendMode, emitter.Texture);
                     layer.Add(vertexRenderer);
                 }
                 vertexRenderer.AssociatedEmitters++;
@@ -74,7 +74,7 @@ namespace BlackCoat.ParticleSystem
         /// </summary>
         /// <param name="emitter">The emitter to be removed.</param>
         /// <exception cref="ArgumentNullException">emitter</exception>
-        public void Remove(BaseEmitter emitter)
+        public void Remove(EmitterBase emitter)
         {
             if(emitter == null) throw new ArgumentNullException(nameof(emitter));
 
@@ -82,7 +82,7 @@ namespace BlackCoat.ParticleSystem
             _Emitters.Remove(emitter);
             emitter.Cleanup();
 
-            if (emitter is CompositeEmitter composite)
+            if (emitter is EmitterComposition composite)
             {
                 composite.Host = null;
             }

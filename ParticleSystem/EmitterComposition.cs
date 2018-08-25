@@ -9,10 +9,10 @@ namespace BlackCoat.ParticleSystem
     /// <summary>
     /// Represents a composition of multiple emitters.
     /// </summary>
-    /// <seealso cref="BlackCoat.ParticleSystem.BaseEmitter" />
-    public class CompositeEmitter : BaseEmitter, ITriggerEmitter
+    /// <seealso cref="BlackCoat.ParticleSystem.EmitterBase" />
+    public class EmitterComposition : EmitterBase, ITriggerEmitter
     {
-        protected List<BaseEmitter> _Emitters;
+        protected List<EmitterBase> _Emitters;
         private ParticleEmitterHost _Host;
         private Vector2f _Position;
         private Vector2f _PositionOffset;
@@ -61,17 +61,17 @@ namespace BlackCoat.ParticleSystem
             }
         }
 
-        internal IEnumerable<BaseEmitter> Emitters => _Emitters;
+        internal IEnumerable<EmitterBase> Emitters => _Emitters;
 
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="CompositeEmitter"/> class.
+        /// Initializes a new instance of the <see cref="EmitterComposition"/> class.
         /// </summary>
         /// <param name="core">The engine core.</param>
         /// <param name="emitters">Optional initial child emitters.</param>
-        public CompositeEmitter(Core core, IEnumerable<BaseEmitter> emitters = null):base(core, PrimitiveType.Points)
+        public EmitterComposition(Core core, IEnumerable<EmitterBase> emitters = null):base(core, PrimitiveType.Points)
         {
-            _Emitters = emitters?.ToList() ?? new List<BaseEmitter>();
+            _Emitters = emitters?.ToList() ?? new List<EmitterBase>();
         }
 
 
@@ -80,7 +80,7 @@ namespace BlackCoat.ParticleSystem
         /// </summary>
         /// <param name="emitter">The emitter to add</param>
         /// <exception cref="ArgumentNullException">emitter</exception>
-        public void Add(BaseEmitter emitter)
+        public void Add(EmitterBase emitter)
         {
             if (emitter == null) throw new ArgumentNullException(nameof(emitter));
             emitter.Composition = this;
@@ -94,7 +94,7 @@ namespace BlackCoat.ParticleSystem
         /// <param name="emitter">The emitter to remove</param>
         /// <exception cref="ArgumentNullException">emitter</exception>
         /// <exception cref="ArgumentException">emitter</exception>
-        public void Remove(BaseEmitter emitter)
+        public void Remove(EmitterBase emitter)
         {
             if (emitter == null) throw new ArgumentNullException(nameof(emitter));
             if (emitter.Composition != this) throw new ArgumentException(nameof(emitter));

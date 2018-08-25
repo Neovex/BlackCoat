@@ -9,7 +9,7 @@ namespace BlackCoat.Entities.Shapes
     /// <summary>
     /// Represents a Line Primitive
     /// </summary>
-    public class Line : BaseEntity, IEntity, ICollidable, ILine
+    public class Line : EntityBase, IEntity, ICollidable, ILine
     {
         // Variables #######################################################################
         private Color _Color;

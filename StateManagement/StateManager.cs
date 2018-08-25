@@ -10,15 +10,15 @@ namespace BlackCoat
         /// <summary>
         /// Occurs when a new Gamestate has successfully finished loading an becomes the new active state.
         /// </summary>
-        public event Action<BaseGamestate> StateChanged = s => { };
+        public event Action<Gamestate> StateChanged = s => { };
         /// <summary>
         /// Occurs when a new Gamestate has failed to load.
         /// </summary>
-        public event Action<BaseGamestate> StateChangeFailed = s => { };
+        public event Action<Gamestate> StateChangeFailed = s => { };
 
         
-        private BaseGamestate _CurrentState;
-        private BaseGamestate _RequestedState;
+        private Gamestate _CurrentState;
+        private Gamestate _RequestedState;
 
 
         /// <summary>
@@ -41,7 +41,7 @@ namespace BlackCoat
         /// Begins a state change. Note: the new state usually becomes active in the next frame.
         /// </summary>
         /// <param name="state">The new state.</param>
-        public void ChangeState(BaseGamestate state)
+        public void ChangeState(Gamestate state)
         {
             _RequestedState = state;
             Log.Debug("---------------------------------------");

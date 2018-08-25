@@ -65,18 +65,20 @@
     <Compile Include="AssetHandling\TextureLoader.cs" />
     <Compile Include="BlackCoatBase.cs" />
     <Compile Include="Collision\Shapes\BasicTextCollisionShape.cs" />
+    <Compile Include="ParticleSystem\PixelEmitter.cs" />
+    <Compile Include="ParticleSystem\IInitializableByInfo.cs" />
     <Compile Include="InvalidStateException.cs" />
-    <Compile Include="ParticleSystem\BaseEmitter.cs" />
+    <Compile Include="ParticleSystem\EmitterBase.cs" />
     <Compile Include="ParticleSystem\ITriggerEmitter.cs" />
-    <Compile Include="ParticleSystem\TextureParticleAnimationInfo.cs" />
-    <Compile Include="ParticleSystem\ParticleAnimationInfo.cs" />
-    <Compile Include="ParticleSystem\BasicTextureParticle.cs" />
-    <Compile Include="ParticleSystem\BasicPixelParticle.cs" />
-    <Compile Include="ParticleSystem\BasicPixelEmitter.cs" />
+    <Compile Include="ParticleSystem\TextureParticleInitializationInfo.cs" />
+    <Compile Include="ParticleSystem\PixelParticleInitializationInfo.cs" />
+    <Compile Include="ParticleSystem\TextureParticle.cs" />
     <Compile Include="ParticleSystem\PixelParticle.cs" />
-    <Compile Include="ParticleSystem\CompositeEmitter.cs" />
-    <Compile Include="ParticleSystem\BasicTextureEmitter.cs" />
-    <Compile Include="ParticleSystem\BaseParticle.cs" />
+    <Compile Include="ParticleSystem\Emitter.cs" />
+    <Compile Include="ParticleSystem\PixelParticleBase.cs" />
+    <Compile Include="ParticleSystem\EmitterComposition.cs" />
+    <Compile Include="ParticleSystem\TextureEmitter.cs" />
+    <Compile Include="ParticleSystem\ParticleBase.cs" />
     <Compile Include="Collision\CollisionSystem.cs" />
     <Compile Include="Collision\Interfaces\IPolygon.cs" />
     <Compile Include="Collision\Interfaces\ICircle.cs" />
@@ -95,7 +97,7 @@
     <Compile Include="Core.cs" />
     <Compile Include="Entities\Animation\BlittingAnimation.cs" />
     <Compile Include="Entities\Animation\FrameAnimation.cs" />
-    <Compile Include="Entities\BaseEntity.cs" />
+    <Compile Include="Entities\EntityBase.cs" />
     <Compile Include="Entities\CursorLayer.cs" />
     <Compile Include="Entities\Roles\TextRoleHost.cs" />
     <Compile Include="Entities\Roles\GraphicRoleHost.cs" />
@@ -116,9 +118,9 @@
     <Compile Include="Input\Mapping\SimpleInputMap.cs" />
     <Compile Include="Input\TextEnteredEventArgs.cs" />
     <Compile Include="Interfaces\ITransformable.cs" />
-    <Compile Include="ParticleSystem\TextureParticle.cs" />
+    <Compile Include="ParticleSystem\TextureParticleBase.cs" />
     <Compile Include="ParticleSystem\ParticleEmitterHost.cs" />
-    <Compile Include="ParticleSystem\VertexRenderer.cs" />
+    <Compile Include="ParticleSystem\ParticleVertexRenderer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -126,7 +128,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Entities\Roles\Role.cs" />
-    <Compile Include="StateManagement\BaseGamestate.cs" />
+    <Compile Include="StateManagement\Gamestate.cs" />
     <Compile Include="StateManagement\BlackCoatIntro.cs" />
     <Compile Include="StateManagement\StateManager.cs" />
     <Compile Include="Tools\Console.cs" />
@@ -148,6 +150,7 @@
     <Compile Include="Extensions\VectorExtensions.cs" />
     <Compile Include="Tools\ColorConverter.cs" />
     <Compile Include="Tools\Vector2Converter.cs" />
+    <Compile Include="VertexRenderer.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />

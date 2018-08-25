@@ -1,24 +1,22 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using SFML.Graphics;
 using SFML.System;
 
 namespace BlackCoat.ParticleSystem
 {
     /// <summary>
-    /// Abstract base class of all texture based particles.
+    /// Simple Texture Particle Implementation. Supports simple movement and blending.
     /// </summary>
-    /// <seealso cref="BlackCoat.ParticleSystem.BaseParticle" />
-    public abstract class TextureParticle : BaseParticle
+    /// <seealso cref="BlackCoat.ParticleSystem.TextureParticleBase" />
+    public class TextureParticle : TextureParticleBase, IInitializableByInfo<TextureParticleInitializationInfo>
     {
-        protected Texture _Texture;
-        protected IntRect _TextureRect;
-        protected Vector2f _Origin;
-        protected Vector2f _Scale;
-        protected Single _Rotation;
+        protected Vector2f _Velocity;
+        protected Vector2f _Acceleration;
+        protected Single _AlphaFade;
+        protected Boolean _UseAlphaAsTTL;
+
+        protected Single _RotationVelocity;
+        protected Vector2f _ScaleVelocity;
 
 
         /// <summary>
@@ -27,75 +25,47 @@ namespace BlackCoat.ParticleSystem
         /// <param name="core">The Engine core.</param>
         public TextureParticle(Core core) : base(core)
         {
-            _Scale.X = _Scale.Y = 1f;
         }
 
         /// <summary>
-        /// Resets the used vertices into a neutral/reusable state.
+        /// Initializes the particle with the provided animation parameters.
         /// </summary>
-        /// <param name="vPtr">First vertex of this particle</param>
-        override protected unsafe void Clear(Vertex* vPtr)
+        public virtual void Initialize(Vector2f position, TextureParticleInitializationInfo info)
         {
-            vPtr->Color = Color.Transparent;
-            vPtr++;
-            vPtr->Color = Color.Transparent;
-            vPtr++;
-            vPtr->Color = Color.Transparent;
-            vPtr++;
-            vPtr->Color = Color.Transparent;
+            // init particle
+            _TextureSize = info.Texture.Size;
+            _TextureRect.Width = (int)_TextureSize.X;
+            _TextureRect.Height = (int)_TextureSize.Y;
+            _Position = position;
+            _Origin = info.Origin;
+            _Scale = info.Scale;
+            _Rotation = info.Rotation;
+            _Color = info.Color;
+            _Alpha = info.Alpha;
+
+            // init movement
+            _Velocity = info.Velocity;
+            _Acceleration = info.Acceleration;
+            _RotationVelocity = info.RotationVelocity;
+            _AlphaFade = info.AlphaFade;
+            _UseAlphaAsTTL = info.UseAlphaAsTTL;
+            _ScaleVelocity = info.ScaleVelocity;
         }
 
         /// <summary>
-        /// Updates the particle with the behavior defined by inherited classes.
+        /// Updates the particle animation.
         /// </summary>
         /// <param name="deltaT">Current Frame Time.</param>
         /// <param name="vPtr">First vertex of this particle</param>
         /// <returns>True if the particle needs to be removed otherwise false.</returns>
         override protected unsafe bool UpdateInternal(float deltaT, Vertex* vPtr)
         {
-            var scaledSize = _Scale;
-            scaledSize.X *= _Texture.Size.X;
-            scaledSize.Y *= _Texture.Size.Y;
-
-            var offset = -_Origin;
-            offset.X *=_Scale.X;
-            offset.Y *=_Scale.Y;
-
-            float cos = MathHelper.Cos(_Rotation);
-            float sin = MathHelper.Sin(_Rotation);
-
-            // Update Vertices
-            vPtr->Position.X = offset.X * cos - offset.Y * sin + _Position.X;
-            vPtr->Position.Y = offset.X * sin + offset.Y * cos + _Position.Y;
-            vPtr->TexCoords.X = _TextureRect.Left;
-            vPtr->TexCoords.Y = _TextureRect.Top;
-            vPtr->Color = _Color;
-            vPtr++;
-
-            offset.X += scaledSize.X;
-            vPtr->Position.X = offset.X * cos - offset.Y * sin + _Position.X;
-            vPtr->Position.Y = offset.X * sin + offset.Y * cos + _Position.Y;
-            vPtr->TexCoords.X = _TextureRect.Left + _TextureRect.Width;
-            vPtr->TexCoords.Y = _TextureRect.Top;
-            vPtr->Color = _Color;
-            vPtr++;
-
-            offset.Y += scaledSize.Y;
-            vPtr->Position.X = offset.X * cos - offset.Y * sin + _Position.X;
-            vPtr->Position.Y = offset.X * sin + offset.Y * cos + _Position.Y;
-            vPtr->TexCoords.X = _TextureRect.Left + _TextureRect.Width;
-            vPtr->TexCoords.Y = _TextureRect.Top +_TextureRect.Height;
-            vPtr->Color = _Color;
-            vPtr++;
-
-            offset.X -= scaledSize.X;
-            vPtr->Position.X = offset.X * cos - offset.Y * sin + _Position.X;
-            vPtr->Position.Y = offset.X * sin + offset.Y * cos + _Position.Y;
-            vPtr->TexCoords.X = _TextureRect.Left;
-            vPtr->TexCoords.Y = _TextureRect.Top + _TextureRect.Height;
-            vPtr->Color = _Color;
-
-            return false;
+            _Velocity += _Acceleration * deltaT;
+            _Position += _Velocity * deltaT;
+            _Alpha += _AlphaFade * deltaT;
+            _Rotation += _RotationVelocity * deltaT;
+            _Scale += _ScaleVelocity * deltaT;
+            return base.UpdateInternal(deltaT, vPtr) || (_UseAlphaAsTTL && _Alpha <= 0);
         }
     }
 }

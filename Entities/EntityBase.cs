@@ -7,7 +7,7 @@ namespace BlackCoat.Entities
     /// <summary>
     /// Basic abstract implementation of IEntity
     /// </summary>
-    public abstract class BaseEntity: Transformable, IEntity
+    public abstract class EntityBase: Transformable, IEntity
     {
         // Variables #######################################################################
         protected Core _Core;
@@ -100,10 +100,10 @@ namespace BlackCoat.Entities
 
         // CTOR ############################################################################
         /// <summary>
-        /// Initializes a new instance of the <see cref="BaseEntity"/> class.
+        /// Initializes a new instance of the <see cref="EntityBase"/> class.
         /// </summary>
         /// <param name="core">The engine core.</param>
-        protected BaseEntity(Core core)
+        protected EntityBase(Core core)
         {
             _Core = core;
             _Alpha = 1;

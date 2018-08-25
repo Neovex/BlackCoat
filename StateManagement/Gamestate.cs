@@ -9,7 +9,7 @@ namespace BlackCoat
     /// <summary>
     /// Base class for all Gamestates
     /// </summary>
-    public abstract class BaseGamestate
+    public abstract class Gamestate
     {
         protected Core _Core;
         private Boolean _Destroyed;
@@ -47,17 +47,17 @@ namespace BlackCoat
 
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="BaseGamestate" /> class.
+        /// Initializes a new instance of the <see cref="Gamestate" /> class.
         /// </summary>
         /// <param name="core">Engine core.</param>
         /// <param name="name">Optional name of the state.</param>
         /// <param name="assetRoot">Optional Asset root path.</param>
-        public BaseGamestate(Core core, String name = null, String assetRoot = "") : this(core, name, assetRoot, assetRoot, assetRoot, assetRoot)
+        public Gamestate(Core core, String name = null, String assetRoot = "") : this(core, name, assetRoot, assetRoot, assetRoot, assetRoot)
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="BaseGamestate" /> class.
+        /// Initializes a new instance of the <see cref="Gamestate" /> class.
         /// </summary>
         /// <param name="core">Engine core.</param>
         /// <param name="name">Name of the state.</param>
@@ -65,7 +65,7 @@ namespace BlackCoat
         /// <param name="music">Music root path.</param>
         /// <param name="fonts">Font root path.</param>
         /// <param name="sfx">Sound effects root path.</param>
-        public BaseGamestate(Core core, String name, String textures, String music, String fonts, String sfx)
+        public Gamestate(Core core, String name, String textures, String music, String fonts, String sfx)
         {
             // Init
             _Core = core;

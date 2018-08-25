@@ -9,13 +9,13 @@ namespace BlackCoat.ParticleSystem
     /// Emitter base class <seealso cref="Particles.cd"/>
     /// </summary>
     /// <seealso cref="BlackCoat.BlackCoatBase" />
-    public abstract class BaseEmitter : BlackCoatBase
+    public abstract class EmitterBase : BlackCoatBase
     {
-        static BaseEmitter() => INSTANCE_POOL = new Dictionary<Guid, Stack<BaseParticle>>();
-        private static Dictionary<Guid, Stack<BaseParticle>> INSTANCE_POOL { get; }
+        static EmitterBase() => INSTANCE_POOL = new Dictionary<Guid, Stack<ParticleBase>>();
+        private static Dictionary<Guid, Stack<ParticleBase>> INSTANCE_POOL { get; }
 
-        private VertexRenderer _VertexRenderer;
-        private List<BaseParticle> _Particles;
+        private ParticleVertexRenderer _VertexRenderer;
+        private List<ParticleBase> _Particles;
 
 
         /// <summary>
@@ -49,29 +49,29 @@ namespace BlackCoat.ParticleSystem
         /// <summary>
         /// Parent Emitter when part of a composition
         /// </summary>
-        public CompositeEmitter Composition { get; internal set; }
+        public EmitterComposition Composition { get; internal set; }
 
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="BaseEmitter" /> class.
+        /// Initializes a new instance of the <see cref="EmitterBase" /> class.
         /// </summary>
         /// <param name="core">The engine core.</param>
         /// <param name="primitiveType">Type of the particle primitive.</param>
         /// <param name="texture">Optional Texture to be mapped onto the vertices.</param>
-        public BaseEmitter(Core core, PrimitiveType primitiveType, Texture texture = null) : this(core, 0, primitiveType, BlendMode.Alpha, texture)
+        public EmitterBase(Core core, PrimitiveType primitiveType, Texture texture = null) : this(core, 0, primitiveType, BlendMode.Alpha, texture)
         {
         }
         /// <summary>
-        /// Initializes a new instance of the <see cref="BaseEmitter"/> class.
+        /// Initializes a new instance of the <see cref="EmitterBase"/> class.
         /// </summary>
         /// <param name="core">The engine core.</param>
         /// <param name="depth">The depth defining the render hierarchy.</param>
         /// <param name="primitiveType">Type of the particle primitive.</param>
         /// <param name="blendMode">The particle blend mode.</param>
         /// <param name="texture">Optional Texture to be mapped onto the vertices.</param>
-        public BaseEmitter(Core core, int depth, PrimitiveType primitiveType, BlendMode blendMode, Texture texture = null) : base(core)
+        public EmitterBase(Core core, int depth, PrimitiveType primitiveType, BlendMode blendMode, Texture texture = null) : base(core)
         {
-            _Particles = new List<BaseParticle>();
+            _Particles = new List<ParticleBase>();
             Depth = depth;
             PrimitiveType = primitiveType;
             BlendMode = blendMode;
@@ -84,7 +84,7 @@ namespace BlackCoat.ParticleSystem
         /// </summary>
         /// <param name="particle">The particle to add.</param>
         /// <param name="ttl">The particles maximum lifetime.</param>
-        protected void AddParticle(BaseParticle particle, float ttl)
+        protected void AddParticle(ParticleBase particle, float ttl)
         {
             particle.Initialize(_VertexRenderer.Reserve(), ttl);
             _Particles.Add(particle);
@@ -127,7 +127,7 @@ namespace BlackCoat.ParticleSystem
         /// Initializes the Emitter assigning it with specified vertex renderer.
         /// </summary>
         /// <param name="vertexRenderer">The vertex renderer this Emitter should use.</param>
-        internal void Initialize(VertexRenderer vertexRenderer)
+        internal void Initialize(ParticleVertexRenderer vertexRenderer)
         {
             _VertexRenderer = vertexRenderer ?? throw new ArgumentNullException(nameof(vertexRenderer));
         }
@@ -154,11 +154,11 @@ namespace BlackCoat.ParticleSystem
         /// Adds to a particle to the instance cache.
         /// </summary>
         /// <param name="particle">The particle.</param>
-        protected void AddToCache(BaseParticle particle)
+        protected void AddToCache(ParticleBase particle)
         {
             if (!INSTANCE_POOL.ContainsKey(ParticleTypeGuid))
             {
-                INSTANCE_POOL.Add(ParticleTypeGuid, new Stack<BaseParticle>());
+                INSTANCE_POOL.Add(ParticleTypeGuid, new Stack<ParticleBase>());
             }
             INSTANCE_POOL[ParticleTypeGuid].Push(particle);
         }
@@ -167,7 +167,7 @@ namespace BlackCoat.ParticleSystem
         /// Retrieves a particle from cache.
         /// </summary>
         /// <returns>A particle of the type this emitter is associated with.</returns>
-        protected BaseParticle RetrieveFromCache()
+        protected ParticleBase RetrieveFromCache()
         {
             if (!INSTANCE_POOL.ContainsKey(ParticleTypeGuid)) return null;
             var pool = INSTANCE_POOL[ParticleTypeGuid];
