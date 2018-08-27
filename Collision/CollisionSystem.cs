@@ -101,7 +101,7 @@ namespace BlackCoat.Collision
 
         //#########################################################################################################################################
 
-        public virtual Vector2f[] Raycast(Vector2f rayOrigin, float rayAngle, ICollisionShape target)
+        public virtual (Vector2f Position, float Angle)[] Raycast(Vector2f rayOrigin, float rayAngle, ICollisionShape target)
         {
             switch (target.CollisionGeometry)
             {
@@ -116,10 +116,10 @@ namespace BlackCoat.Collision
                     return Raycast(rayOrigin, rayAngle, target as IPolygon);
             }
             HandleUnknownShape(target);
-            return new Vector2f[0];
+            return new(Vector2f Position, float Angle)[0];
         }
 
-        public virtual Vector2f[] Raycast(Vector2f rayOrigin, float rayAngle, Vector2f targetStart, Vector2f targetEnd)
+        public virtual (Vector2f Position, float Angle)[] Raycast(Vector2f rayOrigin, float rayAngle, Vector2f targetStart, Vector2f targetEnd)
         {
             if (rayAngle < 0) throw new ArgumentOutOfRangeException(nameof(rayAngle), rayAngle, "Angle must be positive.");
 
@@ -134,23 +134,25 @@ namespace BlackCoat.Collision
                 var p1 = Math.Abs(localStart.DotProduct(axis));
                 var p2 = Math.Abs(localEnd.DotProduct(axis));
                 var percent = (float)(p1 / (p1 + p2));
-                return new Vector2f[] { targetStart + (targetEnd.ToLocal(targetStart) * percent) };
+                var endFromStart = targetEnd.ToLocal(targetStart);
+                var intersection = targetStart + endFromStart * percent;
+                return new(Vector2f Position, float Angle)[] { (intersection, endFromStart.Angle()) };
             }
-            return new Vector2f[0];
+            return new(Vector2f Position, float Angle)[0];
         }
 
-        public virtual Vector2f[] Raycast(Vector2f rayOrigin, float rayAngle, IRectangle rectangle)
+        public virtual (Vector2f Position, float Angle)[] Raycast(Vector2f rayOrigin, float rayAngle, IRectangle rectangle)
         {
             var points = CalcGlobalRectVerticies(rectangle);
-            return points.SelectMany((p, i) => Raycast(rayOrigin, rayAngle, p, points[(i + 1) % points.Length])).ToArray();
+            return points.SelectMany((p, i) => Raycast(rayOrigin, rayAngle, p, points[(i + 1) % points.Length])).OrderBy(i=>rayOrigin.DistanceBetweenSquared(i.Position)).ToArray();
         }
 
-        public virtual Vector2f[] Raycast(Vector2f rayOrigin, float rayAngle, IPolygon polygon)
+        public virtual (Vector2f Position, float Angle)[] Raycast(Vector2f rayOrigin, float rayAngle, IPolygon polygon)
         {
-            return polygon.Points.SelectMany((p, i) => Raycast(rayOrigin, rayAngle, p.ToGlobal(polygon.Position), polygon.Points[(i + 1) % polygon.Points.Count].ToGlobal(polygon.Position))).ToArray();
+            return polygon.Points.SelectMany((p, i) => Raycast(rayOrigin, rayAngle, p.ToGlobal(polygon.Position), polygon.Points[(i + 1) % polygon.Points.Count].ToGlobal(polygon.Position))).OrderBy(i => rayOrigin.DistanceBetweenSquared(i.Position)).ToArray();
         }
 
-        public virtual Vector2f[] Raycast(Vector2f rayOrigin, float rayAngle, ICircle circle)
+        public virtual (Vector2f Position, float Angle)[] Raycast(Vector2f rayOrigin, float rayAngle, ICircle circle)
         {
             if (rayAngle < 0) throw new ArgumentOutOfRangeException(nameof(rayAngle), rayAngle, "Angle must be positive.");
 
@@ -158,15 +160,18 @@ namespace BlackCoat.Collision
             var localCircleCenter = circle.Position.ToLocal(rayOrigin);
             var axis = VectorExtensions.VectorFromAngle(rayAngle);
             var projection = localCircleCenter.DotProduct(axis);
-            if(projection - circle.Radius < 0 && projection + circle.Radius < 0) return new Vector2f[0];
+            if(projection - circle.Radius < 0 && projection + circle.Radius < 0) return new(Vector2f Position, float Angle)[0]; // circle behind ray
             // Check perpendicular axis
             var faceProjection = localCircleCenter.DotProduct(axis.FaceVector());
-            if(faceProjection < -circle.Radius || faceProjection > circle.Radius) return new Vector2f[0];
+            if(faceProjection < -circle.Radius || faceProjection > circle.Radius) return new(Vector2f Position, float Angle)[0];// circle above or below ray
             // Calculate intersections
-            var result = (float)Math.Sqrt(circle.Radius * circle.Radius - faceProjection * faceProjection);
-            //if (Math.Abs(Math.Abs(result) - circle.Radius) < Constants.POINT_PROJECTION_TOLERANCE) { } tangents currently not relevant
-            var results = new[] { new Vector2f((float)faceProjection, result), new Vector2f((float)faceProjection, -result) };
-            return results.Where(p => p.Y + projection >= 0).Select(p => VectorExtensions.VectorFromAngle(p.Angle() + rayAngle - 90, circle.Radius).ToGlobal(circle.Position)).ToArray();
+            var length = (float)Math.Sqrt(circle.Radius * circle.Radius - faceProjection * faceProjection); // build triangle where radius is hypotenuse and face projection is a leg to get the other leg
+            var possiblePoints = new[] { new Vector2f((float)faceProjection, length), new Vector2f((float)faceProjection, -length) };
+            return possiblePoints.Where(p => p.Y + projection >= 0).Select(p => // filter points
+            {
+                var faceAngle = p.Angle() + rayAngle;
+                return (Position: VectorExtensions.VectorFromAngle(faceAngle - 90, circle.Radius).ToGlobal(circle.Position), Angle: faceAngle); // add angle and convert to global
+            }).OrderBy(i => rayOrigin.DistanceBetweenSquared(i.Position)).ToArray();
         }
 
         //#########################################################################################################################################
@@ -304,8 +309,7 @@ namespace BlackCoat.Collision
             var rectPoints = CalcGlobalRectVerticies(a);
 
             // Rough Collision Box check
-            float min, max;
-            Sort(b.Start.X, b.End.X, out min, out max);
+            Sort(b.Start.X, b.End.X, out float min, out float max);
             if (!Intersect(rectPoints[0].X, rectPoints[2].X, min, max)) return false;
             Sort(b.Start.Y, b.End.Y, out min, out max);
             if (!Intersect(rectPoints[0].Y, rectPoints[2].Y, min, max)) return false;
@@ -438,12 +442,10 @@ namespace BlackCoat.Collision
         /// <returns>True when the objects touch or intersect.</returns>
         public virtual bool CheckCollision(ILine a, ILine b) //passed
         {
-            float min, max;
-
             //A
             var axis = a.End.ToLocal(a.Start).FaceVector();
             var p = a.End.DotProduct(axis);
-            Sort((float)b.Start.DotProduct(axis), (float)b.End.DotProduct(axis), out min, out max);
+            Sort((float)b.Start.DotProduct(axis), (float)b.End.DotProduct(axis), out float min, out float max);
             if (min > p || max < p) return false;
 
             //B

@@ -3,8 +3,8 @@
 namespace BlackCoat.Animation
 {
     /// <summary>
-    /// A <see cref="TimeAnimation"/> is an abstraction of a timebased constant value change.
-    /// A new value is calculated on each update based on the provided interpolation method.
+    /// A <see cref="TimeAnimation"/> is an abstraction of a time based constant value change.
+    /// A new value is calculated on each update cycle based on the provided interpolation method.
     /// </summary>
     public class TimeAnimation : Animation
     {

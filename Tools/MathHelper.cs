@@ -40,5 +40,10 @@ namespace BlackCoat
         {
             return (angle %= 360) < 0 ? angle + 360 : angle;
         }
+
+        public static float CalculateReflectionAngle(float rayAngle, float surfaceAngle)
+        {
+            return ValidateAngle((360 - ValidateAngle(rayAngle)) + (2 * ValidateAngle(surfaceAngle)));
+        }
     }
 }

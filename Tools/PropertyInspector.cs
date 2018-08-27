@@ -33,7 +33,7 @@ namespace BlackCoat.Tools
             InitializeComponent();
         }
 
-        private void Add(IEnumerable<object> objects, TreeNode parent = null)
+        private void Add(IEnumerable<object> objects, TreeNode parent)
         {
             foreach (var item in objects) Add(item, parent);
         }
@@ -45,12 +45,15 @@ namespace BlackCoat.Tools
             graphNode.Tag = item;
             (parent?.Nodes ?? _SceneGraph.Nodes).Add(graphNode);
 
+            // Handle Entities
+            if(item is IEntity e && e.Position != default(Vector2f)) graphNode.Text = $"{graphNode.Text} {e.Position.X} x {e.Position.Y}";
+
             // Add SubItems of known collections / hierarchies
             switch (item)
             {
                 case Gamestate state:
                     if (graphNode.Text != state.Name) graphNode.Text = $"{graphNode.Text} \"{state.Name}\"";
-                    Add(state.TextureLoader, graphNode); // CH - also: add scene graph ~.o
+                    Add(state.TextureLoader, graphNode);
                     Add(state.MusicLoader, graphNode);
                     Add(state.FontLoader, graphNode);
                     Add(state.SfxLoader, graphNode);
@@ -115,7 +118,7 @@ namespace BlackCoat.Tools
             int i = 0;
             foreach (PropertyDescriptor descriptor in TypeDescriptor.GetProperties(_Inspector.SelectedObject))
             {
-                b.AppendLine($"{descriptor.Name}={descriptor.GetValue(_Inspector.SelectedObject)}");
+                b.AppendLine($"{descriptor.Name}={descriptor.GetValue(_Inspector.SelectedObject) ?? "[null]"}");
                 i++;
             }
             Clipboard.SetText(b.ToString());

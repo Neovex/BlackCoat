@@ -135,7 +135,7 @@ namespace BlackCoat
         /// <summary>
         /// Creates a new Vector perpendicular to the original on the left side
         /// </summary>
-        public static Vector2f FaceVector(this Vector2f v) // rename?
+        public static Vector2f FaceVector(this Vector2f v)
         {
             return new Vector2f(-v.Y, v.X);
         }

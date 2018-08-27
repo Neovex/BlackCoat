@@ -1,6 +1,4 @@
-﻿using System;
-
-using SFML.Graphics;
+﻿using SFML.Graphics;
 using SFML.System;
 using BlackCoat.Collision;
 
@@ -61,6 +59,12 @@ namespace BlackCoat.Entities.Shapes
         /// End position of the <see cref="ILine"/>. Read only.
         /// </summary>
         Vector2f ILine.End => End.Position;
+
+
+        internal Vector2f StartPos { get => Start.Position; set => Start.Position = value; }
+        internal Vector2f EndPos { get => End.Position; set => End.Position = value; }
+        internal Color StartColor { get => Start.Color; set => Start.Color = value; }
+        internal Color EndColor { get => End.Color; set => End.Color = value; }
 
 
         // CTOR ############################################################################

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace BlackCoat.Animation
 {
     /// <summary>
-    /// Animation Factory and management class. Handles all running Animations. Makes stuff move.
+    /// Animation Factory and management class. Handles all running Animations. TLDR: Makes stuff move.
     /// </summary>
     public sealed class AnimationManager
     {
@@ -20,7 +20,7 @@ namespace BlackCoat.Animation
 
         // Properties ######################################################################
         /// <summary>
-        /// Retrieves the ammount of currently running Animations.
+        /// Retrieves the amount of currently running Animations.
         /// </summary>
         public int ActiveAnimations { get { return _ActiveAnimations.Count; } }
 
