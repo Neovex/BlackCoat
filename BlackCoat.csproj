@@ -133,6 +133,7 @@
     <Compile Include="StateManagement\StateManager.cs" />
     <Compile Include="Tools\Console.cs" />
     <Compile Include="Extensions\Extensions.cs" />
+    <Compile Include="Tools\Create.cs" />
     <Compile Include="Tools\Heading.cs" />
     <Compile Include="Tools\Log.cs" />
     <Compile Include="Tools\MathHelper.cs" />

@@ -180,7 +180,7 @@ namespace BlackCoat
             Disposed = false;
             DefaultView = _Device.DefaultView;
             DefaultFont = new Font(Resources.Squares_Bold_Free);
-            for (uint i = 4; i <= 32; i += 2) InitializeFontHack(DefaultFont, i); // HACK
+            for (uint i = 4; i <= 32; i += 2) InitializeFontHack(DefaultFont, i); // Unfortunate necessity to prevent SFML from disposing parts of a font.
 
             // Core-relevant Device Events
             _Device.Resized += HandleDeviceResized;
@@ -210,7 +210,12 @@ namespace BlackCoat
             if (!Disposed) Dispose();
         }
 
-        // HACK
+        /// <summary>
+        /// Initializes a font. An unfortunate necessity to prevent SFML from disposing parts of a font.
+        /// </summary>
+        /// <param name="font">The font to initialize.</param>
+        /// <param name="charSize">Size of the character.</param>
+        /// <param name="bold">If set to <c>true</c> the font will be initialized with bold characters.</param>
         public void InitializeFontHack(Font font, uint charSize = 10, bool bold = false)
         {
             var text = new Text("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ.:-_,;#'+*~´`\\?ß=()&/$%\"§!^°", font, charSize);

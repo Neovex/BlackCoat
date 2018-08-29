@@ -130,7 +130,7 @@ namespace BlackCoat.Collision
 
             if (IntersectAngles(rayAngle, min, max)) // check 4 intersections then calculate exact position
             {
-                var axis = VectorExtensions.VectorFromAngle(rayAngle).FaceVector();
+                var axis = Create.Vector2fFromAngle(rayAngle).FaceVector();
                 var p1 = Math.Abs(localStart.DotProduct(axis));
                 var p2 = Math.Abs(localEnd.DotProduct(axis));
                 var percent = (float)(p1 / (p1 + p2));
@@ -158,7 +158,7 @@ namespace BlackCoat.Collision
 
             // Check along ray as projection axis
             var localCircleCenter = circle.Position.ToLocal(rayOrigin);
-            var axis = VectorExtensions.VectorFromAngle(rayAngle);
+            var axis = Create.Vector2fFromAngle(rayAngle);
             var projection = localCircleCenter.DotProduct(axis);
             if(projection - circle.Radius < 0 && projection + circle.Radius < 0) return new(Vector2f Position, float Angle)[0]; // circle behind ray
             // Check perpendicular axis
@@ -170,7 +170,7 @@ namespace BlackCoat.Collision
             return possiblePoints.Where(p => p.Y + projection >= 0).Select(p => // filter points
             {
                 var faceAngle = p.Angle() + rayAngle;
-                return (Position: VectorExtensions.VectorFromAngle(faceAngle - 90, circle.Radius).ToGlobal(circle.Position), Angle: faceAngle); // add angle and convert to global
+                return (Position: Create.Vector2fFromAngle(faceAngle - 90, circle.Radius).ToGlobal(circle.Position), Angle: faceAngle); // add angle and convert to global
             }).OrderBy(i => rayOrigin.DistanceBetweenSquared(i.Position)).ToArray();
         }
 
