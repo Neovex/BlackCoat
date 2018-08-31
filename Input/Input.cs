@@ -16,6 +16,7 @@ namespace BlackCoat
         public static Input DEFAULT { get; private set; }
 
         // Variables #######################################################################
+        private readonly Core _Core;
         private RenderWindow _Device;
         private Vector2f _MousePosition;
         private Boolean _MouseVisible;
@@ -128,21 +129,46 @@ namespace BlackCoat
             if (DEFAULT == null) DEFAULT = this;
 
             // Init Class
-            _Device = core.Device;
+            _Core = core ?? throw new ArgumentNullException(nameof(core));
+            _Device = _Core.Device;
             _MouseVisible = true;
             _MouseButtons = new List<Mouse.Button>();
             _KeyboardKeys = new List<Keyboard.Key>();
-            core.FocusLost += HandleCoreFocusLost;
+            _Core.FocusLost += HandleCoreFocusLost;
+            _Core.DeviceChanged += HandleCoreDeviceChanged;
 
             // Subscribe to input events
             Enabled = true;
 
             // TODO Joysticks & Game-pads:
             //_Device.JoystickButtonPressed...
+            // Also consider touch events
+            //_Device.TouchBegan
         }
 
 
-        // Methods #########################################################################
+        // Methods #########################################################################        
+        /// <summary>
+        /// Removes all listeners from the old device and attaches to the new one.
+        /// </summary>
+        private void HandleCoreDeviceChanged()
+        {
+            // Save State
+            var mv = MouseVisible;
+            var mp = MousePositionEnabled;
+            var m = MouseEnabled;
+            var k = KeyboardEnabled;
+            // Detach from everything that isn't already
+            Enabled = false;
+            // Update Device
+            _Device = _Core.Device;
+            // Restore State with new device
+            MouseVisible = mv;
+            MousePositionEnabled = mp;
+            MouseEnabled = m;
+            KeyboardEnabled = k;
+        }
+
         /// <summary>
         /// Resets all cached input states.
         /// </summary>

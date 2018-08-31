@@ -148,5 +148,10 @@ namespace BlackCoat.Tools
         {
             if (_SceneGraph.SelectedNode != null) SceneGraph_NodeSelected(this, new TreeViewEventArgs(_SceneGraph.SelectedNode));
         }
+
+        private void TopMostToolStripMenuItem_Clicked(object sender, EventArgs e)
+        {
+            _TopMostToolStripMenuItem.Checked = TopMost = !TopMost;
+        }
     }
 }

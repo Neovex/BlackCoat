@@ -38,8 +38,7 @@ namespace BlackCoat.Tools
         /// Creates a new instance of the <see cref="Console"/> class
         /// </summary>
         /// <param name="core">Engine Core</param>
-        /// <param name="device">Render Device</param>
-        internal Console(Core core, RenderWindow device) : base(core)
+        internal Console(Core core) : base(core)
         {
             _Background = new Rectangle(_Core);
             _Background.Color = Color.Black;
@@ -53,13 +52,13 @@ namespace BlackCoat.Tools
             AddChild(_Display);
 
             Visible = false;
-            View = new View(_Core.DefaultView);
-            UpdateDisplayProportions(View.Size.X, View.Size.Y);
+            UpdateDisplayProportions(_Core.DeviceSize.X, _Core.DeviceSize.Y);
 
             Log.OnLog += LogMessage;
             _Core.Input.KeyPressed += HandleKeyPressed;
             _Core.Input.TextEntered += HandleTextEntered;
-            device.Resized += Device_Resized;
+
+            _Core.DeviceResized += HandleCoreDeviceResized;
             
             Log.Debug("Engine", nameof(Console), "ready");
         }
@@ -104,16 +103,13 @@ namespace BlackCoat.Tools
             _Display.Text = String.Join(Constants.NEW_LINE, new[] { _CurrentInput ?? String.Empty }.Concat(_Messages.Reverse().Take(availableLines)));
         }
 
-        private void Device_Resized(object sender, SizeEventArgs e)
+        private void HandleCoreDeviceResized(Vector2u size)
         {
-            UpdateDisplayProportions(e.Width, e.Height);
+            UpdateDisplayProportions(size.X, size.Y);
         }
 
         private void UpdateDisplayProportions(float width, float height)
         {
-            View.Size = new Vector2f(width, height);
-            View.Center = new Vector2f(width / 2, height / 2);
-
             _Background.Size = new Vector2f(width, height / 3);
             if (_Open)
             {

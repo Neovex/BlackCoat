@@ -8,7 +8,7 @@
     </TypeIdentifier>
   </Class>
   <Class Name="BlackCoat.Animation.AnimationManager">
-    <Position X="7.5" Y="0.5" Width="2.25" />
+    <Position X="6.25" Y="0.5" Width="2.25" />
     <TypeIdentifier>
       <HashCode>AAQAAAAAACAAgAAAAAAAgAAAIAQAAQAAAgAAAAAAEBI=</HashCode>
       <FileName>Animation\AnimationManager.cs</FileName>
@@ -18,7 +18,7 @@
     </ShowAsCollectionAssociation>
   </Class>
   <Class Name="BlackCoat.Animation.Interpolation">
-    <Position X="10.5" Y="0.5" Width="1.5" />
+    <Position X="8.75" Y="0.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>CAQAAAQgAECAAABAABEAAAIAAGBBAiIIAEAAQ4AAAEo=</HashCode>
       <FileName>Animation\Interpolation.cs</FileName>
@@ -46,7 +46,7 @@
     </TypeIdentifier>
   </Class>
   <Enum Name="BlackCoat.Animation.InterpolationType">
-    <Position X="12.75" Y="0.5" Width="1.5" />
+    <Position X="10.5" Y="0.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>CAQAAAQgAECAAAAAABEAAAIAAEBBAiIIAEAAQ4AAAEo=</HashCode>
       <FileName>Animation\Interpolation.cs</FileName>

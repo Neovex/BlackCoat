@@ -50,8 +50,6 @@ namespace BlackCoat.Tools
                 Color = Color.Cyan,
                 CharacterSize = 10
             });
-
-            View = _Core.DefaultView;
         }
 
 

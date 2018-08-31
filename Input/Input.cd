@@ -12,7 +12,7 @@
       </MemberNameLabel>
     </AssociationLine>
     <TypeIdentifier>
-      <HashCode>IAACghAMgQAigIiAAAABAAgAAAAgAgABAYAIQRliACE=</HashCode>
+      <HashCode>IAACgpAMgQAigIiAAAABAAgAAAAgAgABAYIIQRliACE=</HashCode>
       <FileName>Input\Input.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -74,9 +74,9 @@
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="BlackCoat.Core" Collapsed="true">
-    <Position X="4.25" Y="5.25" Width="3" />
+    <Position X="4.25" Y="5" Width="3" />
     <TypeIdentifier>
-      <HashCode>CgQgEIAIgSAIgoEBCiAAQAgEXAQBJBgBIAYAACEGAIM=</HashCode>
+      <HashCode>AAQhEAAIgSAIgoEACiAAQAgMVBQBJBohIIYAACFGAIM=</HashCode>
       <FileName>Core.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>

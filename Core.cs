@@ -41,6 +41,11 @@ namespace BlackCoat
         public event Action<Boolean> DebugChanged = d => { };
 
         /// <summary>
+        /// Occurs when the current render device has changed.
+        /// </summary>
+        public event Action DeviceChanged = () => { };
+
+        /// <summary>
         /// Occurs when the size of the current render device has changed.
         /// </summary>
         public event Action<Vector2u> DeviceResized = v => { };
@@ -57,12 +62,13 @@ namespace BlackCoat
 
 
         // Variables #######################################################################
-        private RenderWindow _Device;
+        private Device _Device;
+        private Device _OldDevice;
         private Stopwatch _Timer;
         private Boolean _Debug;
+        private Boolean _Fullscreen;
         private CollisionSystem _CollisionSystem;
         private Tools.Console _Console;
-        private int _FrameDelay;
 
 
         // Properties ######################################################################
@@ -74,21 +80,19 @@ namespace BlackCoat
             get { return _Debug; }
             set
             {
-                if (_Debug != value)
+                if (_Debug == value) return;
+                _Debug = value;
+                if (_Debug)
                 {
-                    _Debug = value;
-                    if (_Debug)
-                    {
-                        _Device.KeyPressed += QuitOnEsc;
-                        Log.Info("Debug enabled");
-                    }
-                    else
-                    {
-                        _Device.KeyPressed -= QuitOnEsc;
-                        Log.Info("Debug disabled");
-                    }
-                    DebugChanged.Invoke(_Debug);
+                    Input.KeyPressed += QuitOnEsc;
+                    Log.Info("Debug enabled");
                 }
+                else
+                {
+                    Input.KeyPressed -= QuitOnEsc;
+                    Log.Info("Debug disabled");
+                }
+                DebugChanged.Invoke(_Debug);
             }
         }
 
@@ -112,12 +116,8 @@ namespace BlackCoat
         /// </summary>
         public CollisionSystem CollisionSystem
         {
-            get { return _CollisionSystem; }
-            set
-            {
-                if (value == null) throw new Exception($"{nameof(CollisionSystem)} must never be null");
-                _CollisionSystem = value;
-            }
+            get => _CollisionSystem;
+            set => _CollisionSystem = value ?? throw new Exception($"{nameof(CollisionSystem)} must never be null");
         }
 
         /// <summary>
@@ -153,12 +153,19 @@ namespace BlackCoat
         /// <summary>
         /// Current Rendering Device
         /// </summary>
-        internal RenderWindow Device => _Device;
+        internal Device Device => _Device;
+        internal Device OldDevice => _OldDevice;
 
         /// <summary>
         /// Size of the current Render Device
         /// </summary>
         public Vector2u DeviceSize => _Device.Size;
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the current <see cref="BlackCoat.Device"/> is displayed fullscreen.
+        /// </summary>
+        public bool Fullscreen { get; set; }
+
 
 
         // CTOR ############################################################################
@@ -166,12 +173,15 @@ namespace BlackCoat
         /// Creates a new Instance of the BlackCoat Core class
         /// </summary>
         /// <param name="device">Render Device used by the Core - use of the static creation methods is recommended</param>
-        public Core(RenderWindow device)
+        /// <param name="fullscreenDevice">Optional alternate device. Should be the corresponding opposite of the first device.</param>
+        /// <exception cref="ArgumentNullException">device</exception>
+        public Core(Device device, Device fullscreenDevice = null)
         {
             Log.Info("Initializing Black Coat Engine...");
 
             // Init Backend
             _Device = device ?? throw new ArgumentNullException(nameof(device));
+            _OldDevice = fullscreenDevice;
             _Timer = new Stopwatch();
 
             // Init Defaults
@@ -182,11 +192,8 @@ namespace BlackCoat
             DefaultFont = new Font(Resources.Squares_Bold_Free);
             for (uint i = 4; i <= 32; i += 2) InitializeFontHack(DefaultFont, i); // Unfortunate necessity to prevent SFML from disposing parts of a font.
 
-            // Core-relevant Device Events
-            _Device.Resized += HandleDeviceResized;
-            _Device.Closed += HandleWindowClose;
-            _Device.LostFocus += HandleLostFocus;
-            _Device.GainedFocus += HandleGainedFocus;
+            // Attach Core-relevant Device Events
+            AttachToDevice(_Device);
 
             // Init Subsystems
             Random = new RandomHelper();
@@ -196,10 +203,11 @@ namespace BlackCoat
 
             // Init Input
             Input = new Input(this);
+            Input.KeyPressed += k => { if (Input.Alt && k == Keyboard.Key.Return) Fullscreen = !Fullscreen; };
             Log.Debug("Default Input ready");
 
             // Init Console
-            _Console = new Tools.Console(this, _Device);
+            _Console = new Tools.Console(this);
             _Console.Command += HandleConsoleCommand;
 
             Log.Info("Black Coat Engine Creation Completed. - Version", GetType().Assembly.GetName().Version);
@@ -246,19 +254,6 @@ namespace BlackCoat
         }
 
         /// <summary>
-        /// Sets the icon of the render window and the associated task bar button.
-        /// </summary>
-        /// <param name="icon">Texture used to set the icon from</param>
-        public void SetRenderWindowIcon(Texture icon)
-        {
-            if (icon == null) throw new ArgumentNullException("icon");
-            using (var img = icon.CopyToImage())
-            {
-                _Device.SetIcon(img.Size.X, img.Size.Y, img.Pixels);
-            }
-        }
-
-        /// <summary>
         /// Begins the Update / Rendering Loop.
         /// This method is blocking until Exit() is called.
         /// </summary>
@@ -269,13 +264,13 @@ namespace BlackCoat
             ShowRenderWindow();
             while (_Device.IsOpen)
             {
+                if (Fullscreen != _Fullscreen) ChangeFullscreen();
                 _Device.DispatchEvents();
                 if (HasFocus) // run updates
                 {
                     var deltaT = (float)(_Timer.Elapsed.TotalMilliseconds / 1000d);// fractal second
                     _Timer.Restart();
                     Update(deltaT);
-                    if (_FrameDelay >= 0) Thread.Sleep(_FrameDelay);
                 }
                 else // pause updating & relieve host machine
                 {
@@ -294,7 +289,8 @@ namespace BlackCoat
         public void ManualRefresh(float deltaT = 0)
         {
             if (Disposed) throw new ObjectDisposedException("Core");
-            if (!_Device.IsOpen) throw new InvalidOperationException("Device not ready");
+            if (!_Device.IsOpen) throw new InvalidStateException("Device is not open");
+            if (Fullscreen != _Fullscreen) ChangeFullscreen();
             _Device.DispatchEvents();
             Update(deltaT);
             Draw();
@@ -353,8 +349,9 @@ namespace BlackCoat
             var state = entity.RenderState;
             if (entity.Parent != null)
             {
-                // get transformation inheritance of all parents and update the renderstate
-                // in the SFML draw method the combined Parent transformations are multiplied by the entities own transformation
+                // get the combined transformations of all parents and update the renderstate
+                // in the SFML draw method the combined Parent transformations are multiplied
+                // by the entities own transformation creating the global transformation
                 state.Transform = entity.Parent.Transform;
 
                 // get alpha inheritance and update the entities color alpha component
@@ -409,7 +406,7 @@ namespace BlackCoat
                     return;
                 case "togglefullscreen":
                 case "tfs":
-                    Log.Warning("togglefullscreen - not yet implemented"); // TODO
+                    Fullscreen = !Fullscreen;
                     return;
                 case "debug":
                     Debug = !Debug;
@@ -423,27 +420,34 @@ namespace BlackCoat
             }
         }
 
-        /// <summary>
-        /// Activates the frame break mechanism. USE WITH CAUTON!
-        /// This will severely reduce FPS hence reduce stress on host machine.
-        /// </summary>
-        /// <param name="delay">-1 Disabled; 0 minimal frame drop; 50 or more will cut FPS in half or worse use at on risk; >100 goodbye fps hello spf</param>
-        public void EnableFrameBreak(int delay = 20)
-        {
-            _FrameDelay = delay;
-        }
-
         #region Debug Handler
-        private void QuitOnEsc(object s, KeyEventArgs e)
+        private void QuitOnEsc(Keyboard.Key key)
         {
-            if (e.Code == Keyboard.Key.Escape) Exit();
+            if (key == Keyboard.Key.Escape) Exit();
         }
         #endregion
 
         #region Device Event handlers
+        private void AttachToDevice(Device device)
+        {
+            _Device.Resized += HandleDeviceResized;
+            _Device.Closed += HandleWindowClose;
+            _Device.LostFocus += HandleLostFocus;
+            _Device.GainedFocus += HandleGainedFocus;
+        }
+        private void DetachFromDevice(Device device)
+        {
+            _Device.Resized -= HandleDeviceResized;
+            _Device.Closed -= HandleWindowClose;
+            _Device.LostFocus -= HandleLostFocus;
+            _Device.GainedFocus -= HandleGainedFocus;
+        }
+
         private void HandleDeviceResized(object sender, SizeEventArgs e)
         {
-            DeviceResized(new Vector2u(e.Width, e.Height));
+            DefaultView.Size = _Device.Size.ToVector2f();
+            DefaultView.Center = (_Device.Size / 2).ToVector2f();
+            DeviceResized.Invoke(_Device.Size);
         }
 
         private void HandleWindowClose(object sender, EventArgs e)
@@ -465,6 +469,33 @@ namespace BlackCoat
             FocusGained.Invoke();
             _Timer.Start();
         }
+
+        private void ChangeFullscreen()
+        {
+            _Fullscreen = Fullscreen;
+            if (_OldDevice == null)
+            {
+                _OldDevice = _Device;
+                _Device = Fullscreen ? Device.Fullscreen : Device.Default;
+            }
+            else
+            {
+                var temp = _OldDevice;
+                _OldDevice = _Device;
+                _Device = temp;
+            }
+
+            DetachFromDevice(_OldDevice);
+            _OldDevice.SetVisible(false);
+            _Device.SetVisible(true);
+            _Device.DispatchEvents(); // flush out some redundant events before attaching
+            AttachToDevice(_Device);
+
+            DefaultView = _Device.DefaultView;
+
+            DeviceChanged.Invoke();
+            DeviceResized.Invoke(_Device.Size);
+        }
         #endregion
 
         /// <summary>
@@ -477,12 +508,8 @@ namespace BlackCoat
 
             StateManager.Destroy();
 
-            if (_Device.CPointer != IntPtr.Zero)
-            {
-                if (_Device.IsOpen) _Device.Close();
-                _Device.Dispose();
-            }
-            _Device = null;
+            DisposeDevice(_Device);
+            DisposeDevice(_OldDevice);
 
             DefaultFont.Dispose();
             DefaultFont = null;
@@ -490,52 +517,15 @@ namespace BlackCoat
             Log.Info("Engine Destroyed");
         }
 
-
-        #region STATICS
-        /// <summary>
-        /// Initializes a default Graphic Device primarily for testing purposes
-        /// </summary>
-        /// <returns>The default device</returns>
-        public static RenderWindow DefaultDevice { get { return new RenderWindow(new VideoMode(800, 600), "Default", Styles.Titlebar); } }
-
-        /// <summary>
-        /// Initializes a default Graphic Device mimicking the current desktop
-        /// </summary>
-        /// <returns>The desktop device</returns>
-        public static RenderWindow DesktopDevice { get { return new RenderWindow(VideoMode.DesktopMode, String.Empty, Styles.Fullscreen); } }
-
-        /// <summary>
-        /// Initializes a new Graphic Device
-        /// </summary>
-        /// <param name="deviceWidth">With of the Backbuffer</param>
-        /// <param name="deviceHeight">Height of the Backbuffer</param>
-        /// <param name="title">Title of the Renderwindow</param>
-        /// <param name="style">Display Style of the Device/Window</param>
-        /// <param name="antialiasing">Determines the Anti-aliasing</param>
-        /// <param name="skipValidityCheck">Skips the device validation (not recommended but required for non-standard resolutions)</param>
-        /// <returns>The Initialized RenderWindow or null if the Device could not be created</returns>
-        public static RenderWindow CreateDevice(UInt32 deviceWidth, UInt32 deviceHeight, String title, Styles style, UInt32 antialiasing, Boolean skipValidityCheck = false)
+        private void DisposeDevice(Device device)
         {
-            var settings = new ContextSettings(24, 8, antialiasing);
-            var videoMode = new VideoMode(deviceWidth, deviceHeight);
-            if (skipValidityCheck || videoMode.IsValid())
+            if (device == null) return;
+            if (device.CPointer != IntPtr.Zero)
             {
-                return new RenderWindow(videoMode, title, style, settings);
+                if (device.IsOpen) device.Close();
+                device.Dispose();
             }
-            return null;
+            device = null;
         }
-        /// <summary>
-        /// Initializes a new Graphic Device based on a window or control handle
-        /// </summary>
-        /// <param name="handle">Handle to create the device on</param>
-        /// <param name="antialiasing">Determines the Anti-aliasing</param>
-        /// <returns>The Initialized RenderWindow instance based on the device</returns>
-        public static RenderWindow CreateDevice(IntPtr handle, UInt32 antialiasing)
-        {
-            if (handle == IntPtr.Zero) throw new NullReferenceException("Device creation failed since handle is Zero");
-            var settings = new ContextSettings(24, 8, antialiasing);
-            return new RenderWindow(handle, settings);
-        }
-        #endregion
     }
 }

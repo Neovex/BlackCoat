@@ -108,7 +108,7 @@ namespace BlackCoat.Entities
         {
             if (!Visible) return;
             if (Texture != null) base.Draw();
-            foreach (IEntity e in _Childs) e.Draw();
+            foreach (var entity in _Childs) entity.Draw();
         }
     }
 }

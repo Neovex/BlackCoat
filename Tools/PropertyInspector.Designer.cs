@@ -33,9 +33,10 @@
             this._EditorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this._ExportTargetToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator = new System.Windows.Forms.ToolStripSeparator();
-            this._HideToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this._CloseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this._SplitContainer = new System.Windows.Forms.SplitContainer();
             this._SceneGraph = new System.Windows.Forms.TreeView();
+            this._TopMostToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this._MenuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this._SplitContainer)).BeginInit();
             this._SplitContainer.Panel1.SuspendLayout();
@@ -65,9 +66,10 @@
             // _EditorToolStripMenuItem
             // 
             this._EditorToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this._TopMostToolStripMenuItem,
             this._ExportTargetToolStripMenuItem,
             this.toolStripSeparator,
-            this._HideToolStripMenuItem});
+            this._CloseToolStripMenuItem});
             this._EditorToolStripMenuItem.Name = "_EditorToolStripMenuItem";
             this._EditorToolStripMenuItem.Size = new System.Drawing.Size(68, 20);
             this._EditorToolStripMenuItem.Text = "Inspector";
@@ -75,21 +77,21 @@
             // _ExportTargetToolStripMenuItem
             // 
             this._ExportTargetToolStripMenuItem.Name = "_ExportTargetToolStripMenuItem";
-            this._ExportTargetToolStripMenuItem.Size = new System.Drawing.Size(169, 22);
-            this._ExportTargetToolStripMenuItem.Text = "Export Object Info";
+            this._ExportTargetToolStripMenuItem.Size = new System.Drawing.Size(186, 22);
+            this._ExportTargetToolStripMenuItem.Text = "Export current Object";
             this._ExportTargetToolStripMenuItem.Click += new System.EventHandler(this.ExportTargetToolStripMenuItem_Click);
             // 
             // toolStripSeparator
             // 
             this.toolStripSeparator.Name = "toolStripSeparator";
-            this.toolStripSeparator.Size = new System.Drawing.Size(166, 6);
+            this.toolStripSeparator.Size = new System.Drawing.Size(183, 6);
             // 
-            // _HideToolStripMenuItem
+            // _CloseToolStripMenuItem
             // 
-            this._HideToolStripMenuItem.Name = "_HideToolStripMenuItem";
-            this._HideToolStripMenuItem.Size = new System.Drawing.Size(169, 22);
-            this._HideToolStripMenuItem.Text = "Hide";
-            this._HideToolStripMenuItem.Click += new System.EventHandler(this.HideToolStripMenuItem_Clicked);
+            this._CloseToolStripMenuItem.Name = "_CloseToolStripMenuItem";
+            this._CloseToolStripMenuItem.Size = new System.Drawing.Size(186, 22);
+            this._CloseToolStripMenuItem.Text = "Close";
+            this._CloseToolStripMenuItem.Click += new System.EventHandler(this.HideToolStripMenuItem_Clicked);
             // 
             // _SplitContainer
             // 
@@ -119,6 +121,13 @@
             this._SceneGraph.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.SceneGraph_NodeSelected);
             this._SceneGraph.Enter += new System.EventHandler(this.SceneGraph_GotFocus);
             // 
+            // topMostToolStripMenuItem
+            // 
+            this._TopMostToolStripMenuItem.Name = "topMostToolStripMenuItem";
+            this._TopMostToolStripMenuItem.Size = new System.Drawing.Size(186, 22);
+            this._TopMostToolStripMenuItem.Text = "Top Most";
+            this._TopMostToolStripMenuItem.Click += new System.EventHandler(this.TopMostToolStripMenuItem_Clicked);
+            // 
             // PropertyInspector
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -129,7 +138,6 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
             this.MainMenuStrip = this._MenuStrip;
             this.Name = "PropertyInspector";
-            this.ShowInTaskbar = false;
             this.Text = "Property Inspector";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.PropertyEditor_FormClosing);
             this._MenuStrip.ResumeLayout(false);
@@ -150,8 +158,9 @@
         private System.Windows.Forms.ToolStripMenuItem _EditorToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem _ExportTargetToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator;
-        private System.Windows.Forms.ToolStripMenuItem _HideToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem _CloseToolStripMenuItem;
         private System.Windows.Forms.SplitContainer _SplitContainer;
         private System.Windows.Forms.TreeView _SceneGraph;
+        private System.Windows.Forms.ToolStripMenuItem _TopMostToolStripMenuItem;
     }
 }

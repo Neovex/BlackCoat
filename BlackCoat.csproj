@@ -65,6 +65,7 @@
     <Compile Include="AssetHandling\TextureLoader.cs" />
     <Compile Include="BlackCoatBase.cs" />
     <Compile Include="Collision\Shapes\BasicTextCollisionShape.cs" />
+    <Compile Include="Device.cs" />
     <Compile Include="ParticleSystem\PixelEmitter.cs" />
     <Compile Include="ParticleSystem\IInitializableByInfo.cs" />
     <Compile Include="InvalidStateException.cs" />
@@ -132,7 +133,6 @@
     <Compile Include="StateManagement\BlackCoatIntro.cs" />
     <Compile Include="StateManagement\StateManager.cs" />
     <Compile Include="Tools\Console.cs" />
-    <Compile Include="Extensions\Extensions.cs" />
     <Compile Include="Tools\Create.cs" />
     <Compile Include="Tools\Heading.cs" />
     <Compile Include="Tools\Log.cs" />
