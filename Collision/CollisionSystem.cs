@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-
 using SFML.System;
 
 namespace BlackCoat.Collision
@@ -24,11 +23,14 @@ namespace BlackCoat.Collision
         { }
 
 
+        //#########################################################################################################################################
+
         // Helper methods
+
         /// <summary>
         /// Determines if value-range minA-maxA intersects with a second value-range minB-maxB
         /// </summary>
-        protected virtual bool Intersect(float minA, float maxA, float minB, float maxB)
+        public virtual bool Intersect(float minA, float maxA, float minB, float maxB)
         {
             return minA < minB ? maxA > minB : maxB > minA;
         }
@@ -36,7 +38,7 @@ namespace BlackCoat.Collision
         /// <summary>
         /// Determines if a target angle is within an angle-range
         /// </summary>
-        protected virtual bool IntersectAngles(float target, float min, float max)
+        public virtual bool IntersectAngles(float target, float min, float max)
         {
             if (max - min <= 180) return target >= min && target <= max;
             return (target >= 0 && target <= min) || (target >= max && target <= 360);
@@ -100,6 +102,8 @@ namespace BlackCoat.Collision
 
 
         //#########################################################################################################################################
+
+        // Ray casting
 
         public virtual (Vector2f Position, float Angle)[] Raycast(Vector2f rayOrigin, float rayAngle, ICollisionShape target)
         {
@@ -176,7 +180,7 @@ namespace BlackCoat.Collision
 
         //#########################################################################################################################################
 
-        // Collision Calculations
+        // Collision Calculation
 
         //POINT
         /// <summary>
@@ -458,7 +462,8 @@ namespace BlackCoat.Collision
 
         //#########################################################################################################################################
 
-        // MAPPERS
+        // Collision Mapping
+
         /// <summary>
         /// Determines if objects touch or intersect.
         /// </summary>

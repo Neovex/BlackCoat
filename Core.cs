@@ -48,7 +48,7 @@ namespace BlackCoat
         /// <summary>
         /// Occurs when the size of the current render device has changed.
         /// </summary>
-        public event Action<Vector2u> DeviceResized = v => { };
+        public event Action<Vector2f> DeviceResized = v => { };
 
         /// <summary>
         /// Occurs when the current render device has lost its focus.
@@ -159,7 +159,7 @@ namespace BlackCoat
         /// <summary>
         /// Size of the current Render Device
         /// </summary>
-        public Vector2u DeviceSize => _Device.Size;
+        public Vector2f DeviceSize => _Device.Size.ToVector2f();
 
         /// <summary>
         /// Gets or sets a value indicating whether the current <see cref="BlackCoat.Device"/> is displayed fullscreen.
@@ -190,7 +190,7 @@ namespace BlackCoat
             Disposed = false;
             DefaultView = _Device.DefaultView;
             DefaultFont = new Font(Resources.Squares_Bold_Free);
-            for (uint i = 4; i <= 32; i += 2) InitializeFontHack(DefaultFont, i); // Unfortunate necessity to prevent SFML from disposing parts of a font.
+            for (uint i = 4; i <= 42; i += 2) InitializeFontHack(DefaultFont, i); // Unfortunate necessity to prevent SFML from disposing parts of a font.
 
             // Attach Core-relevant Device Events
             AttachToDevice(_Device);
@@ -218,6 +218,8 @@ namespace BlackCoat
             if (!Disposed) Dispose();
         }
 
+
+        // Methods #########################################################################
         /// <summary>
         /// Initializes a font. An unfortunate necessity to prevent SFML from disposing parts of a font.
         /// </summary>
@@ -226,14 +228,12 @@ namespace BlackCoat
         /// <param name="bold">If set to <c>true</c> the font will be initialized with bold characters.</param>
         public void InitializeFontHack(Font font, uint charSize = 10, bool bold = false)
         {
-            var text = new Text("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ.:-_,;#'+*~´`\\?ß=()&/$%\"§!^°", font, charSize);
+            var text = new Text("0123456789abcdefghijklmnopqrstuvwxyzüöäABCDEFGHIJKLMNOPQRSTUVWXYZÜÖÄ.:-_,;#'+*~´`\\?ß=()&/$%\"§!^°|@", font, charSize);
             if (bold) text.Style = Text.Styles.Bold;
             text.Draw(_Device, RenderStates.Default);
             text.Dispose();
         }
 
-
-        // Methods #########################################################################
         /// <summary>
         /// Displays the Renderwindow to the User.
         /// </summary>
@@ -319,6 +319,9 @@ namespace BlackCoat
 
             // Raise Update event for external updates
             OnUpdate(deltaT);
+
+            // Update Console too
+            _Console.Update(deltaT);
         }
 
         /// <summary>
@@ -445,9 +448,9 @@ namespace BlackCoat
 
         private void HandleDeviceResized(object sender, SizeEventArgs e)
         {
-            DefaultView.Size = _Device.Size.ToVector2f();
-            DefaultView.Center = (_Device.Size / 2).ToVector2f();
-            DeviceResized.Invoke(_Device.Size);
+            DefaultView.Size = DeviceSize;
+            DefaultView.Center = DeviceSize / 2;
+            DeviceResized.Invoke(DeviceSize);
         }
 
         private void HandleWindowClose(object sender, EventArgs e)
@@ -494,7 +497,7 @@ namespace BlackCoat
             DefaultView = _Device.DefaultView;
 
             DeviceChanged.Invoke();
-            DeviceResized.Invoke(_Device.Size);
+            DeviceResized.Invoke(DeviceSize);
         }
         #endregion
 

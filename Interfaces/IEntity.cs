@@ -1,7 +1,7 @@
 ﻿using System;
 using SFML.Graphics;
 using BlackCoat.Entities;
-
+using SFML.System;
 
 namespace BlackCoat
 {
@@ -11,6 +11,11 @@ namespace BlackCoat
     public interface IEntity:Drawable, ITransformable
     {
         // Properties ######################################################################
+        /// <summary>
+        /// Name of the <see cref="IEntity"/>
+        /// </summary>
+        String Name { get; set; }
+
         /// <summary>
         /// Parent Container of the <see cref="IEntity"/>
         /// </summary>
@@ -55,6 +60,11 @@ namespace BlackCoat
         /// Target device for rendering
         /// </summary>
         RenderTarget RenderTarget { get; }
+
+        /// <summary>
+        /// Gets the position of this <see cref="IEntity"/> independent from scene graph and view.
+        /// </summary>
+        Vector2f GlobalPosition { get; }
 
 
         // Methods ######################################################################

@@ -22,8 +22,7 @@ namespace BlackCoat.Collision.Shapes
         /// <param name="collisionSystem">The collision system used for collision checking.</param>
         public CollisionShape(CollisionSystem collisionSystem)
         {
-            if (collisionSystem == null) throw new ArgumentNullException(nameof(collisionSystem));
-            _CollisionSystem = collisionSystem;
+            _CollisionSystem = collisionSystem ?? throw new ArgumentNullException(nameof(collisionSystem));
         }
 
         /// <summary>

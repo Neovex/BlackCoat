@@ -14,7 +14,6 @@ namespace BlackCoat.InputMapping
     /// <seealso cref="System.IDisposable" />
     public class SimpleInputMap<TMappedOperation> : IDisposable
     {
-        private Input _Input;
         private Boolean _Enabled;
 
         private Dictionary<Keyboard.Key, TMappedOperation> _KeyboardActions;
@@ -23,7 +22,13 @@ namespace BlackCoat.InputMapping
         private TMappedOperation _ScrollUpAction;
         private Boolean _ScrollDownActionSet;
         private TMappedOperation _ScrollDownAction;
-        
+
+
+        /// <summary>
+        /// The input source for this map.
+        /// </summary>
+        public Input Input { get; }
+
         /// <summary>
         /// Gets the name of this instance.
         /// </summary>
@@ -54,7 +59,7 @@ namespace BlackCoat.InputMapping
         /// </summary>
         public SimpleInputMap(Input eventSource, string name)
         {
-            _Input = eventSource ?? throw new ArgumentNullException(nameof(eventSource));
+            Input = eventSource ?? throw new ArgumentNullException(nameof(eventSource));
             if (String.IsNullOrEmpty(name)) throw new ArgumentException(nameof(name));
             Name = name;
 
@@ -77,11 +82,11 @@ namespace BlackCoat.InputMapping
         /// </summary>
         public void Enable()
         {
-            _Input.MouseButtonPressed += HandleMouseButtonPressed;
-            _Input.MouseButtonReleased += HandleMouseButtonReleased;
-            _Input.MouseWheelScrolled += HandleMouseWheelScrolled;
-            _Input.KeyPressed += HandleKeyPressed;
-            _Input.KeyReleased += HandleKeyReleased;
+            Input.MouseButtonPressed += HandleMouseButtonPressed;
+            Input.MouseButtonReleased += HandleMouseButtonReleased;
+            Input.MouseWheelScrolled += HandleMouseWheelScrolled;
+            Input.KeyPressed += HandleKeyPressed;
+            Input.KeyReleased += HandleKeyReleased;
             _Enabled = true;
         }
 
@@ -90,11 +95,11 @@ namespace BlackCoat.InputMapping
         /// </summary>
         public void Disable()
         {
-            _Input.MouseButtonPressed -= HandleMouseButtonPressed;
-            _Input.MouseButtonReleased -= HandleMouseButtonReleased;
-            _Input.MouseWheelScrolled -= HandleMouseWheelScrolled;
-            _Input.KeyPressed -= HandleKeyPressed;
-            _Input.KeyReleased -= HandleKeyReleased;
+            Input.MouseButtonPressed -= HandleMouseButtonPressed;
+            Input.MouseButtonReleased -= HandleMouseButtonReleased;
+            Input.MouseWheelScrolled -= HandleMouseWheelScrolled;
+            Input.KeyPressed -= HandleKeyPressed;
+            Input.KeyReleased -= HandleKeyReleased;
             _Enabled = false;
         }
 

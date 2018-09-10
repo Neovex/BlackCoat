@@ -5,19 +5,18 @@ using SFML.System;
 using SFML.Window;
 using SFML.Graphics;
 using BlackCoat.Animation;
-using BlackCoat.Entities;
-using BlackCoat.Entities.Shapes;
+using BlackCoat.UI;
 
 namespace BlackCoat.Tools
 {
     /// <summary>
     /// The console is a simple direct User I/O interface for advanced control
     /// </summary>
-    internal class Console : Container
+    internal class Console : UICanvas
     {
         // Constants #######################################################################
         private const int _FONT_SIZE = 10;
-        private const int _KEEP_LINES = 25;
+        private const int _MAX_MESSAGE_HISTORY = 30;
 
 
         // Events ##########################################################################
@@ -25,12 +24,12 @@ namespace BlackCoat.Tools
 
 
         // Variables #######################################################################
-        private Boolean _Open = false;
-        private Boolean _AnimationRunning = false;
-        private Rectangle _Background;
-        private TextItem _Display;
-        private Queue<String> _Messages = new Queue<String>();
-        private String _CurrentInput;
+        private Single _Height;
+        private Boolean _Open;
+        private Boolean _AnimationRunning;
+        private TextBox _InputBox;
+        private Label _Output;
+        private Queue<String> _Messages;
 
 
         // CTOR ############################################################################
@@ -40,93 +39,105 @@ namespace BlackCoat.Tools
         /// <param name="core">Engine Core</param>
         internal Console(Core core) : base(core)
         {
-            _Background = new Rectangle(_Core);
-            _Background.Color = Color.Black;
-            _Background.Alpha = 0.6f;
-            AddChild(_Background);
-
-            _Display = new TextItem(_Core);
-            _Display.Position = new Vector2f(3, 3);
-            _Display.Color = SFML.Graphics.Color.Cyan;
-            _Display.CharacterSize = _FONT_SIZE;
-            AddChild(_Display);
-
+            // Self
+            _Messages = new Queue<String>();
+            Input = new UIInput(new Input(_Core), true);
             Visible = false;
-            UpdateDisplayProportions(_Core.DeviceSize.X, _Core.DeviceSize.Y);
+            BackgroundColor = Color.Black;
+            BackgroundAlpha = 0.6f;
 
+            // Setup Controls
+            Add(new OffsetContainer(_Core, false)
+            {
+                Init = new UIComponent[]
+                {
+                    _InputBox = new TextBox(_Core)
+                    {
+                        BackgroundAlpha = 0.3f,
+                        TextColor = Color.Cyan,
+                        EditingTextColor = Color.Cyan,
+                        CaretColor = Color.Cyan,
+                        InnerPadding = new FloatRect(3,3,3,3),
+                        MinSize = new Vector2f(_Core.DeviceSize.X, 7),
+                        CharacterSize = _FONT_SIZE
+                    },
+                    _Output = new Label(_Core)
+                    {
+                        InnerPadding  = new FloatRect(3,0,3,0),
+                        TextColor     = _InputBox.TextColor,
+                        CharacterSize = _InputBox.CharacterSize,
+                    }
+                }
+            });
+
+            // Events
             Log.OnLog += LogMessage;
+            _Core.DeviceResized += UpdateDisplayProportions;
             _Core.Input.KeyPressed += HandleKeyPressed;
-            _Core.Input.TextEntered += HandleTextEntered;
+            Input.Input.KeyPressed += HandleKeyPressed;
 
-            _Core.DeviceResized += HandleCoreDeviceResized;
-            
-            Log.Debug("Engine", nameof(Console), "ready");
+            // Init
+            UpdateDisplayProportions(_Core.DeviceSize);
+            Log.Debug(nameof(Console), "ready");
         }
 
 
         // Methods #########################################################################
+        private void UpdateDisplayProportions(Vector2f size)
+        {
+            _Height = size.Y / 3;
+            SetSize(new Vector2f(size.X, _Height));
+            Position = new Vector2f(Position.X , size.Y - (_Open ? _Height : 0));
+            _InputBox.MinSize = new Vector2f(size.X, _InputBox.MinSize.Y);
+            UpdateOutputText();
+        }
+
         private void HandleKeyPressed(Keyboard.Key key)
         {
-            if (_Core.Input.Control && _Core.Input.Shift && key == Keyboard.Key.Num1)
+            var input = _Open ? Input.Input : _Core.Input;
+            if (input.Control && input.Shift && key == Keyboard.Key.Num1)
             {
                 if (_Open) Close();
                 else Open();
             }
             else if (_Open && key == Keyboard.Key.Return)
             {
-                if (!String.IsNullOrWhiteSpace(_CurrentInput))
+                if (!String.IsNullOrWhiteSpace(_InputBox.Text))
                 {
-                    Command.Invoke(_CurrentInput);
+                    Command.Invoke(_InputBox.Text);
                 }
-                _CurrentInput = null;
-                UpdateDisplayText();
+                _InputBox.Text = String.Empty;
+                UpdateOutputText();
             }
-        }
-
-        private void HandleTextEntered(TextEnteredEventArgs evnt)
-        {
-            if (!_Open) return;
-            _CurrentInput = evnt.UpdateText(_CurrentInput);
-            UpdateDisplayText();
+            else if (_Open && key == Keyboard.Key.Escape)
+            {
+                Close();
+            }
         }
 
         private void LogMessage(String msg)
         {
             _Messages.Enqueue(msg.Replace(Environment.NewLine, Constants.NEW_LINE));
-            if (_Messages.Count > _KEEP_LINES) _Messages.Dequeue();
-            if(!_Core.Disposed) UpdateDisplayText();
+            if (_Messages.Count > _MAX_MESSAGE_HISTORY) _Messages.Dequeue();
+            if(!_Core.Disposed) UpdateOutputText();
         }
 
-        private void UpdateDisplayText()
+        private void UpdateOutputText()
         {
-            var availableLines = Convert.ToInt32(Math.Floor(_Background.Size.Y / _FONT_SIZE)) - 5;
-            _Display.Text = String.Join(Constants.NEW_LINE, new[] { _CurrentInput ?? String.Empty }.Concat(_Messages.Reverse().Take(availableLines)));
-        }
-
-        private void HandleCoreDeviceResized(Vector2u size)
-        {
-            UpdateDisplayProportions(size.X, size.Y);
-        }
-
-        private void UpdateDisplayProportions(float width, float height)
-        {
-            _Background.Size = new Vector2f(width, height / 3);
-            if (_Open)
-            {
-                Position = new Vector2f(0, height - height / 3);
-            }
-            else
-            {
-                Position = new Vector2f(0, height);
-            }
+            var availableLines = Convert.ToInt32(Math.Floor(_Height / _InputBox.InnerSize.Y));
+            _Output.Text = String.Join(Constants.NEW_LINE, new[] { _InputBox.Text ?? String.Empty }.Concat(_Messages.Reverse().Take(availableLines)));
         }
 
         private void Open()
         {
             if (_AnimationRunning) return;
-            Visible = true;
             _AnimationRunning = true;
-            _Core.AnimationManager.RunAdvanced(Position.Y, Position.Y - _Background.Size.Y, 0.4f, v => Position = new Vector2f(Position.X, v), a =>
+
+            Visible = true;
+            _InputBox.GiveFocus();
+            _InputBox.StartEdit();
+
+            _Core.AnimationManager.RunAdvanced(Position.Y, Position.Y - _Height, 0.4f, v => Position = new Vector2f(Position.X, v), a =>
             {
                 _Open = true;
                 _AnimationRunning = false;
@@ -136,7 +147,8 @@ namespace BlackCoat.Tools
         {
             if (_AnimationRunning) return;
             _AnimationRunning = true;
-            _Core.AnimationManager.RunAdvanced(Position.Y, Position.Y + _Background.Size.Y, 0.4f, v => Position = new Vector2f(Position.X, v), a =>
+
+            _Core.AnimationManager.RunAdvanced(Position.Y, Position.Y + _Height, 0.4f, v => Position = new Vector2f(Position.X, v), a =>
             {
                 _Open = false;
                 Visible = false;

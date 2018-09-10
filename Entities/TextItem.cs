@@ -1,4 +1,5 @@
 ﻿using System;
+using SFML.System;
 using SFML.Graphics;
 using BlackCoat.Collision;
 using BlackCoat.Collision.Shapes;
@@ -31,12 +32,17 @@ namespace BlackCoat.Entities
         }
 
         /// <summary>
+        /// Name of the <see cref="IEntity" />
+        /// </summary>
+        public string Name { get; set; }
+
+        /// <summary>
         /// Parent Container of this Entity
         /// </summary>
         public Container Parent
         {
             get { return _Parent; }
-            set { if (value == null || !value.HasChild(this)) _Parent = value; }
+            set { if (value == null || !value.Contains(this)) _Parent = value; }
         }
 
         /// <summary>
@@ -113,6 +119,11 @@ namespace BlackCoat.Entities
             set { _CollisionShape = value; }
         }
 
+        /// <summary>
+        /// Gets the position of this <see cref="IEntity"/> independent from scene graph and view.
+        /// </summary>
+        public Vector2f GlobalPosition => Parent == null ? Position : Position.ToGlobal(Parent.GlobalPosition);
+
 
         // CTOR ############################################################################        
         /// <summary>
@@ -138,16 +149,19 @@ namespace BlackCoat.Entities
         /// Can be overridden by derived classes.
         /// </summary>
         /// <param name="deltaT">Current game time</param>
-        public virtual void Update(Single deltaT)
-        {
-        }
+        public virtual void Update(Single deltaT) { }
 
         /// <summary>
         /// Draws the Text
         /// </summary>
-        public virtual void Draw()
-        {
-            _Core.Draw(this);
-        }
+        public virtual void Draw() => _Core.Draw(this);
+
+        /// <summary>
+        /// Returns a <see cref="System.String" /> that represents this instance.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="System.String" /> that represents this instance.
+        /// </returns>
+        public override string ToString() => Create.IdString(this);
     }
 }

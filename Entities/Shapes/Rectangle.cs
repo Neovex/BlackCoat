@@ -23,12 +23,17 @@ namespace BlackCoat.Entities.Shapes
 
         // Properties ######################################################################
         /// <summary>
+        /// Name of the <see cref="IEntity" />
+        /// </summary>
+        public string Name { get; set; }
+
+        /// <summary>
         /// Parent Container of this <see cref="Rectangle"/>
         /// </summary>
         public Container Parent
         {
             get { return _Parent; }
-            set { if (value == null || !value.HasChild(this)) _Parent = value; }
+            set { if (value == null || !value.Contains(this)) _Parent = value; }
         }
 
         /// <summary>
@@ -115,6 +120,11 @@ namespace BlackCoat.Entities.Shapes
         /// </summary>
         public virtual Geometry CollisionGeometry => Geometry.Rectangle;
 
+        /// <summary>
+        /// Gets the position of this <see cref="IEntity"/> independent from scene graph and view.
+        /// </summary>
+        public Vector2f GlobalPosition => Parent == null ? Position : Position.ToGlobal(Parent.GlobalPosition);
+
 
 
         // CTOR ############################################################################
@@ -137,18 +147,13 @@ namespace BlackCoat.Entities.Shapes
         /// Can be overridden by derived classes.
         /// </summary>
         /// <param name="deltaT">Current game-time</param>
-        public virtual void Update(Single deltaT)
-        {
-        }
+        public virtual void Update(Single deltaT) { }
 
         /// <summary>
         /// Draws the <see cref="Rectangle"/> if it is visible.
         /// Can be overridden by derived classes.
         /// </summary>
-        public virtual void Draw()
-        {
-            _Core.Draw(this);
-        }
+        public virtual void Draw() => _Core.Draw(this);
 
         // Collision Implementation ########################################################
         /// <summary>
@@ -156,19 +161,21 @@ namespace BlackCoat.Entities.Shapes
         /// </summary>
         /// <param name="point">The point to check</param>
         /// <returns>True when the point is inside the <see cref="Rectangle"/></returns>
-        public virtual bool Collide(Vector2f point)
-        {
-            return _Core.CollisionSystem.CheckCollision(point, this);
-        }
+        public virtual bool Collide(Vector2f point) => _Core.CollisionSystem.CheckCollision(point, this);
 
         /// <summary>
         /// Determines if this <see cref="Rectangle"/> is colliding with another <see cref="ICollisionShape"/>
         /// </summary>
         /// <param name="other">The other <see cref="ICollisionShape"/></param>
         /// <returns>True when the objects overlap or touch</returns>
-        public virtual bool Collide(ICollisionShape other)
-        {
-            return _Core.CollisionSystem.CheckCollision(this, other);
-        }
+        public virtual bool Collide(ICollisionShape other) => _Core.CollisionSystem.CheckCollision(this, other);
+
+        /// <summary>
+        /// Returns a <see cref="System.String" /> that represents this instance.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="System.String" /> that represents this instance.
+        /// </returns>
+        public override string ToString() => Create.IdString(this);
     }
 }

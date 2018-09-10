@@ -64,7 +64,22 @@
     <Compile Include="AssetHandling\SfxManager.cs" />
     <Compile Include="AssetHandling\TextureLoader.cs" />
     <Compile Include="BlackCoatBase.cs" />
+    <Compile Include="Extensions\ColorExtensions.cs" />
+    <Compile Include="Extensions\RectangleExtensions.cs" />
+    <Compile Include="Tools\RectangleConverter.cs" />
+    <Compile Include="UI\Anchor.cs" />
+    <Compile Include="UI\AnchoredContainer.cs" />
+    <Compile Include="UI\DistributionContainer.cs" />
+    <Compile Include="UI\InputMapping\UIInput.cs" />
+    <Compile Include="UI\InputMapping\UIInputMap.cs" />
+    <Compile Include="UI\UICanvas.cs" />
+    <Compile Include="UI\Label.cs" />
+    <Compile Include="UI\OffsetContainer.cs" />
+    <Compile Include="UI\UICollisionShape.cs" />
+    <Compile Include="UI\UIContainer.cs" />
+    <Compile Include="UI\Button.cs" />
     <Compile Include="Collision\Shapes\BasicTextCollisionShape.cs" />
+    <Compile Include="UI\UIComponent.cs" />
     <Compile Include="Device.cs" />
     <Compile Include="ParticleSystem\PixelEmitter.cs" />
     <Compile Include="ParticleSystem\IInitializableByInfo.cs" />
@@ -132,9 +147,10 @@
     <Compile Include="StateManagement\Gamestate.cs" />
     <Compile Include="StateManagement\BlackCoatIntro.cs" />
     <Compile Include="StateManagement\StateManager.cs" />
+    <Compile Include="UI\TextBox.cs" />
     <Compile Include="Tools\Console.cs" />
     <Compile Include="Tools\Create.cs" />
-    <Compile Include="Tools\Heading.cs" />
+    <Compile Include="Tools\Direction.cs" />
     <Compile Include="Tools\Log.cs" />
     <Compile Include="Tools\MathHelper.cs" />
     <Compile Include="Tools\PerformanceMonitor.cs" />
@@ -182,6 +198,7 @@
     <None Include="Input\Input.cd" />
     <None Include="ParticleSystem\Particles.cd" />
     <None Include="StateManagement\StateManagement.cd" />
+    <None Include="UI\UI.cd" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SFML.Net\src\Audio\sfml-audio.csproj">

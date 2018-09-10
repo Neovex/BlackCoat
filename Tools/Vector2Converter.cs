@@ -7,8 +7,6 @@ namespace BlackCoat.Tools
 {
     public class Vector2Converter<T> : ExpandableObjectConverter where T : struct
     {
-        private const Char _SEPERATOR = ';';
-
         public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType)
         {
             return destinationType == typeof(T) || base.CanConvertTo(context, destinationType);
@@ -17,9 +15,9 @@ namespace BlackCoat.Tools
         {
             switch (value)
             {
-                case Vector2f f: return $"{f.X}{_SEPERATOR}{f.Y}";
-                case Vector2i i: return $"{i.X}{_SEPERATOR}{i.Y}";
-                case Vector2u u: return $"{u.X}{_SEPERATOR}{u.Y}";
+                case Vector2f f: return $"{f.X}{Constants.SEPERATOR}{f.Y}";
+                case Vector2i i: return $"{i.X}{Constants.SEPERATOR}{i.Y}";
+                case Vector2u u: return $"{u.X}{Constants.SEPERATOR}{u.Y}";
             }
             return base.ConvertTo(context, culture, value, destinationType);
         }
@@ -34,7 +32,7 @@ namespace BlackCoat.Tools
             {
                 try
                 {
-                    var parts = str.Split(_SEPERATOR);
+                    var parts = str.Split(Constants.SEPERATOR);
                     if (typeof(T) == typeof(Vector2f)) return new Vector2f(float.Parse(parts[0]), float.Parse(parts[1]));
                     else
                     if (typeof(T) == typeof(Vector2i)) return new Vector2i(int.Parse(parts[0]), int.Parse(parts[1]));

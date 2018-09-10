@@ -1,85 +1,103 @@
 ﻿using SFML.Graphics;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using System.Collections.Generic;
 
 namespace BlackCoat.Entities
 {
     /// <summary>
     /// Hierarchical render element. The scene graph is constructed primarily out of instances of this class.
-    /// It can be used like a <see cref="Graphic"/> but additionally supports having child elements which will be rendered as well.
+    /// It can be used like a <see cref="Graphic"/> but additionally draws all child elements in its own coordinate system.
     /// </summary>
     public class Container : Graphic
     {
         // Variables #######################################################################
-        protected internal List<IEntity> _Childs = new List<IEntity>();
+        protected internal readonly List<IEntity> _Entities;
 
 
         // Properties ######################################################################
         /// <summary>
         /// Transform Matrix defining Position, Scale and Rotation of the Entity
         /// </summary>
-        public new Transform Transform { get { return Parent == null ? base.Transform : base.Transform * Parent.Transform; } }
+        public new Transform Transform => Parent == null ? base.Transform : base.Transform * Parent.Transform;
+
+        /// <summary>
+        /// Retrieves the entity at the given index
+        /// </summary>
+        public virtual IEntity this[int i] => i > -1 && i < _Entities.Count ? _Entities[i] : null;
 
 
         // CTOR ############################################################################
         public Container(Core core) : base(core)
-        { }
+        {
+            _Entities = new List<IEntity>();
+        }
 
 
         // Methods #########################################################################
         /// <summary>
         /// Adds an Entity to this Container
         /// </summary>
-        /// <param name="e">The Entity to add</param>
+        /// <param name="entity">The Entity to add</param>
         /// <returns>True if the Entity could be added</returns>
-        public virtual Boolean AddChild(IEntity e)
+        public virtual Boolean Add(IEntity entity)
         {
-            if (e.Parent != null) e.Parent.RemoveChild(e);
-            e.Parent = this;
-            _Childs.Add(e);
+            if (entity == null) throw new ArgumentNullException(nameof(entity));
+            if (entity.Parent != null) entity.Parent.Remove(entity);
+            entity.Parent = this;
+            _Entities.Add(entity);
             return true;
         }
 
         /// <summary>
         /// Removes the provided Entity from the Container
         /// </summary>
-        /// <param name="e">The Entity to remove</param>
-        public virtual void RemoveChild(IEntity e)
+        /// <param name="entity">The Entity to remove</param>
+        public virtual void Remove(IEntity entity)
         {
-            _Childs.Remove(e);
-            e.Parent = null;
-        }
-
-        /// <summary>
-        /// Retrieves the entity at the given index
-        /// </summary>
-        /// <param name="i">Entity index</param>
-        /// <returns>The requested Entity if found otherwise null</returns>
-        public virtual IEntity GetChildFromIndex(Int32 i)
-        {
-            return i > -1 && i < _Childs.Count ? _Childs[i] : null;
+            if (entity == null) throw new ArgumentNullException(nameof(entity));
+            _Entities.Remove(entity);
+            entity.Parent = null;
         }
 
         /// <summary>
         /// Gets the index of a Child Entity
         /// </summary>
-        /// <param name="child">The request child entity</param>
+        /// <param name="entity">The request child entity</param>
         /// <returns>The index of the child or -1 if it is not contained</returns>
-        public virtual Int32 GetChildIndex(IEntity child)
+        public virtual Int32 IndexOf(IEntity entity)
         {
-            return _Childs.IndexOf(child);
+            return _Entities.IndexOf(entity);
         }
 
         /// <summary>
         /// Determines if the given entity is child of this container
         /// </summary>
-        /// <param name="child">Entity to check</param>
+        /// <param name="entity">Entity to check</param>
         /// <returns>True if the entity is child of this container otherwise false</returns>
-        public virtual Boolean HasChild(IEntity child)
+        public virtual Boolean Contains(IEntity entity)
         {
-            return _Childs.Contains(child);
+            return _Entities.Contains(entity);
+        }
+
+        /// <summary>
+        /// Gets the first entity of the provided type inside this <see cref="Container"/>
+        /// </summary>
+        /// <typeparam name="T">Type of the entity</typeparam>
+        /// <returns>The first entity of the given type or null when there is none</returns>
+        public T GetFirst<T>() where T : IEntity
+        {
+            return _Entities.OfType<T>().FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Gets all entities of the provided type.
+        /// </summary>
+        /// <typeparam name="T">Type of the entities</typeparam>
+        /// <returns>An array containing all entities of the given type</returns>
+        public T[] GetAll<T>() where T : IEntity
+        {
+            return _Entities.OfType<T>().ToArray();
         }
 
         /// <summary>
@@ -87,8 +105,8 @@ namespace BlackCoat.Entities
         /// </summary>
         public virtual void Clear()
         {
-            foreach (var child in _Childs) child.Parent = null;
-            _Childs.Clear();
+            foreach (var child in _Entities) child.Parent = null;
+            _Entities.Clear();
         }
 
         /// <summary>
@@ -98,7 +116,7 @@ namespace BlackCoat.Entities
         override public void Update(Single deltaT)
         {
             base.Update(deltaT);
-            for (int i = _Childs.Count - 1; i > -1; i--) _Childs[i].Update(deltaT);
+            for (int i = _Entities.Count - 1; i > -1; i--) _Entities[i].Update(deltaT);
         }
 
         /// <summary>
@@ -108,7 +126,7 @@ namespace BlackCoat.Entities
         {
             if (!Visible) return;
             if (Texture != null) base.Draw();
-            foreach (var entity in _Childs) entity.Draw();
+            foreach (var entity in _Entities) entity.Draw();
         }
     }
 }

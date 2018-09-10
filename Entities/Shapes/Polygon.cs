@@ -33,7 +33,7 @@ namespace BlackCoat.Entities.Shapes
         /// </summary>
         public Vector2f this[int index]
         {
-            get { return _Points[index]; }
+            get { return _Points[index % _Points.Count]; }
             set
             {
                 if (index >= _Points.Count) _Points.Add(value);
@@ -43,12 +43,17 @@ namespace BlackCoat.Entities.Shapes
         }
 
         /// <summary>
+        /// Name of the <see cref="IEntity" />
+        /// </summary>
+        public string Name { get; set; }
+
+        /// <summary>
         /// Parent Container of this <see cref="Polygon"/>
         /// </summary>
         public Container Parent
         {
             get { return _Parent; }
-            set { if (value == null || !value.HasChild(this)) _Parent = value; }
+            set { if (value == null || !value.Contains(this)) _Parent = value; }
         }
 
         /// <summary>
@@ -135,6 +140,11 @@ namespace BlackCoat.Entities.Shapes
         /// </summary>
         public virtual Geometry CollisionGeometry => Geometry.Polygon;
 
+        /// <summary>
+        /// Gets the position of this <see cref="IEntity"/> independent from scene graph and view.
+        /// </summary>
+        public Vector2f GlobalPosition => Parent == null ? Position : Position.ToGlobal(Parent.GlobalPosition);
+
 
         // CTOR ############################################################################
         /// <summary>
@@ -159,28 +169,20 @@ namespace BlackCoat.Entities.Shapes
         /// Can be overridden by derived classes.
         /// </summary>
         /// <param name="deltaT">Current game-time</param>
-        public virtual void Update(Single deltaT)
-        {
-        }
+        public virtual void Update(Single deltaT) { }
 
         /// <summary>
         /// Draws the <see cref="Polygon"/> if it is visible.
         /// Can be overridden by derived classes.
         /// </summary>
-        public virtual void Draw()
-        {
-            _Core.Draw(this);
-        }
+        public virtual void Draw() => _Core.Draw(this);
 
         // Abstract Implementation #########################################################        
         /// <summary>
         /// Get the total number of points of the <see cref="Polygon"/>
         /// </summary>
         /// <returns>The total point count</returns>
-        public override uint GetPointCount()
-        {
-            return (uint)_Points.Count;
-        }
+        public override uint GetPointCount() => (uint)_Points.Count;
 
         /// <summary>
         /// Get the position of a point
@@ -190,10 +192,7 @@ namespace BlackCoat.Entities.Shapes
         /// </summary>
         /// <param name="index">Index of the point to get, in range [0 .. PointCount - 1]</param>
         /// <returns>index-th point of the <see cref="Polygon"/></returns>
-        public override Vector2f GetPoint(uint index)
-        {
-            return _Points[(int)index];
-        }
+        public override Vector2f GetPoint(uint index) => this[(int)index];
 
 
         // Collision Implementation ########################################################
@@ -202,19 +201,21 @@ namespace BlackCoat.Entities.Shapes
         /// </summary>
         /// <param name="point">The point to check</param>
         /// <returns>True when the point is inside the <see cref="Polygon"/></returns>
-        public virtual bool Collide(Vector2f point)
-        {
-            return _Core.CollisionSystem.CheckCollision(point, this);
-        }
+        public virtual bool Collide(Vector2f point) => _Core.CollisionSystem.CheckCollision(point, this);
 
         /// <summary>
         /// Determines if this <see cref="Polygon"/> is colliding with another <see cref="ICollisionShape"/>
         /// </summary>
         /// <param name="other">The other <see cref="ICollisionShape"/></param>
         /// <returns>True when the objects overlap or touch</returns>
-        public virtual bool Collide(ICollisionShape other)
-        {
-            return _Core.CollisionSystem.CheckCollision(this, other);
-        }
+        public virtual bool Collide(ICollisionShape other) => _Core.CollisionSystem.CheckCollision(this, other);
+
+        /// <summary>
+        /// Returns a <see cref="System.String" /> that represents this instance.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="System.String" /> that represents this instance.
+        /// </returns>
+        public override string ToString() => Create.IdString(this);
     }
 }

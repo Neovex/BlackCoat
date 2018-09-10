@@ -19,10 +19,12 @@ namespace BlackCoat.Tools
         static PropertyInspector()
         {
             // Adding Conversion Attributes to 3rd Party Components
-            TypeDescriptor.AddAttributes(typeof(Vector2f), new TypeConverterAttribute(typeof(Vector2Converter<Vector2f>)));
-            TypeDescriptor.AddAttributes(typeof(Vector2i), new TypeConverterAttribute(typeof(Vector2Converter<Vector2i>)));
-            TypeDescriptor.AddAttributes(typeof(Vector2u), new TypeConverterAttribute(typeof(Vector2Converter<Vector2u>)));
-            TypeDescriptor.AddAttributes(typeof(Color),    new TypeConverterAttribute(typeof(ColorConverter)));
+            TypeDescriptor.AddAttributes(typeof(Vector2f),  new TypeConverterAttribute(typeof(Vector2Converter<Vector2f>)));
+            TypeDescriptor.AddAttributes(typeof(Vector2i),  new TypeConverterAttribute(typeof(Vector2Converter<Vector2i>)));
+            TypeDescriptor.AddAttributes(typeof(Vector2u),  new TypeConverterAttribute(typeof(Vector2Converter<Vector2u>)));
+            TypeDescriptor.AddAttributes(typeof(Color),     new TypeConverterAttribute(typeof(ColorConverter)));
+            TypeDescriptor.AddAttributes(typeof(IntRect),   new TypeConverterAttribute(typeof(RectangleConverter<IntRect>)));
+            TypeDescriptor.AddAttributes(typeof(FloatRect), new TypeConverterAttribute(typeof(RectangleConverter<FloatRect>)));
         }
 
         private Boolean _Locked;
@@ -41,8 +43,7 @@ namespace BlackCoat.Tools
         {
             if (item == null) return;
 
-            var graphNode = new TreeNode(displayName ?? item.GetType().Name);
-            graphNode.Tag = item;
+            var graphNode = new TreeNode(displayName ?? item.GetType().Name) { Tag = item };
             (parent?.Nodes ?? _SceneGraph.Nodes).Add(graphNode);
 
             // Handle Entities
@@ -64,7 +65,7 @@ namespace BlackCoat.Tools
                     Add(state.Layer_Cursor, graphNode, nameof(state.Layer_Cursor));
                 break;
                 case Entities.Container container:
-                    Add(container._Childs, graphNode);
+                    Add(container._Entities, graphNode);
                 break;
                 case EmitterComposition composite:
                     Add(composite.Emitters, graphNode);

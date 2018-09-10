@@ -11,7 +11,7 @@ namespace BlackCoat.Entities
         // CTOR ############################################################################
         internal CursorLayer(Core core) : base(core)
         {
-            AddChild(Cursor = new Graphic(_Core) { Visible = false });
+            Add(Cursor = new Graphic(_Core) { Visible = false });
         }
 
 

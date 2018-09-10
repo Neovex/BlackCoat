@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using SFML.System;
 using SFML.Graphics;
 
 namespace BlackCoat.Entities
@@ -19,12 +20,17 @@ namespace BlackCoat.Entities
 
         // Properties ######################################################################
         /// <summary>
+        /// Name of the <see cref="IEntity" />
+        /// </summary>
+        public string Name { get; set; }
+
+        /// <summary>
         /// Parent Container of this Entity
         /// </summary>
         public Container Parent
         {
             get { return _Parent; }
-            set { if (value == null || !value.HasChild(this)) _Parent = value; }
+            set { if (value == null || !value.Contains(this)) _Parent = value; }
         }
 
         /// <summary>
@@ -97,6 +103,11 @@ namespace BlackCoat.Entities
             }
         }
 
+        /// <summary>
+        /// Gets the position of this <see cref="IEntity"/> independent from scene graph and view.
+        /// </summary>
+        public Vector2f GlobalPosition => Parent == null ? Position : Position.ToGlobal(Parent.GlobalPosition);
+
 
         // CTOR ############################################################################
         /// <summary>
@@ -131,5 +142,13 @@ namespace BlackCoat.Entities
         /// <param name="target">Render device</param>
         /// <param name="states">Additional render information</param>
         public abstract void Draw(RenderTarget target, RenderStates states);
+
+        /// <summary>
+        /// Returns a <see cref="System.String" /> that represents this instance.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="System.String" /> that represents this instance.
+        /// </returns>
+        public override string ToString() => Create.IdString(this);
     }
 }

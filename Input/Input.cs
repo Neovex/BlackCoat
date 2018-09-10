@@ -61,6 +61,7 @@ namespace BlackCoat
                 else
                 {
                     _Device.MouseMoved -= HandleMouseMoved;
+                    _MousePosition.X = _MousePosition.Y = -1;
                 }
             }
         }
@@ -232,8 +233,27 @@ namespace BlackCoat
         private void HandleKeyPressed(object sender, KeyEventArgs e)
         {
             // Handle special keys for text input
-            if (e.Code == Keyboard.Key.BackSpace) TextEntered(new TextEnteredEventArgs(true, false));
-            else if (e.Code == Keyboard.Key.Delete) TextEntered(new TextEnteredEventArgs(false, true));
+            switch (e.Code)
+            {
+                case Keyboard.Key.BackSpace:
+                    TextEntered(new TextEnteredEventArgs(TextEnteredEventArgs.Operation.Backspace));
+                    break;
+                case Keyboard.Key.End:
+                    TextEntered(new TextEnteredEventArgs(TextEnteredEventArgs.Operation.End));
+                    break;
+                case Keyboard.Key.Home:
+                    TextEntered(new TextEnteredEventArgs(TextEnteredEventArgs.Operation.Home));
+                    break;
+                case Keyboard.Key.Delete:
+                    TextEntered(new TextEnteredEventArgs(TextEnteredEventArgs.Operation.Del));
+                    break;
+                case Keyboard.Key.Left:
+                    TextEntered(new TextEnteredEventArgs(TextEnteredEventArgs.Operation.Left));
+                    break;
+                case Keyboard.Key.Right:
+                    TextEntered(new TextEnteredEventArgs(TextEnteredEventArgs.Operation.Right));
+                    break;
+            }
 
             if (IsKeyDown(e.Code)) return;
             _KeyboardKeys.Add(e.Code);

@@ -66,5 +66,26 @@ namespace BlackCoat
         {
             return new Vector2u(value, value);
         }
+
+        /// <summary>
+        /// Enumerates the specified items.
+        /// </summary>
+        /// <typeparam name="T">Item Type</typeparam>
+        /// <param name="items">The items.</param>
+        /// <returns>Enumeration of Items</returns>
+        public static IEnumerable<T> Enumerable<T>(params T[] items) => items ?? throw new ArgumentException("No items");
+
+        /// <summary>
+        /// Creates a human readable string for the entity.
+        /// </summary>
+        /// <param name="entity">The entity.</param>
+        /// <returns>Id string</returns>
+        public static string IdString(IEntity entity)
+        {
+            if (entity == null) return null;
+            var name = String.Empty;
+            if (!String.IsNullOrEmpty(entity.Name)) name = $"\"{entity.Name}\" ";
+            return $"{name}{entity.GetType().Name} Pos: {entity.Position.X} x {entity.Position.Y}";
+        }
     }
 }

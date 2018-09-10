@@ -10,8 +10,7 @@ namespace BlackCoat.Entities.Shapes
     public class Line : EntityBase, IEntity, ICollidable, ILine
     {
         // Variables #######################################################################
-        private Color _Color;
-        private Vertex[] _Vertices;
+        private readonly Vertex[] _Vertices;
 
 
         /// <summary>
@@ -31,13 +30,8 @@ namespace BlackCoat.Entities.Shapes
         /// </summary>
         public override Color Color
         {
-            get { return _Color; }
-            set
-            {
-                _Color = value;
-                Start.Color = value;
-                End.Color = value;
-            }
+            get => Start.Color;
+            set => Start.Color = End.Color = value;
         }
 
         /// <summary>
@@ -61,10 +55,8 @@ namespace BlackCoat.Entities.Shapes
         Vector2f ILine.End => End.Position;
 
 
-        internal Vector2f StartPos { get => Start.Position; set => Start.Position = value; }
-        internal Vector2f EndPos { get => End.Position; set => End.Position = value; }
-        internal Color StartColor { get => Start.Color; set => Start.Color = value; }
-        internal Color EndColor { get => End.Color; set => End.Color = value; }
+        public Vector2f HStart { get => Start.Position; set => Start.Position = value; }
+        public Vector2f HEnd { get => End.Position; set => End.Position = value; }
 
 
         // CTOR ############################################################################
@@ -99,9 +91,8 @@ namespace BlackCoat.Entities.Shapes
         /// Updates the <see cref="Line" />.
         /// </summary>
         /// <param name="deltaT">Current game-time</param>
-        public override void Update(float deltaT)
-        {
-        }
+        public override void Update(float deltaT) { }
+
 
         // Collision Implementation ########################################################
         /// <summary>
@@ -109,20 +100,14 @@ namespace BlackCoat.Entities.Shapes
         /// </summary>
         /// <param name="point">The point to check</param>
         /// <returns>True when the point is on the <see cref="Line"/></returns>
-        public virtual bool Collide(Vector2f point)
-        {
-            return _Core.CollisionSystem.CheckCollision(point, this);
-        }
+        public virtual bool Collide(Vector2f point) => _Core.CollisionSystem.CheckCollision(point, this);
 
         /// <summary>
         /// Determines if this <see cref="Line"/> is colliding with another <see cref="ICollisionShape"/>
         /// </summary>
         /// <param name="other">The other <see cref="ICollisionShape"/></param>
         /// <returns>True when the objects overlap or touch</returns>
-        public virtual bool Collide(ICollisionShape other)
-        {
-            return _Core.CollisionSystem.CheckCollision(this, other);
-        }
+        public virtual bool Collide(ICollisionShape other) => _Core.CollisionSystem.CheckCollision(this, other);
 
         /// <summary>
         /// Returns a <see cref="System.String" /> that represents this instance.
@@ -130,9 +115,6 @@ namespace BlackCoat.Entities.Shapes
         /// <returns>
         /// A <see cref="System.String" /> that represents this instance.
         /// </returns>
-        public override string ToString()
-        {
-            return $"[{nameof(Line)}] Start({Start}) End ({End})";
-        }
+        public override string ToString() => $"[{nameof(Line)}] Start({Start}) End ({End})";
     }
 }

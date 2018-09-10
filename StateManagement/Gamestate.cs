@@ -99,11 +99,11 @@ namespace BlackCoat
             if (debug)
             {
                 _PerformanceMonitor = _PerformanceMonitor ?? new PerformanceMonitor(_Core);
-                Layer_Debug.AddChild(_PerformanceMonitor);
+                Layer_Debug.Add(_PerformanceMonitor);
             }
             else if(_PerformanceMonitor != null)
             {
-                Layer_Debug.RemoveChild(_PerformanceMonitor);
+                Layer_Debug.Remove(_PerformanceMonitor);
             }
 
             // Pass debug mode on to the asset managers
@@ -117,14 +117,19 @@ namespace BlackCoat
         {
             if (_Core.Debug && cmd == "inspect")
             {
-                // Enable Inspector Tool Window
-                _PropertyInspector = _PropertyInspector ?? new PropertyInspector();
-                _PropertyInspector.Clear();
-                _PropertyInspector.Add(this);
-                _PropertyInspector.Show();
+                OpenInspector();
                 return true;
             }
             return false;
+        }
+
+        protected void OpenInspector(object target = null)
+        {
+            _PropertyInspector = _PropertyInspector ?? new PropertyInspector();
+            _PropertyInspector.Clear();
+            _PropertyInspector.Add(target);
+            _PropertyInspector.Add(this);
+            _PropertyInspector.Show();
         }
 
         /// <summary>

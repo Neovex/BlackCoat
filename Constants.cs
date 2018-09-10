@@ -10,5 +10,6 @@ namespace BlackCoat
         public const float POINT_PROJECTION_TOLERANCE = 1.5f;
 
         public const string NEW_LINE = "\n";
+        public const char SEPERATOR = ';';
     }
 }

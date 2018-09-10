@@ -21,19 +21,12 @@ namespace BlackCoat.Collision.Shapes
         /// <summary>
         /// Gets the position of the associated <see cref="TextItem"/>.
         /// </summary>
-        public Vector2f Position => _Text.Position;
+        public Vector2f Position => _Text.GlobalPosition - (_Text.Origin + _Text.GetLocalBounds().Position());
 
         /// <summary>
         /// Gets the size of the associated <see cref="TextItem"/>.
         /// </summary>
-        public Vector2f Size
-        {
-            get
-            {
-                var bounds = _Text.GetLocalBounds();
-                return new Vector2f(bounds.Width, bounds.Height);
-            }
-        }
+        public Vector2f Size => _Text.GetLocalBounds().Size();
 
 
         /// <summary>

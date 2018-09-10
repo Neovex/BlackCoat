@@ -33,7 +33,7 @@ namespace BlackCoat.Entities
         public override void Update(Single deltaT)
         {
             deltaT *= TimeMultiplier;
-            for (int i = _Childs.Count - 1; i > -1; i--) _Childs[i].Update(deltaT);
+            for (int i = _Entities.Count - 1; i > -1; i--) _Entities[i].Update(deltaT);
         }
     }
 }
