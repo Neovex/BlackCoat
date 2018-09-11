@@ -66,6 +66,16 @@
     <Compile Include="BlackCoatBase.cs" />
     <Compile Include="Extensions\ColorExtensions.cs" />
     <Compile Include="Extensions\RectangleExtensions.cs" />
+    <Compile Include="Network\Client\Client.cs" />
+    <Compile Include="Network\Client\ManagedClient.cs" />
+    <Compile Include="Network\Commands.cs" />
+    <Compile Include="Network\NetIdProvider.cs" />
+    <Compile Include="Network\NetBase.cs" />
+    <Compile Include="Network\SyncObject.cs" />
+    <Compile Include="Network\Server\ManagedServer.cs" />
+    <Compile Include="Network\Server\Server.cs" />
+    <Compile Include="Network\Server\ServerUser.cs" />
+    <Compile Include="Network\NetUser.cs" />
     <Compile Include="Tools\RectangleConverter.cs" />
     <Compile Include="UI\Anchor.cs" />
     <Compile Include="UI\AnchoredContainer.cs" />
@@ -170,6 +180,9 @@
     <Compile Include="VertexRenderer.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="Lidgren.Network, Version=2012.1.7.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\Current Projects\BlackTournament\packages\Lidgren.Network.1.0.2\lib\net451\Lidgren.Network.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -196,6 +209,8 @@
     <None Include="CoreSystems.cd" />
     <None Include="Entities\Entities.cd" />
     <None Include="Input\Input.cd" />
+    <None Include="Network\Network.cd" />
+    <None Include="packages.config" />
     <None Include="ParticleSystem\Particles.cd" />
     <None Include="StateManagement\StateManagement.cd" />
     <None Include="UI\UI.cd" />

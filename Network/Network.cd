@@ -1,0 +1,141 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Comment CommentText="                                                                                                              Lidgren Network Framework">
+    <Position X="0.5" Y="0.5" Height="0.291" Width="9.169" />
+  </Comment>
+  <Comment CommentText="                                                                                                                Black Coat Network System">
+    <Position X="0.5" Y="2.146" Height="0.291" Width="9.179" />
+  </Comment>
+  <Class Name="Lidgren.Network.NetClient" Collapsed="true">
+    <Position X="0.75" Y="1" Width="1.5" />
+    <InheritanceLine Type="Lidgren.Network.NetPeer" FixedFromPoint="true">
+      <Path>
+        <Point X="4.25" Y="1.312" />
+        <Point X="2.25" Y="1.312" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Lidgren.Network.NetServer" Collapsed="true">
+    <Position X="8" Y="1" Width="1.5" />
+    <InheritanceLine Type="Lidgren.Network.NetPeer" FixedFromPoint="true">
+      <Path>
+        <Point X="6" Y="1.312" />
+        <Point X="8" Y="1.312" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Lidgren.Network.NetPeer" Collapsed="true">
+    <Position X="4.25" Y="1" Width="1.75" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="BlackCoat.Network.NetBase&lt;TEnum&gt;" Collapsed="true">
+    <Position X="4.25" Y="2.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAgSAAAAAAAAgAAAAAAAAEAAKAAAgAAAACAAA=</HashCode>
+      <FileName>Network\NetBase.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_BasePeer" />
+    </ShowAsAssociation>
+    <Lollipop Position="1.106" />
+  </Class>
+  <Class Name="BlackCoat.Network.Client&lt;TEnum&gt;" Collapsed="true">
+    <Position X="0.75" Y="4.25" Width="2" />
+    <AssociationLine Name="_Client" Type="Lidgren.Network.NetClient">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="-0.773" Y="0.131" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAgAAAQABAAEgAAIAAAAAAAEAAAAAAAgAAAAA=</HashCode>
+      <FileName>Network\Client\Client.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_Client" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="BlackCoat.Network.ManagedClient&lt;TEnum&gt;" Collapsed="true">
+    <Position X="0.75" Y="5.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAUQKAAAAAIAACEJAACAAIAAAAAAAIAoAABAA=</HashCode>
+      <FileName>Network\Client\ManagedClient.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_Commands" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Property Name="ConnectedUsers" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="BlackCoat.Network.NetUser" Collapsed="true">
+    <Position X="4.25" Y="4.25" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Network\NetUser.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BlackCoat.Network.ServerUser&lt;TChannel&gt;" Collapsed="true">
+    <Position X="4" Y="5.75" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Network\Server\ServerUser.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BlackCoat.Network.Server&lt;TEnum&gt;" Collapsed="true">
+    <Position X="7.5" Y="4.25" Width="2" />
+    <AssociationLine Name="_Server" Type="Lidgren.Network.NetServer">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.131" Y="0.143" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>QAAAAAAAAACAAAAAAEAAAAAAQBAACAgAAAAAAAAAAAA=</HashCode>
+      <FileName>Network\Server\Server.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_Server" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="BlackCoat.Network.ManagedServer&lt;TEnum&gt;" Collapsed="true">
+    <Position X="7.5" Y="5.75" Width="2" />
+    <AssociationLine Name="ConnectedUsers" Type="BlackCoat.Network.ServerUser&lt;TChannel&gt;">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.027" Y="0.32" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAA0AAAAAAAIAgCABAAAAAAAgAAAAAIQAAAAAA=</HashCode>
+      <FileName>Network\Server\ManagedServer.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_Commands" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Property Name="ConnectedUsers" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="BlackCoat.Network.SyncObject" Collapsed="true">
+    <Position X="1.75" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAAAAABAACBAAAAAAAABAAAAAAA=</HashCode>
+      <FileName>Network\SyncObject.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BlackCoat.Network.NetIdProvider" Collapsed="true">
+    <Position X="7" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAAAAAAAAgAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Network\NetIdProvider.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BlackCoat.Network.Commands&lt;TEnum&gt;" Collapsed="true">
+    <Position X="4.25" Y="7" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAQAAAABAAAAACAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Network\Commands.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
