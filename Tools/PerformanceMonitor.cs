@@ -57,7 +57,7 @@ namespace BlackCoat.Tools
         /// <summary>
         /// Updates the FPS display
         /// </summary>
-        /// <param name="gameTime">Current gametime</param>
+        /// <param name="gameTime">Current frame time</param>
         public override void Update(Single deltaT)
         {
             _LastUpdate += deltaT;
@@ -65,7 +65,7 @@ namespace BlackCoat.Tools
 
 #if AVERAGE_FPS
             _FPS.Enqueue(1 / deltaT);
-            if (_FPS.Count > 10000) _FPS.Dequeue();
+            if (_FPS.Count > 100) _FPS.Dequeue();
 #endif
 
             if (_LastUpdate < 0.25) return;

@@ -79,22 +79,52 @@ namespace BlackCoat
         // STATICS
 
         /// <summary>
-        /// Initializes a new Graphic Device window in 800x600.
+        /// A new Graphic Device using a 800x600 window.
         /// </summary>
         /// <returns>The default device</returns>
-        public static Device Default => new Device(new VideoMode(800, 600), nameof(BlackCoat), Styles.Titlebar);
+        public static Device Demo => new Device(new VideoMode(800, 600), nameof(BlackCoat), Styles.Titlebar);
 
         /// <summary>
-        /// Initializes a new Render Device as a windowed full screen window.
+        /// A new Render Device using a windowed full screen window.
         /// </summary>
         /// <returns>The full screen device</returns>
         public static Device Fullscreen => new Device(VideoMode.DesktopMode, nameof(BlackCoat), Styles.None);
 
         /// <summary>
+        /// Initializes a new Graphic Device via <see cref="Launcher"/>
+        /// </summary>
+        /// <param name="title">Optional Title of the Device/Window</param>
+        /// <returns></returns>
+        public static Device Create(String title = null) => Create(new Launcher(), title);
+
+        /// <summary>
+        /// Initializes a new Graphic Device via <see cref="Launcher"/>
+        /// </summary>
+        /// <param name="launcher">The launcher to initialize the <see cref="Device"/>.</param>
+        /// <param name="title">Optional Title of the Device/Window</param>
+        /// <returns>The Initialized Device/Window or null if the Device could not be created or the launcher has been exited</returns>
+        /// <exception cref="ArgumentNullException">launcher</exception>
+        public static Device Create(Launcher launcher, String title = null)
+        {
+            if (launcher == null) throw new ArgumentNullException(nameof(launcher));
+            if (launcher.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                var style = Styles.Fullscreen;
+                if (launcher.Windowed)
+                {
+                    style = Styles.Default;
+                    if (launcher.Borderless) style = Styles.None;
+                }
+                return Create(launcher.VideoMode, title ?? launcher.Text, style, launcher.AntiAliasing, launcher.FpsLimit);
+            }
+            return null;
+        }
+
+        /// <summary>
         /// Initializes a new Graphic Device
         /// </summary>
         /// <param name="mode">Video mode to use</param>
-        /// <param name="title">Title of the /Window</param>
+        /// <param name="title">Title of the Device/Window</param>
         /// <param name="style">Display Style of the Device/Window</param>
         /// <param name="antialiasing">Determines the Anti-aliasing</param>
         /// <param name="framerateLimit">Optional frame rate limit.</param>

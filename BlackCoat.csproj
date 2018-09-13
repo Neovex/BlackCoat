@@ -76,6 +76,12 @@
     <Compile Include="Network\Server\Server.cs" />
     <Compile Include="Network\Server\ServerUser.cs" />
     <Compile Include="Network\NetUser.cs" />
+    <Compile Include="Tools\Launcher.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Tools\Launcher.Designer.cs">
+      <DependentUpon>Launcher.cs</DependentUpon>
+    </Compile>
     <Compile Include="Tools\RectangleConverter.cs" />
     <Compile Include="UI\Anchor.cs" />
     <Compile Include="UI\AnchoredContainer.cs" />
@@ -198,6 +204,9 @@
       <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Tools\Launcher.resx">
+      <DependentUpon>Launcher.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Tools\PropertyInspector.resx">
       <DependentUpon>PropertyInspector.cs</DependentUpon>
     </EmbeddedResource>
@@ -232,5 +241,8 @@
       <Project>{d17de83d-a592-461f-8af2-53f9e22e1d0f}</Project>
       <Name>sfml-window</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Banner.png" />
   </ItemGroup>
 </Project>

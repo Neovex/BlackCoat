@@ -402,6 +402,9 @@ namespace BlackCoat
             // Check for Core commands first
             switch (cmd.ToLower())
             {
+                case "device":
+                    Log.Debug(_Device);
+                    return;
                 case "exit":
                 case "quit":
                     Log.Debug("Beginning Engine Shutdown");
@@ -450,6 +453,7 @@ namespace BlackCoat
         {
             DefaultView.Size = DeviceSize;
             DefaultView.Center = DeviceSize / 2;
+            _Device.SetView(DefaultView);
             DeviceResized.Invoke(DeviceSize);
         }
 
@@ -479,7 +483,7 @@ namespace BlackCoat
             if (_OldDevice == null)
             {
                 _OldDevice = _Device;
-                _Device = Fullscreen ? Device.Fullscreen : Device.Default;
+                _Device = Fullscreen ? Device.Fullscreen : Device.Demo;
             }
             else
             {
