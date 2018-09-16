@@ -121,9 +121,10 @@ namespace BlackCoat.Entities
         /// Initializes a new instance of the <see cref="Graphic"/> class.
         /// </summary>
         /// <param name="core">The render core.</param>
-        public Graphic(Core core)
+        public Graphic(Core core, Texture texture = null)
         {
-            _Core = core;
+            _Core = core ?? throw new ArgumentNullException(nameof(core));
+            Texture = texture;
             _Alpha = 1;
             Visible = true;
             RenderState = RenderStates.Default;

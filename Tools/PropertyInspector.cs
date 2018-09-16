@@ -46,8 +46,8 @@ namespace BlackCoat.Tools
             var graphNode = new TreeNode(displayName ?? item.GetType().Name) { Tag = item };
             (parent?.Nodes ?? _SceneGraph.Nodes).Add(graphNode);
 
-            // Handle Entities
-            if(item is IEntity e && e.Position != default(Vector2f)) graphNode.Text = $"{graphNode.Text} {e.Position.X} x {e.Position.Y}";
+            // Handle Entity names
+            if (item is IEntity e) graphNode.Text = $"{(String.IsNullOrWhiteSpace(e.Name) ? String.Empty : $"\"{e.Name}\" ")}{graphNode.Text}{(e.Position == default(Vector2f) ? String.Empty : $"{e.Position.X} x {e.Position.Y}")}";
 
             // Add SubItems of known collections / hierarchies
             switch (item)

@@ -17,9 +17,13 @@ namespace BlackCoat
 
         // Properties ######################################################################
         /// <summary>
+        /// Determines if loaded Textures should repeat when the texture rectangle exceeds its dimension.
+        /// </summary>
+        public Boolean Repeat { get; set; }
+        /// <summary>
         /// Determines if a smoothing should be applied onto newly loaded Textures
         /// </summary>
-        public Boolean SmoothTextures { get; set; }
+        public Boolean Smoothing { get; set; }
 
 
         // CTOR ############################################################################
@@ -27,10 +31,12 @@ namespace BlackCoat
         /// Creates a new instance of the TextureLoader class.
         /// </summary>
         /// <param name="assetRoot">Optional root path of the managed asset folder</param>
-        /// <param name="smoothTextures">Determines if a smoothing should be applied onto newly loaded Textures</param>
-        public TextureLoader(String assetRoot = "", Boolean smoothTextures = false) : base(AvailableFormats, assetRoot)
+        /// <param name="repeat">Determines if loaded Textures should repeat when the texture rectangle exceeds its dimension</param>
+        /// <param name="smoothing">Determines if a smoothing should be applied onto newly loaded Textures</param>
+        public TextureLoader(String assetRoot = "", Boolean repeat = true, Boolean smoothing = false) : base(AvailableFormats, assetRoot)
         {
-            SmoothTextures = smoothTextures;
+            Repeat = repeat;
+            Smoothing = smoothing;
         }
 
 
@@ -44,7 +50,11 @@ namespace BlackCoat
         public override Texture Load(string name, byte[] rawData = null)
         {
             var tex = base.Load(name, rawData);
-            if (tex != null) tex.Smooth = SmoothTextures;
+            if (tex != null)
+            {
+                tex.Repeated = Repeat;
+                tex.Smooth = Smoothing;
+            }
             return tex;
         }
 
