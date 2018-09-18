@@ -16,6 +16,7 @@ namespace BlackCoat.Entities
         private Boolean _Visible;
         private View _View;
         private float _Alpha;
+        private RenderTarget _RenderTarget;
 
 
         // Properties ######################################################################
@@ -29,8 +30,8 @@ namespace BlackCoat.Entities
         /// </summary>
         public Container Parent
         {
-            get { return _Parent; }
-            set { if (value == null || !value.Contains(this)) _Parent = value; }
+            get => _Parent;
+            set => _Parent = value == null || !value.Contains(this) ? value : _Parent;
         }
 
         /// <summary>
@@ -38,8 +39,8 @@ namespace BlackCoat.Entities
         /// </summary>
         public Boolean Visible
         {
-            get { return _Visible && (_Parent == null || _Parent.Visible); }
-            set { _Visible = value; }
+            get => _Visible && (_Parent == null || _Parent.Visible);
+            set => _Visible = value;
         }
 
         /// <summary>
@@ -47,18 +48,28 @@ namespace BlackCoat.Entities
         /// </summary>
         public View View
         {
-            get { return _View ?? _Parent?.View; }
-            set { _View = value; }
+            get => _View ?? _Parent?.View;
+            set => _View = value;
         }
 
         /// <summary>
         /// Alpha Visibility - 0-1f
         /// </summary>
-        public Single Alpha
+        public virtual Single Alpha
         {
-            get { return _Alpha * (Parent == null ? 1 : _Parent.Alpha); }
-            set { _Alpha = value; }
+            get => _Alpha;
+            set
+            {
+                _Alpha = value < 0 ? 0 : value > 1 ? 1 : value;
+                var color = Color;
+                color.A = (Byte)(GlobalAlpha * Byte.MaxValue);
+                Color = color;
+            }
         }
+        /// <summary>
+        /// Global Alpha Visibility according to the scene graph
+        /// </summary>
+        public virtual Single GlobalAlpha => _Alpha * (Parent == null ? 1 : _Parent.GlobalAlpha);
 
         /// <summary>
         /// Renderstate of the entity
@@ -68,7 +79,11 @@ namespace BlackCoat.Entities
         /// <summary>
         /// Target device for rendering
         /// </summary>
-        public virtual RenderTarget RenderTarget { get; set; }
+        public RenderTarget RenderTarget
+        {
+            get => _RenderTarget ?? _Parent?.RenderTarget;
+            set => _RenderTarget = value;
+        }
 
         /// <summary>
         /// Entity Color or Tint
@@ -80,7 +95,7 @@ namespace BlackCoat.Entities
         /// </summary>
         public virtual BlendMode BlendMode
         {
-            get { return RenderState.BlendMode; }
+            get => RenderState.BlendMode;
             set
             {
                 var state = RenderState;
@@ -94,7 +109,7 @@ namespace BlackCoat.Entities
         /// </summary>
         public virtual Shader Shader
         {
-            get { return RenderState.Shader; }
+            get => RenderState.Shader;
             set
             {
                 var state = RenderState;

@@ -55,8 +55,6 @@ namespace BlackCoat.Tools
                     {
                         BackgroundAlpha = 0.3f,
                         TextColor = Color.Cyan,
-                        EditingTextColor = Color.Cyan,
-                        CaretColor = Color.Cyan,
                         InnerPadding = new FloatRect(3,3,3,3),
                         MinSize = new Vector2f(_Core.DeviceSize.X, 7),
                         CharacterSize = _FONT_SIZE

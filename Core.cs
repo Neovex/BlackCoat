@@ -162,7 +162,7 @@ namespace BlackCoat
         public Vector2f DeviceSize => _Device.Size.ToVector2f();
 
         /// <summary>
-        /// Gets or sets a value indicating whether the current <see cref="BlackCoat.Device"/> is displayed fullscreen.
+        /// Gets or sets a value indicating whether the current <see cref="BlackCoat.Device"/> is displayed full-screen.
         /// </summary>
         public bool Fullscreen { get; set; }
 
@@ -352,15 +352,10 @@ namespace BlackCoat
             var state = entity.RenderState;
             if (entity.Parent != null)
             {
-                // get the combined transformations of all parents and update the renderstate
-                // in the SFML draw method the combined Parent transformations are multiplied
-                // by the entities own transformation creating the global transformation
-                state.Transform = entity.Parent.Transform;
-
-                // get alpha inheritance and update the entities color alpha component
-                var color = entity.Color;
-                color.A = (Byte)(entity.Alpha * Byte.MaxValue);
-                entity.Color = color;
+                // Get the combined transformations of all parents and update the renderstate.
+                // In the SFML draw method the transform of the render state is multiplied
+                // by the entities own transformation creating the final global transformation.
+                state.Transform = entity.Parent.GlobalTransform;
             }
 
             if (entity.RenderTarget == null)

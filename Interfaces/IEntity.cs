@@ -8,7 +8,7 @@ namespace BlackCoat
     /// <summary>
     /// Common interface of all <see cref="BlackCoat"/> Entity Types
     /// </summary>
-    public interface IEntity:Drawable, ITransformable
+    public interface IEntity:Drawable, ITransformable, IDisposable
     {
         // Properties ######################################################################
         /// <summary>
@@ -59,7 +59,7 @@ namespace BlackCoat
         /// <summary>
         /// Target device for rendering
         /// </summary>
-        RenderTarget RenderTarget { get; }
+        RenderTarget RenderTarget { get; set; }
 
         /// <summary>
         /// Gets the position of this <see cref="IEntity"/> independent from scene graph and view.

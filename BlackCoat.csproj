@@ -64,6 +64,7 @@
     <Compile Include="AssetHandling\SfxManager.cs" />
     <Compile Include="AssetHandling\TextureLoader.cs" />
     <Compile Include="BlackCoatBase.cs" />
+    <Compile Include="Entities\PrerenderedContainer.cs" />
     <Compile Include="Extensions\ColorExtensions.cs" />
     <Compile Include="Extensions\RectangleExtensions.cs" />
     <Compile Include="Network\Client\Client.cs" />
