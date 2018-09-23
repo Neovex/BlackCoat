@@ -50,7 +50,8 @@ namespace BlackCoat.ParticleSystem
         /// </summary>
         public virtual void Trigger()
         {
-            IsTriggered = true;
+            if (ParticleInfo.SpawnRate == 0) SpawnParticles();
+            else IsTriggered = true;
         }
 
         /// <summary>
@@ -66,15 +67,22 @@ namespace BlackCoat.ParticleSystem
                 {
                     _SpawnTimer = ParticleInfo.SpawnRate;
                     IsTriggered = ParticleInfo.Loop;
-
-                    var amount = ParticleInfo.ParticlesPerSpawn;
-                    for (int i = 0; i < amount; i++)
-                    {
-                        var particle = RetrieveFromCache() as Tparticle ?? CreateParticle();
-                        InitializeParticle(particle, i);
-                        AddParticle(particle, ParticleInfo.TTL);
-                    }
+                    SpawnParticles();
                 }
+            }
+        }
+
+        /// <summary>
+        /// Creates and spawns the particles.
+        /// </summary>
+        private void SpawnParticles()
+        {
+            var amount = ParticleInfo.ParticlesPerSpawn;
+            for (int i = 0; i < amount; i++)
+            {
+                var particle = RetrieveFromCache() as Tparticle ?? CreateParticle();
+                InitializeParticle(particle, i);
+                AddParticle(particle, ParticleInfo.TTL);
             }
         }
 

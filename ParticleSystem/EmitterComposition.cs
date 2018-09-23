@@ -108,9 +108,7 @@ namespace BlackCoat.ParticleSystem
         /// </summary>
         public void Trigger()
         {
-            foreach (var emitter in _Emitters)
-                if (emitter is ITriggerEmitter e)
-                    e.Trigger();
+            foreach (var e in _Emitters.OfType<ITriggerEmitter>()) e.Trigger();
         }
 
         internal override void UpdateInternal(float deltaT)
