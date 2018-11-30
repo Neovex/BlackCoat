@@ -42,30 +42,21 @@ namespace BlackCoat
         /// </summary>
         /// <param name="value">Value for x AND y component</param>
         /// <returns>A new Vector</returns>
-        public static Vector2f Vector2f(float value)
-        {
-            return new Vector2f(value, value);
-        }
+        public static Vector2f Vector2f(float value) => new Vector2f(value, value);
 
         /// <summary>
         /// Creates a new <see cref="SFML.System.Vector2i"/> with equal x and y components.
         /// </summary>
         /// <param name="value">Value for x AND y component</param>
         /// <returns>A new Vector</returns>
-        public static Vector2i Vector2i(int value)
-        {
-            return new Vector2i(value, value);
-        }
+        public static Vector2i Vector2i(int value) => new Vector2i(value, value);
 
         /// <summary>
         /// Creates a new <see cref="SFML.System.Vector2u"/> with equal x and y components.
         /// </summary>
         /// <param name="value">Value for x AND y component</param>
         /// <returns>A new Vector</returns>
-        public static Vector2u Vector2u(uint value)
-        {
-            return new Vector2u(value, value);
-        }
+        public static Vector2u Vector2u(uint value) => new Vector2u(value, value);
 
         /// <summary>
         /// Enumerates the specified items.
@@ -73,10 +64,10 @@ namespace BlackCoat
         /// <typeparam name="T">Item Type</typeparam>
         /// <param name="items">The items.</param>
         /// <returns>Enumeration of Items</returns>
-        public static IEnumerable<T> Enumerable<T>(params T[] items) => items ?? throw new ArgumentException("No items");
+        public static IEnumerable<T> Enumerable<T>(params T[] items) => items ?? throw new ArgumentNullException("No items");
 
         /// <summary>
-        /// Creates a human readable string for the entity.
+        /// Creates a human readable string from an entity.
         /// </summary>
         /// <param name="entity">The entity.</param>
         /// <returns>Id string</returns>

@@ -7,7 +7,7 @@ namespace BlackCoat.Entities
 {
     /// <summary>
     /// Hierarchical render element. The scene graph is constructed primarily out of instances of this class.
-    /// It can be used like a <see cref="Graphic"/> but additionally draws all child elements in its own coordinate system.
+    /// It can be used like a <see cref="Graphic"/> but additionally draws each subsidiary entity within its own coordinate system.
     /// </summary>
     public class Container : Graphic
     {
@@ -35,6 +35,7 @@ namespace BlackCoat.Entities
             set
             {
                 base.Alpha = value;
+                // Update all subsidiary entities by reassigning each its respective original alpha value
                 foreach (var entity in _Entities) entity.Alpha = entity.Alpha;
             }
         }

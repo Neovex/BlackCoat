@@ -197,6 +197,23 @@ namespace BlackCoat
             MusicLoader.Dispose();
             TextureLoader.Dispose();
 
+            SfxLoader = null;
+            FontLoader = null;
+            MusicLoader = null;
+            TextureLoader = null;
+
+            Layer_BG.Dispose();
+            Layer_Game.Dispose();
+            Layer_Overlay.Dispose();
+            Layer_Debug.Dispose();
+            Layer_Cursor.Dispose();
+
+            Layer_BG = null;
+            Layer_Game = null;
+            Layer_Overlay = null;
+            Layer_Debug = null;
+            Layer_Cursor = null;
+
             Log.Debug(Name, "destroyed");
         }
 

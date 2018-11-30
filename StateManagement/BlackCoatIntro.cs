@@ -57,7 +57,7 @@ namespace BlackCoat
             if (_Done) return;
             _Sound.Play();
             _Core.AnimationManager.Run(0, 1, 4.5f, v => _Bg.Alpha = v);
-            _Core.AnimationManager.Wait(6, () => _Core.AnimationManager.Run(1, 0, 1f, v => _Bg.Alpha = v, () => _Done = true));
+            _Core.AnimationManager.Wait(4, () => _Core.AnimationManager.Run(1, 0, 1f, v => _Bg.Alpha = v, () => _Done = true));
         }
 
         private void HandleKeyPressed(Keyboard.Key key)
