@@ -6,14 +6,14 @@
   <Class Name="BlackCoat.Entities.Container" Collapsed="true">
     <Position X="4" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AEYAAAAAAAAAAgAACAAABAQAAAAAAAAAAgAAAQhQAAA=</HashCode>
+      <HashCode>AEYAAAAAAAAAAgAACAAABAAAAABAABAAAgAAAQhQABA=</HashCode>
       <FileName>Entities\Container.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="BlackCoat.Entities.Shapes.Rectangle" Collapsed="true">
     <Position X="6.25" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>QAQAAAAAAACBAwAUICAAQAQgAAgBABAIAAIAgAAQAAA=</HashCode>
+      <HashCode>QAQAAAEAAACFAwAUICAAQAQgAAgBABAIAAIAgAAQAAA=</HashCode>
       <FileName>Entities\Shapes\Rectangle.cs</FileName>
     </TypeIdentifier>
     <Lollipop Orientation="Right" Position="0.1" />
@@ -21,7 +21,7 @@
   <Class Name="BlackCoat.UI.Button">
     <Position X="15.5" Y="4.25" Width="2" />
     <TypeIdentifier>
-      <HashCode>AACAAAAAAACAAAAAIAAAAAAAAAAAAAEAAAAAAACEAAA=</HashCode>
+      <HashCode>AACAAAAAAACAAAAAIAAAAAAAABAAAAEAAAAAAAKEEAA=</HashCode>
       <FileName>UI\Button.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -50,7 +50,7 @@
   <Class Name="BlackCoat.UI.Label">
     <Position X="7.5" Y="7.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAACAAAAAAAQAAIAIQAIBAAACIBAAAABIAACABCEAA=</HashCode>
+      <HashCode>AAAACAAAAAAAQAAIAIQAIBAAACYBAAAABIAACABCEAA=</HashCode>
       <FileName>UI\Label.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -99,7 +99,7 @@
     </TypeIdentifier>
   </Class>
   <Class Name="BlackCoat.UI.DistributionContainer">
-    <Position X="15.5" Y="7.5" Width="2" />
+    <Position X="15.5" Y="8" Width="2" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAABAACAAEIAAAAAAAAAgAAIARIAAAAgAAAA=</HashCode>
       <FileName>UI\DistributionContainer.cs</FileName>
@@ -116,13 +116,13 @@
     <Position X="3.75" Y="2.25" Width="2" />
     <AssociationLine Name="_Background" Type="BlackCoat.Entities.Shapes.Rectangle" FixedFromPoint="true" FixedToPoint="true">
       <Path>
-        <Point X="5.75" Y="2.568" />
-        <Point X="7" Y="2.568" />
+        <Point X="5.75" Y="2.579" />
+        <Point X="7" Y="2.579" />
         <Point X="7" Y="1.191" />
       </Path>
     </AssociationLine>
     <TypeIdentifier>
-      <HashCode>BAIgCYUABACiBIEwoICABQAEGAAjAAIAxIYABQsABEQ=</HashCode>
+      <HashCode>BAJgCYUABACiBIEwoICABQAEGAAjAAJAxIYABQsABEQ=</HashCode>
       <FileName>UI\UIComponent.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>

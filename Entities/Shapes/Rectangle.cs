@@ -138,21 +138,23 @@ namespace BlackCoat.Entities.Shapes
         /// <summary>
         /// Gets the position of this <see cref="IEntity"/> independent from scene graph and view.
         /// </summary>
-        public Vector2f GlobalPosition => Parent == null ? Position : Position.ToGlobal(Parent.GlobalPosition);
+        public Vector2f GlobalPosition => Parent == null ? Position : (Position - Origin).ToGlobal(Parent.GlobalPosition);
 
 
 
         // CTOR ############################################################################
         /// <summary>
-        /// Creates a new <see cref="Rectangle"/> instance
+        /// Creates a new <see cref="Rectangle" /> instance
         /// </summary>
         /// <param name="core">Engine Core</param>
-        public Rectangle(Core core)
+        /// <param name="color">Optional color</param>
+        public Rectangle(Core core, Color? color = null)
         {
             _Core = core;
             _Alpha = 1;
             Visible = true;
             RenderState = RenderStates.Default;
+            if (color.HasValue) Color = color.Value;
         }
 
 

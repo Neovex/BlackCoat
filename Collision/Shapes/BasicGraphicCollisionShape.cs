@@ -21,7 +21,7 @@ namespace BlackCoat.Collision.Shapes
         /// <summary>
         /// Gets the position of the associated <see cref="Graphic"/>.
         /// </summary>
-        public Vector2f Position => _Graphic.GlobalPosition - _Graphic.Origin;
+        public Vector2f Position => _Graphic.GlobalPosition;
 
         /// <summary>
         /// Gets the size of the associated <see cref="Graphic"/>.

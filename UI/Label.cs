@@ -101,6 +101,8 @@ namespace BlackCoat.UI
             }
         }
 
+        public Action<Label> InitTextChanged { set => TextChanged += value; }
+
 
         // CTOR ############################################################################        
         /// <summary>

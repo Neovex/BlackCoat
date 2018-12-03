@@ -21,7 +21,7 @@ namespace BlackCoat
         /// </summary>
         public Boolean Repeat { get; set; }
         /// <summary>
-        /// Determines if a smoothing should be applied onto newly loaded Textures
+        /// Determines if a smoothing should be applied onto newly loaded Textures.
         /// </summary>
         public Boolean Smoothing { get; set; }
 
@@ -33,7 +33,7 @@ namespace BlackCoat
         /// <param name="assetRoot">Optional root path of the managed asset folder</param>
         /// <param name="repeat">Determines if loaded Textures should repeat when the texture rectangle exceeds its dimension</param>
         /// <param name="smoothing">Determines if a smoothing should be applied onto newly loaded Textures</param>
-        public TextureLoader(String assetRoot = "", Boolean repeat = true, Boolean smoothing = false) : base(AvailableFormats, assetRoot)
+        public TextureLoader(String assetRoot = "", Boolean repeat = false, Boolean smoothing = false) : base(AvailableFormats, assetRoot)
         {
             Repeat = repeat;
             Smoothing = smoothing;
@@ -47,13 +47,21 @@ namespace BlackCoat
         /// <param name="name">Name of the Texture</param>
         /// <param name="rawData">Optional byte array containing the raw data of the Texture</param>
         /// <returns>The managed Texture</returns>
-        public override Texture Load(string name, byte[] rawData = null)
+        public override Texture Load(string name, byte[] rawData = null) => Load(name, Repeat, Smoothing, rawData);
+
+        /// <summary>Loads or retrieves an already loaded instance of a Texture from a File or Raw Data Source</summary>
+        /// <param name="name">Name of the Texture</param>
+        /// <param name="repeat">Determines if loaded Textures should repeat when the texture rectangle exceeds its dimension.</param>
+        /// <param name="smoothing">Determines if a smoothing should be applied onto newly loaded Textures.</param>
+        /// <param name="rawData">Optional byte array containing the raw data of the Texture</param>
+        /// <returns>The managed Texture</returns>
+        public Texture Load(string name, bool? repeat = null, bool? smoothing = null, byte[] rawData = null)
         {
             var tex = base.Load(name, rawData);
             if (tex != null)
             {
-                tex.Repeated = Repeat;
-                tex.Smooth = Smoothing;
+                tex.Repeated = repeat ?? Repeat;
+                tex.Smooth = smoothing ?? Smoothing;
             }
             return tex;
         }
@@ -71,7 +79,8 @@ namespace BlackCoat
             if (name == null) throw new ArgumentNullException(nameof(name));
             if (_Assets.ContainsKey(name)) return _Assets[name];
             if (bmp == null) throw new ArgumentNullException(nameof(bmp));
-            if (bmp.Size.Width > Texture.MaximumSize || bmp.Size.Height > Texture.MaximumSize) throw new ArgumentException($"Bitmap size exceeds capabilities of graphic adapter: {Texture.MaximumSize} px");
+            if (bmp.Size.Width > Texture.MaximumSize || bmp.Size.Height > Texture.MaximumSize)
+                throw new ArgumentException($"Bitmap size exceeds capabilities of graphic adapter: {Texture.MaximumSize} pixel");
             // Conversion
             Byte[] data = null;
             using (var strm = new MemoryStream())
@@ -90,6 +99,7 @@ namespace BlackCoat
         /// <param name="color">Color of the Image as hex value 0xAARRGGBB</param>
         /// <param name="name">Name of the generated Texture</param>
         /// <returns>The new or present Texture</returns>
+        [Obsolete("CreateTexture is deprecated, please use a Rectangle or a PrerenderedContainer instead.")]
         public Texture CreateTexture(UInt32 width, UInt32 height, UInt32 color, String name)
         {
             if (Disposed) throw new ObjectDisposedException("TextureManager");

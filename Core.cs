@@ -68,7 +68,7 @@ namespace BlackCoat
         private Boolean _Debug;
         private Boolean _Fullscreen;
         private CollisionSystem _CollisionSystem;
-        private Tools.Console _Console;
+        internal Tools.Console _Console;
 
 
         // Properties ######################################################################

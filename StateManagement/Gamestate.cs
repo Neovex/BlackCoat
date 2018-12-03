@@ -118,6 +118,7 @@ namespace BlackCoat
             if (_Core.Debug && cmd == "inspect")
             {
                 OpenInspector();
+                ToggleConsole();
                 return true;
             }
             return false;
@@ -130,6 +131,14 @@ namespace BlackCoat
             _PropertyInspector.Add(target);
             _PropertyInspector.Add(this);
             _PropertyInspector.Show();
+        }
+
+        protected void ToggleConsole()
+        {
+            if (_Core._Console.IsOpen)
+                _Core._Console.Close();
+            else
+                _Core._Console.Open();
         }
 
         /// <summary>

@@ -22,7 +22,7 @@ namespace BlackCoat.UI
         /// <summary>
         /// Gets the position of the associated <see cref="UIComponent"/>.
         /// </summary>
-        public Vector2f Position => _Component.GlobalPosition - _Component.Origin;
+        public Vector2f Position => _Component.GlobalPosition;
 
         /// <summary>
         /// Gets the size of the associated <see cref="UIComponent"/>.

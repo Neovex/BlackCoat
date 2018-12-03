@@ -12,7 +12,7 @@ namespace BlackCoat.Tools
     /// <summary>
     /// The console is a simple direct User I/O interface for advanced control
     /// </summary>
-    internal class Console : UICanvas
+    class Console : UICanvas
     {
         // Constants #######################################################################
         private const int _FONT_SIZE = 10;
@@ -25,11 +25,14 @@ namespace BlackCoat.Tools
 
         // Variables #######################################################################
         private Single _Height;
-        private Boolean _Open;
         private Boolean _AnimationRunning;
         private TextBox _InputBox;
         private Label _Output;
         private Queue<String> _Messages;
+
+
+        // Properties ######################################################################
+        internal bool IsOpen { get; private set; }
 
 
         // CTOR ############################################################################
@@ -85,20 +88,20 @@ namespace BlackCoat.Tools
         {
             _Height = size.Y / 3;
             SetSize(new Vector2f(size.X, _Height));
-            Position = new Vector2f(Position.X , size.Y - (_Open ? _Height : 0));
+            Position = new Vector2f(Position.X , size.Y - (IsOpen ? _Height : 0));
             _InputBox.MinSize = new Vector2f(size.X, _InputBox.MinSize.Y);
             UpdateOutputText();
         }
 
         private void HandleKeyPressed(Keyboard.Key key)
         {
-            var input = _Open ? Input.Input : _Core.Input;
+            var input = IsOpen ? Input.Input : _Core.Input;
             if (input.Control && input.Shift && key == Keyboard.Key.Num1)
             {
-                if (_Open) Close();
+                if (IsOpen) Close();
                 else Open();
             }
-            else if (_Open && key == Keyboard.Key.Return)
+            else if (IsOpen && key == Keyboard.Key.Return)
             {
                 if (!String.IsNullOrWhiteSpace(_InputBox.Text))
                 {
@@ -107,7 +110,7 @@ namespace BlackCoat.Tools
                 _InputBox.Text = String.Empty;
                 UpdateOutputText();
             }
-            else if (_Open && key == Keyboard.Key.Escape)
+            else if (IsOpen && key == Keyboard.Key.Escape)
             {
                 Close();
             }
@@ -126,7 +129,7 @@ namespace BlackCoat.Tools
             _Output.Text = String.Join(Constants.NEW_LINE, new[] { _InputBox.Text ?? String.Empty }.Concat(_Messages.Reverse().Take(availableLines)));
         }
 
-        private void Open()
+        internal void Open()
         {
             if (_AnimationRunning) return;
             _AnimationRunning = true;
@@ -137,18 +140,18 @@ namespace BlackCoat.Tools
 
             _Core.AnimationManager.RunAdvanced(Position.Y, Position.Y - _Height, 0.4f, v => Position = new Vector2f(Position.X, v), a =>
             {
-                _Open = true;
+                IsOpen = true;
                 _AnimationRunning = false;
             }, InterpolationType.OutCubic);
         }
-        private void Close()
+        internal void Close()
         {
             if (_AnimationRunning) return;
             _AnimationRunning = true;
 
             _Core.AnimationManager.RunAdvanced(Position.Y, Position.Y + _Height, 0.4f, v => Position = new Vector2f(Position.X, v), a =>
             {
-                _Open = false;
+                IsOpen = false;
                 Visible = false;
                 _AnimationRunning = false;
             }, InterpolationType.OutCubic);

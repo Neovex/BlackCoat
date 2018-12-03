@@ -27,13 +27,18 @@ namespace BlackCoat.Tools
             TypeDescriptor.AddAttributes(typeof(FloatRect), new TypeConverterAttribute(typeof(RectangleConverter<FloatRect>)));
         }
 
-        private Boolean _Locked;
+
+        private Boolean _Locked = true;
+
+
+        protected override bool ShowWithoutActivation => true;
+
 
         public PropertyInspector()
         {
-            _Locked = true;
             InitializeComponent();
         }
+
 
         private void Add(IEnumerable<object> objects, TreeNode parent)
         {

@@ -23,7 +23,9 @@ namespace BlackCoat.UI
 
         // Events ##########################################################################
         public event Action<UIComponent> FocusGained = c => { };
+        public Action<UIComponent> InitFocusGained { set => FocusGained += value; }
         public event Action<UIComponent> FocusLost = c => { };
+        public Action<UIComponent> InitFocusLost { set => FocusLost += value; }
         public event Action<UIComponent> EnabledChanged = c => { };
         public event Action<UIComponent> PaddingChanged = c => { };
         public event Action<UIComponent> SizeChanged = c => { };
@@ -61,7 +63,9 @@ namespace BlackCoat.UI
             get => _Container;
             set { _Container = value; Input = _Container?.Input; InvokeContainerChanged(); }
         }
-        public bool CanFocus { get; set; }
+
+        public bool CanFocus { get; protected set; }
+
         public virtual bool HasFocus
         {
             get => _HasFocus;
@@ -146,7 +150,7 @@ namespace BlackCoat.UI
         // CTOR ############################################################################
         public UIComponent(Core core) : base(core)
         {
-            Enabled = true;
+            _Enabled = true;
             CollisionShape = new UICollisionShape(_Core.CollisionSystem, this);
             Add(_Background = new Rectangle(_Core) { Alpha = 0 }); //?
         }

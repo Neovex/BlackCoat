@@ -84,7 +84,9 @@ namespace BlackCoat.Entities
             _RenderTarget?.Dispose();
             _RenderTarget = new RenderTexture((uint)size.X, (uint)size.Y);
             Texture = _RenderTarget.Texture;
+            TextureRect = new IntRect(default(Vector2i), size.ToVector2i());
             foreach (var entity in _Entities) entity.RenderTarget = _RenderTarget;
+            RedrawNow();
         }
 
         /// <summary>
