@@ -116,13 +116,13 @@
     <Position X="3.75" Y="2.25" Width="2" />
     <AssociationLine Name="_Background" Type="BlackCoat.Entities.Shapes.Rectangle" FixedFromPoint="true" FixedToPoint="true">
       <Path>
-        <Point X="5.75" Y="2.579" />
-        <Point X="7" Y="2.579" />
+        <Point X="5.75" Y="2.585" />
+        <Point X="7" Y="2.585" />
         <Point X="7" Y="1.191" />
       </Path>
     </AssociationLine>
     <TypeIdentifier>
-      <HashCode>BAJgCYUABACiBIEwoICABQAEGAAjAAJAxIYABQsABEQ=</HashCode>
+      <HashCode>BAJgCYUABACiBIEwoICABQAEGABjAAJAxIYABQsABEQ=</HashCode>
       <FileName>UI\UIComponent.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>

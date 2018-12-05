@@ -66,6 +66,11 @@ namespace BlackCoat
         /// </summary>
         Vector2f GlobalPosition { get; }
 
+        /// <summary>
+        /// Determines whether this <see cref="IEntity"/> is destroyed.
+        /// </summary>
+        Boolean Destroyed { get; }
+
 
         // Methods ######################################################################
         /// <summary>

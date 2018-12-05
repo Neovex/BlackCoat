@@ -159,6 +159,11 @@ namespace BlackCoat.Entities.Shapes
         /// </summary>
         public Vector2f GlobalPosition => Parent == null ? Position : (Position - Origin).ToGlobal(Parent.GlobalPosition);
 
+        /// <summary>
+        /// Determines whether this <see cref="IEntity" /> is destroyed.
+        /// </summary>
+        public bool Destroyed { get; private set; }
+
 
         // CTOR ############################################################################
         /// <summary>
@@ -223,6 +228,16 @@ namespace BlackCoat.Entities.Shapes
         /// <param name="other">The other <see cref="ICollisionShape"/></param>
         /// <returns>True when the objects overlap or touch</returns>
         public virtual bool Collide(ICollisionShape other) => _Core.CollisionSystem.CheckCollision(this, other);
+
+        /// <summary>
+        /// Handle the destruction of the <see cref="IEntity"/>
+        /// </summary>
+        /// <param name="disposing">Is the GC disposing the object, or is it an explicit call ?</param>
+        protected override void Destroy(bool disposing)
+        {
+            Destroyed = true;
+            base.Destroy(disposing);
+        }
 
         /// <summary>
         /// Returns a <see cref="System.String" /> that represents this instance.

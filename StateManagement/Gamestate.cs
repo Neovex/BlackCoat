@@ -12,12 +12,12 @@ namespace BlackCoat
     public abstract class Gamestate
     {
         protected Core _Core;
-        private Boolean _Destroyed;
         private PerformanceMonitor _PerformanceMonitor;
         private PropertyInspector _PropertyInspector;
 
         // State Info
         public String Name { get; protected set; }
+        public Boolean Destroyed { get; private set; }
 
         // Asset Managers
         protected internal TextureLoader TextureLoader { get; set; }
@@ -159,7 +159,7 @@ namespace BlackCoat
         /// <returns>True on success.</returns>
         internal bool LoadInternal()
         {
-            if (_Destroyed) throw new InvalidStateException($"Attempt to load destroyed state {Name}");
+            if (Destroyed) throw new InvalidStateException($"Attempt to load destroyed state {Name}");
 
             if (Load())
             {
@@ -192,7 +192,7 @@ namespace BlackCoat
         /// </summary>
         internal void DestroyInternal()
         {
-            _Destroyed = true;
+            Destroyed = true;
             _Core.DebugChanged -= HandleDebugChanged;
             _Core.ConsoleCommand -= HandleConsoleCommand;
 

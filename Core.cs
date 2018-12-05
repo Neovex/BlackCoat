@@ -297,11 +297,13 @@ namespace BlackCoat
         }
 
         /// <summary>
-        /// Exits the Update / Rendering Loop (if present), closes and disposes the Renderwindow
+        /// Exits the Update / Rendering Loop (if present) and closes and disposes the Renderwindow
         /// </summary>
-        public void Exit()
+        /// <param name="reason">Optional reason for logging</param>
+        public void Exit(String reason = null)
         {
             if (Disposed) throw new ObjectDisposedException("Core");
+            Log.Info(reason ?? "Begin Engine shutdown");
             _Device.Close();
         }
 
@@ -402,8 +404,7 @@ namespace BlackCoat
                     return;
                 case "exit":
                 case "quit":
-                    Log.Debug("Beginning Engine Shutdown");
-                    Exit();
+                    Exit("Engine shutdown requested by console");
                     return;
                 case "togglefullscreen":
                 case "tfs":

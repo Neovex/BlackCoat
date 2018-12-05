@@ -200,8 +200,8 @@ namespace BlackCoat.UI
         private void Unsubscribe(UIInput input)
         {
             if (input == null) return;
-            input.Input.MouseMoved += HandleMouseMoved;
-            input.Input.MouseWheelScrolled += HandleMouseWheelScrolled;
+            input.Input.MouseMoved -= HandleMouseMoved;
+            input.Input.MouseWheelScrolled -= HandleMouseWheelScrolled;
 
             input.Move -= HandleInputMove;
             input.BeforeConfirm -= HandleInputBeforeConfirm;
@@ -236,5 +236,11 @@ namespace BlackCoat.UI
         protected virtual void InvokePositionChanged() => PositionChanged.Invoke(this);
         protected virtual void InvokeOriginChanged() => OriginChanged.Invoke(this);
         protected virtual void InvokeContainerChanged() => ContainerChanged.Invoke(this);
+
+        protected override void Destroy(bool disposing)
+        {
+            Input = null;
+            base.Destroy(disposing);
+        }
     }
 }
