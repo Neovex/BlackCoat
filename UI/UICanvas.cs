@@ -59,6 +59,8 @@ namespace BlackCoat.UI
             }
         }
 
+        public bool EnforceBounds { get; set; }
+
 
         public UICanvas(Core core, Vector2f? size = null) : base(core)
         {
@@ -73,17 +75,20 @@ namespace BlackCoat.UI
             InvokeSizeChanged();
             _Background.Size = _Size;
         }
-
+        
         protected override void HandleChildComponentModified(UIComponent c)
         {
-            var cPos = c.Position;
-            var cSize = c.OuterSize;
-            if ((c.Position.X - c.Origin.X) - c.Padding.Left < 0) cPos.X = c.Origin.X + c.Padding.Left;
-            if ((c.Position.Y - c.Origin.Y) - c.Padding.Top < 0) cPos.Y = c.Origin.Y + c.Padding.Top;
-            if ((c.Position.X - c.Origin.X) + cSize.X - c.Padding.Left > InnerSize.X) cPos.X = InnerSize.X - cSize.X + c.Origin.X + c.Padding.Left;
-            if ((c.Position.Y - c.Origin.Y) + cSize.Y - c.Padding.Top > InnerSize.Y) cPos.Y = InnerSize.Y - cSize.Y + c.Origin.Y + c.Padding.Top;
-            c.Position = cPos;
             base.HandleChildComponentModified(c);
+            if (EnforceBounds)
+            {
+                var cPos = c.Position;
+                var cSize = c.OuterSize;
+                if ((c.Position.X - c.Origin.X) - c.Padding.Left < 0) cPos.X = c.Origin.X + c.Padding.Left;
+                if ((c.Position.Y - c.Origin.Y) - c.Padding.Top < 0) cPos.Y = c.Origin.Y + c.Padding.Top;
+                if ((c.Position.X - c.Origin.X) + cSize.X - c.Padding.Left > InnerSize.X) cPos.X = InnerSize.X - cSize.X + c.Origin.X + c.Padding.Left;
+                if ((c.Position.Y - c.Origin.Y) + cSize.Y - c.Padding.Top > InnerSize.Y) cPos.Y = InnerSize.Y - cSize.Y + c.Origin.Y + c.Padding.Top;
+                c.Position = cPos;
+            }
         }
 
         private void UpdateDocking(UIComponent c = null)

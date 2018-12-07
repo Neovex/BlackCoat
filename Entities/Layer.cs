@@ -17,9 +17,9 @@ namespace BlackCoat.Entities
 
         // Disabled Properties
         public new Vector2f Position { set { throw new Exception("Invalid Operation"); } }
-        public new float Rotation    { set { throw new Exception("Invalid Operation"); } }
-        public new Vector2f Scale    { set { throw new Exception("Invalid Operation"); } }
-        public new Texture Texture   { set { throw new Exception("Invalid Operation"); } }
+        public new float Rotation { set { throw new Exception("Invalid Operation"); } }
+        public new Vector2f Scale { set { throw new Exception("Invalid Operation"); } }
+        public new Texture Texture { set { throw new Exception("Invalid Operation"); } }
 
 
         // CTOR ############################################################################
@@ -34,6 +34,15 @@ namespace BlackCoat.Entities
         {
             deltaT *= TimeMultiplier;
             for (int i = _Entities.Count - 1; i > -1; i--) _Entities[i].Update(deltaT);
+        }
+
+        /// <summary>
+        /// Adds the specified entities.
+        /// </summary>
+        public void Add(params IEntity[] entities)
+        {
+            if (entities == null) throw new ArgumentNullException(nameof(entities));
+            foreach (var entity in entities) base.Add(entity);
         }
     }
 }

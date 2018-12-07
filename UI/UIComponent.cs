@@ -38,6 +38,7 @@ namespace BlackCoat.UI
         protected Rectangle _Background;
 
         private Boolean _HasFocus;
+        private Boolean _GotFocusThisFrame;
         private Boolean _Enabled;
         private FloatRect _Padding;
         private UIInput _Input;
@@ -157,18 +158,18 @@ namespace BlackCoat.UI
 
 
         // Methods #########################################################################
-        public virtual bool GiveFocus() => HasFocus = true;
+        public virtual bool GiveFocus() => _GotFocusThisFrame = HasFocus = true;
 
         protected virtual void ChangeFocus(float direction)
         {
-            if (!HasFocus || Container == null) return;
+            if (!HasFocus || _GotFocusThisFrame || Container == null) return;
 
             // Find UI root
             var root = Container;
             while (root.Container != null) root = root.Container;
 
             // Prepare search
-            Vector2f _CalculateGlobalCenter(UIComponent component) => component.GlobalPosition - component.Origin + component.InnerSize / 2;
+            Vector2f _CalculateGlobalCenter(UIComponent component) => component.GlobalPosition + component.InnerSize / 2;
             var globalCenter = _CalculateGlobalCenter(this);
             var allComponents = root.ComponentsFlattened;
             // Find the focus-able component closest to this one that is within the desired direction (+-FocusMovementSpectrum)
@@ -182,6 +183,12 @@ namespace BlackCoat.UI
                                        FirstOrDefault();
 
             if (target != null) target.GiveFocus();
+        }
+
+        public override void Update(float deltaT)
+        {
+            _GotFocusThisFrame = false;
+            base.Update(deltaT);
         }
 
         private void Subscribe(UIInput input)
@@ -239,6 +246,7 @@ namespace BlackCoat.UI
 
         protected override void Destroy(bool disposing)
         {
+            if (ActiveComponent == this) ActiveComponent = null;
             Input = null;
             base.Destroy(disposing);
         }

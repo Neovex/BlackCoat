@@ -13,7 +13,7 @@
   <Class Name="BlackCoat.Entities.Shapes.Rectangle" Collapsed="true">
     <Position X="6.25" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>QAQAAAEAAACFAwAUICAAQAQgAAgBABAIAAIAgAAQAAA=</HashCode>
+      <HashCode>QAQAAAEAAACFAwAUICAAQAQgAAhBABAIAAIAgAAQAIA=</HashCode>
       <FileName>Entities\Shapes\Rectangle.cs</FileName>
     </TypeIdentifier>
     <Lollipop Orientation="Right" Position="0.1" />
@@ -21,7 +21,7 @@
   <Class Name="BlackCoat.UI.Button">
     <Position X="15.5" Y="4.25" Width="2" />
     <TypeIdentifier>
-      <HashCode>AACAAAAAAACAAAAAIAAAAAAAABAAAAEAAAAAAAKEEAA=</HashCode>
+      <HashCode>AACAAAAAAACAAAAAIAAAAAAAABAAAAEAAAAAAACEEAA=</HashCode>
       <FileName>UI\Button.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -61,15 +61,13 @@
       <FileName>UI\UICanvas.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="BlackCoat.UI.AnchoredContainer">
+  <Class Name="BlackCoat.UI.AlignedContainer">
     <Position X="12.5" Y="0.75" Width="1.75" />
     <TypeIdentifier>
-      <HashCode>AAAAAAUAAAAAACAggAAABACAAAAAAAAA4IAAAAAAAAA=</HashCode>
-      <FileName>UI\AnchoredContainer.cs</FileName>
+      <HashCode>AAAAAAQAAAAAAQAgAAAAEACAAAAAAAAAYAAAAAAAAAA=</HashCode>
+      <FileName>UI\AlignedContainer.cs</FileName>
+      <NewMemberFileName>UI\AnchoredContainer.cs</NewMemberFileName>
     </TypeIdentifier>
-    <ShowAsAssociation>
-      <Field Name="_Anchor" />
-    </ShowAsAssociation>
   </Class>
   <Class Name="BlackCoat.UI.UIInput">
     <Position X="0.75" Y="2.25" Width="1.5" />
@@ -116,13 +114,13 @@
     <Position X="3.75" Y="2.25" Width="2" />
     <AssociationLine Name="_Background" Type="BlackCoat.Entities.Shapes.Rectangle" FixedFromPoint="true" FixedToPoint="true">
       <Path>
-        <Point X="5.75" Y="2.585" />
-        <Point X="7" Y="2.585" />
+        <Point X="5.75" Y="2.596" />
+        <Point X="7" Y="2.596" />
         <Point X="7" Y="1.191" />
       </Path>
     </AssociationLine>
     <TypeIdentifier>
-      <HashCode>BAJgCYUABACiBIEwoICABQAEGABjAAJAxIYABQsABEQ=</HashCode>
+      <HashCode>BAZgCYUABACiBIE4oICABQAEGABjAAJAxIYABQsABEQ=</HashCode>
       <FileName>UI\UIComponent.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -141,7 +139,7 @@
   <Enum Name="BlackCoat.UI.Anchor">
     <Position X="15.75" Y="2" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AgAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAEA=</HashCode>
+      <HashCode>AgAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEA=</HashCode>
       <FileName>UI\Anchor.cs</FileName>
     </TypeIdentifier>
   </Enum>

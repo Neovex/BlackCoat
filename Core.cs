@@ -239,7 +239,7 @@ namespace BlackCoat
         /// </summary>
         public void ShowRenderWindow()
         {
-            if (Disposed) throw new ObjectDisposedException("Core");
+            if (Disposed) throw new ObjectDisposedException(nameof(Core));
             _Device.SetVisible(true);
         }
 
@@ -249,7 +249,7 @@ namespace BlackCoat
         /// </summary>
         public void HideRenderWindow()
         {
-            if (Disposed) throw new ObjectDisposedException("Core");
+            if (Disposed) throw new ObjectDisposedException(nameof(Core));
             _Device.SetVisible(false);
         }
 
@@ -259,7 +259,7 @@ namespace BlackCoat
         /// </summary>
         public void Run()
         {
-            if (Disposed) throw new ObjectDisposedException("Core");
+            if (Disposed) throw new ObjectDisposedException(nameof(Core));
             Log.Info("Engine Started");
             ShowRenderWindow();
             while (_Device.IsOpen)
@@ -288,7 +288,7 @@ namespace BlackCoat
         /// <param name="deltaT">Optional time delta between frames in fractal seconds</param>
         public void ManualRefresh(float deltaT = 0)
         {
-            if (Disposed) throw new ObjectDisposedException("Core");
+            if (Disposed) throw new ObjectDisposedException(nameof(Core));
             if (!_Device.IsOpen) throw new InvalidStateException("Device is not open");
             if (Fullscreen != _Fullscreen) ChangeFullscreen();
             _Device.DispatchEvents();
@@ -302,7 +302,7 @@ namespace BlackCoat
         /// <param name="reason">Optional reason for logging</param>
         public void Exit(String reason = null)
         {
-            if (Disposed) throw new ObjectDisposedException("Core");
+            if (Disposed) throw new ObjectDisposedException(nameof(Core));
             Log.Info(reason ?? "Begin Engine shutdown");
             _Device.Close();
         }

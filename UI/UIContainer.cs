@@ -80,7 +80,7 @@ namespace BlackCoat.UI
             InvokeSizeChanged();
         }
 
-        public override bool GiveFocus() => Components.Any(c => c.GiveFocus());
+        public override bool GiveFocus() => base.GiveFocus() || Components.Any(c => c.GiveFocus());
 
         protected virtual void HandleChildComponentModified(UIComponent c) => InvokeSizeChanged();
 

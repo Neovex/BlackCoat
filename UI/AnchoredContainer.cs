@@ -1,9 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using BlackCoat.Collision;
 using SFML.System;
 
 namespace BlackCoat.UI
@@ -75,27 +70,22 @@ namespace BlackCoat.UI
             var containerSize = Container.InnerSize;
             switch (Anchor)
             {
-                case Anchor.Center:
-                    Origin = size / 2;
-                    Position = containerSize / 2;
-                    return;
-
                 case Anchor.TopRight:
-                    pos.X = (containerSize.X - _LastContainerSize.X) + (size.X - _LastSize.X);
+                    pos.X = containerSize.X - _LastContainerSize.X;
                     break;
                 case Anchor.BottomLeft:
-                    pos.Y = (containerSize.Y - _LastContainerSize.Y) + (size.Y - _LastSize.Y);
+                    pos.Y = containerSize.Y - _LastContainerSize.Y;
                     break;
                 case Anchor.BottomRight:
-                    pos.X = (containerSize.X - _LastContainerSize.X) + (size.X - _LastSize.X);
-                    pos.Y = (containerSize.Y - _LastContainerSize.Y) + (size.Y - _LastSize.Y);
+                    pos.X = containerSize.X - _LastContainerSize.X;
+                    pos.Y = containerSize.Y - _LastContainerSize.Y;
                     break;
             }
             _LastSize = size;
             _LastContainerSize = containerSize;
             if (pos.X < 0 || pos.Y < 0 || !_UpdateLock)
             {
-                Position = new Vector2f(Math.Max(0, RealPosition.X + pos.X), Math.Max(0, RealPosition.Y + pos.Y));
+                base.Position = new Vector2f(Math.Max(0, RealPosition.X + pos.X), Math.Max(0, RealPosition.Y + pos.Y));
             }
         }
     }

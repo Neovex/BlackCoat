@@ -84,7 +84,9 @@
       <DependentUpon>Launcher.cs</DependentUpon>
     </Compile>
     <Compile Include="Tools\RectangleConverter.cs" />
+    <Compile Include="UI\Alignment.cs" />
     <Compile Include="UI\Anchor.cs" />
+    <Compile Include="UI\AlignedContainer.cs" />
     <Compile Include="UI\AnchoredContainer.cs" />
     <Compile Include="UI\DistributionContainer.cs" />
     <Compile Include="UI\InputMapping\UIInput.cs" />
