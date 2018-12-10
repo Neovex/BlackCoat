@@ -17,6 +17,7 @@ namespace BlackCoat.Network
         /// </summary>
         public String Alias { get; set; }
 
+
         /// <summary>
         /// Initializes a new instance of the <see cref="NetUser"/> class.
         /// </summary>

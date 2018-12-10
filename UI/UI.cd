@@ -57,17 +57,27 @@
   <Class Name="BlackCoat.UI.UICanvas">
     <Position X="12.5" Y="5.5" Width="1.75" />
     <TypeIdentifier>
-      <HashCode>AAAAAAQCABAAAAAAAIAIEAIAAAAgAAAABAAgAAAAAAA=</HashCode>
+      <HashCode>AAAgAAQCABAAAAAAAIAIEAIAAAAgAAAABAAgAAAAAAA=</HashCode>
       <FileName>UI\UICanvas.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="BlackCoat.UI.AlignedContainer">
     <Position X="12.5" Y="0.75" Width="1.75" />
+    <InheritanceLine Type="BlackCoat.UI.UIContainer" FixedFromPoint="true">
+      <Path>
+        <Point X="9" Y="3.875" />
+        <Point X="13.375" Y="3.875" />
+        <Point X="13.375" Y="3.463" />
+      </Path>
+    </InheritanceLine>
     <TypeIdentifier>
-      <HashCode>AAAAAAQAAAAAAQAgAAAAEACAAAAAAAAAYAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAQAAAAAAQAAACAABAAAAAAAAAAEAIAAAAAAAAA=</HashCode>
       <FileName>UI\AlignedContainer.cs</FileName>
       <NewMemberFileName>UI\AnchoredContainer.cs</NewMemberFileName>
     </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Alignment" />
+    </ShowAsAssociation>
   </Class>
   <Class Name="BlackCoat.UI.UIInput">
     <Position X="0.75" Y="2.25" Width="1.5" />
@@ -136,11 +146,28 @@
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
+  <Class Name="BlackCoat.UI.AnchoredContainer">
+    <Position X="18" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAUAAAAAACAggAAABACAAAAAAAAA4IAAAAAAAAA=</HashCode>
+      <FileName>UI\AnchoredContainer.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Anchor" />
+    </ShowAsAssociation>
+  </Class>
   <Enum Name="BlackCoat.UI.Anchor">
-    <Position X="15.75" Y="2" Width="1.5" />
+    <Position X="20.5" Y="1.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AgAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEA=</HashCode>
       <FileName>UI\Anchor.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="BlackCoat.UI.Alignment">
+    <Position X="15.5" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAAIAAJAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAIQEA=</HashCode>
+      <FileName>UI\Alignment.cs</FileName>
     </TypeIdentifier>
   </Enum>
   <Font Name="Segoe UI" Size="9" />

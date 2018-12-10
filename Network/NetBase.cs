@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 using Lidgren.Network;
 
 namespace BlackCoat.Network
@@ -17,7 +18,7 @@ namespace BlackCoat.Network
 
         public Boolean Disposed { get; private set; }
 
-        
+
         public NetBase(NetPeer peer)
         {
             _BasePeer = peer ?? throw new ArgumentNullException(nameof(peer));
@@ -68,9 +69,15 @@ namespace BlackCoat.Network
                         ProcessIncommingData((TEnum)(Object)msg.ReadInt32(), msg);
                         break;
 
-                    case NetIncomingMessageType.DiscoveryRequest: // TODO
+                    case NetIncomingMessageType.DiscoveryRequest:
+                        var response = HandleDiscoveryRequest();
+                        if (response == null) break;
+                        var r = _BasePeer.CreateMessage();
+                        r.Write(response);
+                        _BasePeer.SendDiscoveryResponse(r, msg.SenderEndPoint);
                         break;
-                    case NetIncomingMessageType.DiscoveryResponse: // TODO
+                    case NetIncomingMessageType.DiscoveryResponse:
+                        DiscoveryResponseReceived(msg.SenderEndPoint, msg.ReadString());
                         break;
 
                     case NetIncomingMessageType.VerboseDebugMessage:
@@ -87,8 +94,11 @@ namespace BlackCoat.Network
                         break;
 
                     case NetIncomingMessageType.NatIntroductionSuccess:
-                    case NetIncomingMessageType.ConnectionLatencyUpdated: // TODO
                         Log.Info(msg.MessageType);
+                        break;
+                    case NetIncomingMessageType.ConnectionLatencyUpdated:
+                        LatencyUpdateReceived(msg.SenderConnection, msg.ReadFloat());
+                        Log.Debug(msg.SenderConnection.AverageRoundtripTime);
                         break;
                 }
                 _BasePeer.Recycle(msg);
@@ -104,7 +114,11 @@ namespace BlackCoat.Network
 
         protected abstract void ConnectionLost(NetConnection senderConnection);
 
-        
+        protected abstract String HandleDiscoveryRequest();
+        protected abstract void DiscoveryResponseReceived(IPEndPoint endPoint, string serverName);
+        protected abstract void LatencyUpdateReceived(NetConnection senderConnection, float latency);
+
+
         // OUTGOING
 
         protected virtual NetOutgoingMessage CreateMessage(TEnum subType, Action<NetOutgoingMessage> operation = null)

@@ -75,6 +75,19 @@ namespace BlackCoat.Network
             }
         }
 
+        protected override void LatencyUpdateReceived(NetConnection connection, float latency)
+        {
+            var user = _ConnectedClients.FirstOrDefault(u => u.Connection == connection);
+            if (user == null)
+            {
+                Log.Warning("Received latency from unknown connection:", connection.RemoteEndPoint);
+            }
+            else
+            {
+                user.Latency = (int)(latency * 1000);
+            }
+        }
+
         protected abstract void UserConnected(ServerUser<NetConnection> user);
         protected abstract void UserDisconnected(ServerUser<NetConnection> user);
     }

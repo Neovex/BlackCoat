@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading;
 using Lidgren.Network;
 
@@ -15,6 +16,7 @@ namespace BlackCoat.Network
     {
         private NetServer _Server;
 
+        public String Name { get; private set; }
         public String AppIdentifier { get; private set; }
 
 
@@ -27,14 +29,18 @@ namespace BlackCoat.Network
 
         // CONTROL
 
-        public void Host(int port)
+        public void Host(string name, int port)
         {
             if (Disposed) throw new ObjectDisposedException(nameof(Server<TEnum>));
+            if (String.IsNullOrWhiteSpace(name)) throw new ArgumentException(nameof(name));
+            Name = name;
 
             StopServer(String.Empty);
 
             var config = new NetPeerConfiguration(AppIdentifier);
             config.Port = port;
+            config.EnableMessageType(NetIncomingMessageType.DiscoveryResponse);
+            config.EnableMessageType(NetIncomingMessageType.ConnectionLatencyUpdated);
 
             _BasePeer = _Server = new NetServer(config);
             _Server.Start();
@@ -69,6 +75,9 @@ namespace BlackCoat.Network
             Log.Debug("Shutdown took ~", c, "milliseconds");
         }
 
+        // INCOMMING
+        protected override string HandleDiscoveryRequest() => Name;
+        protected override void DiscoveryResponseReceived(IPEndPoint endPoint, string serverName) { }
 
         // OUTGOING
 

@@ -15,6 +15,11 @@ namespace BlackCoat.Network
         public TChannel Connection { get; private set; }
 
         /// <summary>
+        /// Gets the users connection latency in milliseconds.
+        /// </summary>
+        public Int32 Latency { get; internal set; }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="ServerUser{TChannel}"/> class.
         /// </summary>
         /// <param name="id">The UID.</param>
