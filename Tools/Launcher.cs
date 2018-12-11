@@ -61,6 +61,11 @@ namespace BlackCoat
             get => _BorderCheckBox.Checked;
             set => _BorderCheckBox.Checked = value;
         }
+        public bool VSync
+        {
+            get => _VsyncCheckBox.Checked;
+            set => _VsyncCheckBox.Checked = value;
+        }
 
 
         public Launcher()
@@ -91,6 +96,12 @@ namespace BlackCoat
         {
             _BorderCheckBox.Enabled = _WindowedCheckBox.Checked;
             _BorderCheckBox.Checked = false;
+        }
+
+        private void VsyncCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            _FPSComboBox.Enabled = !_VsyncCheckBox.Checked;
+            if(!_FPSComboBox.Enabled) _FPSComboBox.SelectedIndex = 1;
         }
     }
 }

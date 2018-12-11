@@ -34,6 +34,7 @@
             this._TapHost = new System.Windows.Forms.TabControl();
             this._EngineTabPage = new System.Windows.Forms.TabPage();
             this._FPSComboBox = new System.Windows.Forms.ComboBox();
+            this._VsyncCheckBox = new System.Windows.Forms.CheckBox();
             this._BorderCheckBox = new System.Windows.Forms.CheckBox();
             this._AAComboBox = new System.Windows.Forms.ComboBox();
             this._WindowedCheckBox = new System.Windows.Forms.CheckBox();
@@ -52,7 +53,7 @@
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new System.Drawing.Point(102, 54);
+            label1.Location = new System.Drawing.Point(98, 54);
             label1.Name = "label1";
             label1.Size = new System.Drawing.Size(57, 13);
             label1.TabIndex = 1;
@@ -61,7 +62,7 @@
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new System.Drawing.Point(108, 105);
+            label2.Location = new System.Drawing.Point(104, 105);
             label2.Name = "label2";
             label2.Size = new System.Drawing.Size(51, 13);
             label2.TabIndex = 3;
@@ -70,7 +71,7 @@
             // label3
             // 
             label3.AutoSize = true;
-            label3.Location = new System.Drawing.Point(95, 78);
+            label3.Location = new System.Drawing.Point(91, 78);
             label3.Name = "label3";
             label3.Size = new System.Drawing.Size(64, 13);
             label3.TabIndex = 4;
@@ -88,6 +89,7 @@
             // _EngineTabPage
             // 
             this._EngineTabPage.Controls.Add(this._FPSComboBox);
+            this._EngineTabPage.Controls.Add(this._VsyncCheckBox);
             this._EngineTabPage.Controls.Add(this._BorderCheckBox);
             this._EngineTabPage.Controls.Add(this._AAComboBox);
             this._EngineTabPage.Controls.Add(label3);
@@ -111,15 +113,26 @@
             "60",
             "120",
             "Unlimited"});
-            this._FPSComboBox.Location = new System.Drawing.Point(175, 102);
+            this._FPSComboBox.Location = new System.Drawing.Point(171, 102);
             this._FPSComboBox.Name = "_FPSComboBox";
             this._FPSComboBox.Size = new System.Drawing.Size(142, 21);
             this._FPSComboBox.TabIndex = 7;
             // 
+            // _VsyncCheckBox
+            // 
+            this._VsyncCheckBox.AutoSize = true;
+            this._VsyncCheckBox.Location = new System.Drawing.Point(330, 104);
+            this._VsyncCheckBox.Name = "_VsyncCheckBox";
+            this._VsyncCheckBox.Size = new System.Drawing.Size(88, 17);
+            this._VsyncCheckBox.TabIndex = 6;
+            this._VsyncCheckBox.Text = "Vertical Sync";
+            this._VsyncCheckBox.UseVisualStyleBackColor = true;
+            this._VsyncCheckBox.CheckedChanged += new System.EventHandler(this.VsyncCheckBox_CheckedChanged);
+            // 
             // _BorderCheckBox
             // 
             this._BorderCheckBox.AutoSize = true;
-            this._BorderCheckBox.Location = new System.Drawing.Point(334, 74);
+            this._BorderCheckBox.Location = new System.Drawing.Point(330, 77);
             this._BorderCheckBox.Name = "_BorderCheckBox";
             this._BorderCheckBox.Size = new System.Drawing.Size(75, 17);
             this._BorderCheckBox.TabIndex = 6;
@@ -138,7 +151,7 @@
             "8",
             "16",
             "32"});
-            this._AAComboBox.Location = new System.Drawing.Point(175, 75);
+            this._AAComboBox.Location = new System.Drawing.Point(171, 75);
             this._AAComboBox.Name = "_AAComboBox";
             this._AAComboBox.Size = new System.Drawing.Size(142, 21);
             this._AAComboBox.TabIndex = 5;
@@ -146,7 +159,7 @@
             // _WindowedCheckBox
             // 
             this._WindowedCheckBox.AutoSize = true;
-            this._WindowedCheckBox.Location = new System.Drawing.Point(334, 53);
+            this._WindowedCheckBox.Location = new System.Drawing.Point(330, 50);
             this._WindowedCheckBox.Name = "_WindowedCheckBox";
             this._WindowedCheckBox.Size = new System.Drawing.Size(77, 17);
             this._WindowedCheckBox.TabIndex = 2;
@@ -158,7 +171,7 @@
             // 
             this._ResolutionComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this._ResolutionComboBox.FormattingEnabled = true;
-            this._ResolutionComboBox.Location = new System.Drawing.Point(175, 48);
+            this._ResolutionComboBox.Location = new System.Drawing.Point(171, 48);
             this._ResolutionComboBox.Name = "_ResolutionComboBox";
             this._ResolutionComboBox.Size = new System.Drawing.Size(142, 21);
             this._ResolutionComboBox.TabIndex = 0;
@@ -228,5 +241,6 @@
         private System.Windows.Forms.ComboBox _AAComboBox;
         private System.Windows.Forms.ComboBox _FPSComboBox;
         private System.Windows.Forms.CheckBox _BorderCheckBox;
+        private System.Windows.Forms.CheckBox _VsyncCheckBox;
     }
 }

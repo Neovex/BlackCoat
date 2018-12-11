@@ -53,7 +53,7 @@ namespace BlackCoat.Network
                     case NetIncomingMessageType.StatusChanged:
                         Log.Debug((NetConnectionStatus)msg.ReadByte(), msg.ReadString(), "-", _BasePeer.Status, msg.SenderConnection.Status);
 
-                        switch (msg.SenderConnection.Status) // TODO check for running server?
+                        switch (msg.SenderConnection.Status)
                         {
                             case NetConnectionStatus.Connected:
                                 NewConnection(msg.SenderConnection);
@@ -96,9 +96,9 @@ namespace BlackCoat.Network
                     case NetIncomingMessageType.NatIntroductionSuccess:
                         Log.Info(msg.MessageType);
                         break;
+
                     case NetIncomingMessageType.ConnectionLatencyUpdated:
                         LatencyUpdateReceived(msg.SenderConnection, msg.ReadFloat());
-                        Log.Debug(msg.SenderConnection.AverageRoundtripTime);
                         break;
                 }
                 _BasePeer.Recycle(msg);

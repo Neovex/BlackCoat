@@ -20,7 +20,6 @@ namespace BlackCoat.UI
         public float Offset { get => _Offset; set { _Offset = value; UpdatePositions(); } }
 
 
-
         public OffsetContainer(Core core, bool horizontal = true) : base(core)
         {
             Horizontal = horizontal;

@@ -88,7 +88,15 @@ namespace BlackCoat
         /// A new Render Device using a windowed full screen window.
         /// </summary>
         /// <returns>The full screen device</returns>
-        public static Device Fullscreen => new Device(VideoMode.DesktopMode, nameof(BlackCoat), Styles.None);
+        public static Device Fullscreen
+        {
+            get
+            {
+                var device = new Device(VideoMode.DesktopMode, nameof(BlackCoat), Styles.None);
+                device.SetVerticalSyncEnabled(true);
+                return device;
+            }
+        }
 
         /// <summary>
         /// Initializes a new Graphic Device via <see cref="Launcher"/>
@@ -115,7 +123,7 @@ namespace BlackCoat
                     style = Styles.Default;
                     if (launcher.Borderless) style = Styles.None;
                 }
-                return Create(launcher.VideoMode, title ?? launcher.Text, style, launcher.AntiAliasing, launcher.FpsLimit);
+                return Create(launcher.VideoMode, title ?? launcher.Text, style, launcher.AntiAliasing, launcher.VSync, launcher.FpsLimit);
             }
             return null;
         }
@@ -123,22 +131,24 @@ namespace BlackCoat
         /// <summary>
         /// Initializes a new Graphic Device
         /// </summary>
-        /// <param name="mode">Video mode to use</param>
+        /// <param name="videoMode">The video mode.</param>
         /// <param name="title">Title of the Device/Window</param>
         /// <param name="style">Display Style of the Device/Window</param>
         /// <param name="antialiasing">Determines the Anti-aliasing</param>
+        /// <param name="vSync">Determines whether to wait for vertical screen synchronization.</param>
         /// <param name="framerateLimit">Optional frame rate limit.</param>
         /// <param name="skipValidityCheck">Skips the device validation (not recommended but required for non-standard resolutions)</param>
         /// <returns>
         /// The Initialized Device/Window or null if the Device could not be created
         /// </returns>
-        public static Device Create(VideoMode videoMode, String title, Styles style, UInt32 antialiasing, UInt32? framerateLimit = null, Boolean skipValidityCheck = false)
+        public static Device Create(VideoMode videoMode, String title, Styles style, UInt32 antialiasing, bool vSync, UInt32? framerateLimit = null, Boolean skipValidityCheck = false)
         {
             var settings = new ContextSettings(24, 8, antialiasing);
             if (skipValidityCheck || videoMode.IsValid())
             {
                 var window = new Device(videoMode, title, style, settings);
-                window.SetFramerateLimit(framerateLimit ?? _DEFAULT_FRAMERATE_LIMIT);
+                window.SetVerticalSyncEnabled(vSync);
+                if(!vSync) window.SetFramerateLimit(framerateLimit ?? _DEFAULT_FRAMERATE_LIMIT);
                 return window;
             }
             return null;

@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using BlackCoat.Collision;
 using SFML.System;
+using SFML.Graphics;
 
 namespace BlackCoat.UI
 {
@@ -73,6 +71,7 @@ namespace BlackCoat.UI
             if (_Size == size) return;
             _Size = size;
             InvokeSizeChanged();
+            TextureRect = new IntRect(default(Vector2i), size.ToVector2i());
             _Background.Size = _Size;
         }
         
