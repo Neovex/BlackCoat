@@ -10,7 +10,7 @@ namespace BlackCoat
 {
     public static class RectangleExtensions
     {
-        public static Vector2f Size(this FloatRect src) => new Vector2f(src.Width, src.Height);
         public static Vector2f Position(this FloatRect src) => new Vector2f(src.Left, src.Top);
+        public static Vector2f Size(this FloatRect src) => new Vector2f(src.Width, src.Height);
     }
 }

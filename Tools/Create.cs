@@ -7,7 +7,7 @@ using SFML.Graphics;
 namespace BlackCoat
 {
     /// <summary>
-    /// Helper class containing some convenient factory functions.
+    /// Static helper class containing some convenience factory functions.
     /// </summary>
     public static class Create
     {

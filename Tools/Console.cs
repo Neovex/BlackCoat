@@ -12,7 +12,7 @@ namespace BlackCoat.Tools
     /// <summary>
     /// The console is a simple direct User I/O interface for advanced control
     /// </summary>
-    class Console : UICanvas
+    class Console : Canvas
     {
         // Constants #######################################################################
         private const int _FONT_SIZE = 10;
@@ -87,7 +87,7 @@ namespace BlackCoat.Tools
         private void UpdateDisplayProportions(Vector2f size)
         {
             _Height = size.Y / 3;
-            SetSize(new Vector2f(size.X, _Height));
+            Resize(new Vector2f(size.X, _Height));
             Position = new Vector2f(Position.X , size.Y - (IsOpen ? _Height : 0));
             _InputBox.MinSize = new Vector2f(size.X, _InputBox.MinSize.Y);
             UpdateOutputText();

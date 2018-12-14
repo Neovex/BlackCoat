@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using BlackCoat.Collision;
 using SFML.System;
 
 namespace BlackCoat.UI
@@ -11,47 +9,27 @@ namespace BlackCoat.UI
     /// Places all child components evenly spaced inside itself base on a fixed offset.
     /// </summary>
     /// <seealso cref="BlackCoat.UI.UIContainer" />
-    public class OffsetContainer : UIContainer
+    public class OffsetContainer : DistributionContainer
     {
-        private bool _Horizontal;
-        private float _Offset;
+        public float Offset { get => _Offset; set { _Offset = value; InvokeSizeChanged(); } }
 
-        public Boolean Horizontal { get => _Horizontal; set { _Horizontal = value; UpdatePositions(); } }
-        public float Offset { get => _Offset; set { _Offset = value; UpdatePositions(); } }
+        public override bool DockX { get => base.DockX && !Horizontal; set => base.DockX = value && !Horizontal; }
+        public override bool DockY { get => base.DockY && Horizontal; set => base.DockY = value && Horizontal; }
 
 
-        public OffsetContainer(Core core, bool horizontal = true) : base(core)
+        public OffsetContainer(Core core, bool horizontal = true) : base(core, horizontal)
         {
-            Horizontal = horizontal;
         }
 
         protected override void InvokeSizeChanged()
         {
             base.InvokeSizeChanged();
-            UpdatePositions();
+            var components = Components.Select(c => c.RelativeSize);
+            if (!Components.Any()) return;
+            Resize(new Vector2f(DockX ? InnerSize.X : components.Max(c => c.X),
+                                DockY ? InnerSize.Y : components.Max(c => c.Y)));
         }
 
-        private void UpdatePositions()
-        {
-            float pos = 0;
-            foreach (var component in Components)
-            {
-                if (_Horizontal)
-                {
-                    pos += component.Padding.Left;
-                    component.Position = new Vector2f(pos, component.Padding.Top);
-                    pos += component.InnerSize.X;
-                    pos += component.Padding.Width;
-                }
-                else
-                {
-                    pos += component.Padding.Top;
-                    component.Position = new Vector2f(component.Padding.Left, pos);
-                    pos += component.InnerSize.Y;
-                    pos += component.Padding.Height;
-                }
-                pos += _Offset;
-            }
-        }
+        protected override void CalculateOffset() { } // Intentionally empty
     }
 }

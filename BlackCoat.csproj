@@ -88,11 +88,12 @@
     <Compile Include="UI\Anchor.cs" />
     <Compile Include="UI\AlignedContainer.cs" />
     <Compile Include="UI\AnchoredContainer.cs" />
-    <Compile Include="UI\DistributionContainer.cs" />
+    <Compile Include="UI\IDockable.cs" />
     <Compile Include="UI\InputMapping\UIInput.cs" />
     <Compile Include="UI\InputMapping\UIInputMap.cs" />
-    <Compile Include="UI\UICanvas.cs" />
+    <Compile Include="UI\Canvas.cs" />
     <Compile Include="UI\Label.cs" />
+    <Compile Include="UI\DistributionContainer.cs" />
     <Compile Include="UI\OffsetContainer.cs" />
     <Compile Include="UI\UICollisionShape.cs" />
     <Compile Include="UI\UIContainer.cs" />

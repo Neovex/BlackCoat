@@ -15,6 +15,9 @@ namespace BlackCoat.UI
         public event Action<UIComponent> ComponentRemoved = c => { };
 
 
+        private bool _UpdateLock;
+
+
         public override UIInput Input
         {
             get => base.Input;
@@ -29,15 +32,11 @@ namespace BlackCoat.UI
         {
             get
             {
-                var components = Components.ToArray();
+                var components = Components.Select(c => c.RelativeSize).ToArray();
                 if (components.Length == 0) return default(Vector2f);
-                return new Vector2f(components.Max(c => c.Position.X - c.Origin.X - c.Padding.Left + c.OuterSize.X),
-                                    components.Max(c => c.Position.Y - c.Origin.Y - c.Padding.Top + c.OuterSize.Y));
+                return new Vector2f(components.Max(v => v.X), components.Max(v => v.Y));
             }
         }
-
-        public IEnumerable<UIComponent> Components => _Entities.OfType<UIComponent>();
-        public IEnumerable<UIComponent> ComponentsFlattened => Components.SelectMany(c => new[] { c }.Concat(c is UIContainer cont ? cont.ComponentsFlattened : Enumerable.Empty<UIComponent>()));
 
         public IEnumerable<UIComponent> Init
         {
@@ -48,6 +47,9 @@ namespace BlackCoat.UI
                 foreach (var component in value) Add(component);
             }
         }
+
+        public IEnumerable<UIComponent> Components => _Entities.OfType<UIComponent>();
+        public IEnumerable<UIComponent> ComponentsFlattened => Components.SelectMany(c => new[] { c }.Concat(c is UIContainer cont ? cont.ComponentsFlattened : Enumerable.Empty<UIComponent>()));
 
 
         public UIContainer(Core core) : base(core)
@@ -83,6 +85,42 @@ namespace BlackCoat.UI
         public override bool GiveFocus() => base.GiveFocus() || Components.Any(c => c.GiveFocus());
 
         protected virtual void HandleChildComponentModified(UIComponent c) => InvokeSizeChanged();
+
+        protected override void InvokeSizeChanged()
+        {
+            if (_UpdateLock) return;
+            _UpdateLock = true;
+            foreach (var c in Components)
+            {
+                UpdateDockedComponent(c);
+            }
+            _UpdateLock = false;
+            base.InvokeSizeChanged();
+        }
+
+        protected virtual void UpdateDockedComponent(UIComponent c)
+        {
+            if (c is IDockable dockee)
+            {
+                if (dockee.DockX || dockee.DockY)
+                {
+                    // Reset
+                    c.Rotation = 0;
+                    c.Origin = default(Vector2f);
+                    c.Scale = Create.Vector2f(1);
+                    // Dock Position
+                    c.Position = new Vector2f(dockee.DockX ? c.Padding.Left : c.Position.X,
+                                              dockee.DockY ? c.Padding.Top : c.Position.Y);
+                    // Dock Size
+                    var size = default(Vector2f);
+                    var components = Components.Where(co => !(co is IDockable)).Select(co => co.RelativeSize).
+                              Concat(Components.OfType<IDockable>().Select(dock => dock.MinRelativeSize)).ToArray();
+                    if (components.Length != 0) size = new Vector2f(components.Max(v => v.X), components.Max(v => v.Y));
+                    dockee.Resize(new Vector2f(dockee.DockX ? size.X - (c.Padding.Left + c.Padding.Width) : c.InnerSize.X,
+                                               dockee.DockY ? size.Y - (c.Padding.Top + c.Padding.Height) : c.InnerSize.Y));
+                }
+            }
+        }
 
         protected virtual void InvokeComponentAdded(UIComponent component) => ComponentAdded.Invoke(component);
         protected virtual void InvokeComponentRemoved(UIComponent component) => ComponentRemoved.Invoke(component);

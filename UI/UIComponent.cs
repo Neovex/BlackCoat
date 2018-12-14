@@ -89,8 +89,9 @@ namespace BlackCoat.UI
             }
         }
 
-        public virtual Vector2f OuterSize => InnerSize + new Vector2f(Padding.Left + Padding.Width, Padding.Top + Padding.Height);
         public abstract Vector2f InnerSize { get; }
+        public virtual Vector2f OuterSize => InnerSize + new Vector2f(Padding.Left + Padding.Width, Padding.Top + Padding.Height);
+        public virtual Vector2f RelativeSize => Position - Origin + OuterSize - Padding.Position();
 
         public bool Enabled
         {

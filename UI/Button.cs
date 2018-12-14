@@ -7,7 +7,7 @@ using SFML.System;
 
 namespace BlackCoat.UI
 {
-    public class Button : UICanvas
+    public class Button : Canvas
     {
         public event Action<Button> Pressed = b => { };
         public Action<Button> InitPressed { set => Pressed += value; }
