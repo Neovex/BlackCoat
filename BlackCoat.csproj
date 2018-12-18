@@ -88,6 +88,7 @@
     <Compile Include="UI\Anchor.cs" />
     <Compile Include="UI\AlignedContainer.cs" />
     <Compile Include="UI\AnchoredContainer.cs" />
+    <Compile Include="UI\AutomatedCanvas.cs" />
     <Compile Include="UI\IDockable.cs" />
     <Compile Include="UI\InputMapping\UIInput.cs" />
     <Compile Include="UI\InputMapping\UIInputMap.cs" />

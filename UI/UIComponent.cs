@@ -90,8 +90,8 @@ namespace BlackCoat.UI
         }
 
         public abstract Vector2f InnerSize { get; }
-        public virtual Vector2f OuterSize => InnerSize + new Vector2f(Padding.Left + Padding.Width, Padding.Top + Padding.Height);
-        public virtual Vector2f RelativeSize => Position - Origin + OuterSize - Padding.Position();
+        public virtual Vector2f OuterSize => Padding.Position() + InnerSize + Padding.Size();
+        public virtual Vector2f RelativeSize => (Position - Origin) + InnerSize + Padding.Size();
 
         public bool Enabled
         {

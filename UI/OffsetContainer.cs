@@ -6,10 +6,10 @@ using SFML.System;
 namespace BlackCoat.UI
 {
     /// <summary>
-    /// Places all child components evenly spaced inside itself base on a fixed offset.
+    /// Places all child components evenly spaced along one axis inside itself based on a fixed offset.
     /// </summary>
     /// <seealso cref="BlackCoat.UI.UIContainer" />
-    public class OffsetContainer : DistributionContainer
+    public class OffsetContainer : AutomatedCanvas
     {
         public float Offset { get => _Offset; set { _Offset = value; InvokeSizeChanged(); } }
 
@@ -20,16 +20,5 @@ namespace BlackCoat.UI
         public OffsetContainer(Core core, bool horizontal = true) : base(core, horizontal)
         {
         }
-
-        protected override void InvokeSizeChanged()
-        {
-            base.InvokeSizeChanged();
-            var components = Components.Select(c => c.RelativeSize);
-            if (!Components.Any()) return;
-            Resize(new Vector2f(DockX ? InnerSize.X : components.Max(c => c.X),
-                                DockY ? InnerSize.Y : components.Max(c => c.Y)));
-        }
-
-        protected override void CalculateOffset() { } // Intentionally empty
     }
 }

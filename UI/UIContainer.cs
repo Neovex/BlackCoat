@@ -100,25 +100,24 @@ namespace BlackCoat.UI
 
         protected virtual void UpdateDockedComponent(UIComponent c)
         {
-            if (c is IDockable dockee)
+            if (c is IDockable dockee && (dockee.DockX || dockee.DockY))
             {
-                if (dockee.DockX || dockee.DockY)
-                {
-                    // Reset
-                    c.Rotation = 0;
-                    c.Origin = default(Vector2f);
-                    c.Scale = Create.Vector2f(1);
-                    // Dock Position
-                    c.Position = new Vector2f(dockee.DockX ? c.Padding.Left : c.Position.X,
-                                              dockee.DockY ? c.Padding.Top : c.Position.Y);
-                    // Dock Size
-                    var size = default(Vector2f);
-                    var components = Components.Where(co => !(co is IDockable)).Select(co => co.RelativeSize).
-                              Concat(Components.OfType<IDockable>().Select(dock => dock.MinRelativeSize)).ToArray();
-                    if (components.Length != 0) size = new Vector2f(components.Max(v => v.X), components.Max(v => v.Y));
-                    dockee.Resize(new Vector2f(dockee.DockX ? size.X - (c.Padding.Left + c.Padding.Width) : c.InnerSize.X,
-                                               dockee.DockY ? size.Y - (c.Padding.Top + c.Padding.Height) : c.InnerSize.Y));
-                }
+                // Reset
+                c.Rotation = 0;
+                c.Origin = default(Vector2f);
+                c.Scale = Create.Vector2f(1);
+
+                // Dock Position
+                c.Position = new Vector2f(dockee.DockX ? c.Padding.Left : c.Position.X,
+                                          dockee.DockY ? c.Padding.Top : c.Position.Y);
+                // Dock Size
+                var components = Components.Select(co => co.RelativeSize).ToArray();
+
+                var size = components.Length == 0 ? default(Vector2f) : 
+                           new Vector2f(components.Max(v => v.X), components.Max(v => v.Y));
+
+                dockee.Resize(new Vector2f(dockee.DockX ? size.X - (c.Padding.Left + c.Padding.Width) : c.InnerSize.X,
+                                           dockee.DockY ? size.Y - (c.Padding.Top + c.Padding.Height) : c.InnerSize.Y));
             }
         }
 

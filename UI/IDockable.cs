@@ -9,7 +9,8 @@ namespace BlackCoat.UI
         bool DockY { get; set; }
 
         Vector2f MinSize { get; }
-        Vector2f MinRelativeSize { get; }
+        Vector2f OuterMinSize { get; }
+        Vector2f DockedPosition { get; }
 
         void Resize(Vector2f size);
     }

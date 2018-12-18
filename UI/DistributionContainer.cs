@@ -6,92 +6,91 @@ using SFML.System;
 namespace BlackCoat.UI
 {
     /// <summary>
-    /// Distributes all child components evenly spaced inside itself.
+    /// Distributes all child components evenly spaced along one axis inside itself.
     /// </summary>
     /// <seealso cref="BlackCoat.UI.Canvas" />
-    public class DistributionContainer : Canvas
+    public class DistributionContainer : AutomatedCanvas
     {
-        private bool _Horizontal;
-        protected float _Offset;
-        private float _CurrentOffset;
         private Vector2f _DockingSize;
-        private bool _UpdateLock;
-
-        public Boolean Horizontal { get => _Horizontal; set { _Horizontal = value; InvokeSizeChanged(); } }
 
         public override bool DockX { get => base.DockX || Horizontal; set => base.DockX = value || Horizontal; }
         public override bool DockY { get => base.DockY || !Horizontal; set => base.DockY = value || !Horizontal; }
 
-
-
             
-        public DistributionContainer(Core core, bool horizontal = true, Vector2f? size = null) : base(core, size)
+        public DistributionContainer(Core core, bool horizontal = true, Vector2f? size = null) : base(core, horizontal, size)
         {
-            Horizontal = horizontal;
         }
 
         protected override void InvokeSizeChanged()
         {
-            if (_UpdateLock) return;
-            _UpdateLock = true;
+            if (Updating) return;
 
-            // Reset Offset
-            _CurrentOffset = 0;
             // Calculate Offset for docking
-            CalculateOffset();
+            _Offset = CalculateOffset();
 
             // Calculate Size for docking
-            var componentSizes = Components.Where(co => !(co is IDockable)).Select(co => co.RelativeSize).
-                          Concat(Components.OfType<IDockable>().Select(dock => dock.MinRelativeSize)).ToArray();
-            _DockingSize = componentSizes.Length == 0 ? default(Vector2f) :
-                           new Vector2f(componentSizes.Max(v => v.X), componentSizes.Max(v => v.Y));
+            _DockingSize = CalculateDockingSize();
 
             // Base calls UpdateDockedComponent on all components
             base.InvokeSizeChanged();
-            _UpdateLock = false;
         }
 
         protected override void UpdateDockedComponent(UIComponent c)
         {
-            // Reset
-            c.Rotation = 0;
-            c.Origin = default(Vector2f);
-            c.Scale = Create.Vector2f(1);
+            if (c is IDockable dockee && (dockee.DockX || dockee.DockY))
+            {
+                // Dock Position
+                c.Position = new Vector2f(dockee.DockX && !Horizontal ? c.Padding.Left : c.Position.X,
+                                          dockee.DockY &&  Horizontal ? c.Padding.Top : c.Position.Y);
 
-            if (Horizontal)
-            {
-                _CurrentOffset += c.Padding.Left;
-                c.Position = new Vector2f(_CurrentOffset, c.Padding.Top);
-                _CurrentOffset += c.InnerSize.X;
-                _CurrentOffset += c.Padding.Width;
+                // Dock Size
+                Vector2f size;
+                if (Horizontal)
+                {
+                    size.X = dockee.DockX ? dockee.MinSize.X + _DockingSize.X : c.InnerSize.X;
+                    size.Y = dockee.DockY ? InnerSize.Y - (c.Padding.Top + c.Padding.Height) : c.InnerSize.Y;
+                }
+                else
+                {
+                    size.X = dockee.DockX ? InnerSize.X - (c.Padding.Left + c.Padding.Width) : c.InnerSize.X;
+                    size.Y = dockee.DockY ? dockee.MinSize.Y + _DockingSize.Y : c.InnerSize.Y;
+                }
+                dockee.Resize(size);
             }
-            else
-            {
-                _CurrentOffset += c.Padding.Top;
-                c.Position = new Vector2f(c.Padding.Left, _CurrentOffset);
-                _CurrentOffset += c.InnerSize.Y;
-                _CurrentOffset += c.Padding.Height;
-            }
-            _CurrentOffset += _Offset;
 
             base.UpdateDockedComponent(c);
         }
 
-        protected virtual void CalculateOffset()
+        protected virtual float CalculateOffset()
         {
             var components = Components.ToArray();
-            if (components.Length < 2)
+            if (components.Length < 2 || components.OfType<IDockable>().Any(d => (d.DockX && Horizontal) || (d.DockY && !Horizontal)))
             {
-                _Offset = 0;
+                return 0;
             }
-            else
+
+            var componentSize = new Vector2f(components.Sum(c => c.OuterSize.X), components.Sum(c => c.OuterSize.Y));
+            var r = (InnerSize - componentSize) / (components.Length - 1);
+            return Horizontal ? r.X : r.Y;
+        }
+
+        protected virtual Vector2f CalculateDockingSize()
+        {
+            var dockeeCount = 0;
+            var componentSizes = Components.Select(c =>
             {
-                var componentSize = new Vector2f(components.Sum(c => c.OuterSize.X), components.Sum(c => c.OuterSize.Y));
-                if (Horizontal)
-                    _Offset = (InnerSize.X - componentSize.X) / (components.Length - 1);
-                else
-                    _Offset = (InnerSize.Y - componentSize.Y) / (components.Length - 1);
-            }
+                if (c is IDockable dockee)
+                {
+                    if ((Horizontal && dockee.DockX) || (!Horizontal && dockee.DockY)) dockeeCount++;
+                    return new Vector2f(Horizontal && dockee.DockX ? dockee.OuterMinSize.X : c.OuterSize.X,
+                                       !Horizontal && dockee.DockY ? dockee.OuterMinSize.Y : c.OuterSize.Y);
+                }
+                return c.OuterSize;
+            }).ToArray();
+
+            if (componentSizes.Length == 0 || dockeeCount == 0) return default(Vector2f);
+            
+            return (InnerSize - new Vector2f(componentSizes.Sum(v => v.X), componentSizes.Sum(v => v.Y))) / dockeeCount;
         }
     }
 }
