@@ -51,7 +51,7 @@ namespace BlackCoat.InputMapping
         /// <summary>
         /// Occurs when a mapped operation is invoked.
         /// </summary>
-        public event Action<TMappedOperation, Boolean> MappedOperationInvoked = (a, b) => { };
+        public event Action<TMappedOperation, Boolean, Boolean> MappedOperationInvoked = (a, b, m) => { };
         
 
         /// <summary>
@@ -148,40 +148,40 @@ namespace BlackCoat.InputMapping
 
         private void HandleKeyPressed(Keyboard.Key key)
         {
-            RaiseMappedOperationInvoked(_KeyboardActions, key, true);
+            RaiseMappedOperationInvoked(_KeyboardActions, key, true, false);
         }
         private void HandleKeyReleased(Keyboard.Key key)
         {
-            RaiseMappedOperationInvoked(_KeyboardActions, key, false);
+            RaiseMappedOperationInvoked(_KeyboardActions, key, false, false);
         }
 
         private void HandleMouseButtonPressed(Mouse.Button button)
         {
-            RaiseMappedOperationInvoked(_MouseActions, button, true);
+            RaiseMappedOperationInvoked(_MouseActions, button, true, true);
         }
         private void HandleMouseButtonReleased(Mouse.Button button)
         {
-            RaiseMappedOperationInvoked(_MouseActions, button, false);
+            RaiseMappedOperationInvoked(_MouseActions, button, false, true);
         }
 
         private void HandleMouseWheelScrolled(float delta)
         {
             if (delta > 0)
             {
-                if (_ScrollUpActionSet) MappedOperationInvoked.Invoke(_ScrollUpAction, true);
+                if (_ScrollUpActionSet) MappedOperationInvoked.Invoke(_ScrollUpAction, true, true);
             }
             else
             {
-                if (_ScrollDownActionSet) MappedOperationInvoked.Invoke(_ScrollDownAction, true);
+                if (_ScrollDownActionSet) MappedOperationInvoked.Invoke(_ScrollDownAction, true, true);
             }
         }
 
 
-        private void RaiseMappedOperationInvoked<TKey>(Dictionary<TKey, TMappedOperation> lookup, TKey key, Boolean activate)
+        private void RaiseMappedOperationInvoked<TKey>(Dictionary<TKey, TMappedOperation> lookup, TKey key, Boolean activate, Boolean fromMouse)
         {
             if (lookup.TryGetValue(key, out TMappedOperation operation))
             {
-                MappedOperationInvoked.Invoke(operation, activate);
+                MappedOperationInvoked.Invoke(operation, activate, fromMouse);
             }
         }
 

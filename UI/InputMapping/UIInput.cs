@@ -6,8 +6,8 @@ namespace BlackCoat.UI
     public class UIInput
     {
         public event Action<float> Move = d => { };
-        public event Action BeforeConfirm = () => { };
-        public event Action Confirm = () => { };
+        public event Action<bool> BeforeConfirm = m => { };
+        public event Action<bool> Confirm = m => { };
         public event Action Cancel = () => { };
         public event Action Edit = () => { };
         public event Action<TextEnteredEventArgs> TextEntered = t => { };
@@ -32,14 +32,14 @@ namespace BlackCoat.UI
 
         private void HandleMouseDown(Mouse.Button btn)
         {
-            if (btn == Mouse.Button.Left) RaiseBeforeConfirmEvent();
+            if (btn == Mouse.Button.Left) RaiseBeforeConfirmEvent(true);
         }
         private void HandleMouseUp(Mouse.Button btn)
         {
             switch (btn)
             {
                 case Mouse.Button.Left:
-                    RaiseConfirmEvent();
+                    RaiseConfirmEvent(true);
                     break;
                 case Mouse.Button.Right:
                     RaiseCancelEvent();
@@ -49,7 +49,7 @@ namespace BlackCoat.UI
 
         private void HandleKeyboardDown(Keyboard.Key key)
         {
-            if (key == Keyboard.Key.Return) RaiseBeforeConfirmEvent();
+            if (key == Keyboard.Key.Return) RaiseBeforeConfirmEvent(false);
         }
         private void HandleKeyboardUp(Keyboard.Key key)
         {
@@ -59,7 +59,7 @@ namespace BlackCoat.UI
                     RaiseCancelEvent();
                     break;
                 case Keyboard.Key.Return:
-                    RaiseConfirmEvent();
+                    RaiseConfirmEvent(false);
                     break;
                 case Keyboard.Key.A:
                 case Keyboard.Key.Left:
@@ -84,8 +84,8 @@ namespace BlackCoat.UI
         }
 
         protected void RaiseMoveEvent(float direction) => Move.Invoke(direction);
-        protected void RaiseBeforeConfirmEvent() => BeforeConfirm.Invoke();
-        protected void RaiseConfirmEvent() => Confirm.Invoke();
+        protected void RaiseBeforeConfirmEvent(bool fromMouse) => BeforeConfirm.Invoke(fromMouse);
+        protected void RaiseConfirmEvent(bool fromMouse) => Confirm.Invoke(fromMouse);
         protected void RaiseCancelEvent() => Cancel.Invoke();
         protected void RaiseEditEvent() => Edit.Invoke();
         public void RaiseTextEnteredEvent(TextEnteredEventArgs tArgs) => TextEntered.Invoke(tArgs);

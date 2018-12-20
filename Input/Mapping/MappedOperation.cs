@@ -13,11 +13,12 @@ namespace BlackCoat.InputMapping
         protected TCondition[] _Conditions;
         protected TOperation _Operation;
         protected Func<TCondition, Boolean> _Validator;
+        private bool _Mouse;
 
         /// <summary>
         /// Occurs when the operation condition is met.
         /// </summary>
-        public event Action<TOperation> Invoked = x => { };
+        public event Action<TOperation, bool> Invoked = (o, m) => { };
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MappedOperation{TCondition, TOperation}"/> class with multiple conditions.
@@ -25,7 +26,7 @@ namespace BlackCoat.InputMapping
         /// <param name="conditions">The condition array.</param>
         /// <param name="operation">The operation value.</param>
         /// <param name="validator">The invocation validator.</param>
-        public MappedOperation(TCondition[] conditions, TOperation operation, Func<TCondition, Boolean> validator)
+        public MappedOperation(TCondition[] conditions, TOperation operation, Func<TCondition, Boolean> validator, bool fromMouse)
         {
             if (conditions == null) throw new ArgumentNullException(nameof(conditions));
             if (conditions.Length == 0) throw new ArgumentException(nameof(conditions));
@@ -35,6 +36,7 @@ namespace BlackCoat.InputMapping
             _Conditions = conditions;
             _Operation = operation;
             _Validator = validator;
+            _Mouse = fromMouse;
         }
 
         /// <summary>
@@ -42,7 +44,7 @@ namespace BlackCoat.InputMapping
         /// </summary>
         public virtual void Invoke()
         {
-            if(_Conditions.All(_Validator)) Invoked.Invoke(_Operation);
+            if(_Conditions.All(_Validator)) Invoked.Invoke(_Operation, _Mouse);
         }
     }
 }

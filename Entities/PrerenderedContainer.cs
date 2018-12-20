@@ -37,17 +37,9 @@ namespace BlackCoat.Entities
         /// Transformation Matrix defining Position, Scale and Rotation of the Entity within the scene graph
         /// </summary>
         public override Transform GlobalTransform => Transform.Identity;
-        public override float Alpha
-        {
-            get => base.Alpha;
-            set
-            {
-                base.Alpha = value;
-                var color = Color;
-                color.A = (byte)(base.GlobalAlpha * byte.MaxValue);
-                Color = color;
-            }
-        }
+        /// <summary>
+        /// Global Alpha Visibility according to the scene graph
+        /// </summary>
         public override float GlobalAlpha => 1;
 
 
@@ -139,6 +131,7 @@ namespace BlackCoat.Entities
         {
             if (!FixedSize) _Core.DeviceResized -= Handle_DeviceResized;
             _RenderTarget.Dispose();
+            _RenderTarget = null;
             base.Destroy(disposing);
         }
     }

@@ -119,7 +119,7 @@ namespace BlackCoat.UI
 
         protected override void HandleTextEntered(TextEnteredEventArgs tArgs)
         {
-            if (HasFocus && Visible && Enabled && InEdit)
+            if (InEdit)
             {
                 Text = tArgs.Update(Text, ref _Index);
                 UpdateCaretPosition();

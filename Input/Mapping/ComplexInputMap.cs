@@ -32,7 +32,7 @@ namespace BlackCoat.InputMapping
         /// <summary>
         /// Occurs when a mapped operation is invoked.
         /// </summary>
-        public event Action<TMappedOperation> MappedOperationInvoked = a => { };
+        public event Action<TMappedOperation, bool> MappedOperationInvoked = (o, m) => { };
 
 
         //CTOR
@@ -81,7 +81,7 @@ namespace BlackCoat.InputMapping
         /// <returns>The created InputAction</returns>
         public MappedOperation<Keyboard.Key, TMappedOperation> AddKeyboardMapping(Keyboard.Key[] keys, TMappedOperation action)
         {
-            var a = new MappedOperation<Keyboard.Key, TMappedOperation>(keys, action, Input.IsKeyDown);
+            var a = new MappedOperation<Keyboard.Key, TMappedOperation>(keys, action, Input.IsKeyDown, false);
             a.Invoked += RaiseMappedOperationInvoked;
             _KeyboardActions.Add(a);
             return a;
@@ -95,7 +95,7 @@ namespace BlackCoat.InputMapping
         /// <returns>The created InputAction</returns>
         public MappedOperation<Mouse.Button, TMappedOperation> AddMouseMapping(Mouse.Button[] buttons, TMappedOperation action)
         {
-            var a = new MappedOperation<Mouse.Button, TMappedOperation>(buttons, action, Input.IsMButtonDown);
+            var a = new MappedOperation<Mouse.Button, TMappedOperation>(buttons, action, Input.IsMButtonDown, true);
             a.Invoked += RaiseMappedOperationInvoked;
             _MouseActions.Add(a);
             return a;
@@ -112,9 +112,9 @@ namespace BlackCoat.InputMapping
         }
 
 
-        private void RaiseMappedOperationInvoked(TMappedOperation operation)
+        private void RaiseMappedOperationInvoked(TMappedOperation operation, bool fromMouse)
         {
-            MappedOperationInvoked.Invoke(operation);
+            MappedOperationInvoked.Invoke(operation, fromMouse);
         }
 
 

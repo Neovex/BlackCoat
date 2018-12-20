@@ -140,12 +140,25 @@ namespace BlackCoat.UI
         public Color BackgroundColor
         {
             get => _Background.Color;
-            set => _Background.Color = value;
+            set => _Background.Visible = (_Background.Color = value).A != 0;
         }
         public float BackgroundAlpha
         {
             get => _Background.Alpha;
-            set => _Background.Alpha = value;
+            set => _Background.Visible = (_Background.Alpha = value) != 0;
+        }
+
+        public override bool Visible
+        {
+            get => base.Visible;
+            set
+            {
+                base.Visible = value;
+                if (ActiveComponent != null)
+                {
+                    ActiveComponent.HasFocus = ActiveComponent.Visible;
+                }
+            }
         }
 
 
@@ -154,15 +167,26 @@ namespace BlackCoat.UI
         {
             _Enabled = true;
             CollisionShape = new UICollisionShape(_Core.CollisionSystem, this);
-            Add(_Background = new Rectangle(_Core) { Alpha = 0 }); //?
+            Add(_Background = new Rectangle(_Core) { Alpha = 0 });
         }
 
 
         // Methods #########################################################################
-        public virtual bool GiveFocus() => _GotFocusThisFrame = HasFocus = true;
+        public virtual bool GiveFocus()
+        {
+            HasFocus = true;
+            _GotFocusThisFrame = HasFocus;
+            return _GotFocusThisFrame;
+        }
 
         protected virtual void ChangeFocus(float direction)
         {
+            if (ActiveComponent == null)
+            {
+                GiveFocus();
+                return;
+            }
+
             if (!HasFocus || _GotFocusThisFrame || Container == null) return;
 
             // Find UI root
@@ -199,11 +223,11 @@ namespace BlackCoat.UI
             input.Input.MouseWheelScrolled += HandleMouseWheelScrolled;
 
             input.Move += HandleInputMove;
-            input.BeforeConfirm += HandleInputBeforeConfirm;
-            input.Confirm += HandleInputConfirm;
+            input.BeforeConfirm += ValidateBeforeConfirm;
+            input.Confirm += ValidateConfirm;
             input.Cancel += HandleInputCancel;
-            input.Edit += HandleInputEdit;
-            input.TextEntered += HandleTextEntered;
+            input.Edit += ValidateEdit;
+            input.TextEntered += ValidateTextEntered;
         }
         private void Unsubscribe(UIInput input)
         {
@@ -212,19 +236,41 @@ namespace BlackCoat.UI
             input.Input.MouseWheelScrolled -= HandleMouseWheelScrolled;
 
             input.Move -= HandleInputMove;
-            input.BeforeConfirm -= HandleInputBeforeConfirm;
-            input.Confirm -= HandleInputConfirm;
+            input.BeforeConfirm -= ValidateBeforeConfirm;
+            input.Confirm -= ValidateConfirm;
             input.Cancel -= HandleInputCancel;
-            input.Edit -= HandleInputEdit;
-            input.TextEntered -= HandleTextEntered;
+            input.Edit -= ValidateEdit;
+            input.TextEntered -= ValidateTextEntered;
         }
 
         // Mouse Input
         protected virtual void HandleMouseMoved(Vector2f pos)
         {
-            if (CanFocus && Visible && Enabled && CollisionShape.Collide(pos)) GiveFocus();
+            if (HasFocus && !CollisionShape.Collide(pos)) HasFocus = false;
+            else if (CanFocus && Visible && Enabled && CollisionShape.Collide(pos)) GiveFocus();
         }
         protected virtual void HandleMouseWheelScrolled(float delta) { }
+
+
+        // Input Validation
+        private bool ValidateInput(bool fromMouse) => HasFocus && !_GotFocusThisFrame && Visible && Enabled && 
+                                                    (!fromMouse || CollisionShape.Collide(Input.Input.MousePosition));
+        private void ValidateBeforeConfirm(bool fromMouse)
+        {
+            if (ValidateInput(fromMouse)) HandleInputBeforeConfirm();
+        }
+        private void ValidateConfirm(bool fromMouse)
+        {
+            if (ValidateInput(fromMouse)) HandleInputConfirm();
+        }
+        private void ValidateEdit()
+        {
+            if (ValidateInput(false)) HandleInputEdit();
+        }
+        private void ValidateTextEntered(TextEnteredEventArgs tArgs)
+        {
+            if (ValidateInput(false)) HandleTextEntered(tArgs);
+        }
 
         // Generalized Mapped Input
         protected virtual void HandleInputMove(float direction) => ChangeFocus(direction);
@@ -240,7 +286,7 @@ namespace BlackCoat.UI
         protected virtual void InvokeFocusLost() => FocusLost.Invoke(this);
         protected virtual void InvokeEnabledChanged() => EnabledChanged.Invoke(this);
         protected virtual void InvokePaddingChanged() => PaddingChanged.Invoke(this);
-        protected virtual void InvokeSizeChanged() { SizeChanged.Invoke(this); _Background.Size = InnerSize; } // FIXME?
+        protected virtual void InvokeSizeChanged() { SizeChanged.Invoke(this); _Background.Size = InnerSize; }
         protected virtual void InvokePositionChanged() => PositionChanged.Invoke(this);
         protected virtual void InvokeOriginChanged() => OriginChanged.Invoke(this);
         protected virtual void InvokeContainerChanged() => ContainerChanged.Invoke(this);

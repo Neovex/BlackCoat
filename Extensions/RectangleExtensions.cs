@@ -12,5 +12,8 @@ namespace BlackCoat
     {
         public static Vector2f Position(this FloatRect src) => new Vector2f(src.Left, src.Top);
         public static Vector2f Size(this FloatRect src) => new Vector2f(src.Width, src.Height);
+
+        public static Vector2i Position(this IntRect src) => new Vector2i(src.Left, src.Top);
+        public static Vector2i Size(this IntRect src) => new Vector2i(src.Width, src.Height);
     }
 }

@@ -24,7 +24,7 @@ namespace BlackCoat.UI
         }
 
 
-        protected override void HandleInputBeforeConfirm() { if (HasFocus && Visible && Enabled) InvokePressed(); }
-        protected override void HandleInputConfirm() { if (HasFocus && Visible && Enabled) InvokeReleased(); }
+        protected override void HandleInputBeforeConfirm() => InvokePressed();
+        protected override void HandleInputConfirm() => InvokeReleased();
     }
 }

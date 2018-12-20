@@ -25,7 +25,7 @@ namespace BlackCoat.UI
 
         public UIInputMap(SimpleInputMap<TMapped> map, Dictionary<TMapped, (Operation operation, float direction)> mapping) : this(map.Input, mapping)
         {
-            map.MappedOperationInvoked += (a, b) => HandleMappedOperationInvoked(a);
+            map.MappedOperationInvoked += (a, b, m) => HandleMappedOperationInvoked(a, m);
         }
 
         public UIInputMap(ComplexInputMap<TMapped> map, Dictionary<TMapped, (Operation operation, float direction)> mapping) : this(map.Input, mapping)
@@ -39,7 +39,7 @@ namespace BlackCoat.UI
         }
 
 
-        protected void HandleMappedOperationInvoked(TMapped action)
+        protected void HandleMappedOperationInvoked(TMapped action, bool fromMouse)
         {
             var op = _Map[action];
             switch (op.Operation)
@@ -48,10 +48,10 @@ namespace BlackCoat.UI
                     RaiseMoveEvent(op.Direction);
                     break;
                 case Operation.BeforeConfirm:
-                    RaiseBeforeConfirmEvent();
+                    RaiseBeforeConfirmEvent(fromMouse);
                     break;
                 case Operation.Confirm:
-                    RaiseConfirmEvent();
+                    RaiseConfirmEvent(fromMouse);
                     break;
                 case Operation.Cancel:
                     RaiseCancelEvent();

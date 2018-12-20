@@ -39,7 +39,7 @@ namespace BlackCoat.Entities
         /// <summary>
         /// Determines the Visibility of the <see cref="Graphic"/>
         /// </summary>
-        public Boolean Visible
+        public virtual Boolean Visible
         {
             get => _Visible && (_Parent == null || _Parent.Visible);
             set => _Visible = value;

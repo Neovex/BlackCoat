@@ -48,7 +48,7 @@ namespace BlackCoat.UI
             }
         }
 
-        public IEnumerable<UIComponent> Components => _Entities.OfType<UIComponent>();
+        public IEnumerable<UIComponent> Components => _Entities?.OfType<UIComponent>() ?? Enumerable.Empty<UIComponent>();
         public IEnumerable<UIComponent> ComponentsFlattened => Components.SelectMany(c => new[] { c }.Concat(c is UIContainer cont ? cont.ComponentsFlattened : Enumerable.Empty<UIComponent>()));
 
 

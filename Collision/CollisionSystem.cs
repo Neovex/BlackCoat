@@ -38,8 +38,9 @@ namespace BlackCoat.Collision
         /// <summary>
         /// Determines if a target angle is within an angle-range
         /// </summary>
-        public virtual bool IntersectAngles(float target, float min, float max)
+        public virtual bool IntersectAngles(float target, float a, float b)
         {
+            Sort(a, b, out float min, out float max);
             if (max - min <= 180) return target >= min && target <= max;
             return (target >= 0 && target <= min) || (target >= max && target <= 360);
         }
@@ -130,9 +131,7 @@ namespace BlackCoat.Collision
             var localStart = targetStart.ToLocal(rayOrigin);
             var localEnd = targetEnd.ToLocal(rayOrigin);
 
-            Sort(localStart.Angle(), localEnd.Angle(), out float min, out float max);
-
-            if (IntersectAngles(rayAngle, min, max)) // check 4 intersections then calculate exact position
+            if (IntersectAngles(rayAngle, localStart.Angle(), localEnd.Angle())) // check 4 intersections then calculate exact position
             {
                 var axis = Create.Vector2fFromAngle(rayAngle).FaceVector();
                 var p1 = Math.Abs(localStart.DotProduct(axis));
