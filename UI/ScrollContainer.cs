@@ -60,7 +60,8 @@ namespace BlackCoat.UI
         protected override void InvokeSizeChanged()
         {
             // Calculate necessary buffer size
-            var newSize = InnerSize.ToVector2u();
+            var newSize = new Vector2u(Math.Max((uint)InnerSize.X, (uint)MinSize.X),
+                                       Math.Max((uint)InnerSize.Y, (uint)MinSize.Y));
             var components = Components.Select(co => co.RelativeSize).ToArray();
             if (components.Length != 0)
             {
