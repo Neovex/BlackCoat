@@ -40,19 +40,19 @@ namespace BlackCoat.UI
             if (c is IDockable dockee && (dockee.DockX || dockee.DockY))
             {
                 // Dock Position
-                c.Position = new Vector2f(dockee.DockX && !Horizontal ? c.Padding.Left : c.Position.X,
-                                          dockee.DockY &&  Horizontal ? c.Padding.Top : c.Position.Y);
+                c.Position = new Vector2f(dockee.DockX && !Horizontal ? c.Margin.Left : c.Position.X,
+                                          dockee.DockY &&  Horizontal ? c.Margin.Top : c.Position.Y);
 
                 // Dock Size
                 Vector2f size;
                 if (Horizontal)
                 {
                     size.X = dockee.DockX ? dockee.MinSize.X + _DockingSize.X : c.InnerSize.X;
-                    size.Y = dockee.DockY ? InnerSize.Y - (c.Padding.Top + c.Padding.Height) : c.InnerSize.Y;
+                    size.Y = dockee.DockY ? InnerSize.Y - (c.Margin.Top + c.Margin.Height) : c.InnerSize.Y;
                 }
                 else
                 {
-                    size.X = dockee.DockX ? InnerSize.X - (c.Padding.Left + c.Padding.Width) : c.InnerSize.X;
+                    size.X = dockee.DockX ? InnerSize.X - (c.Margin.Left + c.Margin.Width) : c.InnerSize.X;
                     size.Y = dockee.DockY ? dockee.MinSize.Y + _DockingSize.Y : c.InnerSize.Y;
                 }
                 dockee.Resize(size);

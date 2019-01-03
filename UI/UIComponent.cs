@@ -27,7 +27,7 @@ namespace BlackCoat.UI
         public event Action<UIComponent> FocusLost = c => { };
         public Action<UIComponent> InitFocusLost { set => FocusLost += value; }
         public event Action<UIComponent> EnabledChanged = c => { };
-        public event Action<UIComponent> PaddingChanged = c => { };
+        public event Action<UIComponent> MarginChanged = c => { };
         public event Action<UIComponent> SizeChanged = c => { };
         public event Action<UIComponent> PositionChanged = c => { };
         public event Action<UIComponent> OriginChanged = c => { };
@@ -40,7 +40,7 @@ namespace BlackCoat.UI
         private Boolean _HasFocus;
         private Boolean _GotFocusThisFrame;
         private Boolean _Enabled;
-        private FloatRect _Padding;
+        private FloatRect _Margin;
         private UIInput _Input;
         private UIContainer _Container;
 
@@ -90,8 +90,8 @@ namespace BlackCoat.UI
         }
 
         public abstract Vector2f InnerSize { get; }
-        public virtual Vector2f OuterSize => Padding.Position() + InnerSize + Padding.Size();
-        public virtual Vector2f RelativeSize => (Position - Origin) + InnerSize + Padding.Size();
+        public virtual Vector2f OuterSize => Margin.Position() + InnerSize + Margin.Size();
+        public virtual Vector2f RelativeSize => (Position - Origin) + InnerSize + Margin.Size();
 
         public bool Enabled
         {
@@ -104,14 +104,17 @@ namespace BlackCoat.UI
             }
         }
 
-        public FloatRect Padding
+        /// <summary>
+        /// Gets or sets the margin which is the space demand around the outside of the component.
+        /// </summary>
+        public FloatRect Margin
         {
-            get => _Padding;
+            get => _Margin;
             set
             {
-                if (_Padding == value) return;
-                _Padding = value;
-                InvokePaddingChanged();
+                if (_Margin == value) return;
+                _Margin = value;
+                InvokeMarginChanged();
             }
         }
 
@@ -285,7 +288,7 @@ namespace BlackCoat.UI
         protected virtual void InvokeFocusGained() => FocusGained.Invoke(this);
         protected virtual void InvokeFocusLost() => FocusLost.Invoke(this);
         protected virtual void InvokeEnabledChanged() => EnabledChanged.Invoke(this);
-        protected virtual void InvokePaddingChanged() => PaddingChanged.Invoke(this);
+        protected virtual void InvokeMarginChanged() => MarginChanged.Invoke(this);
         protected virtual void InvokeSizeChanged() { SizeChanged.Invoke(this); _Background.Size = InnerSize; }
         protected virtual void InvokePositionChanged() => PositionChanged.Invoke(this);
         protected virtual void InvokeOriginChanged() => OriginChanged.Invoke(this);

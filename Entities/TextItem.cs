@@ -151,11 +151,13 @@ namespace BlackCoat.Entities
         /// </summary>
         /// <param name="core">Black Coat Engine Core.</param>
         /// <param name="text">The text to display.</param>
+        /// <param name="characterSize">The size of the texts characters. AKA: Fontsize.</param>
         /// <param name="font">Initial font.</param>
-        public TextItem(Core core, String text = "", Font font = null)
+        public TextItem(Core core, String text = "", uint characterSize = 16, Font font = null)
         {
             _Core = core;
             Text = text;
+            CharacterSize = characterSize;
             _Alpha = 1;
             Visible = true;
             RenderState = RenderStates.Default;

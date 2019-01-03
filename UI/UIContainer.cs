@@ -6,7 +6,7 @@ using SFML.System;
 namespace BlackCoat.UI
 {
     /// <summary>
-    /// Basic UI container. Its size is defined by the size, padding and position of its child components.
+    /// Basic UI container. Its size is defined by the size, margin and position of its child components.
     /// </summary>
     /// <seealso cref="BlackCoat.UI.UIComponent" />
     public class UIContainer : UIComponent
@@ -45,6 +45,7 @@ namespace BlackCoat.UI
                 foreach (var component in Components) Remove(component);
                 if (value == null) return;
                 foreach (var component in value) Add(component);
+                InvokeSizeChanged();
             }
         }
 
@@ -65,7 +66,7 @@ namespace BlackCoat.UI
             component.PositionChanged += HandleChildComponentModified;
             component.OriginChanged += HandleChildComponentModified;
             component.SizeChanged += HandleChildComponentModified;
-            component.PaddingChanged += HandleChildComponentModified;
+            component.MarginChanged += HandleChildComponentModified;
             InvokeComponentAdded(component);
             InvokeSizeChanged();
         }
@@ -76,7 +77,7 @@ namespace BlackCoat.UI
             component.PositionChanged -= HandleChildComponentModified;
             component.OriginChanged -= HandleChildComponentModified;
             component.SizeChanged -= HandleChildComponentModified;
-            component.PaddingChanged -= HandleChildComponentModified;
+            component.MarginChanged -= HandleChildComponentModified;
             Remove(component as IEntity);
             InvokeComponentRemoved(component);
             InvokeSizeChanged();
@@ -90,12 +91,17 @@ namespace BlackCoat.UI
         {
             if (_UpdateLock) return;
             _UpdateLock = true;
+            UpdateDockedComponents();
+            _UpdateLock = false;
+            base.InvokeSizeChanged();
+        }
+
+        protected virtual void UpdateDockedComponents()
+        {
             foreach (var c in Components)
             {
                 UpdateDockedComponent(c);
             }
-            _UpdateLock = false;
-            base.InvokeSizeChanged();
         }
 
         protected virtual void UpdateDockedComponent(UIComponent c)
@@ -108,16 +114,16 @@ namespace BlackCoat.UI
                 c.Scale = Create.Vector2f(1);
 
                 // Dock Position
-                c.Position = new Vector2f(dockee.DockX ? c.Padding.Left : c.Position.X,
-                                          dockee.DockY ? c.Padding.Top : c.Position.Y);
+                c.Position = new Vector2f(dockee.DockX ? c.Margin.Left : c.Position.X,
+                                          dockee.DockY ? c.Margin.Top : c.Position.Y);
                 // Dock Size
                 var components = Components.Select(co => co.RelativeSize).ToArray();
 
                 var size = components.Length == 0 ? default(Vector2f) : 
                            new Vector2f(components.Max(v => v.X), components.Max(v => v.Y));
 
-                dockee.Resize(new Vector2f(dockee.DockX ? size.X - (c.Padding.Left + c.Padding.Width) : c.InnerSize.X,
-                                           dockee.DockY ? size.Y - (c.Padding.Top + c.Padding.Height) : c.InnerSize.Y));
+                dockee.Resize(new Vector2f(dockee.DockX ? size.X - (c.Margin.Left + c.Margin.Width) : c.InnerSize.X,
+                                           dockee.DockY ? size.Y - (c.Margin.Top + c.Margin.Height) : c.InnerSize.Y));
             }
         }
 

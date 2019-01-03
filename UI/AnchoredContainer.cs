@@ -42,10 +42,10 @@ namespace BlackCoat.UI
             base.InvokeSizeChanged();
             _UpdateLock = false;
         }
-        protected override void InvokePaddingChanged()
+        protected override void InvokeMarginChanged()
         {
             _UpdateLock = true;
-            base.InvokePaddingChanged();
+            base.InvokeMarginChanged();
             _UpdateLock = false;
         }
         protected override void InvokePositionChanged()

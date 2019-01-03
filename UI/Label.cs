@@ -15,11 +15,11 @@ namespace BlackCoat.UI
 
 
         protected TextItem _Text;
-        private FloatRect _InnerPadding;
+        private FloatRect _Padding;
         private bool _Centered;
 
 
-        public override Vector2f InnerSize => _Text.GetGlobalBounds().Size() + _InnerPadding.Position() + _InnerPadding.Size();
+        public override Vector2f InnerSize => _Text.GetGlobalBounds().Size() + _Padding.Position() + _Padding.Size();
 
         public string Text
         {
@@ -34,14 +34,17 @@ namespace BlackCoat.UI
             }
         }
 
-        public FloatRect InnerPadding
+        /// <summary>
+        /// Gets or sets the padding which is the space demand on the inside of the component.
+        /// </summary>
+        public FloatRect Padding
         {
-            get => _InnerPadding;
+            get => _Padding;
             set
             {
-                if (_InnerPadding == value) return;
-                _InnerPadding = value;
-                _Text.Position = _InnerPadding.Position();
+                if (_Padding == value) return;
+                _Padding = value;
+                _Text.Position = _Padding.Position();
                 InvokeSizeChanged();
             }
         }
@@ -110,10 +113,11 @@ namespace BlackCoat.UI
         /// </summary>
         /// <param name="core">Black Coat Engine Core.</param>
         /// <param name="text">The text to display.</param>
+        /// <param name="characterSize">Initial size of the texts characters.</param>
         /// <param name="font">Initial font.</param>
-        public Label(Core core, String text = "", Font font = null) : base(core)
+        public Label(Core core, String text = "", UInt32 characterSize = 16, Font font = null) : base(core)
         {
-            Add(_Text = new TextItem(core, text, font));
+            Add(_Text = new TextItem(core, text, characterSize, font));
             InvokeSizeChanged();
         }
 

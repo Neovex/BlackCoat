@@ -26,14 +26,22 @@ namespace BlackCoat.UI
 
         protected override void InvokeSizeChanged()
         {
+            if (Updating) return;
+            Updating = true;
+
             // Reset Offset
             _CurrentOffset = 0;
 
-            Updating = true;
-            // Base calls UpdateDockedComponent on all components
+            // Calls UpdateDockedComponents
             base.InvokeSizeChanged();
-            ResizeToFitContent();
+
             Updating = false;
+        }
+
+        protected override void UpdateDockedComponents()
+        {
+            base.UpdateDockedComponents();
+            ResizeToFitContent();
         }
 
         protected override void UpdateDockedComponent(UIComponent c)
@@ -45,17 +53,17 @@ namespace BlackCoat.UI
 
             if (Horizontal)
             {
-                _CurrentOffset += c.Padding.Left;
+                _CurrentOffset += c.Margin.Left;
                 c.Position = new Vector2f(_CurrentOffset, c.Position.Y);
                 _CurrentOffset += c.InnerSize.X;
-                _CurrentOffset += c.Padding.Width;
+                _CurrentOffset += c.Margin.Width;
             }
             else
             {
-                _CurrentOffset += c.Padding.Top;
+                _CurrentOffset += c.Margin.Top;
                 c.Position = new Vector2f(c.Position.X, _CurrentOffset);
                 _CurrentOffset += c.InnerSize.Y;
-                _CurrentOffset += c.Padding.Height;
+                _CurrentOffset += c.Margin.Height;
             }
             _CurrentOffset += _Offset;
         }

@@ -58,15 +58,15 @@ namespace BlackCoat.Tools
                     {
                         BackgroundAlpha = 0.3f,
                         TextColor = Color.Cyan,
-                        InnerPadding = new FloatRect(3,3,3,3),
+                        Padding = new FloatRect(3,3,3,3),
                         MinSize = new Vector2f(_Core.DeviceSize.X, 7),
                         CharacterSize = _FONT_SIZE
                     },
                     _Output = new Label(_Core)
                     {
-                        InnerPadding  = new FloatRect(3,0,3,0),
+                        Padding  = new FloatRect(3,0,3,0),
                         TextColor     = _InputBox.TextColor,
-                        CharacterSize = _InputBox.CharacterSize,
+                        CharacterSize = _FONT_SIZE,
                     }
                 }
             });

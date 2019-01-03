@@ -36,16 +36,16 @@ namespace BlackCoat.UI
             get
             {
                 var realInnerSize = base.InnerSize;
-                var minInnerSize = _MinSize + InnerPadding.Position() + InnerPadding.Size();
+                var minInnerSize = _MinSize + Padding.Position() + Padding.Size();
                 return new Vector2f(Math.Max(realInnerSize.X, minInnerSize.X), Math.Max(realInnerSize.Y, minInnerSize.Y));
             }
         }
 
 
-        public TextBox(Core core, Vector2f? minSize = null, Font font = null) : base(core, String.Empty, font)
+        public TextBox(Core core, Vector2f? minSize = null, uint characterSize = 16, Font font = null) : base(core, String.Empty, characterSize, font)
         {
             CanFocus = true;
-            MinSize = minSize ?? new Vector2f(60, 10);
+            MinSize = minSize ?? new Vector2f(60, 15);
             BackgroundAlpha = 1;
             BackgroundColor = Color.White;
             EditingBackgroundColor = Color.Cyan;
@@ -93,7 +93,7 @@ namespace BlackCoat.UI
             {
                 var averageCharSize = _Text.FindCharacterPos(1).X;
                 if (averageCharSize == 0) _Index = 0;
-                else _Index = (uint)Math.Min(Text.Length, (mpos.ToLocal(GlobalPosition).X - InnerPadding.Left) / averageCharSize);
+                else _Index = (uint)Math.Min(Text.Length, (mpos.ToLocal(GlobalPosition).X - Padding.Left) / averageCharSize);
             }
 
             // Enable Edit mode
@@ -130,8 +130,8 @@ namespace BlackCoat.UI
         private void UpdateCaretPosition()
         {
             if (!InEdit) return;
-            _Caret.Start.Position = _Text.FindCharacterPos(_Index) + InnerPadding.Position() + new Vector2f(0.5f, 0); // + 0,5 to fix anti aliasing blur issue
-            _Caret.End.Position = _Caret.Start.Position + new Vector2f(0, InnerSize.Y - InnerPadding.Top - InnerPadding.Height);
+            _Caret.Start.Position = _Text.FindCharacterPos(_Index) + Padding.Position() + new Vector2f(0.5f, 0); // + 0,5 to fix anti aliasing blur issue
+            _Caret.End.Position = _Caret.Start.Position + new Vector2f(0, InnerSize.Y - Padding.Top - Padding.Height);
         }
 
         public override void Update(float deltaT)

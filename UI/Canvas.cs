@@ -19,10 +19,10 @@ namespace BlackCoat.UI
 
 
         public override Vector2f InnerSize => _Size;
-        public override Vector2f RelativeSize => (DockedPosition - Origin) + (OuterMinSize - Padding.Position());
+        public override Vector2f RelativeSize => (DockedPosition - Origin) + (OuterMinSize - Margin.Position());
 
         public Vector2f MinSize { get => _MinSize; set { _MinSize = value; Resize(_Size); } }
-        public Vector2f OuterMinSize => Padding.Position() + new Vector2f(DockX ? MinSize.X : InnerSize.X, DockY ? MinSize.Y : InnerSize.Y) + Padding.Size();
+        public Vector2f OuterMinSize => Margin.Position() + new Vector2f(DockX ? MinSize.X : InnerSize.X, DockY ? MinSize.Y : InnerSize.Y) + Margin.Size();
         public Vector2f DockedPosition => new Vector2f(DockX ? 0 : Position.X, DockY ? 0 : Position.Y);
 
         public virtual bool DockX
@@ -82,11 +82,11 @@ namespace BlackCoat.UI
                 c.Scale = Create.Vector2f(1);
 
                 // Dock Position
-                c.Position = new Vector2f(dockee.DockX ? c.Padding.Left : c.Position.X,
-                                          dockee.DockY ? c.Padding.Top : c.Position.Y);
+                c.Position = new Vector2f(dockee.DockX ? c.Margin.Left : c.Position.X,
+                                          dockee.DockY ? c.Margin.Top : c.Position.Y);
                 // Dock Size
-                dockee.Resize(new Vector2f(dockee.DockX ? InnerSize.X - (c.Padding.Left + c.Padding.Width) : c.InnerSize.X,
-                                           dockee.DockY ? InnerSize.Y - (c.Padding.Top + c.Padding.Height) : c.InnerSize.Y));
+                dockee.Resize(new Vector2f(dockee.DockX ? InnerSize.X - (c.Margin.Left + c.Margin.Width) : c.InnerSize.X,
+                                           dockee.DockY ? InnerSize.Y - (c.Margin.Top + c.Margin.Height) : c.InnerSize.Y));
             }
         }
     }
