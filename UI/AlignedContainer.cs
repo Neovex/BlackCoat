@@ -8,12 +8,32 @@ namespace BlackCoat.UI
 
         public Alignment Alignment { get => _Alignment; set { _Alignment = value; Origin = Align(InnerSize); } }
 
-        public override UIContainer Container { get => base.Container; set { base.Container = value; if (value != null) Position = Align(value.InnerSize); } }
-
+        public override UIContainer Container
+        {
+            get => base.Container;
+            set
+            {
+                if (Container != null)
+                {
+                    Container.SizeChanged -= ContainerSizeChanged;
+                }
+                base.Container = value;
+                if (Container != null)
+                {
+                    Position = Align(value.InnerSize);
+                    Container.SizeChanged += ContainerSizeChanged;
+                }
+            }
+        }
 
         public AlignedContainer(Core core, Alignment alignment) : base(core)
         {
             Alignment = alignment;
+        }
+
+        private void ContainerSizeChanged(UIComponent c)
+        {
+            if (Container != null) Position = Align(Container.InnerSize);
         }
 
         protected override void InvokeSizeChanged()
@@ -59,6 +79,15 @@ namespace BlackCoat.UI
                     break;
             }
             return ret;
+        }
+
+        protected override void Destroy(bool disposing)
+        {
+            if (Container != null)
+            {
+                Container.SizeChanged -= ContainerSizeChanged;
+            }
+            base.Destroy(disposing);
         }
     }
 }

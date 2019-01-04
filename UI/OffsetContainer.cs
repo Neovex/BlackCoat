@@ -20,5 +20,20 @@ namespace BlackCoat.UI
         public OffsetContainer(Core core, bool horizontal = true) : base(core, horizontal)
         {
         }
+
+        protected override void UpdateDockedComponent(UIComponent c)
+        {
+            if (c is IDockable dockee && (dockee.DockX || dockee.DockY))
+            {
+                // Dock Position
+                c.Position = new Vector2f(dockee.DockX ? c.Margin.Left : c.Position.X,
+                                          dockee.DockY ? c.Margin.Top : c.Position.Y);
+                // Dock Size
+                dockee.Resize(new Vector2f(dockee.DockX && !Horizontal ? InnerSize.X - (c.Margin.Left + c.Margin.Width) : c.InnerSize.X,
+                                           dockee.DockY && Horizontal  ? InnerSize.Y - (c.Margin.Top + c.Margin.Height) : c.InnerSize.Y));
+            }
+
+            base.UpdateDockedComponent(c);
+        }
     }
 }

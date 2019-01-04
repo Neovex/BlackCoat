@@ -18,7 +18,7 @@ namespace BlackCoat.Network
 
 
         public Boolean IsConnected => _BasePeer.ConnectionsCount != 0;
-        public IEnumerable<KeyValuePair<IPEndPoint, string>> LanServers => _LanServers.AsEnumerable();
+        public IEnumerable<(IPEndPoint, String)> LanServers => _LanServers.AsEnumerable().Select(kvp => (kvp.Key, kvp.Value));
         public int Latency { get; private set; }
 
 
