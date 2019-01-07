@@ -39,7 +39,7 @@ namespace BlackCoat.Network
 
             var config = new NetPeerConfiguration(AppIdentifier);
             config.Port = port;
-            config.EnableMessageType(NetIncomingMessageType.DiscoveryResponse);
+            config.EnableMessageType(NetIncomingMessageType.DiscoveryRequest);
             config.EnableMessageType(NetIncomingMessageType.ConnectionLatencyUpdated);
 
             _BasePeer = _Server = new NetServer(config);
@@ -76,11 +76,9 @@ namespace BlackCoat.Network
         }
 
         // INCOMMING
-        protected override string HandleDiscoveryRequest() => Name;
-        protected override void DiscoveryResponseReceived(IPEndPoint endPoint, string serverName) { }
+        protected override void DiscoveryResponseReceived(IPEndPoint endPoint, NetIncomingMessage msg) { }
 
         // OUTGOING
-
         protected virtual void Broadcast(TEnum subType, Action<NetOutgoingMessage> operation = null, NetDeliveryMethod netMethod = _DEFAULT_METHOD)
         {
             Broadcast(CreateMessage(subType, operation), netMethod);

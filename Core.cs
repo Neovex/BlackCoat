@@ -136,6 +136,11 @@ namespace BlackCoat
         public Boolean HasFocus { get; private set; }
 
         /// <summary>
+        /// Determines if the update cycle should be paused when the render device looses focus.
+        /// </summary>
+        public Boolean PauseUpdateOnFocusLoss { get; private set; }
+
+        /// <summary>
         /// Determines if the Engine Core has been disposed.
         /// </summary>
         public Boolean Disposed { get; private set; }
@@ -187,6 +192,7 @@ namespace BlackCoat
             // Init Defaults
             ClearColor = Color.Black;
             HasFocus = true;
+            PauseUpdateOnFocusLoss = true;
             Disposed = false;
             DefaultView = _Device.DefaultView;
             DefaultFont = new Font(Resources.Squares_Bold_Free);
@@ -266,7 +272,7 @@ namespace BlackCoat
             {
                 if (Fullscreen != _Fullscreen) ChangeFullscreen();
                 _Device.DispatchEvents();
-                if (HasFocus) // run updates
+                if (HasFocus || !PauseUpdateOnFocusLoss) // run updates
                 {
                     var deltaT = (float)(_Timer.Elapsed.TotalMilliseconds / 1000d);// fractal second
                     _Timer.Restart();

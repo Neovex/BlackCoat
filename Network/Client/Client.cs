@@ -14,11 +14,9 @@ namespace BlackCoat.Network
     public abstract class Client<TEnum> : NetBase<TEnum> where TEnum : struct, IComparable, IFormattable, IConvertible
     {
         private NetClient _Client;
-        private Dictionary<IPEndPoint, String> _LanServers;
 
 
         public Boolean IsConnected => _BasePeer.ConnectionsCount != 0;
-        public IEnumerable<(IPEndPoint, String)> LanServers => _LanServers.AsEnumerable().Select(kvp => (kvp.Key, kvp.Value));
         public int Latency { get; private set; }
 
 
@@ -28,9 +26,8 @@ namespace BlackCoat.Network
         public Client(String appId) : base(new NetClient(new NetPeerConfiguration(appId)))
         {
             _Client = _BasePeer as NetClient;
-            _Client.Configuration.EnableMessageType(NetIncomingMessageType.DiscoveryRequest);
+            _Client.Configuration.EnableMessageType(NetIncomingMessageType.DiscoveryResponse);
             _Client.Configuration.EnableMessageType(NetIncomingMessageType.ConnectionLatencyUpdated);
-            _LanServers = new Dictionary<IPEndPoint, string>();
         }
 
 
@@ -52,7 +49,7 @@ namespace BlackCoat.Network
 
         // OVERRIDES (to hide the underlying NetConnection)
 
-        protected override string HandleDiscoveryRequest() => null;
+        protected override void HandleDiscoveryRequest(NetOutgoingMessage msg) { }
 
         protected override void NewConnection(NetConnection senderConnection) => Connected();
         protected override void ConnectionLost(NetConnection senderConnection) => Disconnected();
@@ -61,9 +58,8 @@ namespace BlackCoat.Network
         protected abstract void Disconnected();
 
         // INCOMMING
-        protected override void DiscoveryResponseReceived(IPEndPoint endPoint, string serverName)
+        protected override void DiscoveryResponseReceived(IPEndPoint endPoint, NetIncomingMessage msg)
         {
-            _LanServers[endPoint] = serverName;
             LanServerListUpdated.Invoke();
         }
         protected override void LatencyUpdateReceived(NetConnection senderConnection, float latency)
@@ -73,7 +69,6 @@ namespace BlackCoat.Network
 
 
         // OUTGOING
-
         protected virtual void Send(TEnum subType, Action<NetOutgoingMessage> operation = null, NetDeliveryMethod netMethod = _DEFAULT_METHOD)
         {
             Send(CreateMessage(subType, operation), netMethod);
@@ -82,15 +77,6 @@ namespace BlackCoat.Network
         {
             if (Disposed) throw new ObjectDisposedException(nameof(Client<TEnum>));
             _Client.SendMessage(message, netMethod);
-        }
-        public void DiscoverLanServers(int port, bool clearOldEntries = true)
-        {
-            if (clearOldEntries)
-            {
-                _LanServers.Clear();
-                LanServerListUpdated.Invoke();
-            }
-            _BasePeer.DiscoverLocalPeers(port);
         }
     }
 }

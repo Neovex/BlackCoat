@@ -70,14 +70,12 @@ namespace BlackCoat.Network
                         break;
 
                     case NetIncomingMessageType.DiscoveryRequest:
-                        var response = HandleDiscoveryRequest();
-                        if (response == null) break;
-                        var r = _BasePeer.CreateMessage();
-                        r.Write(response);
-                        _BasePeer.SendDiscoveryResponse(r, msg.SenderEndPoint);
+                        var response = _BasePeer.CreateMessage();
+                        HandleDiscoveryRequest(response);
+                        _BasePeer.SendDiscoveryResponse(response, msg.SenderEndPoint);
                         break;
                     case NetIncomingMessageType.DiscoveryResponse:
-                        DiscoveryResponseReceived(msg.SenderEndPoint, msg.ReadString());
+                        DiscoveryResponseReceived(msg.SenderEndPoint, msg);
                         break;
 
                     case NetIncomingMessageType.VerboseDebugMessage:
@@ -114,8 +112,8 @@ namespace BlackCoat.Network
 
         protected abstract void ConnectionLost(NetConnection senderConnection);
 
-        protected abstract String HandleDiscoveryRequest();
-        protected abstract void DiscoveryResponseReceived(IPEndPoint endPoint, string serverName);
+        protected abstract void HandleDiscoveryRequest(NetOutgoingMessage msg);
+        protected abstract void DiscoveryResponseReceived(IPEndPoint endPoint, NetIncomingMessage msg);
         protected abstract void LatencyUpdateReceived(NetConnection senderConnection, float latency);
 
 
