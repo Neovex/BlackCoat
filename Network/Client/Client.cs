@@ -20,9 +20,6 @@ namespace BlackCoat.Network
         public int Latency { get; private set; }
 
 
-        public event Action LanServerListUpdated = () => { };
-
-
         public Client(String appId) : base(new NetClient(new NetPeerConfiguration(appId)))
         {
             _Client = _BasePeer as NetClient;
@@ -58,10 +55,6 @@ namespace BlackCoat.Network
         protected abstract void Disconnected();
 
         // INCOMMING
-        protected override void DiscoveryResponseReceived(IPEndPoint endPoint, NetIncomingMessage msg)
-        {
-            LanServerListUpdated.Invoke();
-        }
         protected override void LatencyUpdateReceived(NetConnection senderConnection, float latency)
         {
             Latency = (int)(latency * 1000);

@@ -138,7 +138,7 @@ namespace BlackCoat
         /// <summary>
         /// Determines if the update cycle should be paused when the render device looses focus.
         /// </summary>
-        public Boolean PauseUpdateOnFocusLoss { get; private set; }
+        public Boolean PauseUpdateOnFocusLoss { get; set; }
 
         /// <summary>
         /// Determines if the Engine Core has been disposed.
