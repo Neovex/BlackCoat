@@ -36,6 +36,14 @@ namespace BlackCoat.Network
             _Client.Start();
             _Client.Connect(host, port, _Client.CreateMessage(hail));
         }
+        public void Connect(IPEndPoint host, String hail)
+        {
+            if (Disposed) throw new ObjectDisposedException(nameof(Client<TEnum>));
+            if (host == null) throw new ArgumentNullException(nameof(host));
+
+            _Client.Start();
+            _Client.Connect(host, _Client.CreateMessage(hail));
+        }
 
         public void Disconnect(string disconnectMessage)
         {

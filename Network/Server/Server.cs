@@ -76,7 +76,7 @@ namespace BlackCoat.Network
         }
 
         // INCOMMING
-        protected override void DiscoveryResponseReceived(IPEndPoint endPoint, NetIncomingMessage msg) { }
+        protected override void DiscoveryResponseReceived(NetIncomingMessage msg) { }
 
         // OUTGOING
         protected virtual void Broadcast(TEnum subType, Action<NetOutgoingMessage> operation = null, NetDeliveryMethod netMethod = _DEFAULT_METHOD)

@@ -75,7 +75,7 @@ namespace BlackCoat.Network
                         _BasePeer.SendDiscoveryResponse(response, msg.SenderEndPoint);
                         break;
                     case NetIncomingMessageType.DiscoveryResponse:
-                        DiscoveryResponseReceived(msg.SenderEndPoint, msg);
+                        DiscoveryResponseReceived(msg);
                         break;
 
                     case NetIncomingMessageType.VerboseDebugMessage:
@@ -113,7 +113,7 @@ namespace BlackCoat.Network
         protected abstract void ConnectionLost(NetConnection senderConnection);
 
         protected abstract void HandleDiscoveryRequest(NetOutgoingMessage msg);
-        protected abstract void DiscoveryResponseReceived(IPEndPoint endPoint, NetIncomingMessage msg);
+        protected abstract void DiscoveryResponseReceived(NetIncomingMessage msg);
         protected abstract void LatencyUpdateReceived(NetConnection senderConnection, float latency);
 
 

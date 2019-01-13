@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using Lidgren.Network;
 
 namespace BlackCoat.Network
@@ -34,6 +35,10 @@ namespace BlackCoat.Network
         public void Connect(String host, Int32 port)
         {
             Connect(host, port, Alias);
+        }
+        public void Connect(IPEndPoint host)
+        {
+            Connect(host, Alias);
         }
 
         protected override void ProcessIncommingData(TEnum subType, NetIncomingMessage msg)
