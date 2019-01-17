@@ -18,6 +18,7 @@ namespace BlackCoat.Network
 
         public String Name { get; private set; }
         public String AppIdentifier { get; private set; }
+        public string LastError { get; protected set; }
 
 
         public Server(string appIdentifier):base(new NetPeer(new NetPeerConfiguration(appIdentifier)))
@@ -29,7 +30,7 @@ namespace BlackCoat.Network
 
         // CONTROL
 
-        public void Host(string name, int port)
+        public bool Host(string name, int port)
         {
             if (Disposed) throw new ObjectDisposedException(nameof(Server<TEnum>));
             if (String.IsNullOrWhiteSpace(name)) throw new ArgumentException(nameof(name));
@@ -42,9 +43,19 @@ namespace BlackCoat.Network
             config.EnableMessageType(NetIncomingMessageType.DiscoveryRequest);
             config.EnableMessageType(NetIncomingMessageType.ConnectionLatencyUpdated);
 
-            _BasePeer = _Server = new NetServer(config);
-            _Server.Start();
-            Log.Info("Server started, listening on:", port);
+            try
+            {
+                _BasePeer = _Server = new NetServer(config);
+                _Server.Start();
+                Log.Info("Server started, listening on:", port);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                LastError = ex.Message;
+                Log.Error(ex);
+                return false;
+            }
         }
 
         public void StopServer(string stopMessage = "")

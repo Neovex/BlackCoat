@@ -18,6 +18,7 @@ namespace BlackCoat.Network
 
         public Boolean IsConnected => _BasePeer.ConnectionsCount != 0;
         public int Latency { get; private set; }
+        public string LastError { get; private set; }
 
 
         public Client(String appId) : base(new NetClient(new NetPeerConfiguration(appId)))
@@ -28,21 +29,39 @@ namespace BlackCoat.Network
         }
 
 
-        public void Connect(String host, Int32 port, String hail)
+        public bool Connect(String host, Int32 port, String hail)
         {
             if (Disposed) throw new ObjectDisposedException(nameof(Client<TEnum>));
             if (String.IsNullOrWhiteSpace(host)) throw new ArgumentException(nameof(host));
-
-            _Client.Start();
-            _Client.Connect(host, port, _Client.CreateMessage(hail));
+            try
+            {
+                _Client.Start();
+                _Client.Connect(host, port, _Client.CreateMessage(hail));
+                return true;
+            }
+            catch (Exception ex)
+            {
+                LastError = ex.Message;
+                Log.Error(ex);
+                return false;
+            }
         }
-        public void Connect(IPEndPoint host, String hail)
+        public bool Connect(IPEndPoint host, String hail)
         {
             if (Disposed) throw new ObjectDisposedException(nameof(Client<TEnum>));
             if (host == null) throw new ArgumentNullException(nameof(host));
-
-            _Client.Start();
-            _Client.Connect(host, _Client.CreateMessage(hail));
+            try
+            {
+                _Client.Start();
+                _Client.Connect(host, _Client.CreateMessage(hail));
+                return true;
+            }
+            catch (Exception ex)
+            {
+                LastError = ex.Message;
+                Log.Error(ex);
+                return false;
+            }
         }
 
         public void Disconnect(string disconnectMessage)

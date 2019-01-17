@@ -32,13 +32,13 @@ namespace BlackCoat.Network
             _ConnectedClients = new List<NetUser>();
         }
 
-        public void Connect(String host, Int32 port)
+        public bool Connect(String host, Int32 port)
         {
-            Connect(host, port, Alias);
+            return Connect(host, port, Alias);
         }
-        public void Connect(IPEndPoint host)
+        public bool Connect(IPEndPoint host)
         {
-            Connect(host, Alias);
+            return Connect(host, Alias);
         }
 
         protected override void ProcessIncommingData(TEnum subType, NetIncomingMessage msg)
