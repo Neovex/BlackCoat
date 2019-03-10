@@ -89,7 +89,7 @@ namespace BlackCoat.UI
 
             // Update move caret to mouse
             var mpos = Input.Input.MousePosition;
-            if (CollisionShape.Collide(mpos))
+            if (CollisionShape.CollidesWith(mpos))
             {
                 var averageCharSize = _Text.FindCharacterPos(1).X;
                 if (averageCharSize == 0) _Index = 0;

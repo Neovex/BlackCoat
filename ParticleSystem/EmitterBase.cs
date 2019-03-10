@@ -109,7 +109,7 @@ namespace BlackCoat.ParticleSystem
                         _VertexRenderer.Free(_Particles[i].Index);
                         _Particles[i].Release(vPtr);
                         AddToCache(_Particles[i]);
-                        // O(1) Swap Removal - faster removal but destroys order which is not important here
+                        // O(3) Swap Removal - faster removal but destroys order which is not important here
                         _Particles[i] = _Particles[_Particles.Count - 1];
                         _Particles.RemoveAt(_Particles.Count - 1);
                     }

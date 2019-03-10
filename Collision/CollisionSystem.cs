@@ -230,7 +230,7 @@ namespace BlackCoat.Collision
         /// </summary>
         /// <param name="offset">Optional offset to be taken into account when comparing projection values</param>
         /// <returns>True when the objects touch or intersect.</returns>
-        public virtual bool CheckCollision(Vector2f a, IPolygon b) // passed
+        public virtual bool CheckCollision(Vector2f a, IPolygon b) // passed - note only polygons whits points ordered clockwise will work!
         {
             var v = a.ToLocal(b.Position);
             return b.Points.Select((p, i) => v.ToLocal(p).DotProduct(FindPolyProjectionAxis(i, b.Points))).All(p => p > 0);
@@ -292,7 +292,7 @@ namespace BlackCoat.Collision
         /// Determines if objects touch or intersect.
         /// </summary>
         /// <returns>True when the objects touch or intersect.</returns>
-        public virtual bool CheckCollision(ICircle a, IPolygon b) // passed
+        public virtual bool CheckCollision(ICircle a, IPolygon b) // passed - note only polygons whits points ordered clockwise will work!
         {
             var localPoints = b.Points.Select(p => p.ToGlobal(b.Position)).Select(p => p.ToLocal(a.Position)).ToArray();
             if (!localPoints.Select((p, i) => (-p).DotProduct(FindPolyProjectionAxis(i, b.Points).Normalize())).All(p => p + a.Radius > 0)) return false;
@@ -341,7 +341,7 @@ namespace BlackCoat.Collision
         /// Determines if objects touch or intersect.
         /// </summary>
         /// <returns>True when the objects touch or intersect.</returns>
-        public virtual bool CheckCollision(IRectangle a, IPolygon b) // passed
+        public virtual bool CheckCollision(IRectangle a, IPolygon b) // passed - note only polygons whits points ordered clockwise will work!
         {
             var rectPoints = CalcGlobalRectVerticies(a);
             var polyPoints = b.Points.Select(p => p.ToGlobal(b.Position)).ToArray();
@@ -373,7 +373,7 @@ namespace BlackCoat.Collision
         /// Determines if objects touch or intersect.
         /// </summary>
         /// <returns>True when the objects touch or intersect.</returns>
-        public virtual Boolean CheckCollision(IPolygon a, IPolygon b) // passed
+        public virtual Boolean CheckCollision(IPolygon a, IPolygon b) // passed - note only polygons whits points ordered clockwise will work!
         {
             var aGlobalPoints = a.Points.Select(p => p.ToGlobal(a.Position)).ToArray();
             var bGlobalPoints = b.Points.Select(p => p.ToGlobal(b.Position)).ToArray();
@@ -411,7 +411,7 @@ namespace BlackCoat.Collision
         /// Determines if objects touch or intersect.
         /// </summary>
         /// <returns>True when the objects touch or intersect.</returns>
-        public virtual bool CheckCollision(IPolygon a, ILine b) //passed
+        public virtual bool CheckCollision(IPolygon a, ILine b) //passed - note only polygons whits points ordered clockwise will work!
         {
             var aGlobalPoints = a.Points.Select(p => p.ToGlobal(a.Position)).ToArray();
 

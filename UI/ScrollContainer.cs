@@ -85,7 +85,7 @@ namespace BlackCoat.UI
 
         protected override void HandleMouseWheelScrolled(float delta)
         {
-            if (!CollisionShape.Collide(Input.Input.MousePosition)) return;
+            if (!CollisionShape.CollidesWith(Input.Input.MousePosition)) return;
             // Scroll
             var newPos = TextureRect.Position() + new Vector2i(0, SCROLLSPEED * (delta < 0 ? 1 : -1));
             //Limit

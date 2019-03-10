@@ -249,15 +249,15 @@ namespace BlackCoat.UI
         // Mouse Input
         protected virtual void HandleMouseMoved(Vector2f pos)
         {
-            if (HasFocus && !CollisionShape.Collide(pos)) HasFocus = false;
-            else if (CanFocus && Visible && Enabled && CollisionShape.Collide(pos)) GiveFocus();
+            if (HasFocus && !CollisionShape.CollidesWith(pos)) HasFocus = false;
+            else if (CanFocus && Visible && Enabled && CollisionShape.CollidesWith(pos)) GiveFocus();
         }
         protected virtual void HandleMouseWheelScrolled(float delta) { }
 
 
         // Input Validation
         private bool ValidateInput(bool fromMouse) => HasFocus && !_GotFocusThisFrame && Visible && Enabled && 
-                                                    (!fromMouse || CollisionShape.Collide(Input.Input.MousePosition));
+                                                    (!fromMouse || CollisionShape.CollidesWith(Input.Input.MousePosition));
         private void ValidateBeforeConfirm(bool fromMouse)
         {
             if (ValidateInput(fromMouse)) HandleInputBeforeConfirm();

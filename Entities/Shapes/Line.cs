@@ -100,14 +100,14 @@ namespace BlackCoat.Entities.Shapes
         /// </summary>
         /// <param name="point">The point to check</param>
         /// <returns>True when the point is on the <see cref="Line"/></returns>
-        public virtual bool Collide(Vector2f point) => _Core.CollisionSystem.CheckCollision(point, this);
+        public virtual bool CollidesWith(Vector2f point) => _Core.CollisionSystem.CheckCollision(point, this);
 
         /// <summary>
         /// Determines if this <see cref="Line"/> is colliding with another <see cref="ICollisionShape"/>
         /// </summary>
         /// <param name="other">The other <see cref="ICollisionShape"/></param>
         /// <returns>True when the objects overlap or touch</returns>
-        public virtual bool Collide(ICollisionShape other) => _Core.CollisionSystem.CheckCollision(this, other);
+        public virtual bool CollidesWith(ICollisionShape other) => _Core.CollisionSystem.CheckCollision(this, other);
 
         /// <summary>
         /// Returns a <see cref="System.String" /> that represents this instance.

@@ -45,13 +45,13 @@ namespace BlackCoat.UI
         /// </summary>
         /// <param name="point">The point to check</param>
         /// <returns>True when the point is inside the <see cref="UICollisionShape"/></returns>
-        override public bool Collide(Vector2f point) => _CollisionSystem.CheckCollision(point, this);
+        override public bool CollidesWith(Vector2f point) => _CollisionSystem.CheckCollision(point, this);
 
         /// <summary>
         /// Determines if this <see cref="UICollisionShape"/> is colliding with another <see cref="ICollisionShape"/>
         /// </summary>
         /// <param name="other">The other <see cref="ICollisionShape"/></param>
         /// <returns>True when the objects overlap or touch</returns>
-        override public bool Collide(ICollisionShape other) => _CollisionSystem.CheckCollision(this, other);
+        override public bool CollidesWith(ICollisionShape other) => _CollisionSystem.CheckCollision(this, other);
     }
 }

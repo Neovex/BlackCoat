@@ -14,13 +14,13 @@ namespace BlackCoat.Collision
         /// </summary>
         /// <param name="point">The point to check</param>
         /// <returns>True when the point is inside the object</returns>
-        bool Collide(Vector2f point);
+        bool CollidesWith(Vector2f point);
 
         /// <summary>
         /// Determines if this object is colliding with the defined other
         /// </summary>
         /// <param name="other">The other object</param>
         /// <returns>True when the objetcs overlap or touch</returns>
-        bool Collide(ICollisionShape other);
+        bool CollidesWith(ICollisionShape other);
     }
 }

@@ -44,7 +44,7 @@ namespace BlackCoat.Collision.Shapes
         /// </summary>
         /// <param name="point">The point to check</param>
         /// <returns>True when the point is inside the <see cref="BasicGraphicCollisionShape"/></returns>
-        override public bool Collide(Vector2f point)
+        override public bool CollidesWith(Vector2f point)
         {
             return _CollisionSystem.CheckCollision(point, this);
         }
@@ -54,7 +54,7 @@ namespace BlackCoat.Collision.Shapes
         /// </summary>
         /// <param name="other">The other <see cref="ICollisionShape"/></param>
         /// <returns>True when the objects overlap or touch</returns>
-        override public bool Collide(ICollisionShape other)
+        override public bool CollidesWith(ICollisionShape other)
         {
             return _CollisionSystem.CheckCollision(this, other);
         }
