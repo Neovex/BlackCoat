@@ -8,6 +8,7 @@ using SFML.System;
 using SFML.Graphics;
 using BlackCoat;
 using BlackCoat.Entities;
+using BlackCoat.Entities.Lights;
 using BlackCoat.ParticleSystem;
 
 namespace BlackCoat.Tools
@@ -29,13 +30,14 @@ namespace BlackCoat.Tools
 
 
         private Boolean _Locked = true;
-
+        private TextureLoader _TextureLoader;
 
         protected override bool ShowWithoutActivation => true;
 
 
-        public PropertyInspector()
+        public PropertyInspector(TextureLoader textureLoader)
         {
+            _TextureLoader = textureLoader ?? throw new ArgumentNullException(nameof(textureLoader));
             InitializeComponent();
         }
 
@@ -90,6 +92,7 @@ namespace BlackCoat.Tools
             _SceneGraph.Nodes[0].Expand();
         }
 
+        // Dispose
         public void Destroy()
         {
             Text = nameof(Destroy);
@@ -98,6 +101,7 @@ namespace BlackCoat.Tools
             Dispose();
         }
 
+        // Dont close - hide instead
         private void PropertyEditor_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (e.CloseReason == CloseReason.UserClosing) e.Cancel = _Locked;
@@ -105,6 +109,7 @@ namespace BlackCoat.Tools
             else Clear();
         }
 
+        // Clear Selection
         public void Clear()
         {
             Text = _NAME;
@@ -112,11 +117,13 @@ namespace BlackCoat.Tools
             _Inspector.SelectedObject = null;
         }
 
+        // Close / Hide
         private void HideToolStripMenuItem_Clicked(object sender, EventArgs e)
         {
             Hide();
         }
 
+        // Export all properties of the currently selected object to the clipboard
         private void ExportTargetToolStripMenuItem_Click(object sender, EventArgs e)
         {
             StringBuilder b = new StringBuilder();
@@ -131,12 +138,14 @@ namespace BlackCoat.Tools
             MessageBox.Show($"{i} Properties now in Clipboard.", "Export Complete", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
+        // Inspect an object chosen from the tree
         private void SceneGraph_NodeSelected(object sender, TreeViewEventArgs e)
         {
             _Inspector.SelectedObject = e.Node.Tag;
             Text = $"{_NAME} {_Inspector.SelectedObject?.GetType().Name}";
         }
 
+        // Inspect an object chosen from the grid instead of the tree
         private void Inspector_SelectedGridItemChanged(object sender, SelectedGridItemChangedEventArgs e)
         {
             if (ModifierKeys.HasFlag(Keys.Control))
@@ -150,14 +159,73 @@ namespace BlackCoat.Tools
             }
         }
 
+        // Restore highlight to selected node
         private void SceneGraph_GotFocus(object sender, EventArgs e)
         {
             if (_SceneGraph.SelectedNode != null) SceneGraph_NodeSelected(this, new TreeViewEventArgs(_SceneGraph.SelectedNode));
         }
 
+        // Toggle top most
         private void TopMostToolStripMenuItem_Clicked(object sender, EventArgs e)
         {
             _TopMostToolStripMenuItem.Checked = TopMost = !TopMost;
+        }
+
+        // Adapt the Inspectors Extras Menu to the selected object
+        private void InspectorSelectedObjectsChanged(object sender, EventArgs e)
+        {
+            _RemoveEntitiyToolStripMenuItem.Enabled = _Inspector.SelectedObject is IEntity;
+            _RenderToolStripMenuItem.Enabled = _Inspector.SelectedObject is PrerenderedContainer;
+            _AddLightToolStripMenuItem.Enabled = _Inspector.SelectedObject is Lightmap;
+        }
+
+        private void RebuildSceneGraphToolStripMenuItemClicked(object sender, EventArgs e)
+        {
+            var root = _SceneGraph.Nodes.OfType<TreeNode>().Select(n => n.Tag).ToArray();
+            _SceneGraph.Nodes.Clear();
+            Add(root, null);
+        }
+
+        private void RemoveEntitiyToolStripMenuItemClicked(object sender, EventArgs e)
+        {
+            var entity = _Inspector.SelectedObject as IEntity;
+            entity.Parent.Remove(entity);
+            _SceneGraph.SelectedNode.Remove();
+        }
+
+        private void RenderToolStripMenuItemClicked(object sender, EventArgs e)
+        {
+            var prerenderedContainer = _Inspector.SelectedObject as PrerenderedContainer;
+            prerenderedContainer.RedrawNow();
+        }
+
+        private void AddLightToolStripMenuItemClicked(object sender, EventArgs e)
+        {
+            var lightmap = _Inspector.SelectedObject as Lightmap;
+            var light = lightmap.AddLight(_TextureLoader, new Vector2f());
+            Add(light, _SceneGraph.SelectedNode.Nodes[0]);
+        }
+
+        private void LoadLightMapToolStripMenuItemClicked(object sender, EventArgs e)
+        {
+            if (_OpenFileDialog.ShowDialog(this) == DialogResult.OK)
+            {
+                var lightmap = _Inspector.SelectedObject as Lightmap;
+                lightmap.Load(_TextureLoader, _OpenFileDialog.FileName);
+
+                var parent = _SceneGraph.SelectedNode.Parent;
+                _SceneGraph.SelectedNode.Remove();
+                Add(lightmap, parent);
+            }
+        }
+
+        private void SaveLightMapToolStripMenuItemClicked(object sender, EventArgs e)
+        {
+            if (_SaveFileDialog.ShowDialog(this) == DialogResult.OK)
+            {
+                var lightmap = _Inspector.SelectedObject as Lightmap;
+                lightmap.Save(_SaveFileDialog.FileName);
+            }
         }
     }
 }

@@ -40,6 +40,11 @@ namespace BlackCoat.Entities
             }
         }
 
+        /// <summary>
+        /// Gets the amount of entities currently contained in this <see cref="Container"/>.
+        /// </summary>
+        public int Count => _Entities.Count;
+
 
         // CTOR ############################################################################
         public Container(Core core) : base(core)

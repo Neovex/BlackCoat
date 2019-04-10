@@ -28,7 +28,7 @@ namespace BlackCoat.Entities
         /// Gets or sets a value indicating whether child elements should be redrawn each frame.
         /// Be wary: setting this to true will defeat any performance increase purposes.
         /// </summary>
-        public bool RedrawEachFrame { get; set; }
+        public bool RenderEachFrame { get; set; }
         /// <summary>
         /// The <see cref="Color"/> to fill the <see cref="Texture"/> with before all child elements will drawn on top.
         /// </summary>
@@ -61,7 +61,7 @@ namespace BlackCoat.Entities
                 _Core.DeviceResized += Handle_DeviceResized;
             }
 
-            RedrawEachFrame = false;
+            RenderEachFrame = false;
             ClearColor = DEFAULT_CLEAR_COLOR;
         }
 
@@ -115,11 +115,11 @@ namespace BlackCoat.Entities
         }
 
         /// <summary>
-        /// Draws the current surface of the container. When <see cref="RedrawEachFrame"/> is true all entities will be redrawn accordingly.
+        /// Draws the current surface of the container. When <see cref="RenderEachFrame"/> is true all entities will be redrawn accordingly.
         /// </summary>
         public override void Draw()
         {
-            if (RedrawEachFrame) RedrawNow();
+            if (RenderEachFrame) RedrawNow();
             _Core.Draw(this);
         }
 
