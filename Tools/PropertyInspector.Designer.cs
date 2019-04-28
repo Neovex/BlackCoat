@@ -49,6 +49,7 @@
             this._SceneGraph = new System.Windows.Forms.TreeView();
             this._OpenFileDialog = new System.Windows.Forms.OpenFileDialog();
             this._SaveFileDialog = new System.Windows.Forms.SaveFileDialog();
+            this._DuplicateLightToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this._MenuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this._SplitContainer)).BeginInit();
             this._SplitContainer.Panel1.SuspendLayout();
@@ -158,7 +159,8 @@
             this._LoadLightMapToolStripMenuItem,
             this._SaveLightMapToolStripMenuItem,
             this.toolStripSeparator2,
-            this._AddLightToolStripMenuItem});
+            this._AddLightToolStripMenuItem,
+            this._DuplicateLightToolStripMenuItem});
             this._LightsToolStripMenuItem.Name = "_LightsToolStripMenuItem";
             this._LightsToolStripMenuItem.Size = new System.Drawing.Size(51, 20);
             this._LightsToolStripMenuItem.Text = "Lights";
@@ -228,6 +230,13 @@
             this._SaveFileDialog.Filter = "Black Coat Lightmap|*.bcl|All Files|*.*";
             this._SaveFileDialog.OverwritePrompt = false;
             // 
+            // _DuplicateLightToolStripMenuItem
+            // 
+            this._DuplicateLightToolStripMenuItem.Name = "_DuplicateLightToolStripMenuItem";
+            this._DuplicateLightToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this._DuplicateLightToolStripMenuItem.Text = "Duplicate Light";
+            this._DuplicateLightToolStripMenuItem.Click += new System.EventHandler(this.DuplicateLightToolStripMenuItemClicked);
+            // 
             // PropertyInspector
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -274,5 +283,6 @@
         private System.Windows.Forms.ToolStripMenuItem _AddLightToolStripMenuItem;
         private System.Windows.Forms.OpenFileDialog _OpenFileDialog;
         private System.Windows.Forms.SaveFileDialog _SaveFileDialog;
+        private System.Windows.Forms.ToolStripMenuItem _DuplicateLightToolStripMenuItem;
     }
 }

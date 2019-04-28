@@ -124,13 +124,13 @@ namespace BlackCoat
             return false;
         }
 
-        protected void OpenInspector(object target = null)
+        protected IPropertyInspector OpenInspector(object target = null)
         {
             _PropertyInspector = _PropertyInspector ?? new PropertyInspector(TextureLoader);
             _PropertyInspector.Clear();
-            _PropertyInspector.Add(target);
-            _PropertyInspector.Add(this);
+            _PropertyInspector.Add(target ?? this);
             _PropertyInspector.Show();
+            return _PropertyInspector;
         }
 
         protected void ToggleConsole()

@@ -13,7 +13,7 @@ using BlackCoat.ParticleSystem;
 
 namespace BlackCoat.Tools
 {
-    public partial class PropertyInspector : Form
+    public partial class PropertyInspector : Form, IPropertyInspector
     {
         private const String _NAME = "Property Inspector";
 
@@ -176,7 +176,7 @@ namespace BlackCoat.Tools
         {
             _RemoveEntitiyToolStripMenuItem.Enabled = _Inspector.SelectedObject is IEntity;
             _RenderToolStripMenuItem.Enabled = _Inspector.SelectedObject is PrerenderedContainer;
-            _AddLightToolStripMenuItem.Enabled = _Inspector.SelectedObject is Lightmap;
+            _LightsToolStripMenuItem.Enabled = FindParent(n => n?.Tag is Lightmap) != null;
         }
 
         private void RebuildSceneGraphToolStripMenuItemClicked(object sender, EventArgs e)
@@ -199,33 +199,66 @@ namespace BlackCoat.Tools
             prerenderedContainer.RedrawNow();
         }
 
-        private void AddLightToolStripMenuItemClicked(object sender, EventArgs e)
-        {
-            var lightmap = _Inspector.SelectedObject as Lightmap;
-            var light = lightmap.AddLight(_TextureLoader, new Vector2f());
-            Add(light, _SceneGraph.SelectedNode.Nodes[0]);
-        }
-
         private void LoadLightMapToolStripMenuItemClicked(object sender, EventArgs e)
         {
-            if (_OpenFileDialog.ShowDialog(this) == DialogResult.OK)
+            var node = FindParent(n => n.Tag is Lightmap);
+            if(node?.Tag is Lightmap lightmap
+               &&  _OpenFileDialog.ShowDialog(this) == DialogResult.OK)
             {
-                var lightmap = _Inspector.SelectedObject as Lightmap;
                 lightmap.Load(_TextureLoader, _OpenFileDialog.FileName);
 
-                var parent = _SceneGraph.SelectedNode.Parent;
-                _SceneGraph.SelectedNode.Remove();
+                var parent = node.Parent;
+                node.Remove();
                 Add(lightmap, parent);
             }
         }
 
         private void SaveLightMapToolStripMenuItemClicked(object sender, EventArgs e)
         {
-            if (_SaveFileDialog.ShowDialog(this) == DialogResult.OK)
+            if (FindParent(n => n.Tag is Lightmap)?.Tag is Lightmap lightmap
+               && _SaveFileDialog.ShowDialog(this) == DialogResult.OK)
             {
-                var lightmap = _Inspector.SelectedObject as Lightmap;
                 lightmap.Save(_SaveFileDialog.FileName);
             }
+        }
+
+        private void AddLightToolStripMenuItemClicked(object sender, EventArgs e)
+        {
+            var node = FindParent(n => n.Tag is Lightmap);
+            if (node?.Tag is Lightmap lightmap)
+            {
+                var light = lightmap.AddLight(_TextureLoader, new Vector2f());
+                Add(light, node.Nodes[0]);
+            }
+        }
+
+        private void DuplicateLightToolStripMenuItemClicked(object sender, EventArgs e)
+        {
+            if (_SceneGraph.SelectedNode.Tag is IEntity sourceLight)
+            {
+                var node = FindParent(n => n.Tag is Lightmap);
+                if (node.Tag is Lightmap lightmap)
+                {
+                    var light = lightmap.AddLight(_TextureLoader, sourceLight.Position, sourceLight.Color, sourceLight.Scale, sourceLight.Rotation);
+                    Add(light, node.Nodes[0]);
+                }
+            }
+        }
+
+        public void SetPosition(Vector2f position)
+        {
+            if (_Inspector.SelectedObject is IEntity entity) entity.Position = position;
+        }
+
+        private TreeNode FindParent(Func<TreeNode, bool> validator)
+        {
+            var node = _SceneGraph.SelectedNode;
+            while (node != null)
+            {
+                if (validator.Invoke(node)) return node;
+                node = node.Parent;
+            }
+            return null;
         }
     }
 }
