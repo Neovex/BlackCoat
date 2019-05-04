@@ -79,6 +79,7 @@
     <Compile Include="Network\Server\ServerUser.cs" />
     <Compile Include="Network\NetUser.cs" />
     <Compile Include="Interfaces\IPropertyInspector.cs" />
+    <Compile Include="Tools\BlendmodeConverter.cs" />
     <Compile Include="Tools\Launcher.cs">
       <SubType>Form</SubType>
     </Compile>

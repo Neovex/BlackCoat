@@ -36,20 +36,22 @@
             this.toolStripSeparator = new System.Windows.Forms.ToolStripSeparator();
             this._CloseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this._ExtrasToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this._CoreUpdateWithoutFocusToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this._RebuildSceneGraphToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this._RemoveEntitiyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this._RenderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this._EmitterTriggerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this._LightsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this._LoadLightMapToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this._SaveLightMapToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this._AddLightToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this._DuplicateLightToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this._SplitContainer = new System.Windows.Forms.SplitContainer();
             this._SceneGraph = new System.Windows.Forms.TreeView();
             this._OpenFileDialog = new System.Windows.Forms.OpenFileDialog();
             this._SaveFileDialog = new System.Windows.Forms.SaveFileDialog();
-            this._DuplicateLightToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this._MenuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this._SplitContainer)).BeginInit();
             this._SplitContainer.Panel1.SuspendLayout();
@@ -119,13 +121,22 @@
             // _ExtrasToolStripMenuItem
             // 
             this._ExtrasToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this._CoreUpdateWithoutFocusToolStripMenuItem,
             this._RebuildSceneGraphToolStripMenuItem,
             this.toolStripSeparator1,
             this._RemoveEntitiyToolStripMenuItem,
-            this._RenderToolStripMenuItem});
+            this._RenderToolStripMenuItem,
+            this._EmitterTriggerToolStripMenuItem});
             this._ExtrasToolStripMenuItem.Name = "_ExtrasToolStripMenuItem";
             this._ExtrasToolStripMenuItem.Size = new System.Drawing.Size(49, 20);
             this._ExtrasToolStripMenuItem.Text = "Extras";
+            // 
+            // _CoreUpdateWithoutFocusToolStripMenuItem
+            // 
+            this._CoreUpdateWithoutFocusToolStripMenuItem.Name = "_CoreUpdateWithoutFocusToolStripMenuItem";
+            this._CoreUpdateWithoutFocusToolStripMenuItem.Size = new System.Drawing.Size(284, 22);
+            this._CoreUpdateWithoutFocusToolStripMenuItem.Text = "Core Update without Focus";
+            this._CoreUpdateWithoutFocusToolStripMenuItem.Click += new System.EventHandler(this.CoreUpdateWithoutFocusToolStripMenuItemToolStripMenuItemClicked);
             // 
             // _RebuildSceneGraphToolStripMenuItem
             // 
@@ -150,8 +161,15 @@
             // 
             this._RenderToolStripMenuItem.Name = "_RenderToolStripMenuItem";
             this._RenderToolStripMenuItem.Size = new System.Drawing.Size(284, 22);
-            this._RenderToolStripMenuItem.Text = "PreredneredContainer - Render";
+            this._RenderToolStripMenuItem.Text = "PrerenderedContainer - Render";
             this._RenderToolStripMenuItem.Click += new System.EventHandler(this.RenderToolStripMenuItemClicked);
+            // 
+            // _EmitterTriggerToolStripMenuItem
+            // 
+            this._EmitterTriggerToolStripMenuItem.Name = "_EmitterTriggerToolStripMenuItem";
+            this._EmitterTriggerToolStripMenuItem.Size = new System.Drawing.Size(284, 22);
+            this._EmitterTriggerToolStripMenuItem.Text = "ITriggerEmitter - Trigger";
+            this._EmitterTriggerToolStripMenuItem.Click += new System.EventHandler(this.EmitterTriggerToolStripMenuItemClicked);
             // 
             // _LightsToolStripMenuItem
             // 
@@ -191,6 +209,13 @@
             this._AddLightToolStripMenuItem.Text = "Add Light";
             this._AddLightToolStripMenuItem.Click += new System.EventHandler(this.AddLightToolStripMenuItemClicked);
             // 
+            // _DuplicateLightToolStripMenuItem
+            // 
+            this._DuplicateLightToolStripMenuItem.Name = "_DuplicateLightToolStripMenuItem";
+            this._DuplicateLightToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this._DuplicateLightToolStripMenuItem.Text = "Duplicate Light";
+            this._DuplicateLightToolStripMenuItem.Click += new System.EventHandler(this.DuplicateLightToolStripMenuItemClicked);
+            // 
             // _SplitContainer
             // 
             this._SplitContainer.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -229,13 +254,6 @@
             this._SaveFileDialog.DefaultExt = "bcl";
             this._SaveFileDialog.Filter = "Black Coat Lightmap|*.bcl|All Files|*.*";
             this._SaveFileDialog.OverwritePrompt = false;
-            // 
-            // _DuplicateLightToolStripMenuItem
-            // 
-            this._DuplicateLightToolStripMenuItem.Name = "_DuplicateLightToolStripMenuItem";
-            this._DuplicateLightToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this._DuplicateLightToolStripMenuItem.Text = "Duplicate Light";
-            this._DuplicateLightToolStripMenuItem.Click += new System.EventHandler(this.DuplicateLightToolStripMenuItemClicked);
             // 
             // PropertyInspector
             // 
@@ -284,5 +302,7 @@
         private System.Windows.Forms.OpenFileDialog _OpenFileDialog;
         private System.Windows.Forms.SaveFileDialog _SaveFileDialog;
         private System.Windows.Forms.ToolStripMenuItem _DuplicateLightToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem _CoreUpdateWithoutFocusToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem _EmitterTriggerToolStripMenuItem;
     }
 }

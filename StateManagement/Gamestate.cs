@@ -126,7 +126,7 @@ namespace BlackCoat
 
         protected IPropertyInspector OpenInspector(object target = null)
         {
-            _PropertyInspector = _PropertyInspector ?? new PropertyInspector(TextureLoader);
+            _PropertyInspector = _PropertyInspector ?? new PropertyInspector(_Core, TextureLoader);
             _PropertyInspector.Clear();
             _PropertyInspector.Add(target ?? this);
             _PropertyInspector.Show();

@@ -26,19 +26,23 @@ namespace BlackCoat.Tools
             TypeDescriptor.AddAttributes(typeof(Color),     new TypeConverterAttribute(typeof(ColorConverter)));
             TypeDescriptor.AddAttributes(typeof(IntRect),   new TypeConverterAttribute(typeof(RectangleConverter<IntRect>)));
             TypeDescriptor.AddAttributes(typeof(FloatRect), new TypeConverterAttribute(typeof(RectangleConverter<FloatRect>)));
+            TypeDescriptor.AddAttributes(typeof(BlendMode), new TypeConverterAttribute(typeof(BlendmodeConverter)));
         }
 
 
-        private Boolean _Locked = true;
+        private Core _Core;
         private TextureLoader _TextureLoader;
+        private Boolean _Locked = true;
 
         protected override bool ShowWithoutActivation => true;
 
 
-        public PropertyInspector(TextureLoader textureLoader)
+        public PropertyInspector(Core core, TextureLoader textureLoader)
         {
+            _Core = core ?? throw new ArgumentNullException(nameof(core));
             _TextureLoader = textureLoader ?? throw new ArgumentNullException(nameof(textureLoader));
             InitializeComponent();
+            _CoreUpdateWithoutFocusToolStripMenuItem.Checked = !_Core.PauseUpdateOnFocusLoss;
         }
 
 
@@ -174,6 +178,7 @@ namespace BlackCoat.Tools
         // Adapt the Inspectors Extras Menu to the selected object
         private void InspectorSelectedObjectsChanged(object sender, EventArgs e)
         {
+            _EmitterTriggerToolStripMenuItem.Enabled = _Inspector.SelectedObject is ITriggerEmitter;
             _RemoveEntitiyToolStripMenuItem.Enabled = _Inspector.SelectedObject is IEntity;
             _RenderToolStripMenuItem.Enabled = _Inspector.SelectedObject is PrerenderedContainer;
             _LightsToolStripMenuItem.Enabled = FindParent(n => n?.Tag is Lightmap) != null;
@@ -259,6 +264,16 @@ namespace BlackCoat.Tools
                 node = node.Parent;
             }
             return null;
+        }
+
+        private void CoreUpdateWithoutFocusToolStripMenuItemToolStripMenuItemClicked(object sender, EventArgs e)
+        {
+            _CoreUpdateWithoutFocusToolStripMenuItem.Checked = !(_Core.PauseUpdateOnFocusLoss = !_Core.PauseUpdateOnFocusLoss);
+        }
+
+        private void EmitterTriggerToolStripMenuItemClicked(object sender, EventArgs e)
+        {
+            if (_Inspector.SelectedObject is ITriggerEmitter emitter) emitter.Trigger();
         }
     }
 }

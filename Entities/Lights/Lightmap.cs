@@ -37,15 +37,17 @@ namespace BlackCoat.Entities.Lights
         /// <param name="fixedSize">Size of the entire <see cref="Lightmap"/> area.
         public Lightmap(Core core, Vector2f size) : base(core, size)
         {
-            var view = new View(size / 2, size);
-
-            //RenderEachFrame = true;
-            ClearColor = Color.Black;
             BlendMode = BlendMode.Multiply;
-            Add(_Lights = new Container(_Core) { View = view });
+            ClearColor = Color.Black;
 
-            var ambient = new Color(50, 50, 50);
-            Add(_AmbientLight = new Rectangle(_Core, ambient) { View = view, BlendMode = BlendMode.Add, Size = size });
+            var view = new View(size / 2, size);
+            Add(_Lights = new Container(_Core) { View = view });
+            Add(_AmbientLight = new Rectangle(_Core, new Color(50, 50, 50))
+            {
+                BlendMode = BlendMode.Add,
+                View = view,
+                Size = size
+            });
         }
 
         public Graphic AddLight(TextureLoader loader, Vector2f position, Color? color = null, Vector2f? scale = null, float rotation = 0)
@@ -53,6 +55,7 @@ namespace BlackCoat.Entities.Lights
             var tex = loader.Load(nameof(Resources.Pointlight), Resources.Pointlight);
             var light = new Graphic(_Core, tex)
             {
+                BlendMode = BlendMode.Add,
                 Origin = tex.Size.ToVector2f() / 2,
                 Position = position,
                 Color = color ?? Color.White,
