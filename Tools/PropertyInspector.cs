@@ -30,12 +30,19 @@ namespace BlackCoat.Tools
         }
 
 
+        public event Action<object> InspectionItemChanged = o => { };
+
         private Core _Core;
         private TextureLoader _TextureLoader;
         private Boolean _Locked = true;
 
         protected override bool ShowWithoutActivation => true;
 
+        public object InspectionItem
+        {
+            get => _Inspector.SelectedObject;
+            set => _Inspector.SelectedObject = value;
+        }
 
         public PropertyInspector(Core core, TextureLoader textureLoader)
         {
@@ -159,7 +166,6 @@ namespace BlackCoat.Tools
                 _Inspector.SelectedGridItemChanged += Inspector_SelectedGridItemChanged;
 
                 Text = $"{_NAME} {_Inspector.SelectedObject?.GetType().Name}";
-
             }
         }
 
@@ -182,6 +188,8 @@ namespace BlackCoat.Tools
             _RemoveEntitiyToolStripMenuItem.Enabled = _Inspector.SelectedObject is IEntity;
             _RenderToolStripMenuItem.Enabled = _Inspector.SelectedObject is PrerenderedContainer;
             _LightsToolStripMenuItem.Enabled = FindParent(n => n?.Tag is Lightmap) != null;
+
+            InspectionItemChanged.Invoke(_Inspector.SelectedObject);
         }
 
         private void RebuildSceneGraphToolStripMenuItemClicked(object sender, EventArgs e)
@@ -191,11 +199,17 @@ namespace BlackCoat.Tools
             Add(root, null);
         }
 
+        public void RemoveCurrent() => RemoveEntitiyToolStripMenuItemClicked(null, null);
         private void RemoveEntitiyToolStripMenuItemClicked(object sender, EventArgs e)
         {
             var entity = _Inspector.SelectedObject as IEntity;
             entity.Parent.Remove(entity);
-            _SceneGraph.SelectedNode.Remove();
+            var node = _SceneGraph.FlattenTree().FirstOrDefault(n => n.Tag == entity);
+            if (node != null)
+            {
+                _SceneGraph.SelectedNode = node.Parent;
+                node.Remove();
+            }
         }
 
         private void RenderToolStripMenuItemClicked(object sender, EventArgs e)
@@ -250,11 +264,6 @@ namespace BlackCoat.Tools
             }
         }
 
-        public void SetPosition(Vector2f position)
-        {
-            if (_Inspector.SelectedObject is IEntity entity) entity.Position = position;
-        }
-
         private TreeNode FindParent(Func<TreeNode, bool> validator)
         {
             var node = _SceneGraph.SelectedNode;
@@ -274,6 +283,21 @@ namespace BlackCoat.Tools
         private void EmitterTriggerToolStripMenuItemClicked(object sender, EventArgs e)
         {
             if (_Inspector.SelectedObject is ITriggerEmitter emitter) emitter.Trigger();
+        }
+    }
+    
+    static class TreeExtensions
+    {
+        public static IEnumerable<TreeNode> FlattenTree(this TreeView tv)
+        {
+            return FlattenTree(tv.Nodes);
+        }
+
+        public static IEnumerable<TreeNode> FlattenTree(this TreeNodeCollection coll)
+        {
+            return coll.Cast<TreeNode>()
+                        .Concat(coll.Cast<TreeNode>()
+                                    .SelectMany(x => FlattenTree(x.Nodes)));
         }
     }
 }

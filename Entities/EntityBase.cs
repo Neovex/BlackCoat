@@ -121,7 +121,7 @@ namespace BlackCoat.Entities
         /// <summary>
         /// Gets the position of this <see cref="IEntity"/> independent from scene graph and view.
         /// </summary>
-        public Vector2f GlobalPosition => Parent == null ? Position : (Position - Origin).ToGlobal(Parent.GlobalPosition);
+        public Vector2f GlobalPosition => Position - Origin.MultiplyBy(Scale) + (Parent == null ? default(Vector2f) : Parent.GlobalPosition);
 
         /// <summary>
         /// Determines whether this <see cref="IEntity" /> is destroyed.

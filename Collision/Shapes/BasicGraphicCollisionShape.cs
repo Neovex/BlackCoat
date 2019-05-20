@@ -26,7 +26,7 @@ namespace BlackCoat.Collision.Shapes
         /// <summary>
         /// Gets the size of the associated <see cref="Graphic"/>.
         /// </summary>
-        public Vector2f Size => _Graphic.Texture?.Size.ToVector2f() ?? default(Vector2f);
+        public Vector2f Size => _Graphic.TextureRect.Size().ToVector2f().MultiplyBy(_Graphic.Scale);
 
 
         /// <summary>

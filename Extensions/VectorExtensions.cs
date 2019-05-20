@@ -137,6 +137,14 @@ namespace BlackCoat
             return v.ToLocal(other).LengthSquared();
         }
 
+        /// <summary>
+        /// X*X & Y*Y
+        /// </summary>
+        /// <param name="other">The other Vector</param>
+        public static Vector2f MultiplyBy(this Vector2f v, Vector2f other)
+        {
+            return new Vector2f(v.X * other.X, v.Y * other.Y);
+        }
 
         // CONVERSIONS
 
