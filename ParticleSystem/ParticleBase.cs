@@ -10,7 +10,7 @@ namespace BlackCoat.ParticleSystem
     /// <seealso cref="BlackCoat.BlackCoatBase" />
     public abstract class ParticleBase : BlackCoatBase
     {
-        internal static int _PARTICLES = 0;
+        internal static uint _PARTICLES = 0;
 
         private float _TTL;
         private int _Index;

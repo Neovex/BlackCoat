@@ -18,7 +18,7 @@ namespace BlackCoat.ParticleSystem
         /// <param name="blendMode">Optional particle blend mode. Defaults to Alpha Blending.</param>
         /// <param name="depth">The optional hierarchical depth.</param>
         public TextureEmitter(Core core, TextureParticleInitializationInfo info, BlendMode? blendMode = null, int depth = 0) :
-                                   base(core, info, PrimitiveType.Quads, blendMode ?? BlendMode.Alpha, info.Texture, depth)
+                              base(core, info, PrimitiveType.Quads, blendMode ?? BlendMode.Alpha, info.Texture, depth)
         {
         }
     }

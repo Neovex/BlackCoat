@@ -32,7 +32,7 @@ namespace BlackCoat.ParticleSystem
         /// </summary>
         public virtual void Initialize(Vector2f position, TextureParticleInitializationInfo info)
         {
-            // init particle
+            // Init particle
             _TextureSize = info.Texture.Size;
             _TextureRect.Width = (int)_TextureSize.X;
             _TextureRect.Height = (int)_TextureSize.Y;
@@ -43,7 +43,7 @@ namespace BlackCoat.ParticleSystem
             _Color = info.Color;
             _Alpha = info.Alpha;
 
-            // init movement
+            // Init movement
             _Velocity = info.Velocity;
             _Acceleration = info.Acceleration;
             _RotationVelocity = info.RotationVelocity;

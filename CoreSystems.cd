@@ -3,7 +3,7 @@
   <Class Name="BlackCoat.Core">
     <Position X="3.5" Y="2.25" Width="2.25" />
     <TypeIdentifier>
-      <HashCode>AAQhEAAIgSAIgoEACiAAQAgMVBQBJBohIIYAACFGAIM=</HashCode>
+      <HashCode>AAQhEAAIgSAIgoEAGiAAQAgMVBQBJBohIIYAACFGAIM=</HashCode>
       <FileName>Core.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -22,7 +22,7 @@
   <Class Name="BlackCoat.Tools.Console" Collapsed="true">
     <Position X="7.75" Y="6.5" Width="1.75" />
     <TypeIdentifier>
-      <HashCode>AAAAAQAACAAAIQCQAAABBQAQABAgAEAAAAAAAACgAAA=</HashCode>
+      <HashCode>IAAAAQAAAAAAIQCQAAABBAAAABAAAEAAAAAAQICAABA=</HashCode>
       <FileName>Tools\Console.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -79,7 +79,7 @@
       </Path>
     </AssociationLine>
     <TypeIdentifier>
-      <HashCode>EgQVhAAAgEECAiAEAQAKAAwAAgBAAAAAAAMAAAAAIDA=</HashCode>
+      <HashCode>EgQVhAAAgAECAiAEAQAKAAwAAgBCAAAAAAMAAAQAILA=</HashCode>
       <FileName>StateManagement\Gamestate.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -105,19 +105,24 @@
   <Class Name="BlackCoat.Entities.Layer" Collapsed="true">
     <Position X="13.75" Y="2.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAQAAAAAAAAAAIAgAAIAAAAAAAAQAAAAAAIAAAAAAAA=</HashCode>
+      <HashCode>AAYAAAAAAAAAAIAgAAIAAAAAAAAQAAAAAAIAAAAAAAA=</HashCode>
       <FileName>Entities\Layer.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="BlackCoat.Entities.Container" Collapsed="true">
     <Position X="13.75" Y="6.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAQAABAAAAAAEgAAAAAAAARAAAIAAAAAAAQAAABAACA=</HashCode>
+      <HashCode>AEYAAAAAAAAAAgAACAAABAQAAABAABAAAgAAAQhQABA=</HashCode>
       <FileName>Entities\Container.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="BlackCoat.Entities.Graphic" Collapsed="true">
     <Position X="13.75" Y="7.75" Width="1.5" />
+    <AssociationLine Name="_Core" Type="BlackCoat.Core">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="7.318" Y="-0.273" />
+      </MemberNameLabel>
+    </AssociationLine>
     <AssociationLine Name="_Parent" Type="BlackCoat.Entities.Container" FixedToPoint="true">
       <Path>
         <Point X="14.312" Y="7.75" />
@@ -128,7 +133,7 @@
       </MemberNameLabel>
     </AssociationLine>
     <TypeIdentifier>
-      <HashCode>QAQAAAAAAAABAwAAICAAQAAgAAgBABAIAAIAAAAQQAA=</HashCode>
+      <HashCode>QAQAAAEAAACFAwAEICAAQAQgAAhBABAIAAIAAAAQQIA=</HashCode>
       <FileName>Entities\Graphic.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -139,6 +144,11 @@
   </Class>
   <Class Name="BlackCoat.BlackCoatBase">
     <Position X="7.75" Y="0.5" Width="1.75" />
+    <AssociationLine Name="_Core" Type="BlackCoat.Core">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="-2.859" Y="0.956" />
+      </MemberNameLabel>
+    </AssociationLine>
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAA=</HashCode>
       <FileName>BlackCoatBase.cs</FileName>
@@ -150,7 +160,7 @@
   <Class Name="BlackCoat.Device" Collapsed="true">
     <Position X="0.5" Y="2.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AQAAAAAAAAAAAABAAAAAIAAAAAAAAEIAAAAAAAAAAAg=</HashCode>
+      <HashCode>AQAAAAAAAAAAAABAAAAAAAAAAAAAAEIAAAAEAAAAAAg=</HashCode>
       <FileName>Device.cs</FileName>
     </TypeIdentifier>
   </Class>

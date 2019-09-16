@@ -366,32 +366,16 @@ namespace BlackCoat
                 state.Transform = entity.Parent.GlobalTransform;
             }
 
-            if (entity.RenderTarget == null)
+            var renderTarget = entity.RenderTarget ?? _Device;
+            if (entity.View == null) // view inheritance is handled by the property
             {
-                if (entity.View == null) // view inheritance is handled by the property
-                {
-                    entity.Draw(_Device, state);
-                }
-                else
-                {
-                    _Device.SetView(entity.View);
-                    entity.Draw(_Device, state);
-                    _Device.SetView(DefaultView);
-                }
+                entity.Draw(renderTarget, state);
             }
-            else // handle custom render targets
+            else
             {
-                if (entity.View == null)
-                {
-                    entity.Draw(entity.RenderTarget, state);
-                }
-                else
-                {
-                    var restore = entity.RenderTarget.GetView();
-                    entity.RenderTarget.SetView(entity.View);
-                    entity.Draw(entity.RenderTarget, state);
-                    entity.RenderTarget.SetView(restore);
-                }
+                renderTarget.SetView(entity.View);
+                entity.Draw(renderTarget, state);
+                renderTarget.SetView(entity.RenderTarget?.DefaultView ?? DefaultView);
             }
             DRAW_CALLS++;
         }

@@ -48,7 +48,7 @@ namespace BlackCoat.Entities.Shapes
         /// </summary>
         public View View
         {
-            get => _View ?? _Parent?.View;
+            get => _View ?? (Parent is PrerenderedContainer ? null : _Parent?.View);
             set => _View = value;
         }
 

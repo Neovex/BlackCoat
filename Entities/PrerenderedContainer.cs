@@ -100,8 +100,8 @@ namespace BlackCoat.Entities
         /// <returns>True if the Entity could be added</returns>
         public override void Add(IEntity entity)
         {
-            base.Add(entity);
             entity.RenderTarget = _RenderTarget;
+            base.Add(entity);
         }
 
         /// <summary>

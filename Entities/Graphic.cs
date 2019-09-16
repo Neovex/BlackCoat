@@ -50,7 +50,7 @@ namespace BlackCoat.Entities
         /// </summary>
         public View View
         {
-            get => _View ?? _Parent?.View;
+            get => _View ?? (Parent is PrerenderedContainer ? null : _Parent?.View);
             set => _View = value;
         }
 
@@ -127,7 +127,7 @@ namespace BlackCoat.Entities
         /// <summary>
         /// Gets the position of this <see cref="IEntity"/> independent from scene graph and view.
         /// </summary>
-        public Vector2f GlobalPosition => Position - Origin.MultiplyBy(Scale) + (Parent == null ? default(Vector2f) : Parent.GlobalPosition);
+        public Vector2f GlobalPosition => Position - Origin.MultiplyBy(Scale) + (Parent == null ? default : Parent.GlobalPosition);
 
         /// <summary>
         /// Determines whether this <see cref="IEntity" /> is destroyed.

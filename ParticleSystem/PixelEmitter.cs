@@ -13,7 +13,8 @@ namespace BlackCoat.ParticleSystem
         /// <param name="core">The engine core.</param>
         /// <param name="info">The optional particle animation information.</param>
         /// <param name="depth">The optional hierarchical depth.</param>
-        public PixelEmitter(Core core, PixelParticleInitializationInfo info, int depth = 0) : base(core, info, PrimitiveType.Points, BlendMode.Alpha, null, depth)
+        public PixelEmitter(Core core, PixelParticleInitializationInfo info, int depth = 0) :
+                            base(core, info, PrimitiveType.Points, BlendMode.Alpha, null, depth)
         {
         }
     }
