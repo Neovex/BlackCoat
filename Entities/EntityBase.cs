@@ -126,7 +126,7 @@ namespace BlackCoat.Entities
         /// <summary>
         /// Determines whether this <see cref="IEntity" /> is destroyed.
         /// </summary>
-        public bool Destroyed { get; private set; }
+        public bool Disposed => CPointer == IntPtr.Zero;
 
 
         // CTOR ############################################################################
@@ -162,16 +162,6 @@ namespace BlackCoat.Entities
         /// <param name="target">Render device</param>
         /// <param name="states">Additional render information</param>
         public abstract void Draw(RenderTarget target, RenderStates states);
-
-        /// <summary>
-        /// Handle the destruction of the <see cref="IEntity"/>
-        /// </summary>
-        /// <param name="disposing">Is the GC disposing the object, or is it an explicit call ?</param>
-        protected override void Destroy(bool disposing)
-        {
-            Destroyed = true;
-            base.Destroy(disposing);
-        }
 
         /// <summary>
         /// Returns a <see cref="System.String" /> that represents this instance.

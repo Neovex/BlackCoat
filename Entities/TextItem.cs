@@ -142,7 +142,7 @@ namespace BlackCoat.Entities
         /// <summary>
         /// Determines whether this <see cref="IEntity" /> is destroyed.
         /// </summary>
-        public bool Destroyed { get; private set; }
+        public bool Disposed => CPointer == IntPtr.Zero;
 
 
         // CTOR ############################################################################        
@@ -177,16 +177,6 @@ namespace BlackCoat.Entities
         /// Draws the Text
         /// </summary>
         public virtual void Draw() => _Core.Draw(this);
-
-        /// <summary>
-        /// Handle the destruction of the <see cref="IEntity"/>
-        /// </summary>
-        /// <param name="disposing">Is the GC disposing the object, or is it an explicit call ?</param>
-        protected override void Destroy(bool disposing)
-        {
-            Destroyed = true;
-            base.Destroy(disposing);
-        }
 
         /// <summary>
         /// Returns a <see cref="System.String" /> that represents this instance.

@@ -27,7 +27,7 @@ namespace BlackCoat
         /// <summary>
         /// Determines whether this <see cref="ManagedSound"/> has been destroyed.
         /// </summary>
-        public bool Destroyed { get; private set; }
+        public bool Disposed => CPointer == IntPtr.Zero;
 
         /// <summary>
         /// Determines whether this <see cref="ManagedSound"/> is unmanaged.
@@ -51,17 +51,6 @@ namespace BlackCoat
         internal ManagedSound(Sound sound) : base(sound)
         {
             MANAGE_INSTANCE(this);
-        }
-
-
-        /// <summary>
-        /// Handle the destruction of the object
-        /// </summary>
-        /// <param name="disposing">Is the GC disposing the object, or is it an explicit call ?</param>
-        protected override void Destroy(bool disposing)
-        {
-            Destroyed = true;
-            base.Destroy(disposing);
         }
     }
 }
