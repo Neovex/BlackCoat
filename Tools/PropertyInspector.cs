@@ -253,7 +253,7 @@ namespace BlackCoat.Tools
 
         private void DuplicateLightToolStripMenuItemClicked(object sender, EventArgs e)
         {
-            if (_SceneGraph.SelectedNode.Tag is IEntity sourceLight)
+            if (_Inspector.SelectedObject is IEntity sourceLight)
             {
                 var node = FindParent(n => n.Tag is Lightmap);
                 if (node.Tag is Lightmap lightmap)
