@@ -284,8 +284,13 @@ namespace BlackCoat.Tools
         {
             if (_Inspector.SelectedObject is ITriggerEmitter emitter) emitter.Trigger();
         }
+
+        private void Inspector_PropertyValueChanged(object s, PropertyValueChangedEventArgs e)
+        {
+            InspectionItemChanged.Invoke(_Inspector.SelectedObject);
+        }
     }
-    
+
     static class TreeExtensions
     {
         public static IEnumerable<TreeNode> FlattenTree(this TreeView tv)

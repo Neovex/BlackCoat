@@ -66,6 +66,7 @@
             this._Inspector.Name = "_Inspector";
             this._Inspector.Size = new System.Drawing.Size(280, 642);
             this._Inspector.TabIndex = 0;
+            this._Inspector.PropertyValueChanged += new System.Windows.Forms.PropertyValueChangedEventHandler(this.Inspector_PropertyValueChanged);
             this._Inspector.SelectedGridItemChanged += new System.Windows.Forms.SelectedGridItemChangedEventHandler(this.Inspector_SelectedGridItemChanged);
             this._Inspector.SelectedObjectsChanged += new System.EventHandler(this.InspectorSelectedObjectsChanged);
             // 
@@ -95,26 +96,26 @@
             // _TopMostToolStripMenuItem
             // 
             this._TopMostToolStripMenuItem.Name = "_TopMostToolStripMenuItem";
-            this._TopMostToolStripMenuItem.Size = new System.Drawing.Size(186, 22);
+            this._TopMostToolStripMenuItem.Size = new System.Drawing.Size(187, 22);
             this._TopMostToolStripMenuItem.Text = "Top Most";
             this._TopMostToolStripMenuItem.Click += new System.EventHandler(this.TopMostToolStripMenuItem_Clicked);
             // 
             // _ExportTargetToolStripMenuItem
             // 
             this._ExportTargetToolStripMenuItem.Name = "_ExportTargetToolStripMenuItem";
-            this._ExportTargetToolStripMenuItem.Size = new System.Drawing.Size(186, 22);
+            this._ExportTargetToolStripMenuItem.Size = new System.Drawing.Size(187, 22);
             this._ExportTargetToolStripMenuItem.Text = "Export current Object";
             this._ExportTargetToolStripMenuItem.Click += new System.EventHandler(this.ExportTargetToolStripMenuItem_Click);
             // 
             // toolStripSeparator
             // 
             this.toolStripSeparator.Name = "toolStripSeparator";
-            this.toolStripSeparator.Size = new System.Drawing.Size(183, 6);
+            this.toolStripSeparator.Size = new System.Drawing.Size(184, 6);
             // 
             // _CloseToolStripMenuItem
             // 
             this._CloseToolStripMenuItem.Name = "_CloseToolStripMenuItem";
-            this._CloseToolStripMenuItem.Size = new System.Drawing.Size(186, 22);
+            this._CloseToolStripMenuItem.Size = new System.Drawing.Size(187, 22);
             this._CloseToolStripMenuItem.Text = "Close";
             this._CloseToolStripMenuItem.Click += new System.EventHandler(this.HideToolStripMenuItem_Clicked);
             // 
@@ -128,7 +129,7 @@
             this._RenderToolStripMenuItem,
             this._EmitterTriggerToolStripMenuItem});
             this._ExtrasToolStripMenuItem.Name = "_ExtrasToolStripMenuItem";
-            this._ExtrasToolStripMenuItem.Size = new System.Drawing.Size(49, 20);
+            this._ExtrasToolStripMenuItem.Size = new System.Drawing.Size(50, 20);
             this._ExtrasToolStripMenuItem.Text = "Extras";
             // 
             // _CoreUpdateWithoutFocusToolStripMenuItem
@@ -186,33 +187,33 @@
             // _LoadLightMapToolStripMenuItem
             // 
             this._LoadLightMapToolStripMenuItem.Name = "_LoadLightMapToolStripMenuItem";
-            this._LoadLightMapToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this._LoadLightMapToolStripMenuItem.Size = new System.Drawing.Size(154, 22);
             this._LoadLightMapToolStripMenuItem.Text = "Load";
             this._LoadLightMapToolStripMenuItem.Click += new System.EventHandler(this.LoadLightMapToolStripMenuItemClicked);
             // 
             // _SaveLightMapToolStripMenuItem
             // 
             this._SaveLightMapToolStripMenuItem.Name = "_SaveLightMapToolStripMenuItem";
-            this._SaveLightMapToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this._SaveLightMapToolStripMenuItem.Size = new System.Drawing.Size(154, 22);
             this._SaveLightMapToolStripMenuItem.Text = "Save";
             this._SaveLightMapToolStripMenuItem.Click += new System.EventHandler(this.SaveLightMapToolStripMenuItemClicked);
             // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(177, 6);
+            this.toolStripSeparator2.Size = new System.Drawing.Size(151, 6);
             // 
             // _AddLightToolStripMenuItem
             // 
             this._AddLightToolStripMenuItem.Name = "_AddLightToolStripMenuItem";
-            this._AddLightToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this._AddLightToolStripMenuItem.Size = new System.Drawing.Size(154, 22);
             this._AddLightToolStripMenuItem.Text = "Add Light";
             this._AddLightToolStripMenuItem.Click += new System.EventHandler(this.AddLightToolStripMenuItemClicked);
             // 
             // _DuplicateLightToolStripMenuItem
             // 
             this._DuplicateLightToolStripMenuItem.Name = "_DuplicateLightToolStripMenuItem";
-            this._DuplicateLightToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this._DuplicateLightToolStripMenuItem.Size = new System.Drawing.Size(154, 22);
             this._DuplicateLightToolStripMenuItem.Text = "Duplicate Light";
             this._DuplicateLightToolStripMenuItem.Click += new System.EventHandler(this.DuplicateLightToolStripMenuItemClicked);
             // 

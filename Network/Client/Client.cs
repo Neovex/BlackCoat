@@ -67,7 +67,7 @@ namespace BlackCoat.Network
         public void Disconnect(string disconnectMessage)
         {
             _Client.Disconnect(disconnectMessage);
-            // TODO : check if Disconnected needs to be called extra here
+            Disconnected();
         }
 
 
