@@ -21,7 +21,7 @@ namespace BlackCoat.UI
             if (setupDefaultKeyboardMouseMapping) SetupDefaultKeyboardMouseMapping();
         }
 
-        public void SetupDefaultKeyboardMouseMapping()
+        private void SetupDefaultKeyboardMouseMapping()
         {
             Input.MouseButtonPressed += HandleMouseDown;
             Input.MouseButtonReleased += HandleMouseUp;

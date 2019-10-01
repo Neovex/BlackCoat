@@ -6,14 +6,14 @@
   <Class Name="BlackCoat.Entities.Container" Collapsed="true">
     <Position X="4" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AEYAAAAAAAAAAgAACAAABAAAAABAABAAAgAAAQhQABA=</HashCode>
+      <HashCode>AEYAAAAAAAAAAgAACAAABAQAAABAABAAAgAAAQhQABA=</HashCode>
       <FileName>Entities\Container.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="BlackCoat.Entities.Shapes.Rectangle" Collapsed="true">
     <Position X="4" Y="14.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>QAQAAAEAAACFAwAUICAAQAQgAAhBABAIAAIAgAAQAIA=</HashCode>
+      <HashCode>QAQAAAEAAACFAwAUICAARAQgAAgBABAIAAIAgAASAAA=</HashCode>
       <FileName>Entities\Shapes\Rectangle.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.354" Collapsed="true" />
@@ -36,14 +36,14 @@
   <Class Name="BlackCoat.UI.UIContainer">
     <Position X="11" Y="1.25" Width="1.75" />
     <TypeIdentifier>
-      <HashCode>AAIEAAAAAAAAAICAAIAABAACEAAgAAAgQIACAAYACAA=</HashCode>
+      <HashCode>AAIEAAAAAAAAAICAAIAABAACEAAgEAAgQIACAAYACAA=</HashCode>
       <FileName>UI\UIContainer.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="BlackCoat.UI.Label">
     <Position X="6.75" Y="2.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAACAAAAAAAQAAIAIQAIBAAACYBAAAABIAACABCEAA=</HashCode>
+      <HashCode>AAAACAAAAAAAQAAIAIQAIBAAACYAAAAABIIACABCAEA=</HashCode>
       <FileName>UI\Label.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -58,7 +58,7 @@
   <Class Name="BlackCoat.UI.AlignedContainer">
     <Position X="9" Y="7" Width="1.75" />
     <TypeIdentifier>
-      <HashCode>AAAAAAQAAAAAAQAAACAABAAAAAAAAAAEAIAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAQAAAAAAQAAACAABAAAAABAABAEAIAAAAAAAAA=</HashCode>
       <FileName>UI\AlignedContainer.cs</FileName>
       <NewMemberFileName>UI\AnchoredContainer.cs</NewMemberFileName>
     </TypeIdentifier>
@@ -102,24 +102,18 @@
   </Class>
   <Class Name="BlackCoat.UI.UIComponent">
     <Position X="3.75" Y="2.25" Width="2" />
-    <AssociationLine Name="_Background" Type="BlackCoat.Entities.Shapes.Rectangle">
-      <MemberNameLabel ManuallyPlaced="true" ManuallySized="true">
-        <Position X="-1.202" Y="0.039" Height="0.182" Width="1.087" />
-      </MemberNameLabel>
-    </AssociationLine>
     <TypeIdentifier>
-      <HashCode>BAZgCYUABACjBIE4oICABQAEGABjAAJAxIYABQsABEQ=</HashCode>
+      <HashCode>LAZgCYUQBQCjBIE4KICABQAEGoBjAANIxIQAAUsABAQ=</HashCode>
       <FileName>UI\UIComponent.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
-      <Field Name="_Background" />
       <Property Name="Input" />
     </ShowAsAssociation>
   </Class>
   <Class Name="BlackCoat.UI.UICollisionShape">
     <Position X="0.5" Y="12.5" Width="2" />
     <TypeIdentifier>
-      <HashCode>AAAQAAAAAAAAgAAwAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAQAAAAAAAAgAAwAAAABAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>UI\UICollisionShape.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
@@ -127,7 +121,7 @@
   <Class Name="BlackCoat.UI.AnchoredContainer">
     <Position X="11" Y="7" Width="1.75" />
     <TypeIdentifier>
-      <HashCode>AAAAAAUAAAAAACAggAAABACAAAAAAAAA4IAAAAAAAAA=</HashCode>
+      <HashCode>CAAAAAUAAAAAACAgAAAABACAAAAAAAAA4IAAAAAAAAA=</HashCode>
       <FileName>UI\AnchoredContainer.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -137,7 +131,7 @@
   <Class Name="BlackCoat.Entities.Graphic" Collapsed="true">
     <Position X="6" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>QAQAAAEAAACFAwAEICAAQAQgAAhBABAIAAIAAAAQQIA=</HashCode>
+      <HashCode>QAQAAAEAAACFAwAEICAAQAQgAAgBABAIAAIAAAASQAA=</HashCode>
       <FileName>Entities\Graphic.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
@@ -145,7 +139,7 @@
   <Class Name="BlackCoat.UI.AutomatedCanvas">
     <Position X="13" Y="11.75" Width="2" />
     <TypeIdentifier>
-      <HashCode>AAAAAAIAAAhAAACAEAAAIAAAAAAAAAAAAIAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAIAAAhAAACAEAAAIAAAAAAAEAAAAIAAAAAAAAA=</HashCode>
       <FileName>UI\AutomatedCanvas.cs</FileName>
       <NewMemberFileName>UI\DistributionContainer.cs</NewMemberFileName>
     </TypeIdentifier>
@@ -160,7 +154,7 @@
   <Class Name="BlackCoat.UI.OffsetContainer">
     <Position X="16" Y="10.25" Width="2" />
     <TypeIdentifier>
-      <HashCode>AAAAAAACABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAA=</HashCode>
+      <HashCode>AAAAAAACABAAAACAAAAAAAAAAAAAAAAAAAAAAAAAgAA=</HashCode>
       <FileName>UI\OffsetContainer.cs</FileName>
     </TypeIdentifier>
   </Class>

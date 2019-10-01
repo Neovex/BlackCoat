@@ -201,7 +201,7 @@ namespace BlackCoat.UI
             var globalCenter = _CalculateGlobalCenter(this);
             var allComponents = root.ComponentsFlattened;
             // Find the focus-able component closest to this one that is within the desired direction (+-FocusMovementSpectrum)
-            var target = allComponents.Where(c => c != this && c.CanFocus).
+            var target = allComponents.Where(c => c != this && c.CanFocus && c.Visible && c.Enabled).
                                        Select(c => new { component = c, globalCenter = _CalculateGlobalCenter(c) }).
                                        Where(cp => _Core.CollisionSystem.IntersectAngles(globalCenter.AngleTowards(cp.globalCenter),
                                                                                          MathHelper.ValidateAngle(direction - FocusMovementSpectrum),
@@ -249,14 +249,13 @@ namespace BlackCoat.UI
         // Mouse Input
         protected virtual void HandleMouseMoved(Vector2f pos)
         {
-            if (HasFocus && !CollisionShape.CollidesWith(pos)) HasFocus = false;
-            else if (CanFocus && Visible && Enabled && CollisionShape.CollidesWith(pos)) GiveFocus();
+            if (CanFocus && Visible && Enabled && CollisionShape.CollidesWith(pos)) GiveFocus();
         }
         protected virtual void HandleMouseWheelScrolled(float delta) { }
 
 
         // Input Validation
-        private bool ValidateInput(bool fromMouse) => HasFocus && !_GotFocusThisFrame && Visible && Enabled && 
+        private bool ValidateInput(bool fromMouse) => HasFocus && !_GotFocusThisFrame && Visible && Enabled &&
                                                     (!fromMouse || CollisionShape.CollidesWith(Input.Input.MousePosition));
         private void ValidateBeforeConfirm(bool fromMouse)
         {
