@@ -10,14 +10,32 @@ namespace BlackCoat.UI
 {
     public class TextBox : Label
     {
+        // Events ##########################################################################
+        public event Action<TextBox> InEditChanged = tb => { };
+        public Action<TextBox> InitInEditChanged { set => InEditChanged += value; }
+
+
+        // Variables #######################################################################
         private uint _Index;
         private Line _Caret;
         private float _CaretBlinkTimer;
         private Color _BackgroundColorBackup;
         private Color _TextColorBackup;
         private Vector2f _MinSize;
+        private bool _InEdit;
 
-        public Boolean InEdit { get; private set; }
+
+        // Properties ######################################################################
+        public Boolean InEdit
+        {
+            get => _InEdit;
+            private set
+            {
+                if (_InEdit == value) return;
+                _InEdit = value;
+                InEditChanged.Invoke(this);
+            }
+        }
         public Color EditingBackgroundColor { get; set; }
         public Color EditingTextColor { get; set; }
         public Color CaretColor { get; set; }
@@ -99,12 +117,12 @@ namespace BlackCoat.UI
             // Enable Edit mode
             if (!InEdit)
             {
-                InEdit = true;
                 _BackgroundColorBackup = BackgroundColor;
                 _TextColorBackup = TextColor;
                 BackgroundColor = EditingBackgroundColor;
                 TextColor = EditingTextColor;
                 _Caret.Color = CaretColor;
+                InEdit = true;
             }
             UpdateCaretPosition();
         }

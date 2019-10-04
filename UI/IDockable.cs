@@ -1,5 +1,4 @@
 ﻿using SFML.System;
-using SFML.Graphics;
 
 namespace BlackCoat.UI
 {

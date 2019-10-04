@@ -11,14 +11,18 @@ namespace BlackCoat.UI
     {
         // Statics #########################################################################
         /// <summary>
-        /// Gets the currently active/focused component.
+        /// Gets the currently active/focused <see cref="UIComponent"/>.
         /// </summary>
-        public static UIComponent ActiveComponent { get; internal set; }
+        public static UIComponent ACTIVE_COMPONENT { get; internal set; }
         /// <summary>
-        /// Gets or sets the focus movement spectrum.
+        /// Gets or sets the focus movement spectrum. Default: 30.
         /// This angle defines how far a component can deviate from the direction of a <see cref="ChangeFocus(float)"/> call and still be focused as valid target.
         /// </summary>
-        public static UInt32 FocusMovementSpectrum { get; set; } = 30;
+        public static UInt32 FOCUS_MOVEMENT_SPECTRUM { get; set; } = 30;
+        /// <summary>
+        /// Holds a <see cref="DialogContainer"/> when a dialog is active.
+        /// </summary>
+        internal static DialogContainer DIALOG { set; get; }
 
 
         // Events ##########################################################################
@@ -77,12 +81,12 @@ namespace BlackCoat.UI
                 {
                     if (!Visible || !Enabled) return;
                     InvokeFocusGained();
-                    if (ActiveComponent != null) ActiveComponent.HasFocus = false;
-                    ActiveComponent = this;
+                    if (ACTIVE_COMPONENT != null) ACTIVE_COMPONENT.HasFocus = false;
+                    ACTIVE_COMPONENT = this;
                 }
                 else
                 {
-                    if (ActiveComponent == this) ActiveComponent = null;
+                    if (ACTIVE_COMPONENT == this) ACTIVE_COMPONENT = null;
                     InvokeFocusLost();
                 }
                 _HasFocus = value;
@@ -157,10 +161,21 @@ namespace BlackCoat.UI
             set
             {
                 base.Visible = value;
-                if (ActiveComponent != null)
+                if (ACTIVE_COMPONENT != null)
                 {
-                    ActiveComponent.HasFocus = ActiveComponent.Visible;
+                    ACTIVE_COMPONENT.HasFocus = ACTIVE_COMPONENT.Visible;
                 }
+            }
+        }
+
+        public UIContainer Root
+        {
+            get
+            {
+                if (Container == null) return null;
+                var root = Container;
+                while (root.Container != null) root = root.Container;
+                return root;
             }
         }
 
@@ -184,7 +199,7 @@ namespace BlackCoat.UI
 
         protected virtual void ChangeFocus(float direction)
         {
-            if (ActiveComponent == null)
+            if (ACTIVE_COMPONENT == null)
             {
                 GiveFocus();
                 return;
@@ -192,20 +207,16 @@ namespace BlackCoat.UI
 
             if (!HasFocus || _GotFocusThisFrame || Container == null) return;
 
-            // Find UI root
-            var root = Container;
-            while (root.Container != null) root = root.Container;
-
             // Prepare search
             Vector2f _CalculateGlobalCenter(UIComponent component) => component.GlobalPosition + component.InnerSize / 2;
             var globalCenter = _CalculateGlobalCenter(this);
-            var allComponents = root.ComponentsFlattened;
+            var allComponents = Root.ComponentsFlattened;
             // Find the focus-able component closest to this one that is within the desired direction (+-FocusMovementSpectrum)
             var target = allComponents.Where(c => c != this && c.CanFocus && c.Visible && c.Enabled).
                                        Select(c => new { component = c, globalCenter = _CalculateGlobalCenter(c) }).
                                        Where(cp => _Core.CollisionSystem.IntersectAngles(globalCenter.AngleTowards(cp.globalCenter),
-                                                                                         MathHelper.ValidateAngle(direction - FocusMovementSpectrum),
-                                                                                         MathHelper.ValidateAngle(direction + FocusMovementSpectrum))).
+                                                                                         MathHelper.ValidateAngle(direction - FOCUS_MOVEMENT_SPECTRUM),
+                                                                                         MathHelper.ValidateAngle(direction + FOCUS_MOVEMENT_SPECTRUM))).
                                        OrderBy(cp => cp.globalCenter.DistanceBetweenSquared(globalCenter)).
                                        Select(cp => cp.component).
                                        FirstOrDefault();
@@ -219,6 +230,24 @@ namespace BlackCoat.UI
             base.Update(deltaT);
         }
 
+        // Dialog Handling
+        public void ShowDialog(Layer dialogLayer, UIComponent dialogContent)
+        {
+            if (dialogLayer == null) throw new ArgumentNullException(nameof(dialogLayer));
+            if (dialogContent == null) throw new ArgumentNullException(nameof(dialogContent));
+
+            CloseDialog();
+            DIALOG = new DialogContainer(_Core, this) { Input = Input };
+            DIALOG.Add(dialogContent);
+            dialogLayer.Add(DIALOG);
+            dialogContent.GiveFocus();
+        }
+        public void CloseDialog()
+        {
+            if (DIALOG != null) DIALOG.Close();
+        }
+
+        // Input Management
         private void Subscribe(UIInput input)
         {
             if (input == null) return;
@@ -295,7 +324,7 @@ namespace BlackCoat.UI
 
         protected override void Destroy(bool disposing)
         {
-            if (ActiveComponent == this) ActiveComponent = null;
+            if (ACTIVE_COMPONENT == this) ACTIVE_COMPONENT = null;
             Input = null;
             base.Destroy(disposing);
         }
