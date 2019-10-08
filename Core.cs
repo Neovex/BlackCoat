@@ -102,9 +102,9 @@ namespace BlackCoat
         public RandomHelper Random { get; private set; }
 
         /// <summary>
-        /// Game State Manager. Manages the current Gamestate as well as Gamestate transitions.
+        /// Scene Manager. Manages the current Scene as well as Scene transitions.
         /// </summary>
-        public StateManager StateManager { get; private set; }
+        public SceneManager SceneManager { get; private set; }
 
         /// <summary>
         /// Animation Manager and Factory. Used primarily to make stuff move.
@@ -203,7 +203,7 @@ namespace BlackCoat
 
             // Init Subsystems
             Random = new RandomHelper();
-            StateManager = new StateManager(this);
+            SceneManager = new SceneManager(this);
             AnimationManager = new AnimationManager();
             CollisionSystem = new CollisionSystem();
 
@@ -320,7 +320,7 @@ namespace BlackCoat
         private void Update(Single deltaT)
         {
             // Update Scene Graph
-            StateManager.Update(deltaT);
+            SceneManager.Update(deltaT);
 
             // Update running Animations
             AnimationManager.Update(deltaT);
@@ -342,7 +342,7 @@ namespace BlackCoat
 
             // Draw Scene
             DRAW_CALLS = 0;
-            StateManager.Draw();
+            SceneManager.Draw();
             _Console.Draw();
 
             // Present Backbuffer
@@ -499,7 +499,7 @@ namespace BlackCoat
             if (Disposed) return;
             Disposed = true;
 
-            StateManager.Destroy();
+            SceneManager.Destroy();
 
             DisposeDevice(_Device);
             DisposeDevice(_OldDevice);

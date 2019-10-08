@@ -70,17 +70,17 @@ namespace BlackCoat.Tools
             // Add SubItems of known collections / hierarchies
             switch (item)
             {
-                case Gamestate state:
-                    if (graphNode.Text != state.Name) graphNode.Text = $"{graphNode.Text} \"{state.Name}\"";
-                    Add(state.TextureLoader, graphNode);
-                    Add(state.MusicLoader, graphNode);
-                    Add(state.FontLoader, graphNode);
-                    Add(state.SfxLoader, graphNode);
-                    Add(state.Layer_BG, graphNode, nameof(state.Layer_BG));
-                    Add(state.Layer_Game, graphNode, nameof(state.Layer_Game));
-                    Add(state.Layer_Overlay, graphNode, nameof(state.Layer_Overlay));
-                    Add(state.Layer_Debug, graphNode, nameof(state.Layer_Debug));
-                    Add(state.Layer_Cursor, graphNode, nameof(state.Layer_Cursor));
+                case Scene scene:
+                    if (graphNode.Text != scene.Name) graphNode.Text = $"{graphNode.Text} \"{scene.Name}\"";
+                    Add(scene.TextureLoader, graphNode);
+                    Add(scene.MusicLoader, graphNode);
+                    Add(scene.FontLoader, graphNode);
+                    Add(scene.SfxLoader, graphNode);
+                    Add(scene.Layer_BG, graphNode, nameof(scene.Layer_BG));
+                    Add(scene.Layer_Game, graphNode, nameof(scene.Layer_Game));
+                    Add(scene.Layer_Overlay, graphNode, nameof(scene.Layer_Overlay));
+                    Add(scene.Layer_Debug, graphNode, nameof(scene.Layer_Debug));
+                    Add(scene.Layer_Cursor, graphNode, nameof(scene.Layer_Cursor));
                 break;
                 case Entities.Container container:
                     Add(container._Entities, graphNode);

@@ -1,17 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
-  <Class Name="BlackCoat.Gamestate">
+  <Class Name="BlackCoat.Scene">
     <Position X="3.75" Y="0.5" Width="1.5" />
     <AssociationLine Name="Layer_BG" Type="BlackCoat.Entities.Layer" FixedFromPoint="true">
       <Path>
         <Point X="5.25" Y="5.25" />
         <Point X="6.5" Y="5.25" />
-      </Path>
-    </AssociationLine>
-    <AssociationLine Name="Layer_Debug" Type="BlackCoat.Entities.Layer" FixedFromPoint="true">
-      <Path>
-        <Point X="5.25" Y="4.875" />
-        <Point X="6.5" Y="4.875" />
       </Path>
     </AssociationLine>
     <AssociationLine Name="Layer_Game" Type="BlackCoat.Entities.Layer" FixedFromPoint="true">
@@ -26,60 +20,78 @@
         <Point X="6.5" Y="5.625" />
       </Path>
     </AssociationLine>
+    <AssociationLine Name="Layer_Debug" Type="BlackCoat.Entities.Layer" FixedFromPoint="true">
+      <Path>
+        <Point X="5.25" Y="4.875" />
+        <Point X="6.5" Y="4.875" />
+      </Path>
+    </AssociationLine>
     <TypeIdentifier>
-      <HashCode>EgQVhAAAgEECAiAEAQAKAAwAAgBAAAAAAAMAAAAAIDA=</HashCode>
-      <FileName>StateManagement\Gamestate.cs</FileName>
+      <HashCode>EgQVhAAAgAECAiAEAQAKAAwAAgBCAAAAAAMAAAQAILA=</HashCode>
+      <FileName>SceneManagement\Scene.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
       <Property Name="Layer_BG" />
-      <Property Name="Layer_Cursor" />
-      <Property Name="Layer_Debug" />
       <Property Name="Layer_Game" />
       <Property Name="Layer_Overlay" />
+      <Property Name="Layer_Debug" />
+      <Property Name="Layer_Cursor" />
     </ShowAsAssociation>
   </Class>
   <Class Name="BlackCoat.BlackCoatIntro">
     <Position X="6.5" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAQAgAAAACAAAACAAAAAAIACAABAAQAAACEAAAgAAAA=</HashCode>
-      <FileName>StateManagement\BlackCoatIntro.cs</FileName>
+      <HashCode>AAQAgAAAACAAAACAAAAABIAAAABAAQAAACEAAAgAAAA=</HashCode>
+      <FileName>SceneManagement\BlackCoatIntro.cs</FileName>
     </TypeIdentifier>
-  </Class>
-  <Class Name="BlackCoat.StateManager">
-    <Position X="0.5" Y="1.75" Width="1.75" />
-    <TypeIdentifier>
-      <HashCode>AAQAAABAAAAABgAQQAIAAAAAAABAAAAAAAAAAAAAACA=</HashCode>
-      <FileName>StateManagement\StateManager.cs</FileName>
-    </TypeIdentifier>
-    <ShowAsAssociation>
-      <Field Name="_CurrentState" />
-      <Field Name="_RequestedState" />
-    </ShowAsAssociation>
   </Class>
   <Class Name="BlackCoat.Core" Collapsed="true">
     <Position X="0.5" Y="0.5" Width="1.75" />
     <TypeIdentifier>
-      <HashCode>AAQhEAAIgSAIgoEACiAAQAgMVBQBJBohIIYAACFGAIM=</HashCode>
+      <HashCode>AAQhEAAIgSAIgoEAGCAAQAgMVBQBJBohIIYAACFGAIc=</HashCode>
       <FileName>Core.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
-      <Property Name="StateManager" />
+      <Property Name="SceneManager" />
     </ShowAsAssociation>
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="BlackCoat.Entities.Layer">
     <Position X="6.5" Y="4.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAQAAAAAAAAAAIAgAAIAAAAAAAAQAAAAAAIAAAAAAAA=</HashCode>
+      <HashCode>AAYAAAAAAAAAAIAgAAIAAAAAAAAQAAAAAAIAAAAAAAA=</HashCode>
       <FileName>Entities\Layer.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="BlackCoat.Entities.CursorLayer" Collapsed="true">
-    <Position X="6.5" Y="7.5" Width="1.5" />
+    <Position X="6.5" Y="7.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAQAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAA=</HashCode>
       <FileName>Entities\CursorLayer.cs</FileName>
     </TypeIdentifier>
+  </Class>
+  <Class Name="BlackCoat.SceneManager">
+    <Position X="0.5" Y="1.75" Width="1.75" />
+    <AssociationLine Name="_CurrentScene" Type="BlackCoat.Scene" FixedFromPoint="true">
+      <Path>
+        <Point X="2.25" Y="2.5" />
+        <Point X="3.75" Y="2.5" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="_RequestedScene" Type="BlackCoat.Scene" FixedFromPoint="true">
+      <Path>
+        <Point X="2.25" Y="3.188" />
+        <Point X="3.75" Y="3.188" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAgAgAAAAABCgAAAARAAAAAAAAAAAAAAgA=</HashCode>
+      <FileName>SceneManagement\SceneManager.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_CurrentScene" />
+      <Field Name="_RequestedScene" />
+    </ShowAsAssociation>
   </Class>
   <Font Name="Segoe UI" Size="9" />
 </ClassDiagram>

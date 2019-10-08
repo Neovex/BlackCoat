@@ -7,15 +7,14 @@ using SFML.System;
 namespace BlackCoat
 {
     /// <summary>
-    /// Base class for all Gamestates
+    /// Base class for all Scene
     /// </summary>
-    public abstract class Gamestate
+    public abstract class Scene : BlackCoatBase
     {
-        protected Core _Core;
         private PerformanceMonitor _PerformanceMonitor;
         private PropertyInspector _PropertyInspector;
 
-        // State Info
+        // Scene Info
         public String Name { get; protected set; }
         public Boolean Destroyed { get; private set; }
 
@@ -33,42 +32,41 @@ namespace BlackCoat
         protected internal CursorLayer Layer_Cursor { get; private set; }
 
         /// <summary>
-        /// Occurs when the State has been successfully initialized.
+        /// Occurs when the Scene has been successfully initialized.
         /// </summary>
         public event Action Loaded = () => { };
         /// <summary>
-        /// Occurs when the State has failed to initialize.
+        /// Occurs when the Scene has failed to initialize.
         /// </summary>
         public event Action LoadingFailed = () => { };
         /// <summary>
-        /// Occurs when the State is about to be destroyed.
+        /// Occurs when the Scene is about to be destroyed.
         /// </summary>
         public event Action OnDestroy = () => { };
 
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Gamestate" /> class.
+        /// Initializes a new instance of the <see cref="Scene" /> class.
         /// </summary>
         /// <param name="core">Engine core.</param>
-        /// <param name="name">Optional name of the state.</param>
+        /// <param name="name">Optional name of the Scene.</param>
         /// <param name="assetRoot">Optional Asset root path.</param>
-        public Gamestate(Core core, String name = null, String assetRoot = "") : this(core, name, assetRoot, assetRoot, assetRoot, assetRoot)
+        public Scene(Core core, String name = null, String assetRoot = "") : this(core, name, assetRoot, assetRoot, assetRoot, assetRoot)
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Gamestate" /> class.
+        /// Initializes a new instance of the <see cref="Scene" /> class.
         /// </summary>
         /// <param name="core">Engine core.</param>
-        /// <param name="name">Name of the state.</param>
+        /// <param name="name">Name of the Scene.</param>
         /// <param name="textures">Texture root path.</param>
         /// <param name="music">Music root path.</param>
         /// <param name="fonts">Font root path.</param>
         /// <param name="sfx">Sound effects root path.</param>
-        public Gamestate(Core core, String name, String textures, String music, String fonts, String sfx)
+        public Scene(Core core, String name, String textures, String music, String fonts, String sfx) : base(core)
         {
             // Init
-            _Core = core;
             Name = String.IsNullOrWhiteSpace(name) ? GetType().Name : name;
 
             // Create Asset Managers
@@ -142,7 +140,7 @@ namespace BlackCoat
         }
 
         /// <summary>
-        /// Draws this state onto the scene.
+        /// Draws this Scene onto the scene.
         /// </summary>
         internal void Draw()
         {
@@ -154,12 +152,12 @@ namespace BlackCoat
         }
 
         /// <summary>
-        /// Loads the required data for this state.
+        /// Loads the required data for this Scene.
         /// </summary>
         /// <returns>True on success.</returns>
         internal bool LoadInternal()
         {
-            if (Destroyed) throw new InvalidStateException($"Attempt to load destroyed state {Name}");
+            if (Destroyed) throw new InvalidStateException($"Attempt to load destroyed Scene {Name}");
 
             if (Load())
             {
@@ -174,7 +172,7 @@ namespace BlackCoat
         }
 
         /// <summary>
-        /// Updates the State and its children.
+        /// Updates the Scene and its children.
         /// </summary>
         /// <param name="deltaT">Current frame time.</param>
         internal void UpdateInternal(float deltaT)
@@ -188,7 +186,7 @@ namespace BlackCoat
         }
 
         /// <summary>
-        /// Destroys the state.
+        /// Destroys the Scene.
         /// </summary>
         internal void DestroyInternal()
         {
@@ -227,19 +225,19 @@ namespace BlackCoat
         }
 
         /// <summary>
-        /// Loads the required data for this state.
+        /// Loads the required data for this Scene.
         /// </summary>
         /// <returns>True on success.</returns>
         protected abstract Boolean Load();
 
         /// <summary>
-        /// Updates the State and its children.
+        /// Updates the Scene and its children.
         /// </summary>
         /// <param name="deltaT">Current frame time.</param>
         protected abstract void Update(float deltaT);
 
         /// <summary>
-        /// Destroys the state.
+        /// Destroys the Scene.
         /// </summary>
         protected abstract void Destroy();
 

@@ -3,6 +3,9 @@
   <Comment CommentText="&lt;-- Creates">
     <Position X="1.957" Y="3.936" Height="0.291" Width="0.855" />
   </Comment>
+  <Comment CommentText="Black Coat Asset Subsystems">
+    <Position X="5.104" Y="1.927" Height="0.291" Width="1.825" />
+  </Comment>
   <Class Name="BlackCoat.AssetLoader&lt;T&gt;">
     <Position X="8.5" Y="0.5" Width="1.75" />
     <Compartments>
@@ -44,15 +47,15 @@
   <Class Name="BlackCoat.TextureLoader" Collapsed="true">
     <Position X="9.75" Y="4.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAgAAAAIAAAAABAAAAAAAAAAAAAAAAAACAAAAAAAA=</HashCode>
+      <HashCode>AAAAgAAAAIAAAAABAAAAAAAAAAAAAAAAAAIAAAAEAAA=</HashCode>
       <FileName>AssetHandling\TextureLoader.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="BlackCoat.Gamestate" Collapsed="true">
+  <Class Name="BlackCoat.Scene" Collapsed="true">
     <Position X="7.75" Y="6.25" Width="3.5" />
     <TypeIdentifier>
-      <HashCode>EgQVhAAAgEECAiAEAQAKAAwAAgBAAAAAAAMAAAAAIDA=</HashCode>
-      <FileName>StateManagement\Gamestate.cs</FileName>
+      <HashCode>EgQVhAAAgAECAiAEAQAKAAwAAgBCAAAAAAEAAAQAILA=</HashCode>
+      <FileName>SceneManagement\Scene.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
       <Property Name="TextureLoader" />
@@ -80,7 +83,7 @@
       </MemberNameLabel>
     </AssociationLine>
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAgAAAAAAAAACAAABBABAAAAAAAAAAAAIA=</HashCode>
+      <HashCode>AAAAAAAAAAAgAAAAAAAAACAAABAABAAAAAAAAAACAAA=</HashCode>
       <FileName>AssetHandling\ManagedSound.cs</FileName>
     </TypeIdentifier>
     <ShowAsCollectionAssociation>

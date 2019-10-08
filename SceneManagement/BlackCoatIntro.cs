@@ -7,22 +7,18 @@ using BlackCoat.Entities;
 
 namespace BlackCoat
 {
-    public class BlackCoatIntro : Gamestate
+    public class BlackCoatIntro : Scene
     {
-        private Gamestate _NextState;
+        private Scene _NextScene;
         private Graphic _Bg;
         private Texture _BgTex;
         private SoundBuffer _SoundBuffer;
         private Sound _Sound;
         private Boolean _Done = false;
 
-        public BlackCoatIntro(Core core, Gamestate nextState):base(core, "BlackCoatIntro")
+        public BlackCoatIntro(Core core, Scene nextScene):base(core, "BlackCoatIntro")
         {
-            _NextState = nextState;
-            if (_NextState == null)
-            {
-                Log.Fatal("Engine Intro initialized without follow up state");
-            }
+            _NextScene = nextScene ?? throw new ArgumentNullException(nameof(nextScene));
         }
 
         /// <summary>
@@ -70,7 +66,7 @@ namespace BlackCoat
             if (_Done)
             {
                 _Sound.Stop();
-                _Core.StateManager.ChangeState(_NextState);
+                _Core.SceneManager.ChangeScene(_NextScene);
             }
         }
 

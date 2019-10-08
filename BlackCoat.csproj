@@ -170,9 +170,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Entities\Roles\Role.cs" />
-    <Compile Include="StateManagement\Gamestate.cs" />
-    <Compile Include="StateManagement\BlackCoatIntro.cs" />
-    <Compile Include="StateManagement\StateManager.cs" />
+    <Compile Include="SceneManagement\Scene.cs" />
+    <Compile Include="SceneManagement\BlackCoatIntro.cs" />
+    <Compile Include="SceneManagement\SceneManager.cs" />
     <Compile Include="UI\TextBox.cs" />
     <Compile Include="Tools\Console.cs" />
     <Compile Include="Tools\Create.cs" />
@@ -231,7 +231,7 @@
     <None Include="Network\Network.cd" />
     <None Include="packages.config" />
     <None Include="ParticleSystem\Particles.cd" />
-    <None Include="StateManagement\StateManagement.cd" />
+    <None Include="SceneManagement\SceneManagement.cd" />
     <None Include="UI\UI.cd" />
   </ItemGroup>
   <ItemGroup>

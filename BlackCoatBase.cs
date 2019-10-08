@@ -4,6 +4,7 @@ namespace BlackCoat
 {
     /// <summary>
     /// Abstract base class of all standalone and core-dependent systems and entities.
+    /// Excluded from this rule are all classes inheriting from SFML framework classes.
     /// </summary>
     public abstract class BlackCoatBase
     {

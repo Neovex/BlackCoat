@@ -1,26 +1,26 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
   <Class Name="BlackCoat.Core">
-    <Position X="3.5" Y="2.25" Width="2.25" />
+    <Position X="3.5" Y="2" Width="2.25" />
     <TypeIdentifier>
-      <HashCode>AAQhEAAIgSAIgoEAGiAAQAgMVBQBJBohIIYAACFGAIM=</HashCode>
+      <HashCode>AAQhEAAIgSAIgoEAGCAAQAgMVBQBJBohIIYAACFGAIc=</HashCode>
       <FileName>Core.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
       <Field Name="_Timer" />
       <Field Name="_Console" />
       <Property Name="Random" />
-      <Property Name="StateManager" />
       <Property Name="AnimationManager" />
       <Property Name="CollisionSystem" />
       <Property Name="DefaultFont" />
       <Property Name="DefaultView" />
       <Property Name="Device" />
+      <Property Name="SceneManager" />
     </ShowAsAssociation>
     <Lollipop Position="1.384" />
   </Class>
   <Class Name="BlackCoat.Tools.Console" Collapsed="true">
-    <Position X="7.75" Y="6.5" Width="1.75" />
+    <Position X="7.75" Y="6.25" Width="1.75" />
     <TypeIdentifier>
       <HashCode>IAAAAQAAAAAAIQCQAAABBAAAABAAAEAAAAAAQICAABA=</HashCode>
       <FileName>Tools\Console.cs</FileName>
@@ -32,11 +32,11 @@
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="System.Diagnostics.Stopwatch" Collapsed="true">
-    <Position X="0.5" Y="5.25" Width="1.5" />
+    <Position X="0.5" Y="5" Width="1.5" />
     <TypeIdentifier />
   </Class>
   <Class Name="BlackCoat.Animation.AnimationManager" Collapsed="true">
-    <Position X="7.75" Y="3.25" Width="1.75" />
+    <Position X="7.75" Y="3" Width="1.75" />
     <TypeIdentifier>
       <HashCode>AAQAAAAAACAAgAAAAAAAgAAAIAQAAQAAAgAAAAAAEBI=</HashCode>
       <FileName>Animation\AnimationManager.cs</FileName>
@@ -46,78 +46,60 @@
     </ShowAsCollectionAssociation>
   </Class>
   <Class Name="BlackCoat.Collision.CollisionSystem" Collapsed="true">
-    <Position X="7.75" Y="4.25" Width="1.75" />
+    <Position X="7.75" Y="4" Width="1.75" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAACAAgIAAEAAUAAAAAAAAAECAAAAAAigAAAA=</HashCode>
       <FileName>Collision\CollisionSystem.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="BlackCoat.Tools.RandomHelper" Collapsed="true">
-    <Position X="7.75" Y="5.25" Width="1.75" />
+    <Position X="7.75" Y="5" Width="1.75" />
     <TypeIdentifier>
       <HashCode>AAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAA=</HashCode>
       <FileName>Tools\RandomHelper.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="BlackCoat.StateManager" Collapsed="true">
-    <Position X="7.75" Y="2.25" Width="1.75" />
+  <Class Name="BlackCoat.Scene" Collapsed="true">
+    <Position X="11" Y="2" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAQAAABAAAAABgAQQAIAAAAAAABAAAAAAAAAAAAAACA=</HashCode>
-      <FileName>StateManagement\StateManager.cs</FileName>
+      <HashCode>EgQVhAAAgAECAiAEAQAKAAwAAgBCAAAAAAEAAAQAILA=</HashCode>
+      <FileName>SceneManagement\Scene.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
-      <Field Name="_CurrentState" />
-    </ShowAsAssociation>
-  </Class>
-  <Class Name="BlackCoat.Gamestate" Collapsed="true">
-    <Position X="11" Y="2.25" Width="1.5" />
-    <AssociationLine Name="_Core" Type="BlackCoat.Core" FixedFromPoint="true" FixedToPoint="true">
-      <Path>
-        <Point X="11.75" Y="2.812" />
-        <Point X="11.75" Y="3.062" />
-        <Point X="5.75" Y="3.062" />
-      </Path>
-    </AssociationLine>
-    <TypeIdentifier>
-      <HashCode>EgQVhAAAgAECAiAEAQAKAAwAAgBCAAAAAAMAAAQAILA=</HashCode>
-      <FileName>StateManagement\Gamestate.cs</FileName>
-    </TypeIdentifier>
-    <ShowAsAssociation>
-      <Field Name="_Core" />
       <Property Name="Layer_Game" />
     </ShowAsAssociation>
   </Class>
   <Class Name="BlackCoat.Animation.Animation" Collapsed="true">
-    <Position X="11" Y="3.25" Width="1.5" />
+    <Position X="11" Y="3" Width="1.5" />
     <TypeIdentifier>
       <HashCode>QARgACAAQAAgAAIAAAQAAAAAAAIAAAQAAAAAAAEAAAA=</HashCode>
       <FileName>Animation\Animation.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="SFML.Graphics.Font" Collapsed="true">
-    <Position X="0.5" Y="4.25" Width="1.5" />
+    <Position X="0.5" Y="4" Width="1.5" />
     <TypeIdentifier />
   </Class>
   <Class Name="SFML.Graphics.View" Collapsed="true">
-    <Position X="0.5" Y="3.25" Width="1.5" />
+    <Position X="0.5" Y="3" Width="1.5" />
     <TypeIdentifier />
   </Class>
   <Class Name="BlackCoat.Entities.Layer" Collapsed="true">
-    <Position X="13.75" Y="2.25" Width="1.5" />
+    <Position X="13.75" Y="2" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAYAAAAAAAAAAIAgAAIAAAAAAAAQAAAAAAIAAAAAAAA=</HashCode>
       <FileName>Entities\Layer.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="BlackCoat.Entities.Container" Collapsed="true">
-    <Position X="13.75" Y="6.5" Width="1.5" />
+    <Position X="13.75" Y="6.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AEYAAAAAAAAAAgAACAAABAQAAABAABAAAgAAAQhQABA=</HashCode>
       <FileName>Entities\Container.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="BlackCoat.Entities.Graphic" Collapsed="true">
-    <Position X="13.75" Y="7.75" Width="1.5" />
+    <Position X="13.75" Y="7.5" Width="1.5" />
     <AssociationLine Name="_Core" Type="BlackCoat.Core">
       <MemberNameLabel ManuallyPlaced="true">
         <Position X="7.318" Y="-0.273" />
@@ -125,15 +107,15 @@
     </AssociationLine>
     <AssociationLine Name="_Parent" Type="BlackCoat.Entities.Container" FixedToPoint="true">
       <Path>
-        <Point X="14.312" Y="7.75" />
-        <Point X="14.312" Y="7.191" />
+        <Point X="14.312" Y="7.5" />
+        <Point X="14.312" Y="6.941" />
       </Path>
       <MemberNameLabel ManuallyPlaced="true">
         <Position X="0.087" Y="0.301" />
       </MemberNameLabel>
     </AssociationLine>
     <TypeIdentifier>
-      <HashCode>QAQAAAEAAACFAwAEICAAQAQgAAhBABAIAAIAAAAQQIA=</HashCode>
+      <HashCode>QAQAAAEAAACFAwAEICAAQAQgAAgBABAIAAIAAAASQAA=</HashCode>
       <FileName>Entities\Graphic.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -142,11 +124,11 @@
     </ShowAsAssociation>
     <Lollipop Position="0.96" />
   </Class>
-  <Class Name="BlackCoat.BlackCoatBase">
-    <Position X="7.75" Y="0.5" Width="1.75" />
+  <Class Name="BlackCoat.BlackCoatBase" Collapsed="true">
+    <Position X="7.75" Y="0.75" Width="1.75" />
     <AssociationLine Name="_Core" Type="BlackCoat.Core">
       <MemberNameLabel ManuallyPlaced="true">
-        <Position X="-2.859" Y="0.956" />
+        <Position X="-2.922" Y="0.664" />
       </MemberNameLabel>
     </AssociationLine>
     <TypeIdentifier>
@@ -158,11 +140,21 @@
     </ShowAsAssociation>
   </Class>
   <Class Name="BlackCoat.Device" Collapsed="true">
-    <Position X="0.5" Y="2.25" Width="1.5" />
+    <Position X="0.5" Y="2" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AQAAAAAAAAAAAABAAAAAAAAAAAAAAEIAAAAEAAAAAAg=</HashCode>
       <FileName>Device.cs</FileName>
     </TypeIdentifier>
+  </Class>
+  <Class Name="BlackCoat.SceneManager" Collapsed="true">
+    <Position X="7.75" Y="2" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAgAgAAAAABCgAAAARAAAAAAAAAAAAAAgA=</HashCode>
+      <FileName>SceneManagement\SceneManager.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_CurrentScene" />
+    </ShowAsAssociation>
   </Class>
   <Font Name="Segoe UI" Size="9" />
 </ClassDiagram>
