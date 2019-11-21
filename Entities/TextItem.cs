@@ -184,6 +184,6 @@ namespace BlackCoat.Entities
         /// <returns>
         /// A <see cref="System.String" /> that represents this instance.
         /// </returns>
-        public override string ToString() => Create.IdString(this);
+        public override string ToString() => this.CreateIdString();
     }
 }

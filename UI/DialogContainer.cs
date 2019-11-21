@@ -23,7 +23,7 @@ namespace BlackCoat.UI
             }
         }
 
-        internal DialogContainer(Core core, UIComponent callingComponent) : base(core, core.DeviceSize)
+        internal DialogContainer(Core core, UIComponent callingComponent, params UIComponent[] components) : base(core, core.DeviceSize, components)
         {
             _CallingComponent = callingComponent ?? throw new ArgumentNullException(nameof(callingComponent));
         }

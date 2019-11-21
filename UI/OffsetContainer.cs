@@ -17,7 +17,7 @@ namespace BlackCoat.UI
         public override bool DockY { get => base.DockY && Horizontal; set => base.DockY = value && Horizontal; }
 
 
-        public OffsetContainer(Core core, bool horizontal = true) : base(core, horizontal)
+        public OffsetContainer(Core core, bool horizontal, params UIComponent[] components) : base(core, horizontal, null, components)
         {
         }
 

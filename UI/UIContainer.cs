@@ -45,7 +45,6 @@ namespace BlackCoat.UI
                 foreach (var component in Components) Remove(component);
                 if (value == null) return;
                 foreach (var component in value) Add(component);
-                InvokeSizeChanged();
             }
         }
 
@@ -53,8 +52,11 @@ namespace BlackCoat.UI
         public IEnumerable<UIComponent> ComponentsFlattened => Components.SelectMany(c => new[] { c }.Concat(c is UIContainer cont ? cont.ComponentsFlattened : Enumerable.Empty<UIComponent>()));
 
 
-        public UIContainer(Core core) : base(core)
+        public UIContainer(Core core, params UIComponent[] components) : base(core)
         {
+            _UpdateLock = true;
+            foreach (var component in components) Add(component);
+            _UpdateLock = false;
         }
 
 
@@ -111,7 +113,7 @@ namespace BlackCoat.UI
                 // Reset
                 c.Rotation = 0;
                 c.Origin = default(Vector2f);
-                c.Scale = Create.Vector2f(1);
+                c.Scale = 1.ToVector2f();
 
                 // Dock Position
                 c.Position = new Vector2f(dockee.DockX ? c.Margin.Left : c.Position.X,

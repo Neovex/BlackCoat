@@ -18,7 +18,7 @@ namespace BlackCoat.UI
         protected virtual void InvokeReleased() => Released.Invoke(this);
 
 
-        public Button(Core core, Vector2f? size = null) : base(core, size)
+        public Button(Core core, Vector2f? size = null, params UIComponent[] components) : base(core, size, components)
         {
             CanFocus = true;
         }

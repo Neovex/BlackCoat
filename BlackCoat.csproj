@@ -193,6 +193,7 @@
     <Compile Include="Extensions\VectorExtensions.cs" />
     <Compile Include="Tools\ColorConverter.cs" />
     <Compile Include="Tools\Vector2Converter.cs" />
+    <Compile Include="UI\UIGraphic.cs" />
     <Compile Include="VertexRenderer.cs" />
   </ItemGroup>
   <ItemGroup>

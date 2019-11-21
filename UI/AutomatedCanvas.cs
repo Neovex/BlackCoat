@@ -19,7 +19,7 @@ namespace BlackCoat.UI
         public Boolean Horizontal { get => _Horizontal; set { _Horizontal = value; InvokeSizeChanged(); } }
 
 
-        public AutomatedCanvas(Core core, bool horizontal = true, Vector2f? size = null) : base(core, size)
+        public AutomatedCanvas(Core core, bool horizontal = true, Vector2f? size = null, params UIComponent[] components) : base(core, size, components)
         {
             Horizontal = horizontal;
         }
@@ -49,7 +49,7 @@ namespace BlackCoat.UI
             // Reset
             c.Rotation = 0;
             c.Origin = default(Vector2f);
-            c.Scale = Create.Vector2f(1);
+            c.Scale = 1.ToVector2f();
 
             if (Horizontal)
             {

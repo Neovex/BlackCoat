@@ -17,7 +17,7 @@ namespace BlackCoat.UI
         public override bool DockY { get => base.DockY || !Horizontal; set => base.DockY = value || !Horizontal; }
 
             
-        public DistributionContainer(Core core, bool horizontal = true, Vector2f? size = null) : base(core, horizontal, size)
+        public DistributionContainer(Core core, bool horizontal = true, Vector2f? size = null, params UIComponent[] components) : base(core, horizontal, size, components)
         {
         }
 

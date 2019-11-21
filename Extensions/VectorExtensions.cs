@@ -148,44 +148,37 @@ namespace BlackCoat
 
         // CONVERSIONS
 
-        public static Vector2i ToVector2i(this Vector2f v)
-        {
-            return new Vector2i((int)v.X, (int)v.Y);
-        }
+        public static Vector2i ToVector2i(this Vector2f v) => new Vector2i((int)v.X, (int)v.Y);
+        public static Vector2u ToVector2u(this Vector2i v) => new Vector2u((uint)v.X, (uint)v.Y);
+        public static Vector2u ToVector2u(this Vector2f v) => new Vector2u((uint)v.X, (uint)v.Y);
+        public static Vector3f ToVector3f(this Vector2f v) => new Vector3f(v.X, 0, v.Y);
+        public static Vector2f ToVector2f(this Vector3f v) => new Vector2f(v.X, v.Z);
+        public static Vector2f ToVector2f(this Vector2i v) => new Vector2f(v.X, v.Y);
+        public static Vector2i ToVector2i(this Vector2u v) => new Vector2i((int)v.X, (int)v.Y);
+        public static Vector2f ToVector2f(this Vector2u v) => new Vector2f(v.X, v.Y);
 
-        public static Vector2u ToVector2u(this Vector2f v)
-        {
-            return new Vector2u((uint)v.X, (uint)v.Y);
-        }
 
-        public static Vector3f ToVector3f(this Vector2f v)
-        {
-            return new Vector3f(v.X, 0, v.Y);
-        }
+        public static Vector2f ToVector2f(this (int, int) v) => new Vector2f(v.Item1, v.Item2);
+        public static Vector2f ToVector2f(this (float, float) v) => new Vector2f(v.Item1, v.Item2);
 
-        public static Vector2f ToVector2f(this Vector3f v)
-        {
-            return new Vector2f(v.X, v.Z);
-        }
 
-        public static Vector2u ToVector2u(this Vector2i v)
-        {
-            return new Vector2u((uint)v.X, (uint)v.Y);
-        }
-
-        public static Vector2f ToVector2f(this Vector2i v)
-        {
-            return new Vector2f(v.X, v.Y);
-        }
-
-        public static Vector2i ToVector2i(this Vector2u v)
-        {
-            return new Vector2i((int)v.X, (int)v.Y);
-        }
-
-        public static Vector2f ToVector2f(this Vector2u v)
-        {
-            return new Vector2f(v.X, v.Y);
-        }
+        /// <summary>
+        /// Creates a new <see cref="SFML.System.Vector2f"/> with equal x and y components.
+        /// </summary>
+        /// <param name="v">Value for x AND y component</param>
+        /// <returns>A new Vector</returns>
+        public static Vector2f ToVector2f(this int v) => new Vector2f(v, v);
+        /// <summary>
+        /// Creates a new <see cref="SFML.System.Vector2f"/> with equal x and y components.
+        /// </summary>
+        /// <param name="v">Value for x AND y component</param>
+        /// <returns>A new Vector</returns>
+        public static Vector2f ToVector2f(this float v) => new Vector2f(v, v);
+        /// <summary>
+        /// Creates a new <see cref="SFML.System.Vector2f"/> with equal x and y components.
+        /// </summary>
+        /// <param name="v">Value for x AND y component</param>
+        /// <returns>A new Vector</returns>
+        public static Vector2f ToVector2f(this double v) => new Vector2f((float)v, (float)v);
     }
 }

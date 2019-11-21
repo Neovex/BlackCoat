@@ -59,7 +59,7 @@ namespace BlackCoat.Entities.Lights
                 Origin = tex.Size.ToVector2f() / 2,
                 Position = position,
                 Color = color ?? Color.White,
-                Scale = scale ?? Create.Vector2f(1),
+                Scale = scale ?? 1.ToVector2f(),
                 Rotation = rotation
             };
             _Lights.Add(light);

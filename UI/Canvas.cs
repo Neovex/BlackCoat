@@ -47,9 +47,9 @@ namespace BlackCoat.UI
         }
 
 
-        public Canvas(Core core, Vector2f? size = null) : base(core)
+        public Canvas(Core core, Vector2f? size = null, params UIComponent[] components) : base(core, components)
         {
-            _MinSize = Create.Vector2f(10);
+            _MinSize = 10.ToVector2f();
             if (size.HasValue) Resize(size.Value);
         }
 
@@ -79,7 +79,7 @@ namespace BlackCoat.UI
                 // Reset
                 c.Rotation = 0;
                 c.Origin = default(Vector2f);
-                c.Scale = Create.Vector2f(1);
+                c.Scale = 1.ToVector2f();
 
                 // Dock Position
                 c.Position = new Vector2f(dockee.DockX ? c.Margin.Left : c.Position.X,

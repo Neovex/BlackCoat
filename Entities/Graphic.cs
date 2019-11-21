@@ -48,7 +48,7 @@ namespace BlackCoat.Entities
         /// <summary>
         /// Target Render View
         /// </summary>
-        public View View
+        public virtual View View
         {
             get => _View ?? (Parent is PrerenderedContainer ? null : _Parent?.View);
             set => _View = value;
@@ -171,6 +171,6 @@ namespace BlackCoat.Entities
         /// <returns>
         /// A <see cref="System.String" /> that represents this instance.
         /// </returns>
-        public override string ToString() => Create.IdString(this);
+        public override string ToString() => this.CreateIdString();
     }
 }

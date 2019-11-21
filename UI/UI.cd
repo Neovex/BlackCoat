@@ -102,9 +102,9 @@
   </Class>
   <Class Name="BlackCoat.UI.UIComponent">
     <Position X="3.75" Y="2.25" Width="2" />
-    <AssociationLine Name="Container" Type="BlackCoat.UI.UIContainer">
+    <AssociationLine Name="ACTIVE_COMPONENT" Type="BlackCoat.UI.UIComponent">
       <MemberNameLabel ManuallyPlaced="true">
-        <Position X="0.424" Y="-0.286" />
+        <Position X="-0.347" Y="0.377" />
       </MemberNameLabel>
     </AssociationLine>
     <AssociationLine Name="DIALOG" Type="BlackCoat.UI.DialogContainer" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
@@ -118,9 +118,9 @@
         <Position X="10.667" Y="4.064" />
       </MemberNameLabel>
     </AssociationLine>
-    <AssociationLine Name="ACTIVE_COMPONENT" Type="BlackCoat.UI.UIComponent">
+    <AssociationLine Name="Container" Type="BlackCoat.UI.UIContainer">
       <MemberNameLabel ManuallyPlaced="true">
-        <Position X="-0.347" Y="0.377" />
+        <Position X="0.424" Y="-0.286" />
       </MemberNameLabel>
     </AssociationLine>
     <TypeIdentifier>
@@ -129,10 +129,10 @@
     </TypeIdentifier>
     <ShowAsAssociation>
       <Field Name="_Background" />
+      <Property Name="ACTIVE_COMPONENT" />
+      <Property Name="DIALOG" />
       <Property Name="Input" />
       <Property Name="Container" />
-      <Property Name="DIALOG" />
-      <Property Name="ACTIVE_COMPONENT" />
     </ShowAsAssociation>
   </Class>
   <Class Name="BlackCoat.UI.UICollisionShape">
@@ -188,6 +188,20 @@
     <TypeIdentifier>
       <HashCode>AAAAAAAAAACCAAAAAAAAAAAAEABAAQAAAAAAAACAAAA=</HashCode>
       <FileName>UI\DialogContainer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BlackCoat.UI.UIGraphic">
+    <Position X="8.75" Y="3.75" Width="1.5" />
+    <InheritanceLine Type="BlackCoat.UI.UIComponent" FixedFromPoint="true">
+      <Path>
+        <Point X="5.75" Y="3.312" />
+        <Point X="9.5" Y="3.312" />
+        <Point X="9.5" Y="3.75" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>UI\UIGraphic.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Interface Name="BlackCoat.UI.IDockable">

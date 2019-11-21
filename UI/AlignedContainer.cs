@@ -6,7 +6,7 @@ namespace BlackCoat.UI
     {
         private Alignment _Alignment;
 
-        public Alignment Alignment { get => _Alignment; set { _Alignment = value; Origin = Align(InnerSize); } }
+        public Alignment Alignment { get => _Alignment; set { _Alignment = value; InvokeSizeChanged(); } }
 
         public override UIContainer Container
         {
@@ -26,14 +26,14 @@ namespace BlackCoat.UI
             }
         }
 
-        public AlignedContainer(Core core, Alignment alignment) : base(core)
+        public AlignedContainer(Core core, Alignment alignment, params UIComponent[] components) : base(core, components)
         {
             Alignment = alignment;
         }
 
         private void ContainerSizeChanged(UIComponent c)
         {
-            if (Container != null) Position = Align(Container.InnerSize);
+            if (Container != null) Position = Align(Container.InnerSize) + Margin.Position() - Margin.Size();
         }
 
         protected override void InvokeSizeChanged()

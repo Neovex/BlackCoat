@@ -31,7 +31,7 @@ namespace BlackCoat.UI
         public Vector2f RealPosition => base.Position;
 
 
-        public AnchoredContainer(Core core, Anchor anchor) : base(core)
+        public AnchoredContainer(Core core, Anchor anchor, params UIComponent[] components) : base(core, components)
         {
             Anchor = anchor;
         }

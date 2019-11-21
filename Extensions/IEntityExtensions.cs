@@ -30,5 +30,18 @@ namespace BlackCoat
         {
             entity.Rotation = entity.Position.AngleTowards(target + offset);
         }
+
+        /// <summary>
+        /// Creates a human readable string from an entity.
+        /// </summary>
+        /// <param name="entity">The entity.</param>
+        /// <returns>Id string</returns>
+        public static string CreateIdString(this IEntity entity)
+        {
+            if (entity == null) return null;
+            var name = String.Empty;
+            if (!String.IsNullOrEmpty(entity.Name)) name = $"\"{entity.Name}\" ";
+            return $"{name}{entity.GetType().Name} Pos: {entity.Position.X} x {entity.Position.Y}";
+        }
     }
 }
