@@ -50,7 +50,7 @@ namespace BlackCoat.Tools
             BackgroundAlpha = 0.6f;
 
             // Setup Controls
-            Add(new OffsetContainer(_Core, false)
+            Add(new OffsetContainer(_Core, Orientation.Vertical)
             {
                 Init = new UIComponent[]
                 {

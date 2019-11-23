@@ -59,8 +59,8 @@ namespace BlackCoat.UI
             size = new Vector2f(Math.Max(_MinSize.X, size.X), Math.Max(_MinSize.Y, size.Y));
             if (_Size == size) return;
             _Size = size;
-            TextureRect = new IntRect(default(Vector2i), size.ToVector2i());
             _Background.Size = _Size;
+            TextureRect = new IntRect(default(Vector2i), _Size.ToVector2i());
             InvokeSizeChanged();
         }
 

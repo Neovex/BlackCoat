@@ -11,17 +11,17 @@ namespace BlackCoat.UI
     /// <seealso cref="BlackCoat.UI.Canvas" />
     public abstract class AutomatedCanvas : Canvas
     {
-        private bool _Horizontal;
+        private Orientation _Orientation;
         protected float _Offset;
         private float _CurrentOffset;
 
         protected bool Updating { get; private set; }
-        public Boolean Horizontal { get => _Horizontal; set { _Horizontal = value; InvokeSizeChanged(); } }
+        public Orientation Orientation { get => _Orientation; set { _Orientation = value; InvokeSizeChanged(); } }
 
 
-        public AutomatedCanvas(Core core, bool horizontal = true, Vector2f? size = null, params UIComponent[] components) : base(core, size, components)
+        public AutomatedCanvas(Core core, Orientation orientation, Vector2f? size = null, params UIComponent[] components) : base(core, size, components)
         {
-            Horizontal = horizontal;
+            Orientation = orientation;
         }
 
         protected override void InvokeSizeChanged()
@@ -51,7 +51,7 @@ namespace BlackCoat.UI
             c.Origin = default(Vector2f);
             c.Scale = 1.ToVector2f();
 
-            if (Horizontal)
+            if (Orientation == Orientation.Horizontal)
             {
                 _CurrentOffset += c.Margin.Left;
                 c.Position = new Vector2f(_CurrentOffset, c.Position.Y);

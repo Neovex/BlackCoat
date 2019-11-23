@@ -10,7 +10,7 @@ namespace BlackCoat.UI
         /// <summary>
         /// Gets the inner size of this <see cref="UIComponent"/>.
         /// </summary>
-        public override Vector2f InnerSize => Texture != null ? Texture.Size.ToVector2f() : default(Vector2f);
+        public override Vector2f InnerSize => Texture != null ? Texture.Size.ToVector2f().MultiplyBy(Scale) : default(Vector2f);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="UIGraphic"/> class.

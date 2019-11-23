@@ -54,11 +54,16 @@ namespace BlackCoat.UI
 
         public UIContainer(Core core, params UIComponent[] components) : base(core)
         {
+            Add(components);
+        }
+
+
+        public void Add(params UIComponent[] components)
+        {
             _UpdateLock = true;
             foreach (var component in components) Add(component);
             _UpdateLock = false;
         }
-
 
         public virtual void Add(UIComponent component)
         {

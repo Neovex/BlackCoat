@@ -99,6 +99,7 @@
     <Compile Include="UI\Canvas.cs" />
     <Compile Include="UI\Label.cs" />
     <Compile Include="UI\DistributionContainer.cs" />
+    <Compile Include="UI\Orientation.cs" />
     <Compile Include="UI\OffsetContainer.cs" />
     <Compile Include="UI\ScrollContainer.cs" />
     <Compile Include="UI\UICollisionShape.cs" />
