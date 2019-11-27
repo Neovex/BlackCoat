@@ -130,20 +130,15 @@ namespace BlackCoat.Network
 
         
         //MISC
-        public sealed class Format : IFormatProvider
+        private sealed class Format : IFormatProvider
         {
             // SINGLETON
-            private static Format _INSTANCE;
-            public static Format DEFAULT { get { return _INSTANCE ?? (_INSTANCE = new Format()); } }
-
+            public static readonly Format DEFAULT = new Format();
 
             private Format()
             { }
 
-            public object GetFormat(Type formatType)
-            {
-                return typeof(int);
-            }
+            public object GetFormat(Type formatType) => typeof(int);
         }
     }
 }

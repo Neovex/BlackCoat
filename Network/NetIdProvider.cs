@@ -9,6 +9,7 @@ namespace BlackCoat.Network
         /// Gets the next free/unused net identifier.
         /// </summary>
         public static Int32 NEXT_ID => _ID_PROVIDER++;
+        public static readonly Int32 SERVER_ID = NEXT_ID;
         public static readonly Int32 ADMIN_ID = NEXT_ID;
     }
 }

@@ -19,9 +19,9 @@ namespace BlackCoat.Network
 
         public virtual Int32 Id { get; protected set; }
         public virtual String Alias { get; protected set; }
-        public virtual Boolean Validated { get; protected set; }
-        public virtual IEnumerable<NetUser> ConnectedUsers { get { return _ConnectedClients; } }
-        public virtual Boolean IsAdmin { get { return Id == AdminId; } }
+        public virtual Boolean Validated { get; private set; }
+        public virtual IEnumerable<NetUser> ConnectedUsers => _ConnectedClients;
+        public virtual Boolean IsAdmin => Id == AdminId;
         public abstract Int32 AdminId { get; }
 
 
@@ -71,21 +71,19 @@ namespace BlackCoat.Network
             var clientCount = msg.ReadInt32();
             for (int i = 0; i < clientCount; i++)
             {
-                HandleUserConnected(msg, false);
+                HandleUserConnected(msg);
             }
             ConnectionValidated(Id, Alias);
             Validated = true;
         }
 
-        private void HandleUserConnected(NetIncomingMessage msg, bool callUserConnected = true)
+        private void HandleUserConnected(NetIncomingMessage msg)
         {
             var id = msg.ReadInt32();
-            if (id != Id)
-            {
-                var user = new NetUser(id, msg.ReadString());
-                _ConnectedClients.Add(user);
-                if (callUserConnected) UserConnected(user);
-            }
+            if (id == Id) return; // Ignore our own join notification - we already know we are connected
+            var user = new NetUser(id, msg.ReadString());
+            _ConnectedClients.Add(user);
+            UserConnected(user);
         }
 
         private void HandleUserDisconnected(NetIncomingMessage msg)
@@ -98,6 +96,7 @@ namespace BlackCoat.Network
             }
             else
             {
+                _ConnectedClients.Remove(user);
                 UserDisconnected(user);
             }
         }
@@ -107,9 +106,9 @@ namespace BlackCoat.Network
         protected abstract void UserDisconnected(NetUser user);
         protected abstract void DataReceived(TEnum subType, NetIncomingMessage msg); // hmm msg UU mit interface ersetzen
 
-        protected override void Disconnected()
+        protected override void Connected()
         {
-            Validated = false;
+            // Intentionally empty since this logic is replaced by -> ConnectionValidated
         }
     }
 }
