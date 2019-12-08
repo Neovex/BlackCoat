@@ -17,12 +17,12 @@ namespace BlackCoat.Network
         protected List<NetUser> _ConnectedClients;
 
 
-        public virtual Int32 Id { get; protected set; }
-        public virtual String Alias { get; protected set; }
-        public virtual Boolean Validated { get; private set; }
-        public virtual IEnumerable<NetUser> ConnectedUsers => _ConnectedClients;
-        public virtual Boolean IsAdmin => Id == AdminId;
-        public abstract Int32 AdminId { get; }
+        public int ServerId { get; private set; }
+        public Int32 Id { get; private set; }
+        public String Alias { get; private set; }
+        public Boolean IsAdmin { get; private set; }
+        public Boolean Validated { get; private set; }
+        public IEnumerable<NetUser> ConnectedUsers => _ConnectedClients;
 
 
         public ManagedClient(String appId, String alias, Commands<TEnum> commands) : base(appId)
@@ -68,6 +68,8 @@ namespace BlackCoat.Network
         {
             Id = msg.ReadInt32();
             Alias = msg.ReadString();
+            IsAdmin = msg.ReadBoolean();
+            ServerId = msg.ReadInt32();
             var clientCount = msg.ReadInt32();
             for (int i = 0; i < clientCount; i++)
             {

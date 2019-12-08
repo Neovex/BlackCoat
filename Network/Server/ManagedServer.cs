@@ -15,34 +15,37 @@ namespace BlackCoat.Network
         protected Commands<TEnum> _Commands;
         protected List<ServerUser<NetConnection>> _ConnectedClients;
 
-        public abstract int AdminId { get; }
-        public abstract int NextClientId { get; }
-        public virtual IEnumerable<ServerUser<NetConnection>> ConnectedUsers => _ConnectedClients;
+        public int AdminId { get; }
+        public int ServerId { get; }
+        public IEnumerable<ServerUser<NetConnection>> ConnectedUsers => _ConnectedClients;
 
 
         public ManagedServer(string appIdentifier, Commands<TEnum> commands) : base(appIdentifier)
         {
             _Commands = commands ?? throw new ArgumentNullException(nameof(commands));
             _ConnectedClients = new List<ServerUser<NetConnection>>();
+            AdminId = NetIdProvider.NEXT_ID;
+            ServerId = NetIdProvider.NEXT_ID;
         }
 
         // CONTROL
 
-        protected virtual int GetNextFreeClientID() => _ConnectedClients.Count == 0 ? AdminId : NextClientId;
-
-        protected virtual string ValidateName(string name) => name;
+        protected virtual string ValidateName(string name) => String.IsNullOrWhiteSpace(name) ? nameof(NetUser) + NetIdProvider.NEXT_ID : name;
 
         // INCOMMING
 
         protected override void NewConnection(NetConnection connection)
         {
-            var user = new ServerUser<NetConnection>(GetNextFreeClientID(), connection, ValidateName(connection.RemoteHailMessage.ReadString()));
+            var alias = ValidateName(connection.RemoteHailMessage.ReadString());
+            var user = new ServerUser<NetConnection>(_ConnectedClients.Count == 0 ? AdminId : NetIdProvider.NEXT_ID, connection, alias);
 
-            // Accept Client - respond with assigned id, validated alias and the list of other connected users
+            // Accept Client - respond with assigned id, validated alias and server information
             Send(user.Connection, _Commands.Handshake, new Action<NetOutgoingMessage>(m => 
             {
                 m.Write(user.Id);
                 m.Write(user.Alias);
+                m.Write(user.Id == AdminId); // is admin?
+                m.Write(ServerId);
                 m.Write(_ConnectedClients.Count);
                 foreach (var client in _ConnectedClients)
                 {
@@ -87,6 +90,8 @@ namespace BlackCoat.Network
                 user.Latency = (int)(latency * 1000);
             }
         }
+
+        // NOTIFY INHERITANCE
 
         protected abstract void UserConnected(ServerUser<NetConnection> user);
         protected abstract void UserDisconnected(ServerUser<NetConnection> user);
