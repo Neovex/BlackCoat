@@ -68,6 +68,8 @@
     <Compile Include="Entities\PrerenderedContainer.cs" />
     <Compile Include="Extensions\ColorExtensions.cs" />
     <Compile Include="Extensions\RectangleExtensions.cs" />
+    <Compile Include="Input\InputSource.cs" />
+    <Compile Include="Input\Mapping\ScrollDirection.cs" />
     <Compile Include="Network\Client\Client.cs" />
     <Compile Include="Network\Client\ManagedClient.cs" />
     <Compile Include="Network\Commands.cs" />

@@ -12,11 +12,11 @@ namespace BlackCoat.InputMapping
     /// </summary>
     /// <typeparam name="TMappedOperation">The type of the mapped operation.</typeparam>
     /// <seealso cref="System.IDisposable" />
-    public class ComplexInputMap<TMappedOperation> : IDisposable
+    public class ComplexInputMap<TMappedOperation>
     {
-        private List<MappedOperation<Keyboard.Key, TMappedOperation>> _KeyboardActions;
-        private List<MappedOperation<Mouse.Button, TMappedOperation>> _MouseActions;
-        private List<MappedOperation<float, TMappedOperation>> _ScrollActions;
+        private readonly List<MappedOperation<Keyboard.Key, TMappedOperation>> _KeyboardActions;
+        private readonly List<MappedOperation<Mouse.Button, TMappedOperation>> _MouseActions;
+        private readonly List<MappedOperation<ScrollDirection, TMappedOperation>> _ScrollActions;
 
 
         /// <summary>
@@ -32,7 +32,7 @@ namespace BlackCoat.InputMapping
         /// <summary>
         /// Occurs when a mapped operation is invoked.
         /// </summary>
-        public event Action<TMappedOperation, bool> MappedOperationInvoked = (o, m) => { };
+        public event Action<TMappedOperation> MappedOperationInvoked = o => { };
 
 
         //CTOR
@@ -44,13 +44,13 @@ namespace BlackCoat.InputMapping
             Input = eventSource ?? throw new ArgumentNullException(nameof(eventSource));
             _KeyboardActions = new List<MappedOperation<Keyboard.Key, TMappedOperation>>();
             _MouseActions = new List<MappedOperation<Mouse.Button, TMappedOperation>>();
-            _ScrollActions = new List<MappedOperation<float, TMappedOperation>>();
+            _ScrollActions = new List<MappedOperation<ScrollDirection, TMappedOperation>>();
             Enable();
             Log.Debug("created");
         }
         ~ComplexInputMap()
         {
-            Dispose();
+            if (Enabled) Disable();
         }
 
         /// <summary>
@@ -81,7 +81,7 @@ namespace BlackCoat.InputMapping
         /// <returns>The created InputAction</returns>
         public MappedOperation<Keyboard.Key, TMappedOperation> AddKeyboardMapping(Keyboard.Key[] keys, TMappedOperation action)
         {
-            var a = new MappedOperation<Keyboard.Key, TMappedOperation>(keys, action, Input.IsKeyDown, false);
+            var a = new MappedOperation<Keyboard.Key, TMappedOperation>(keys, action, Input.IsKeyDown);
             a.Invoked += RaiseMappedOperationInvoked;
             _KeyboardActions.Add(a);
             return a;
@@ -95,7 +95,7 @@ namespace BlackCoat.InputMapping
         /// <returns>The created InputAction</returns>
         public MappedOperation<Mouse.Button, TMappedOperation> AddMouseMapping(Mouse.Button[] buttons, TMappedOperation action)
         {
-            var a = new MappedOperation<Mouse.Button, TMappedOperation>(buttons, action, Input.IsMButtonDown, true);
+            var a = new MappedOperation<Mouse.Button, TMappedOperation>(buttons, action, Input.IsMButtonDown);
             a.Invoked += RaiseMappedOperationInvoked;
             _MouseActions.Add(a);
             return a;
@@ -112,19 +112,9 @@ namespace BlackCoat.InputMapping
         }
 
 
-        private void RaiseMappedOperationInvoked(TMappedOperation operation, bool fromMouse)
+        private void RaiseMappedOperationInvoked(TMappedOperation operation)
         {
-            MappedOperationInvoked.Invoke(operation, fromMouse);
-        }
-
-
-        /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
-        public void Dispose()
-        {
-            Log.Debug("dispose");
-            if (Enabled) Disable();
+            MappedOperationInvoked.Invoke(operation);
         }
     }
 }

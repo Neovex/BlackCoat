@@ -6,14 +6,17 @@ namespace BlackCoat.UI
     public class UIInput
     {
         public event Action<float> Move = d => { };
-        public event Action<bool> BeforeConfirm = m => { };
-        public event Action<bool> Confirm = m => { };
+        public event Action BeforeConfirm = () => { };
+        public event Action Confirm = () => { };
         public event Action Cancel = () => { };
         public event Action Edit = () => { };
         public event Action<TextEnteredEventArgs> TextEntered = t => { };
+        public event Action<float> Scroll = d => { };
 
 
         public Input Input { get; }
+        public bool MouseEventActive => Input.CurrentEventSource == InputSource.Mouse;
+
 
         public UIInput(Input input, bool setupDefaultKeyboardMouseMapping = false)
         {
@@ -25,6 +28,7 @@ namespace BlackCoat.UI
         {
             Input.MouseButtonPressed += HandleMouseDown;
             Input.MouseButtonReleased += HandleMouseUp;
+            Input.MouseWheelScrolled += HandleMouseScroll;
 
             Input.KeyPressed += HandleKeyboardDown;
             Input.KeyReleased += HandleKeyboardUp;
@@ -34,14 +38,14 @@ namespace BlackCoat.UI
 
         private void HandleMouseDown(Mouse.Button btn)
         {
-            if (btn == Mouse.Button.Left) RaiseBeforeConfirmEvent(true);
+            if (btn == Mouse.Button.Left) RaiseBeforeConfirmEvent();
         }
         private void HandleMouseUp(Mouse.Button btn)
         {
             switch (btn)
             {
                 case Mouse.Button.Left:
-                    RaiseConfirmEvent(true);
+                    RaiseConfirmEvent();
                     break;
                 case Mouse.Button.Right:
                     RaiseCancelEvent();
@@ -49,9 +53,14 @@ namespace BlackCoat.UI
             }
         }
 
+        private void HandleMouseScroll(float mouseWheelDelta)
+        {
+            RaiseScrollEvent(mouseWheelDelta > 0 ? Direction.UP : Direction.DOWN);
+        }
+
         private void HandleKeyboardDown(Keyboard.Key key)
         {
-            if (key == Keyboard.Key.Return) RaiseBeforeConfirmEvent(false);
+            if (key == Keyboard.Key.Return) RaiseBeforeConfirmEvent();
         }
         private void HandleKeyboardUp(Keyboard.Key key)
         {
@@ -61,7 +70,7 @@ namespace BlackCoat.UI
                     RaiseCancelEvent();
                     break;
                 case Keyboard.Key.Return:
-                    RaiseConfirmEvent(false);
+                    RaiseConfirmEvent();
                     break;
                 case Keyboard.Key.A:
                 case Keyboard.Key.Left:
@@ -86,10 +95,11 @@ namespace BlackCoat.UI
         }
 
         protected void RaiseMoveEvent(float direction) => Move.Invoke(direction);
-        protected void RaiseBeforeConfirmEvent(bool fromMouse) => BeforeConfirm.Invoke(fromMouse);
-        protected void RaiseConfirmEvent(bool fromMouse) => Confirm.Invoke(fromMouse);
+        protected void RaiseBeforeConfirmEvent() => BeforeConfirm.Invoke();
+        protected void RaiseConfirmEvent() => Confirm.Invoke();
         protected void RaiseCancelEvent() => Cancel.Invoke();
         protected void RaiseEditEvent() => Edit.Invoke();
+        protected void RaiseScrollEvent(float direction) => Scroll.Invoke(direction);
 
         public void RaiseTextEnteredEvent(TextEnteredEventArgs tArgs) => TextEntered.Invoke(tArgs);
     }

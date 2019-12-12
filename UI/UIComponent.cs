@@ -258,7 +258,6 @@ namespace BlackCoat.UI
         {
             if (input == null) return;
             input.Input.MouseMoved += HandleMouseMoved;
-            input.Input.MouseWheelScrolled += HandleMouseWheelScrolled;
 
             input.Move += HandleInputMove;
             input.BeforeConfirm += ValidateBeforeConfirm;
@@ -266,12 +265,12 @@ namespace BlackCoat.UI
             input.Cancel += HandleInputCancel;
             input.Edit += ValidateEdit;
             input.TextEntered += ValidateTextEntered;
+            input.Scroll += HandleMouseWheelScrolled;
         }
         private void Unsubscribe(UIInput input)
         {
             if (input == null) return;
             input.Input.MouseMoved -= HandleMouseMoved;
-            input.Input.MouseWheelScrolled -= HandleMouseWheelScrolled;
 
             input.Move -= HandleInputMove;
             input.BeforeConfirm -= ValidateBeforeConfirm;
@@ -279,6 +278,7 @@ namespace BlackCoat.UI
             input.Cancel -= HandleInputCancel;
             input.Edit -= ValidateEdit;
             input.TextEntered -= ValidateTextEntered;
+            input.Scroll -= HandleMouseWheelScrolled;
         }
 
         // Mouse Input
@@ -286,27 +286,27 @@ namespace BlackCoat.UI
         {
             if (CanFocus && Visible && Enabled && CollisionShape.CollidesWith(pos)) GiveFocus();
         }
-        protected virtual void HandleMouseWheelScrolled(float delta) { }
+        protected virtual void HandleMouseWheelScrolled(float direction) { }
 
 
         // Input Validation
-        private bool ValidateInput(bool fromMouse) => HasFocus && !_GotFocusThisFrame && Visible && Enabled &&
-                                                    (!fromMouse || CollisionShape.CollidesWith(Input.Input.MousePosition));
-        private void ValidateBeforeConfirm(bool fromMouse)
+        private bool ValidateInput() => HasFocus && !_GotFocusThisFrame && Visible && Enabled &&
+                                      (!Input.MouseEventActive || CollisionShape.CollidesWith(Input.Input.MousePosition));
+        private void ValidateBeforeConfirm()
         {
-            if (ValidateInput(fromMouse)) HandleInputBeforeConfirm();
+            if (ValidateInput()) HandleInputBeforeConfirm();
         }
-        private void ValidateConfirm(bool fromMouse)
+        private void ValidateConfirm()
         {
-            if (ValidateInput(fromMouse)) HandleInputConfirm();
+            if (ValidateInput()) HandleInputConfirm();
         }
         private void ValidateEdit()
         {
-            if (ValidateInput(false)) HandleInputEdit();
+            if (ValidateInput()) HandleInputEdit();
         }
         private void ValidateTextEntered(TextEnteredEventArgs tArgs)
         {
-            if (ValidateInput(false)) HandleTextEntered(tArgs);
+            if (ValidateInput()) HandleTextEntered(tArgs);
         }
 
         // Generalized Mapped Input

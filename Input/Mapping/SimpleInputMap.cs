@@ -14,8 +14,6 @@ namespace BlackCoat.InputMapping
     /// <seealso cref="System.IDisposable" />
     public class SimpleInputMap<TMappedOperation> : IDisposable
     {
-        private Boolean _Enabled;
-
         private Dictionary<Keyboard.Key, TMappedOperation> _KeyboardActions;
         private Dictionary<Mouse.Button, TMappedOperation> _MouseActions;
         private Boolean _ScrollUpActionSet;
@@ -34,24 +32,11 @@ namespace BlackCoat.InputMapping
         /// </summary>
         public String Name { get; private set; }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether this <see cref="SimpleInputMap{TMappedOperation}"/> is enabled.
-        /// </summary>
-        public Boolean Enabled
-        {
-            get => _Enabled;
-            set
-            {
-                if (value) Enable();
-                else Disable();
-            }
-        }
-
 
         /// <summary>
         /// Occurs when a mapped operation is invoked.
         /// </summary>
-        public event Action<TMappedOperation, Boolean, Boolean> MappedOperationInvoked = (a, b, m) => { };
+        public event Action<TMappedOperation, Boolean> MappedOperationInvoked = (o, a) => { };
         
 
         /// <summary>
@@ -68,39 +53,37 @@ namespace BlackCoat.InputMapping
             _ScrollUpActionSet = false;
             _ScrollDownActionSet = false;
 
-            Enable();
+            AttachEvents();
             Log.Debug(nameof(SimpleInputMap<TMappedOperation>), Name, "created");
         }
         ~SimpleInputMap()
         {
-            Dispose();
+            Dispose(false);
         }
 
 
         /// <summary>
         /// Enables this instance.
         /// </summary>
-        public void Enable()
+        private void AttachEvents()
         {
             Input.MouseButtonPressed += HandleMouseButtonPressed;
             Input.MouseButtonReleased += HandleMouseButtonReleased;
             Input.MouseWheelScrolled += HandleMouseWheelScrolled;
             Input.KeyPressed += HandleKeyPressed;
             Input.KeyReleased += HandleKeyReleased;
-            _Enabled = true;
         }
 
         /// <summary>
         /// Disables this instance.
         /// </summary>
-        public void Disable()
+        private void DetachEvents()
         {
             Input.MouseButtonPressed -= HandleMouseButtonPressed;
             Input.MouseButtonReleased -= HandleMouseButtonReleased;
             Input.MouseWheelScrolled -= HandleMouseWheelScrolled;
             Input.KeyPressed -= HandleKeyPressed;
             Input.KeyReleased -= HandleKeyReleased;
-            _Enabled = false;
         }
 
         /// <summary>
@@ -133,71 +116,68 @@ namespace BlackCoat.InputMapping
         /// <returns>The created InputAction</returns>
         public void AddScrollMapping(ScrollDirection direction, TMappedOperation action)
         {
-            if(direction == ScrollDirection.Up)
+            switch (direction)
             {
-                _ScrollUpAction = action;
-                _ScrollUpActionSet = true;
-            }
-            else
-            {
-                _ScrollDownAction = action;
-                _ScrollDownActionSet = true;
+                case ScrollDirection.Up:
+                    _ScrollUpAction = action;
+                    _ScrollUpActionSet = true;
+                break;
+                case ScrollDirection.Down:
+                    _ScrollDownAction = action;
+                    _ScrollDownActionSet = true;
+                break;
+                default: throw new ArgumentException(nameof(direction));
             }
         }
 
 
         private void HandleKeyPressed(Keyboard.Key key)
         {
-            RaiseMappedOperationInvoked(_KeyboardActions, key, true, false);
+            RaiseMappedOperationInvoked(_KeyboardActions, key, true);
         }
         private void HandleKeyReleased(Keyboard.Key key)
         {
-            RaiseMappedOperationInvoked(_KeyboardActions, key, false, false);
+            RaiseMappedOperationInvoked(_KeyboardActions, key, false);
         }
 
         private void HandleMouseButtonPressed(Mouse.Button button)
         {
-            RaiseMappedOperationInvoked(_MouseActions, button, true, true);
+            RaiseMappedOperationInvoked(_MouseActions, button, true);
         }
         private void HandleMouseButtonReleased(Mouse.Button button)
         {
-            RaiseMappedOperationInvoked(_MouseActions, button, false, true);
+            RaiseMappedOperationInvoked(_MouseActions, button, false);
         }
 
         private void HandleMouseWheelScrolled(float delta)
         {
             if (delta > 0)
             {
-                if (_ScrollUpActionSet) MappedOperationInvoked.Invoke(_ScrollUpAction, true, true);
+                if (_ScrollUpActionSet) MappedOperationInvoked.Invoke(_ScrollUpAction, true);
             }
             else
             {
-                if (_ScrollDownActionSet) MappedOperationInvoked.Invoke(_ScrollDownAction, true, true);
+                if (_ScrollDownActionSet) MappedOperationInvoked.Invoke(_ScrollDownAction, true);
             }
         }
 
-
-        private void RaiseMappedOperationInvoked<TKey>(Dictionary<TKey, TMappedOperation> lookup, TKey key, Boolean activate, Boolean fromMouse)
+        private void RaiseMappedOperationInvoked<TKey>(Dictionary<TKey, TMappedOperation> lookup, TKey key, Boolean activate)
         {
             if (lookup.TryGetValue(key, out TMappedOperation operation))
             {
-                MappedOperationInvoked.Invoke(operation, activate, fromMouse);
+                MappedOperationInvoked.Invoke(operation, activate);
             }
         }
 
+        protected virtual void Dispose(bool managed)
+        {
+            if (managed) DetachEvents();
+        }
 
-        /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
         public void Dispose()
         {
-            if (Enabled) Disable();
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
-    }
-
-    public enum ScrollDirection
-    {
-        Up,
-        Down
     }
 }

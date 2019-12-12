@@ -83,12 +83,13 @@ namespace BlackCoat.UI
             base.InvokeSizeChanged();
         }
 
-        protected override void HandleMouseWheelScrolled(float delta)
+        protected override void HandleMouseWheelScrolled(float direction) // Todo: vertical scrolling - really?
         {
             if (!CollisionShape.CollidesWith(Input.Input.MousePosition)) return;
             // Scroll
-            var newPos = TextureRect.Position() + new Vector2i(0, SCROLLSPEED * (delta < 0 ? 1 : -1));
+            var newPos = TextureRect.Position() + (Create.Vector2fFromAngleLookup(direction) * SCROLLSPEED).ToVector2i();
             //Limit
+            newPos.X = 0;
             if (newPos.Y < 0) newPos.Y = 0;
             else if (newPos.Y + TextureRect.Height > Texture.Size.Y) newPos.Y = (int)Texture.Size.Y - TextureRect.Height;
             //Assign

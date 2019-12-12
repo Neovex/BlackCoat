@@ -26,6 +26,7 @@ namespace BlackCoat
 
 
         // Properties ######################################################################
+        public InputSource CurrentEventSource { get; private set; }
         public Boolean Shift => IsKeyDown(Keyboard.Key.LShift) || IsKeyDown(Keyboard.Key.RShift);
         public Boolean Control => IsKeyDown(Keyboard.Key.LControl) || IsKeyDown(Keyboard.Key.RControl);
         public Boolean Alt => IsKeyDown(Keyboard.Key.LAlt) || IsKeyDown(Keyboard.Key.RAlt);
@@ -216,26 +217,34 @@ namespace BlackCoat
         private void HandleMouseButtonPressed(object sender, MouseButtonEventArgs e)
         {
             if (!_MouseButtons.Contains(e.Button)) _MouseButtons.Add(e.Button);
+            CurrentEventSource = InputSource.Mouse;
             MouseButtonPressed(e.Button);
+            CurrentEventSource = InputSource.None;
         }
 
         private void HandleMouseButtonReleased(object sender, MouseButtonEventArgs e)
         {
             if (_MouseButtons.Contains(e.Button)) _MouseButtons.Remove(e.Button);
+            CurrentEventSource = InputSource.Mouse;
             MouseButtonReleased(e.Button);
+            CurrentEventSource = InputSource.None;
         }
 
         private void HandleMouseMoved(object sender, MouseMoveEventArgs e)
         {
             _MousePosition.X = e.X;
             _MousePosition.Y = e.Y;
+            CurrentEventSource = InputSource.Mouse;
             MouseMoved(_MousePosition);
+            CurrentEventSource = InputSource.None;
         }
 
         private void HandleMouseWheelScrolled(object sender, MouseWheelScrollEventArgs e)
         {
             MouseWheelDelta = e.Delta;
-            MouseWheelScrolled(MouseWheelDelta);
+            CurrentEventSource = InputSource.Mouse;
+            MouseWheelScrolled(e.Delta);
+            CurrentEventSource = InputSource.None;
         }
 
 
@@ -269,14 +278,18 @@ namespace BlackCoat
 
             if (IsKeyDown(e.Code)) return;
             _KeyboardKeys.Add(e.Code);
+            CurrentEventSource = InputSource.Keyboard;
             KeyPressed(e.Code);
+            CurrentEventSource = InputSource.None;
         }
 
         private void HandleKeyReleased(object sender, KeyEventArgs e)
         {
             if (!IsKeyDown(e.Code)) return;
             _KeyboardKeys.Remove(e.Code);
+            CurrentEventSource = InputSource.Keyboard;
             KeyReleased(e.Code);
+            CurrentEventSource = InputSource.None;
         }
 
         private void HandleTextEntered(object sender, TextEventArgs e)
