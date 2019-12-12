@@ -54,9 +54,10 @@ namespace BlackCoat.UI
 
         public virtual UIInput Input
         {
-            get { return _Input; }
+            get => _Input ?? Container?.Input;
             set
             {
+                if (value == _Input) return;
                 Unsubscribe(_Input);
                 _Input = value;
                 Subscribe(_Input);
@@ -69,7 +70,7 @@ namespace BlackCoat.UI
             set
             {
                 _Container = value;
-                Input = _Container?.Input;
+                Input = Input;
                 InvokeContainerChanged();
             }
         }
