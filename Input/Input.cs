@@ -11,15 +11,12 @@ namespace BlackCoat
     /// <summary>
     /// Provides all available input data along with events for custom input handlers.
     /// </summary>
-    public class Input
+    public class Input : BlackCoatBase
     {
-        public static Input DEFAULT { get; private set; }
-
         // Variables #######################################################################
-        private readonly Core _Core;
         private RenderWindow _Device;
         private Vector2f _MousePosition;
-        private Boolean _MouseVisible;
+        private static Boolean _MouseVisible = true;
         private List<Mouse.Button> _MouseButtons;
         private List<Keyboard.Key> _KeyboardKeys;
         
@@ -61,7 +58,7 @@ namespace BlackCoat
                 else
                 {
                     _Device.MouseMoved -= HandleMouseMoved;
-                    _MousePosition.X = _MousePosition.Y = -1;
+                    _MousePosition = (-1, -1);
                 }
             }
         }
@@ -122,29 +119,44 @@ namespace BlackCoat
 
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Input"/> class.
+        /// Initializes a new instance of the <see cref="Input" /> class.
         /// </summary>
-        /// <param name="device">Renderwindow as event provider</param>
-        public Input(Core core)
+        /// <param name="core">The <see cref="Core"/></param>
+        /// <param name="mouse">If set to <c>true</c> mouse events will be available.</param>
+        /// <param name="keyboard">If set to <c>true</c> keyboard events will be available.</param>
+        public Input(Core core, bool mouse = true, bool keyboard = true) : base(core)
         {
-            if (DEFAULT == null) DEFAULT = this;
-
             // Init Class
-            _Core = core ?? throw new ArgumentNullException(nameof(core));
             _Device = _Core.Device;
-            _MouseVisible = true;
+            _MousePosition = (-1, -1);
             _MouseButtons = new List<Mouse.Button>();
             _KeyboardKeys = new List<Keyboard.Key>();
             _Core.FocusLost += HandleCoreFocusLost;
             _Core.DeviceChanged += HandleCoreDeviceChanged;
 
             // Subscribe to input events
-            Enabled = true;
+            MouseEnabled = MousePositionEnabled = mouse;
+            KeyboardEnabled = keyboard;
 
             // TODO Joysticks & Game-pads:
             //_Device.JoystickButtonPressed...
             // Also consider touch events
             //_Device.TouchBegan
+        }
+        ~Input()
+        {
+            if (_Core != null)
+            {
+                _Core.FocusLost -= HandleCoreFocusLost;
+                _Core.DeviceChanged -= HandleCoreDeviceChanged;
+            }
+            _Core = null;
+
+            if (_Device != null && _Device.CPointer != IntPtr.Zero)
+            {
+                Enabled = false;
+            }
+            _Device = null;
         }
 
 

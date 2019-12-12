@@ -42,7 +42,7 @@ namespace BlackCoat
             _Bg.Scale /= 2; // TODO : double check scale
             _Bg.Position = _Core.DeviceSize / 2 - _Bg.Texture.Size.ToVector2f() * _Bg.Scale.X / 2;
 
-            _Core.Input.KeyPressed += HandleKeyPressed;
+            Input.KeyPressed += HandleKeyPressed;
             _Core.AnimationManager.Wait(1, Start);
 
             return true;
@@ -72,7 +72,7 @@ namespace BlackCoat
 
         protected override void Destroy()
         {
-            _Core.Input.KeyPressed -= HandleKeyPressed;
+            Input.KeyPressed -= HandleKeyPressed;
             Layer_BG.Remove(_Bg);
             TextureLoader.Release("bg");
             SfxLoader.Release("snd");

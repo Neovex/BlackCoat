@@ -66,7 +66,12 @@ namespace BlackCoat.UI
         public virtual UIContainer Container
         {
             get => _Container;
-            set { _Container = value; Input = _Container?.Input; InvokeContainerChanged(); }
+            set
+            {
+                _Container = value;
+                Input = _Container?.Input;
+                InvokeContainerChanged();
+            }
         }
 
         public bool CanFocus { get; protected set; }

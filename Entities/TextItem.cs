@@ -179,6 +179,16 @@ namespace BlackCoat.Entities
         public virtual void Draw() => _Core.Draw(this);
 
         /// <summary>
+        /// Handle the destruction of the object
+        /// </summary>
+        /// <param name="disposing">Is the GC disposing the object, or is it an explicit call ?</param>
+        protected override void Destroy(bool disposing)
+        {
+            if (Parent != null) Parent.Remove(this);
+            base.Destroy(disposing);
+        }
+
+        /// <summary>
         /// Returns a <see cref="System.String" /> that represents this instance.
         /// </summary>
         /// <returns>

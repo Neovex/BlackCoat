@@ -1,17 +1,24 @@
 ﻿using System;
-using SFML.Graphics;
 using SFML.System;
+using SFML.Graphics;
 
 namespace BlackCoat.Entities
 {
     public class CursorLayer : Layer
     {
-        private Graphic Cursor;
+        // Variables #######################################################################
+        private readonly Graphic _Cursor;
+
+
+        // Properties ######################################################################
+        public Input Input { get; set; }
+
 
         // CTOR ############################################################################
-        internal CursorLayer(Core core) : base(core)
+        internal CursorLayer(Core core, Input input) : base(core)
         {
-            Add(Cursor = new Graphic(_Core) { Visible = false });
+            Input = input ?? throw new ArgumentNullException(nameof(input));
+            Add(_Cursor = new Graphic(_Core) { Visible = false });
         }
 
 
@@ -19,7 +26,7 @@ namespace BlackCoat.Entities
         public override void Update(Single deltaT)
         {
             base.Update(deltaT);
-            Cursor.Position = _Core.Input.MousePosition;
+            _Cursor.Position = Input.MousePosition;
         }
 
         /// <summary>
@@ -31,15 +38,15 @@ namespace BlackCoat.Entities
         {
             if (texture == null)
             {
-                _Core.Input.MouseVisible = true;
-                Cursor.Visible = false;
+                Input.MouseVisible = true;
+                _Cursor.Visible = false;
             }
             else
             {
-                Cursor.Texture = texture;
-                Cursor.Origin = origin;
-                _Core.Input.MouseVisible = false;
-                Cursor.Visible = true;
+                _Cursor.Texture = texture;
+                _Cursor.Origin = origin;
+                Input.MouseVisible = false;
+                _Cursor.Visible = true;
             }
         }
     }

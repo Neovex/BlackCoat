@@ -40,11 +40,11 @@ namespace BlackCoat.Tools
         /// Creates a new instance of the <see cref="Console"/> class
         /// </summary>
         /// <param name="core">Engine Core</param>
-        internal Console(Core core) : base(core)
+        internal Console(Core core, Input input) : base(core)
         {
-            // Self
+            // Init Self
             _Messages = new Queue<String>();
-            Input = new UIInput(new Input(_Core), true);
+            Input = new UIInput(input, true);
             Visible = false;
             BackgroundColor = Color.Black;
             BackgroundAlpha = 0.6f;
@@ -74,7 +74,6 @@ namespace BlackCoat.Tools
             // Events
             Log.OnLog += LogMessage;
             _Core.DeviceResized += UpdateDisplayProportions;
-            _Core.Input.KeyPressed += HandleKeyPressed;
             Input.Input.KeyPressed += HandleKeyPressed;
 
             // Init
@@ -95,8 +94,7 @@ namespace BlackCoat.Tools
 
         private void HandleKeyPressed(Keyboard.Key key)
         {
-            var input = IsOpen ? Input.Input : _Core.Input;
-            if (input.Control && input.Shift && key == Keyboard.Key.Num1)
+            if (Input.Input.Control && Input.Input.Shift && key == Keyboard.Key.Num1)
             {
                 if (IsOpen) Close();
                 else Open();
@@ -154,6 +152,7 @@ namespace BlackCoat.Tools
                 IsOpen = false;
                 Visible = false;
                 _AnimationRunning = false;
+                _InputBox.Text = String.Empty;
             }, InterpolationType.OutCubic);
         }
     }

@@ -25,8 +25,10 @@ namespace BlackCoat.UI
         {
             Input.MouseButtonPressed += HandleMouseDown;
             Input.MouseButtonReleased += HandleMouseUp;
+
             Input.KeyPressed += HandleKeyboardDown;
             Input.KeyReleased += HandleKeyboardUp;
+
             Input.TextEntered += RaiseTextEnteredEvent;
         }
 
@@ -88,6 +90,7 @@ namespace BlackCoat.UI
         protected void RaiseConfirmEvent(bool fromMouse) => Confirm.Invoke(fromMouse);
         protected void RaiseCancelEvent() => Cancel.Invoke();
         protected void RaiseEditEvent() => Edit.Invoke();
+
         public void RaiseTextEnteredEvent(TextEnteredEventArgs tArgs) => TextEntered.Invoke(tArgs);
     }
 }

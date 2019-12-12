@@ -62,9 +62,8 @@ namespace BlackCoat
 
 
         // Variables #######################################################################
-        private Device _Device;
-        private Device _OldDevice;
         private Stopwatch _Timer;
+        private Input _Input;
         private Boolean _Debug;
         private Boolean _Fullscreen;
         private CollisionSystem _CollisionSystem;
@@ -84,12 +83,12 @@ namespace BlackCoat
                 _Debug = value;
                 if (_Debug)
                 {
-                    Input.KeyPressed += QuitOnEsc;
+                    _Input.KeyPressed += QuitOnEsc;
                     Log.Info("Debug enabled");
                 }
                 else
                 {
-                    Input.KeyPressed -= QuitOnEsc;
+                    _Input.KeyPressed -= QuitOnEsc;
                     Log.Info("Debug disabled");
                 }
                 DebugChanged.Invoke(_Debug);
@@ -119,11 +118,6 @@ namespace BlackCoat
             get => _CollisionSystem;
             set => _CollisionSystem = value ?? throw new Exception($"{nameof(CollisionSystem)} must never be null");
         }
-
-        /// <summary>
-        /// Provides all available input data along with events for custom input handlers.
-        /// </summary>
-        public Input Input { get; }
 
         /// <summary>
         /// Color used to clear the screen of the contents from the last rendered frame.
@@ -158,13 +152,13 @@ namespace BlackCoat
         /// <summary>
         /// Current Rendering Device
         /// </summary>
-        internal Device Device => _Device;
-        internal Device OldDevice => _OldDevice;
+        internal Device Device { get; private set; }
+        internal Device OldDevice { get; private set; }
 
         /// <summary>
         /// Size of the current Render Device
         /// </summary>
-        public Vector2f DeviceSize => _Device.Size.ToVector2f();
+        public Vector2f DeviceSize => Device.Size.ToVector2f();
 
         /// <summary>
         /// Gets or sets a value indicating whether the current <see cref="BlackCoat.Device"/> is displayed full-screen.
@@ -172,21 +166,20 @@ namespace BlackCoat
         public bool Fullscreen { get; set; }
 
 
-
         // CTOR ############################################################################
         /// <summary>
         /// Creates a new Instance of the BlackCoat Core class
         /// </summary>
         /// <param name="device">Render Device used by the Core - use of the static creation methods is recommended</param>
-        /// <param name="fullscreenDevice">Optional alternate device. Should be the corresponding opposite of the first device.</param>
+        /// <param name="fullscreenDevice">Optional full screen device. If none is provided a desktop device will be created automatically.</param>
         /// <exception cref="ArgumentNullException">device</exception>
         public Core(Device device, Device fullscreenDevice = null)
         {
             Log.Info("Initializing Black Coat Engine...");
 
             // Init Backend
-            _Device = device ?? throw new ArgumentNullException(nameof(device));
-            _OldDevice = fullscreenDevice;
+            Device = device ?? throw new ArgumentNullException(nameof(device));
+            OldDevice = fullscreenDevice;
             _Timer = new Stopwatch();
 
             // Init Defaults
@@ -194,12 +187,12 @@ namespace BlackCoat
             HasFocus = true;
             PauseUpdateOnFocusLoss = true;
             Disposed = false;
-            DefaultView = _Device.DefaultView;
+            DefaultView = Device.DefaultView;
             DefaultFont = new Font(Resources.Squares_Bold_Free);
             for (uint i = 4; i <= 42; i += 2) InitializeFontHack(DefaultFont, i); // Unfortunate necessity to prevent SFML from disposing parts of a font.
 
             // Attach Core-relevant Device Events
-            AttachToDevice(_Device);
+            AttachToDevice(Device);
 
             // Init Subsystems
             Random = new RandomHelper();
@@ -208,12 +201,12 @@ namespace BlackCoat
             CollisionSystem = new CollisionSystem();
 
             // Init Input
-            Input = new Input(this);
-            Input.KeyPressed += k => { if (Input.Alt && k == Keyboard.Key.Return) Fullscreen = !Fullscreen; };
-            Log.Debug("Default Input ready");
+            _Input = new Input(this, false, true);
+            _Input.KeyPressed += k => { if (_Input.Alt && k == Keyboard.Key.Return) Fullscreen = !Fullscreen; };
+            Log.Debug("Input ready");
 
             // Init Console
-            _Console = new Tools.Console(this);
+            _Console = new Tools.Console(this, _Input);
             _Console.Command += HandleConsoleCommand;
 
             Log.Info("Black Coat Engine Creation Completed. - Version", GetType().Assembly.GetName().Version);
@@ -236,7 +229,7 @@ namespace BlackCoat
         {
             var text = new Text("0123456789abcdefghijklmnopqrstuvwxyzüöäABCDEFGHIJKLMNOPQRSTUVWXYZÜÖÄ.:-_,;#'+*~´`\\?ß=()&/$%\"§!^°|@", font, charSize);
             if (bold) text.Style = Text.Styles.Bold;
-            text.Draw(_Device, RenderStates.Default);
+            text.Draw(Device, RenderStates.Default);
             text.Dispose();
         }
 
@@ -246,7 +239,7 @@ namespace BlackCoat
         public void ShowRenderWindow()
         {
             if (Disposed) throw new ObjectDisposedException(nameof(Core));
-            _Device.SetVisible(true);
+            Device.SetVisible(true);
         }
 
         /// <summary>
@@ -256,7 +249,7 @@ namespace BlackCoat
         public void HideRenderWindow()
         {
             if (Disposed) throw new ObjectDisposedException(nameof(Core));
-            _Device.SetVisible(false);
+            Device.SetVisible(false);
         }
 
         /// <summary>
@@ -268,10 +261,10 @@ namespace BlackCoat
             if (Disposed) throw new ObjectDisposedException(nameof(Core));
             Log.Info("Engine Started");
             ShowRenderWindow();
-            while (_Device.IsOpen)
+            while (Device.IsOpen)
             {
                 if (Fullscreen != _Fullscreen) ChangeFullscreen();
-                _Device.DispatchEvents();
+                Device.DispatchEvents();
                 if (HasFocus || !PauseUpdateOnFocusLoss) // run updates
                 {
                     var deltaT = (float)(_Timer.Elapsed.TotalMilliseconds / 1000d);// fractal second
@@ -295,9 +288,9 @@ namespace BlackCoat
         public void ManualRefresh(float deltaT = 0)
         {
             if (Disposed) throw new ObjectDisposedException(nameof(Core));
-            if (!_Device.IsOpen) throw new InvalidStateException("Device is not open");
+            if (!Device.IsOpen) throw new InvalidStateException("Device is not open");
             if (Fullscreen != _Fullscreen) ChangeFullscreen();
-            _Device.DispatchEvents();
+            Device.DispatchEvents();
             Update(deltaT);
             Draw();
         }
@@ -310,7 +303,7 @@ namespace BlackCoat
         {
             if (Disposed) throw new ObjectDisposedException(nameof(Core));
             Log.Info(reason ?? "Begin Engine shutdown");
-            _Device.Close();
+            Device.Close();
         }
 
         /// <summary>
@@ -338,7 +331,7 @@ namespace BlackCoat
         private void Draw()
         {
             // Clear Background
-            _Device.Clear(ClearColor);
+            Device.Clear(ClearColor);
 
             // Draw Scene
             DRAW_CALLS = 0;
@@ -346,7 +339,7 @@ namespace BlackCoat
             _Console.Draw();
 
             // Present Backbuffer
-            _Device.Display();
+            Device.Display();
         }
 
         /// <summary>
@@ -366,7 +359,7 @@ namespace BlackCoat
                 state.Transform = entity.Parent.GlobalTransform;
             }
 
-            var renderTarget = entity.RenderTarget ?? _Device;
+            var renderTarget = entity.RenderTarget ?? Device;
             if (entity.View == null) // view inheritance is handled by the property
             {
                 entity.Draw(renderTarget, state);
@@ -390,7 +383,7 @@ namespace BlackCoat
             switch (cmd.ToLower())
             {
                 case "device":
-                    Log.Debug(_Device);
+                    Log.Debug(Device);
                     return;
                 case "exit":
                 case "quit":
@@ -422,24 +415,24 @@ namespace BlackCoat
         #region Device Event handlers
         private void AttachToDevice(Device device)
         {
-            _Device.Resized += HandleDeviceResized;
-            _Device.Closed += HandleWindowClose;
-            _Device.LostFocus += HandleLostFocus;
-            _Device.GainedFocus += HandleGainedFocus;
+            Device.Resized += HandleDeviceResized;
+            Device.Closed += HandleWindowClose;
+            Device.LostFocus += HandleLostFocus;
+            Device.GainedFocus += HandleGainedFocus;
         }
         private void DetachFromDevice(Device device)
         {
-            _Device.Resized -= HandleDeviceResized;
-            _Device.Closed -= HandleWindowClose;
-            _Device.LostFocus -= HandleLostFocus;
-            _Device.GainedFocus -= HandleGainedFocus;
+            Device.Resized -= HandleDeviceResized;
+            Device.Closed -= HandleWindowClose;
+            Device.LostFocus -= HandleLostFocus;
+            Device.GainedFocus -= HandleGainedFocus;
         }
 
         private void HandleDeviceResized(object sender, SizeEventArgs e)
         {
             DefaultView.Size = DeviceSize;
             DefaultView.Center = DeviceSize / 2;
-            _Device.SetView(DefaultView);
+            Device.SetView(DefaultView);
             DeviceResized.Invoke(DeviceSize);
         }
 
@@ -466,25 +459,25 @@ namespace BlackCoat
         private void ChangeFullscreen()
         {
             _Fullscreen = Fullscreen;
-            if (_OldDevice == null)
+            if (OldDevice == null)
             {
-                _OldDevice = _Device;
-                _Device = Fullscreen ? Device.Fullscreen : Device.Demo;
+                OldDevice = Device;
+                Device = Fullscreen ? Device.Fullscreen : Device.Demo;
             }
             else
             {
-                var temp = _OldDevice;
-                _OldDevice = _Device;
-                _Device = temp;
+                var temp = OldDevice;
+                OldDevice = Device;
+                Device = temp;
             }
 
-            DetachFromDevice(_OldDevice);
-            _OldDevice.SetVisible(false);
-            _Device.SetVisible(true);
-            _Device.DispatchEvents(); // flush out some redundant events before attaching
-            AttachToDevice(_Device);
+            DetachFromDevice(OldDevice);
+            OldDevice.SetVisible(false);
+            Device.SetVisible(true);
+            Device.DispatchEvents(); // flush out some redundant events before attaching
+            AttachToDevice(Device);
 
-            DefaultView = _Device.DefaultView;
+            DefaultView = Device.DefaultView;
 
             DeviceChanged.Invoke();
             DeviceResized.Invoke(DeviceSize);
@@ -501,8 +494,8 @@ namespace BlackCoat
 
             SceneManager.Destroy();
 
-            DisposeDevice(_Device);
-            DisposeDevice(_OldDevice);
+            DisposeDevice(Device);
+            DisposeDevice(OldDevice);
 
             DefaultFont.Dispose();
             DefaultFont = null;

@@ -4,7 +4,6 @@
     <Position X="0.5" Y="0.5" Width="1.5" />
     <Compartments>
       <Compartment Name="Methods" Collapsed="true" />
-      <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
     <AssociationLine Name="DEFAULT" Type="BlackCoat.Input">
       <MemberNameLabel ManuallyPlaced="true">
@@ -12,7 +11,7 @@
       </MemberNameLabel>
     </AssociationLine>
     <TypeIdentifier>
-      <HashCode>IAACgpAMgQAigIiAAAABAAgAAAAgAgABAYIIQRliACE=</HashCode>
+      <HashCode>IAACgpAMgQAigIiAAAABAAgAAAAgAgABAYAIQRliACE=</HashCode>
       <FileName>Input\Input.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -21,25 +20,27 @@
   </Class>
   <Class Name="BlackCoat.TextEnteredEventArgs">
     <Position X="2.25" Y="0.5" Width="1.75" />
+    <Compartments>
+      <Compartment Name="Nested Types" Collapsed="false" />
+    </Compartments>
+    <NestedTypes>
+      <Enum Name="BlackCoat.TextEnteredEventArgs.Operation">
+        <TypeIdentifier>
+          <NewMemberFileName>Input\TextEnteredEventArgs.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+    </NestedTypes>
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAgAAACAAAAAAAAAAAAAAAAAAAAACACAAAA=</HashCode>
+      <HashCode>AAQAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAACAAAAAA=</HashCode>
       <FileName>Input\TextEnteredEventArgs.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="BlackCoat.InputMapping.ComplexInputMap&lt;TMappedOperation&gt;" BaseTypeListCollapsed="true">
     <Position X="4.25" Y="0.5" Width="3" />
-    <AssociationLine Name="_Input" Type="BlackCoat.Input">
-      <MemberNameLabel ManuallyPlaced="true">
-        <Position X="0.391" Y="-0.284" />
-      </MemberNameLabel>
-    </AssociationLine>
     <TypeIdentifier>
-      <HashCode>AAEAAJABACAAAICAABAACAAAAQAAAAAAgAAoAAAAAAg=</HashCode>
+      <HashCode>AAEAABABACAAAICAABAACAAAEQAAAAAAgAAoAAAAAAg=</HashCode>
       <FileName>Input\Mapping\ComplexInputMap.cs</FileName>
     </TypeIdentifier>
-    <ShowAsAssociation>
-      <Field Name="_Input" />
-    </ShowAsAssociation>
     <ShowAsCollectionAssociation>
       <Field Name="_KeyboardActions" />
       <Field Name="_MouseActions" />
@@ -50,33 +51,22 @@
   <Class Name="BlackCoat.InputMapping.MappedOperation&lt;TCondition, TOperation&gt;">
     <Position X="8.75" Y="0.5" Width="3.25" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAACIAAAAQAAAAAAAAAAACAAAAAAAAEAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAACIAAAAQABAAAAAAAAACAAAAAAAAEAAAAA=</HashCode>
       <FileName>Input\Mapping\MappedOperation.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="BlackCoat.InputMapping.SimpleInputMap&lt;TMappedOperation&gt;" BaseTypeListCollapsed="true">
     <Position X="12.25" Y="0.5" Width="3.25" />
-    <Compartments>
-      <Compartment Name="Fields" Collapsed="true" />
-    </Compartments>
-    <AssociationLine Name="_Input" Type="BlackCoat.Input">
-      <MemberNameLabel ManuallyPlaced="true">
-        <Position X="0.37" Y="0.081" />
-      </MemberNameLabel>
-    </AssociationLine>
     <TypeIdentifier>
-      <HashCode>AQAQAJARACAAAICQABABCAQAAQAAAAAAgIAoAQgAIAg=</HashCode>
+      <HashCode>AQAQABARACAAAICQABABCAQAEQAAAAAAgIAoAQgAIAg=</HashCode>
       <FileName>Input\Mapping\SimpleInputMap.cs</FileName>
     </TypeIdentifier>
-    <ShowAsAssociation>
-      <Field Name="_Input" />
-    </ShowAsAssociation>
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="BlackCoat.Core" Collapsed="true">
     <Position X="4.25" Y="5" Width="3" />
     <TypeIdentifier>
-      <HashCode>AAQhEAAIgSAIgoEACiAAQAgMVBQBJBohIIYAACFGAIM=</HashCode>
+      <HashCode>AAQhEAAIgSAIgoEAGCAAQAgMVBQBJBohIIYAACFGAIc=</HashCode>
       <FileName>Core.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -85,7 +75,7 @@
     <Lollipop Position="0.2" />
   </Class>
   <Enum Name="BlackCoat.InputMapping.ScrollDirection">
-    <Position X="2.25" Y="2.75" Width="1.75" />
+    <Position X="13" Y="7.25" Width="1.75" />
     <TypeIdentifier>
       <HashCode>AAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAI=</HashCode>
       <FileName>Input\Mapping\SimpleInputMap.cs</FileName>

@@ -7,29 +7,40 @@ using SFML.System;
 namespace BlackCoat
 {
     /// <summary>
-    /// Base class for all Scene
+    /// Base class for all Scenes
     /// </summary>
     public abstract class Scene : BlackCoatBase
     {
         private PerformanceMonitor _PerformanceMonitor;
         private PropertyInspector _PropertyInspector;
+        private Input _DefaultInput;
+        private Input _Input;
 
         // Scene Info
         public String Name { get; protected set; }
         public Boolean Destroyed { get; private set; }
 
+        // Input
+        public Input Input
+        {
+            get => _Input ?? _DefaultInput ?? (_DefaultInput = new Input(_Core));
+            protected set => _Input = Layer_Cursor.Input = value;
+        }
+
         // Asset Managers
-        protected internal TextureLoader TextureLoader { get; set; }
-        protected internal MusicLoader MusicLoader { get; set; }
-        protected internal FontLoader FontLoader { get; set; }
-        protected internal SfxLoader SfxLoader { get; set; }
+        protected internal TextureLoader TextureLoader { get; }
+        protected internal MusicLoader MusicLoader { get; }
+        protected internal FontLoader FontLoader { get; }
+        protected internal SfxLoader SfxLoader { get; }
 
         // Layers
-        protected internal Layer Layer_BG { get; private set; }
-        protected internal Layer Layer_Game { get; private set; }
-        protected internal Layer Layer_Overlay { get; private set; }
-        protected internal Layer Layer_Debug { get; private set; }
-        protected internal CursorLayer Layer_Cursor { get; private set; }
+        protected internal Layer Layer_BG { get; }
+        protected internal Layer Layer_Game { get; }
+        protected internal Layer Layer_Overlay { get; }
+        protected internal Layer Layer_Debug { get; }
+        protected internal CursorLayer Layer_Cursor { get; }
+
+        // Events
 
         /// <summary>
         /// Occurs when the Scene has been successfully initialized.
@@ -64,10 +75,11 @@ namespace BlackCoat
         /// <param name="music">Music root path.</param>
         /// <param name="fonts">Font root path.</param>
         /// <param name="sfx">Sound effects root path.</param>
-        public Scene(Core core, String name, String textures, String music, String fonts, String sfx) : base(core)
+        public Scene(Core core, String name, String textures, String music, String fonts, String sfx, Input input = null) : base(core)
         {
             // Init
             Name = String.IsNullOrWhiteSpace(name) ? GetType().Name : name;
+            _Input = input;
 
             // Create Asset Managers
             TextureLoader = new TextureLoader(textures);
@@ -82,7 +94,7 @@ namespace BlackCoat
             Layer_Overlay = new Layer(_Core);
             // System Layer
             Layer_Debug = new Layer(_Core);
-            Layer_Cursor = new CursorLayer(_Core);
+            Layer_Cursor = new CursorLayer(_Core, Input);
 
             // Handle Debug Features
             HandleDebugChanged(_Core.Debug);
@@ -192,6 +204,10 @@ namespace BlackCoat
         internal void DestroyInternal()
         {
             Destroyed = true;
+            
+            if(_DefaultInput != null) _DefaultInput.Enabled = false;
+            _Input = _DefaultInput = null;
+
             _Core.DebugChanged -= HandleDebugChanged;
             _Core.ConsoleCommand -= HandleConsoleCommand;
 
@@ -205,22 +221,11 @@ namespace BlackCoat
             MusicLoader.Dispose();
             TextureLoader.Dispose();
 
-            SfxLoader = null;
-            FontLoader = null;
-            MusicLoader = null;
-            TextureLoader = null;
-
             Layer_BG.Dispose();
             Layer_Game.Dispose();
             Layer_Overlay.Dispose();
             Layer_Debug.Dispose();
             Layer_Cursor.Dispose();
-
-            Layer_BG = null;
-            Layer_Game = null;
-            Layer_Overlay = null;
-            Layer_Debug = null;
-            Layer_Cursor = null;
 
             Log.Debug(Name, "destroyed");
         }
