@@ -16,7 +16,7 @@ namespace BlackCoat.UI
 
         protected TextItem _Text;
         private FloatRect _Padding;
-        private bool _Centered;
+        private TextAlignment _Alignment;
 
 
         public override Vector2f InnerSize => _Text.GetGlobalBounds().Size() + _Padding.Position() + _Padding.Size();
@@ -82,13 +82,13 @@ namespace BlackCoat.UI
             }
         }
 
-        public bool Centered
+        public TextAlignment Alignment
         {
-            get => _Centered;
+            get => _Alignment;
             set
             {
-                if (_Centered == value) return;
-                _Centered = value;
+                if (_Alignment == value) return;
+                _Alignment = value;
                 InvokeSizeChanged();
             }
         }
@@ -126,11 +126,30 @@ namespace BlackCoat.UI
         {
             var bounds = _Text.GetGlobalBounds();
             _Text.Origin += bounds.Position() - _Text.Position;
-            if (Centered) Origin = new Vector2f(bounds.Width / 2, Origin.Y);
+            switch (Alignment)
+            {
+                case TextAlignment.Left:
+                    Origin = new Vector2f(0, Origin.Y);
+                    break;
+                case TextAlignment.Centered:
+                    Origin = new Vector2f(bounds.Width / 2, Origin.Y);
+                    break;
+                case TextAlignment.Right:
+                    Origin = new Vector2f(bounds.Width, Origin.Y);
+                    break;
+            }
             base.InvokeSizeChanged();
         }
 
         protected virtual void InvokeTextChanged() => TextChanged.Invoke(this);
+
         protected virtual void InvokeColorChanged() => ColorChanged.Invoke(this);
+    }
+
+    public enum TextAlignment
+    {
+        Left,
+        Centered,
+        Right
     }
 }

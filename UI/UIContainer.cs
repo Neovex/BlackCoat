@@ -63,6 +63,7 @@ namespace BlackCoat.UI
             _UpdateLock = true;
             foreach (var component in components) Add(component);
             _UpdateLock = false;
+            InvokeSizeChanged();
         }
 
         public virtual void Add(UIComponent component)

@@ -32,8 +32,16 @@
   </Class>
   <Class Name="BlackCoat.Network.NetBase&lt;TEnum&gt;" Collapsed="true">
     <Position X="4.25" Y="2.75" Width="1.75" />
+    <NestedTypes>
+      <Class Name="BlackCoat.Network.NetBase&lt;TEnum&gt;.Format" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Network\NetBase.cs</NewMemberFileName>
+        </TypeIdentifier>
+        <Lollipop Position="0.2" />
+      </Class>
+    </NestedTypes>
     <TypeIdentifier>
-      <HashCode>AAAAAAAAgSAAAAAAAAgAAAAAAAAEAAKAAAgAAAACAAA=</HashCode>
+      <HashCode>AAAAAAAAgSAAAAAAAAgAEAAIAAAEAAKAAAgAAAgCAAA=</HashCode>
       <FileName>Network\NetBase.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -49,7 +57,7 @@
       </MemberNameLabel>
     </AssociationLine>
     <TypeIdentifier>
-      <HashCode>AAQAAAAAgAAAQABAAEgAAIAAAAAAAEAAAAAAAgAAAAA=</HashCode>
+      <HashCode>AAQAAAAAoAAAQABAAEgAEIAAAAAAAEAAAAAAAggAAAA=</HashCode>
       <FileName>Network\Client\Client.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -59,7 +67,7 @@
   <Class Name="BlackCoat.Network.ManagedClient&lt;TEnum&gt;" Collapsed="true">
     <Position X="0.75" Y="5.75" Width="2" />
     <TypeIdentifier>
-      <HashCode>AAACAAAAUQKAAAAAIAACEJAACAAIAAAAAAAIAoAABAA=</HashCode>
+      <HashCode>AAACAAAAQQKAQAAAIAAGEJAACAAIAAAAAAAIAIAABAA=</HashCode>
       <FileName>Network\Client\ManagedClient.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -79,7 +87,7 @@
   <Class Name="BlackCoat.Network.ServerUser&lt;TChannel&gt;" Collapsed="true">
     <Position X="4" Y="5.75" Width="2.25" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAgAAAAA=</HashCode>
       <FileName>Network\Server\ServerUser.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -91,7 +99,7 @@
       </MemberNameLabel>
     </AssociationLine>
     <TypeIdentifier>
-      <HashCode>QAAAAAAAAACAAAAAAEAAAAAAQBAACAgAAAAAAAAAAAA=</HashCode>
+      <HashCode>QAAAAAAAIACAAAAAAEAAAAQIQBAACAgAAAAAAAAAAAA=</HashCode>
       <FileName>Network\Server\Server.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -106,7 +114,7 @@
       </MemberNameLabel>
     </AssociationLine>
     <TypeIdentifier>
-      <HashCode>AAAAAAAA0AAAAAAAIAgCABAAAAAAAgAAAAAIQAAAAAA=</HashCode>
+      <HashCode>AAAAAAAA0AAAAAAAIAgGABAAAAAAAgAAAAAIAAgAAAA=</HashCode>
       <FileName>Network\Server\ManagedServer.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -126,7 +134,7 @@
   <Class Name="BlackCoat.Network.NetIdProvider" Collapsed="true">
     <Position X="7" Y="2.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AABAAAAAAAAgAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AABAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Network\NetIdProvider.cs</FileName>
     </TypeIdentifier>
   </Class>
