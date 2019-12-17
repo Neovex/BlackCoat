@@ -16,7 +16,7 @@ namespace BlackCoat.Network
         private NetClient _Client;
 
 
-        public Boolean IsConnected => _BasePeer.ConnectionsCount != 0;
+        public Boolean IsConnected => _Client.ConnectionsCount != 0;
         public int Latency { get; private set; }
         public string LastError { get; private set; }
 

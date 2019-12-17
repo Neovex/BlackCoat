@@ -61,8 +61,8 @@ namespace BlackCoat.Network
         public void StopServer(string stopMessage = "")
         {
             if (Disposed) throw new ObjectDisposedException(nameof(Server<TEnum>));
-            if (_BasePeer.Status != NetPeerStatus.Running) return;
-            _BasePeer.Shutdown(stopMessage);
+            if (!Running) return;
+            _Server.Shutdown(stopMessage);
             BlockUntilShutdownIsComplete();
             Log.Info("Server Stopped");
         }
@@ -78,7 +78,7 @@ namespace BlackCoat.Network
             Does not last longer than a couple milliseconds
             */
             var c = 0;
-            while (_BasePeer.Status == NetPeerStatus.ShutdownRequested)
+            while (_Server.Status == NetPeerStatus.ShutdownRequested)
             {
                 c++;
                 Thread.Sleep(1);

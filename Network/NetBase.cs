@@ -16,6 +16,8 @@ namespace BlackCoat.Network
 
         protected NetPeer _BasePeer;
 
+
+        public bool Running => _BasePeer == null ? false : _BasePeer.Status == NetPeerStatus.Running;
         public Boolean Disposed { get; private set; }
 
 
@@ -44,7 +46,6 @@ namespace BlackCoat.Network
             NetIncomingMessage msg;
             while ((msg = _BasePeer.ReadMessage()) != null)
             {
-                if (_BasePeer.Status != NetPeerStatus.Running) return;
                 switch (msg.MessageType)
                 {
                     case NetIncomingMessageType.Error: // Should never happen
@@ -52,8 +53,6 @@ namespace BlackCoat.Network
                         break;
 
                     case NetIncomingMessageType.StatusChanged:
-                        Log.Debug((NetConnectionStatus)msg.ReadByte(), msg.ReadString(), "-", _BasePeer.Status, msg.SenderConnection.Status);
-
                         switch (msg.SenderConnection.Status)
                         {
                             case NetConnectionStatus.Connected:
@@ -67,7 +66,7 @@ namespace BlackCoat.Network
                         break;
 
                     case NetIncomingMessageType.Data:
-                        ProcessIncommingData((TEnum)(Object)msg.ReadInt32(), msg);
+                        if (_BasePeer.Status == NetPeerStatus.Running) ProcessIncommingData((TEnum)(Object)msg.ReadInt32(), msg);
                         break;
 
                     case NetIncomingMessageType.DiscoveryRequest:
