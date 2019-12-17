@@ -66,6 +66,7 @@ namespace BlackCoat.Network
 
         public void Disconnect(string disconnectMessage)
         {
+            if (!IsConnected) return;
             _Client.Disconnect(disconnectMessage);
             Disconnected();
         }

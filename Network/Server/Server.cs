@@ -77,13 +77,14 @@ namespace BlackCoat.Network
             we wait until the old serving thread has finished - this is practically a thread join
             Does not last longer than a couple milliseconds
             */
-            var c = 0;
+            var ms = 0;
             while (_Server.Status == NetPeerStatus.ShutdownRequested)
             {
-                c++;
+                ms++;
+                ProcessMessages();
                 Thread.Sleep(1);
             }
-            Log.Debug("Shutdown took ~", c, "milliseconds");
+            Log.Debug("Shutdown took ~", ms, "milliseconds");
         }
 
         // INCOMMING
