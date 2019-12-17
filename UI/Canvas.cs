@@ -49,7 +49,7 @@ namespace BlackCoat.UI
 
         public Canvas(Core core, Vector2f? size = null, params UIComponent[] components) : base(core, components)
         {
-            _MinSize = 10.ToVector2f();
+            _MinSize = new Vector2f(10, 10);
             if (size.HasValue) Resize(size.Value);
         }
 

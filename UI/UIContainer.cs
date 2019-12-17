@@ -118,8 +118,8 @@ namespace BlackCoat.UI
             {
                 // Reset
                 c.Rotation = 0;
-                c.Origin = default(Vector2f);
-                c.Scale = 1.ToVector2f();
+                c.Origin = (0, 0);
+                c.Scale = (1, 1);
 
                 // Dock Position
                 c.Position = new Vector2f(dockee.DockX ? c.Margin.Left : c.Position.X,

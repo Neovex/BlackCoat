@@ -157,28 +157,7 @@ namespace BlackCoat
         public static Vector2i ToVector2i(this Vector2u v) => new Vector2i((int)v.X, (int)v.Y);
         public static Vector2f ToVector2f(this Vector2u v) => new Vector2f(v.X, v.Y);
 
-
         public static Vector2f ToVector2f(this (int, int) v) => new Vector2f(v.Item1, v.Item2);
         public static Vector2f ToVector2f(this (float, float) v) => new Vector2f(v.Item1, v.Item2);
-
-
-        /// <summary>
-        /// Creates a new <see cref="SFML.System.Vector2f"/> with equal x and y components.
-        /// </summary>
-        /// <param name="v">Value for x AND y component</param>
-        /// <returns>A new Vector</returns>
-        public static Vector2f ToVector2f(this int v) => new Vector2f(v, v);
-        /// <summary>
-        /// Creates a new <see cref="SFML.System.Vector2f"/> with equal x and y components.
-        /// </summary>
-        /// <param name="v">Value for x AND y component</param>
-        /// <returns>A new Vector</returns>
-        public static Vector2f ToVector2f(this float v) => new Vector2f(v, v);
-        /// <summary>
-        /// Creates a new <see cref="SFML.System.Vector2f"/> with equal x and y components.
-        /// </summary>
-        /// <param name="v">Value for x AND y component</param>
-        /// <returns>A new Vector</returns>
-        public static Vector2f ToVector2f(this double v) => new Vector2f((float)v, (float)v);
     }
 }
