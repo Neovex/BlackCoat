@@ -44,7 +44,7 @@ namespace BlackCoat.UI
             {
                 foreach (var component in Components) Remove(component);
                 if (value == null) return;
-                foreach (var component in value) Add(component);
+                Add(value.ToArray());
             }
         }
 

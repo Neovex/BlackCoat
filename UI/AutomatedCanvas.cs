@@ -48,24 +48,26 @@ namespace BlackCoat.UI
         {
             // Reset
             c.Rotation = 0;
-            c.Origin = default(Vector2f);
-            c.Scale = 1.ToVector2f();
+            c.Origin = (0, 0);
+            c.Scale = (1, 1);
 
+            // Position
             if (Orientation == Orientation.Horizontal)
             {
                 _CurrentOffset += c.Margin.Left;
-                c.Position = new Vector2f(_CurrentOffset, c.Position.Y);
+                c.Position = new Vector2f(_CurrentOffset, c.Margin.Top);
                 _CurrentOffset += c.InnerSize.X;
                 _CurrentOffset += c.Margin.Width;
             }
             else
             {
                 _CurrentOffset += c.Margin.Top;
-                c.Position = new Vector2f(c.Position.X, _CurrentOffset);
+                c.Position = new Vector2f(c.Margin.Left, _CurrentOffset);
                 _CurrentOffset += c.InnerSize.Y;
                 _CurrentOffset += c.Margin.Height;
             }
             _CurrentOffset += _Offset;
+            // base intentionally not called - automated canvas does not support docking (yet)
         }
     }
 }

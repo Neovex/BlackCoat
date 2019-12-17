@@ -44,6 +44,7 @@ namespace BlackCoat.Network
             NetIncomingMessage msg;
             while ((msg = _BasePeer.ReadMessage()) != null)
             {
+                if (_BasePeer.Status != NetPeerStatus.Running) return;
                 switch (msg.MessageType)
                 {
                     case NetIncomingMessageType.Error: // Should never happen

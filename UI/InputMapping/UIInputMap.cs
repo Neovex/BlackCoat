@@ -21,20 +21,20 @@ namespace BlackCoat.UI
             Scroll
         }
 
-        private Dictionary<TMapped, (UiOperation Operation, float Direction)> _Map;
+        private Dictionary<TMapped, (UiOperation Activation, UiOperation Deactivation, float Direction)> _Map;
 
 
-        public UIInputMap(SimpleInputMap<TMapped> map, Dictionary<TMapped, (UiOperation operation, float direction)> mapping) : this(map.Input, mapping)
+        public UIInputMap(SimpleInputMap<TMapped> map, Dictionary<TMapped, (UiOperation activation, UiOperation deactivation, float direction)> mapping) : this(map.Input, mapping)
         {
             map.MappedOperationInvoked += HandleMappedOperationInvoked;
         }
 
-        public UIInputMap(ComplexInputMap<TMapped> map, Dictionary<TMapped, (UiOperation operation, float direction)> mapping) : this(map.Input, mapping)
+        public UIInputMap(ComplexInputMap<TMapped> map, Dictionary<TMapped, (UiOperation activation, UiOperation deactivation, float direction)> mapping) : this(map.Input, mapping)
         {
             map.MappedOperationInvoked += a => HandleMappedOperationInvoked(a, true);
         }
 
-        private UIInputMap(Input input, Dictionary<TMapped, (UiOperation operation, float direction)> mapping) : base(input)
+        private UIInputMap(Input input, Dictionary<TMapped, (UiOperation activation, UiOperation deactivation, float direction)> mapping) : base(input)
         {
             _Map = mapping ?? throw new ArgumentNullException(nameof(mapping));
         }
@@ -44,25 +44,25 @@ namespace BlackCoat.UI
         {
             if (_Map.TryGetValue(action, out var op))
             {
-                switch (op.Operation)
+                switch (activate ? op.Activation : op.Deactivation)
                 {
                     case UiOperation.Move:
-                        if (activate) RaiseMoveEvent(op.Direction);
+                        RaiseMoveEvent(op.Direction);
                         break;
                     case UiOperation.BeforeConfirm:
-                        if (activate) RaiseBeforeConfirmEvent();
+                        RaiseBeforeConfirmEvent();
                         break;
                     case UiOperation.Confirm:
-                        if (!activate) RaiseConfirmEvent();
+                        RaiseConfirmEvent();
                         break;
                     case UiOperation.Cancel:
-                        if (activate) RaiseCancelEvent();
+                        RaiseCancelEvent();
                         break;
                     case UiOperation.Edit:
-                        if (activate) RaiseEditEvent();
+                        RaiseEditEvent();
                         break;
                     case UiOperation.Scroll:
-                        if (activate) RaiseScrollEvent(op.Direction);
+                        RaiseScrollEvent(op.Direction);
                         break;
                 }
             }
