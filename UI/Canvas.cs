@@ -60,7 +60,7 @@ namespace BlackCoat.UI
             if (_Size == size) return;
             _Size = size;
             _Background.Size = _Size;
-            TextureRect = new IntRect((0, 0), _Size.ToVector2i());
+            TextureRect = new IntRect(new Vector2i(0, 0), _Size.ToVector2i());
             InvokeSizeChanged();
         }
 
@@ -78,8 +78,8 @@ namespace BlackCoat.UI
             {
                 // Reset
                 c.Rotation = 0;
-                c.Origin = (0, 0);
-                c.Scale = (1, 1);
+                c.Origin = new Vector2f(0, 0);
+                c.Scale = new Vector2f(1, 1);
 
                 // Dock Position
                 c.Position = new Vector2f(dockee.DockX ? c.Margin.Left : c.Position.X,

@@ -60,7 +60,7 @@ namespace BlackCoat.UI
 
         private void HandleKeyboardDown(Keyboard.Key key)
         {
-            if (key == Keyboard.Key.Return) RaiseBeforeConfirmEvent();
+            if (key == Keyboard.Key.Enter) RaiseBeforeConfirmEvent();
         }
         private void HandleKeyboardUp(Keyboard.Key key)
         {
@@ -69,7 +69,7 @@ namespace BlackCoat.UI
                 case Keyboard.Key.Escape:
                     RaiseCancelEvent();
                     break;
-                case Keyboard.Key.Return:
+                case Keyboard.Key.Enter:
                     RaiseConfirmEvent();
                     break;
                 case Keyboard.Key.A:

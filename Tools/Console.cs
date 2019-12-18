@@ -99,7 +99,7 @@ namespace BlackCoat.Tools
                 if (IsOpen) Close();
                 else Open();
             }
-            else if (IsOpen && key == Keyboard.Key.Return)
+            else if (IsOpen && key == Keyboard.Key.Enter)
             {
                 if (!String.IsNullOrWhiteSpace(_InputBox.Text))
                 {

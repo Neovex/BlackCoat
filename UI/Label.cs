@@ -95,11 +95,11 @@ namespace BlackCoat.UI
 
         public Color TextColor
         {
-            get => _Text.Color;
+            get => _Text.FillColor;
             set
             {
-                if (_Text.Color == value) return;
-                _Text.Color = value;
+                if (_Text.FillColor == value) return;
+                _Text.FillColor = value;
                 InvokeColorChanged();
             }
         }

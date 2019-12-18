@@ -202,7 +202,7 @@ namespace BlackCoat
 
             // Init Input
             _Input = new Input(this, false, true);
-            _Input.KeyPressed += k => { if (_Input.Alt && k == Keyboard.Key.Return) Fullscreen = !Fullscreen; };
+            _Input.KeyPressed += k => { if (_Input.Alt && k == Keyboard.Key.Enter) Fullscreen = !Fullscreen; };
             Log.Debug("Input ready");
 
             // Init Console

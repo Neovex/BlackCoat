@@ -47,7 +47,7 @@ namespace BlackCoat.Tools
             Add(_InfoDisplay = new TextItem(_Core)
             {
                 Position = new Vector2f(5, 2),
-                Color = Color.Cyan,
+                FillColor = Color.Cyan,
                 CharacterSize = 10
             });
         }

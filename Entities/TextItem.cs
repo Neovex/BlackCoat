@@ -73,9 +73,9 @@ namespace BlackCoat.Entities
             set
             {
                 _Alpha = value < 0 ? 0 : value > 1 ? 1 : value;
-                var color = Color;
+                var color = FillColor;
                 color.A = (Byte)(GlobalAlpha * Byte.MaxValue);
-                Color = color;
+                FillColor = color;
             }
         }
         /// <summary>

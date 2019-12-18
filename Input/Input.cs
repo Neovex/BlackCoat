@@ -59,7 +59,7 @@ namespace BlackCoat
                 else
                 {
                     _Device.MouseMoved -= HandleMouseMoved;
-                    _MousePosition = (-1, -1);
+                    _MousePosition = new Vector2f(-1, -1);
                 }
             }
         }
@@ -129,7 +129,7 @@ namespace BlackCoat
         {
             // Init Class
             _Device = _Core.Device;
-            _MousePosition = (-1, -1);
+            _MousePosition = new Vector2f(-1, -1);
             _MouseButtons = new List<Mouse.Button>();
             _KeyboardKeys = new List<Keyboard.Key>();
             _Core.FocusLost += HandleCoreFocusLost;
@@ -256,7 +256,7 @@ namespace BlackCoat
             // Handle special keys for text input
             switch (e.Code)
             {
-                case Keyboard.Key.BackSpace:
+                case Keyboard.Key.Backspace:
                     TextEntered(new TextEnteredEventArgs(TextEnteredEventArgs.Operation.Backspace));
                     break;
                 case Keyboard.Key.End:

@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>BlackCoat</RootNamespace>
     <AssemblyName>BlackCoat</AssemblyName>
-    <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <StartupObject>
     </StartupObject>
@@ -29,7 +29,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <PlatformTarget>x86</PlatformTarget>
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <Prefer32Bit>false</Prefer32Bit>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
@@ -203,6 +203,18 @@
     <Reference Include="Lidgren.Network, Version=2012.1.7.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\Current Projects\BlackTournament\packages\Lidgren.Network.1.0.2\lib\net451\Lidgren.Network.dll</HintPath>
     </Reference>
+    <Reference Include="SFML.Audio, Version=2.5.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\Current Projects\BlackTournament\packages\SFML.Audio.2.5.0\lib\netstandard2.0\SFML.Audio.dll</HintPath>
+    </Reference>
+    <Reference Include="SFML.Graphics, Version=2.5.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\Current Projects\BlackTournament\packages\SFML.Graphics.2.5.0\lib\netstandard2.0\SFML.Graphics.dll</HintPath>
+    </Reference>
+    <Reference Include="SFML.System, Version=2.5.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\Current Projects\BlackTournament\packages\SFML.System.2.5.0\lib\netstandard2.0\SFML.System.dll</HintPath>
+    </Reference>
+    <Reference Include="SFML.Window, Version=2.5.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\Current Projects\BlackTournament\packages\SFML.Window.2.5.0\lib\netstandard2.0\SFML.Window.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -237,24 +249,6 @@
     <None Include="ParticleSystem\Particles.cd" />
     <None Include="SceneManagement\SceneManagement.cd" />
     <None Include="UI\UI.cd" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\SFML.Net\src\Audio\sfml-audio.csproj">
-      <Project>{0b202c4d-a457-47fe-84a3-031dd878c6be}</Project>
-      <Name>sfml-audio</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SFML.Net\src\Graphics\sfml-graphics.csproj">
-      <Project>{46786269-57b9-48e7-aa4f-8f4d84609fe6}</Project>
-      <Name>sfml-graphics</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SFML.Net\src\System\sfml-system.csproj">
-      <Project>{31d24303-f6a9-4d53-bb03-a73edcb3186d}</Project>
-      <Name>sfml-system</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SFML.Net\src\Window\sfml-window.csproj">
-      <Project>{d17de83d-a592-461f-8af2-53f9e22e1d0f}</Project>
-      <Name>sfml-window</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Banner.png" />

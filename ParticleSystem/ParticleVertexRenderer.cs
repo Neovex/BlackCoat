@@ -48,9 +48,9 @@ namespace BlackCoat.ParticleSystem
                 case PrimitiveType.Quads:
                     _GroupSize = 4;
                     break;
-                case PrimitiveType.TrianglesStrip:
-                case PrimitiveType.TrianglesFan:
-                case PrimitiveType.LinesStrip:
+                case PrimitiveType.TriangleStrip:
+                case PrimitiveType.TriangleFan:
+                case PrimitiveType.LineStrip:
                     throw new NotSupportedException($"The {nameof(SFML.Graphics.PrimitiveType)} \"{primitiveType}\" is not supported.");
             }
         }
