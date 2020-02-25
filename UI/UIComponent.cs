@@ -191,7 +191,7 @@ namespace BlackCoat.UI
         {
             _Enabled = true;
             CollisionShape = new UICollisionShape(_Core.CollisionSystem, this);
-            Add(_Background = new Rectangle(_Core) { Alpha = 0 });
+            Add(_Background = new Rectangle(_Core, new Vector2f()) { Alpha = 0 });
         }
 
 

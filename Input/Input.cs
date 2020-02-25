@@ -151,7 +151,6 @@ namespace BlackCoat
                 _Core.FocusLost -= HandleCoreFocusLost;
                 _Core.DeviceChanged -= HandleCoreDeviceChanged;
             }
-            _Core = null;
 
             if (_Device != null && _Device.CPointer != IntPtr.Zero)
             {

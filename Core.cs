@@ -353,9 +353,9 @@ namespace BlackCoat
             var state = entity.RenderState;
             if (entity.Parent != null)
             {
-                // Get the combined transformations of all parents and update the renderstate.
-                // In the SFML draw method the transform of the render state is multiplied
-                // by the entities own transformation creating the final global transformation.
+                // Get the combined transformations of all parents and update the RenderState.
+                // In the SFML draw method the transform of the render state is multiplied with
+                // the entities own transformation creating the final global transformation.
                 state.Transform = entity.Parent.GlobalTransform;
             }
 

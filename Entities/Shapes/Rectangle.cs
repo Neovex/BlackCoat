@@ -19,6 +19,7 @@ namespace BlackCoat.Entities.Shapes
         private Boolean _Visible;
         private View _View;
         private float _Alpha;
+        private float _OutlineAlpha;
         private RenderTarget _RenderTarget;
 
 
@@ -34,7 +35,15 @@ namespace BlackCoat.Entities.Shapes
         public Container Parent
         {
             get => _Parent;
-            set => _Parent = value == null || !value.Contains(this) ? value : _Parent;
+            set
+            {
+                if (value == null || !value.Contains(this))
+                {
+                    _Parent = value;
+                    Alpha = Alpha;
+                    OutlineAlpha = OutlineAlpha;
+                }
+            }
         }
 
         /// <summary>
@@ -67,6 +76,17 @@ namespace BlackCoat.Entities.Shapes
                 var color = Color;
                 color.A = (Byte)(GlobalAlpha * Byte.MaxValue);
                 Color = color;
+            }
+        }
+        public virtual Single OutlineAlpha
+        {
+            get => _OutlineAlpha;
+            set
+            {
+                _OutlineAlpha = value < 0 ? 0 : value > 1 ? 1 : value;
+                var color = OutlineColor;
+                color.A = (Byte)(_OutlineAlpha * (Parent == null ? 1 : _Parent.GlobalAlpha) * Byte.MaxValue);
+                OutlineColor = color;
             }
         }
         /// <summary>
@@ -152,11 +172,13 @@ namespace BlackCoat.Entities.Shapes
         /// Creates a new <see cref="Rectangle" /> instance
         /// </summary>
         /// <param name="core">Engine Core</param>
-        /// <param name="color">Optional color</param>
-        public Rectangle(Core core, Color? color = null)
+        /// <param name="size"><see cref="Rectangle" /> dimensions</param>
+        /// <param name="color">Optional fill color</param>
+        public Rectangle(Core core, Vector2f size, Color? color = null) : base(size)
         {
             _Core = core;
             _Alpha = 1;
+            _OutlineAlpha = 0;
             Visible = true;
             RenderState = RenderStates.Default;
             if (color.HasValue) Color = color.Value;

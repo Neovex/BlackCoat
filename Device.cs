@@ -115,6 +115,7 @@ namespace BlackCoat
         public static Device Create(Launcher launcher, String title = null)
         {
             if (launcher == null) throw new ArgumentNullException(nameof(launcher));
+            if (!String.IsNullOrWhiteSpace(title)) launcher.Text = title;
             if (launcher.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
                 var style = Styles.Fullscreen;
@@ -123,7 +124,7 @@ namespace BlackCoat
                     style = Styles.Default;
                     if (launcher.Borderless) style = Styles.None;
                 }
-                return Create(launcher.VideoMode, title ?? launcher.Text, style, launcher.AntiAliasing, launcher.VSync, launcher.FpsLimit);
+                return Create(launcher.VideoMode, launcher.Text, style, launcher.AntiAliasing, launcher.VSync, launcher.FpsLimit);
             }
             return null;
         }

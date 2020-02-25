@@ -42,11 +42,10 @@ namespace BlackCoat.Entities.Lights
 
             var view = new View(size / 2, size);
             Add(_Lights = new Container(_Core) { View = view });
-            Add(_AmbientLight = new Rectangle(_Core, new Color(50, 50, 50))
+            Add(_AmbientLight = new Rectangle(_Core, size, new Color(50, 50, 50))
             {
                 BlendMode = BlendMode.Add,
-                View = view,
-                Size = size
+                View = view
             });
         }
 

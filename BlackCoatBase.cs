@@ -11,7 +11,7 @@ namespace BlackCoat
         /// <summary>
         /// The Engine Core
         /// </summary>
-        protected Core _Core;
+        protected readonly Core _Core;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BlackCoatBase"/> class.

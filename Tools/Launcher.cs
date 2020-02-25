@@ -11,7 +11,11 @@ using SFML.Window;
 
 namespace BlackCoat
 {
-    public partial class Launcher : Form
+    /// <summary>
+    /// Represents a Launcher Window to easily acess and configure graphic settings.
+    /// Custom application settings may be added as well
+    /// </summary>
+    public sealed partial class Launcher : Form
     {
         private class Resolution
         {
@@ -19,17 +23,22 @@ namespace BlackCoat
             public Resolution(VideoMode videoMode) => VideoMode = videoMode;
             public override string ToString() => $"{VideoMode.Width} x {VideoMode.Height}";
         }
+        public interface ISettings
+        {
+            (uint X, uint Y) Resolution { get; set; }
+            uint AntiAliasing { get; set; }
+            uint FpsLimit { get; set; }
+            bool Windowed { get; set; }
+            bool Borderless { get; set; }
+            bool VSync { get; set; }
+        }
 
+        private ISettings _Settings;
 
         public Image BannerImage
         {
             get => _Banner.Image;
             set => _Banner.Image = value;
-        }
-        public TabPage CustomSettings
-        {
-            get => _TapHost.TabPages[1];
-            set => _TapHost.TabPages[1] = value;
         }
 
         public VideoMode VideoMode
@@ -42,14 +51,23 @@ namespace BlackCoat
             get => _AAComboBox.SelectedIndex == 0 ? 0 : Convert.ToUInt32(_AAComboBox.SelectedItem.ToString());
             set => _AAComboBox.SelectedIndex = value == 0 ? 0 : _AAComboBox.Items.IndexOf(value.ToString());
         }
-        public uint? FpsLimit
+        public uint FpsLimit
         {
             get
             {
-                if (_FPSComboBox.SelectedIndex == 3) return null;
-                else return Convert.ToUInt32(_FPSComboBox.SelectedItem.ToString());
+                if (_FPSComboBox.SelectedIndex == 3) return 0;
+                return Convert.ToUInt32(_FPSComboBox.SelectedItem.ToString());
             }
-            set => _FPSComboBox.SelectedIndex = _FPSComboBox.Items.IndexOf(value.ToString());
+            set
+            {
+                if (value == 0) _FPSComboBox.SelectedIndex = 3;
+                else
+                {
+                    var index = _FPSComboBox.Items.IndexOf(value.ToString());
+                    if (index == -1) _FPSComboBox.SelectedIndex = 0;
+                    else _FPSComboBox.SelectedIndex = index;
+                }
+            }
         }
         public bool Windowed
         {
@@ -67,21 +85,61 @@ namespace BlackCoat
             set => _VsyncCheckBox.Checked = value;
         }
 
-
-        public Launcher()
+        /// <summary>
+        /// Creates new instance of the <see cref="Launcher"/> class
+        /// </summary>
+        /// <param name="settings">Optional instance of a <see cref="ISettings"/> implementation containing all required graphic initialization info</param>
+        /// <param name="customSettings">Optional user <see cref="Control"/> for editing application  specific settings</param>
+        public Launcher(ISettings settings = null, Control customSettings = null)
         {
             InitializeComponent();
+
+            // Add all available videomodes to UI
             _ResolutionComboBox.Items.AddRange(VideoMode.FullscreenModes.Where(m => m.BitsPerPixel == 32).Select(vm => new Resolution(vm)).ToArray());
+
+            // Initialize Default Values
             _ResolutionComboBox.SelectedIndex = 0;
             AntiAliasing = 0;
             FpsLimit = 120;
             Windowed = true;
             Borderless = false;
+            VSync = false;
+            
+            if(settings != null) // load from settings
+            {
+                _Settings = settings;
+                var vmode = new VideoMode(settings.Resolution.X, settings.Resolution.Y);
+                if (vmode.IsValid()) VideoMode = vmode;
+                else MessageBox.Show("Invalid video mode loaded - resetting.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                AntiAliasing = settings.AntiAliasing;
+                FpsLimit = settings.FpsLimit;
+                Windowed = settings.Windowed;
+                Borderless = settings.Borderless;
+                VSync = settings.VSync;
+            }
+
+            // Initialize custom settings tabpage
+            if (customSettings != null)
+            {
+                customSettings.Dock = DockStyle.Fill;
+                var newTab = new TabPage(customSettings.Text);
+                newTab.Controls.Add(customSettings);
+                _TabHost.TabPages.Add(newTab);
+            }
         }
 
 
         private void StartButton_Click(object sender, EventArgs e)
         {
+            if (_Settings != null)
+            {
+                _Settings.Resolution = (VideoMode.Width, VideoMode.Height);
+                _Settings.AntiAliasing = AntiAliasing;
+                _Settings.FpsLimit = FpsLimit;
+                _Settings.Windowed = Windowed;
+                _Settings.Borderless = Borderless;
+                _Settings.VSync = VSync;
+            }
             DialogResult = DialogResult.OK;
             Close();
         }

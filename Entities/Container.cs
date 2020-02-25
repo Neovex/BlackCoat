@@ -35,8 +35,7 @@ namespace BlackCoat.Entities
             set
             {
                 base.Alpha = value;
-                // Update all subsidiary entities by reassigning each its respective original alpha value
-                foreach (var entity in _Entities) entity.Alpha = entity.Alpha;
+                foreach (var entity in _Entities) entity.Alpha = entity.Alpha; // HACK
             }
         }
 

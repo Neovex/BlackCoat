@@ -37,10 +37,8 @@ namespace BlackCoat.Tools
         /// <param name="core">Engine Core</param>
         internal PerformanceMonitor(Core core) : base(core)
         {
-            Add(new Rectangle(_Core)
+            Add(new Rectangle(_Core, new Vector2f(115, 80), Color.Black)
             {
-                Size = new Vector2f(115, 80),
-                Color = Color.Black,
                 Alpha = 0.5f
             });
 

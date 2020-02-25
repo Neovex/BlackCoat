@@ -31,7 +31,7 @@
             System.Windows.Forms.Label label1;
             System.Windows.Forms.Label label2;
             System.Windows.Forms.Label label3;
-            this._TapHost = new System.Windows.Forms.TabControl();
+            this._TabHost = new System.Windows.Forms.TabControl();
             this._EngineTabPage = new System.Windows.Forms.TabPage();
             this._FPSComboBox = new System.Windows.Forms.ComboBox();
             this._VsyncCheckBox = new System.Windows.Forms.CheckBox();
@@ -45,7 +45,7 @@
             label1 = new System.Windows.Forms.Label();
             label2 = new System.Windows.Forms.Label();
             label3 = new System.Windows.Forms.Label();
-            this._TapHost.SuspendLayout();
+            this._TabHost.SuspendLayout();
             this._EngineTabPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this._Banner)).BeginInit();
             this.SuspendLayout();
@@ -77,14 +77,14 @@
             label3.TabIndex = 4;
             label3.Text = "Anti Aliasing";
             // 
-            // _TapHost
+            // _TabHost
             // 
-            this._TapHost.Controls.Add(this._EngineTabPage);
-            this._TapHost.Location = new System.Drawing.Point(12, 118);
-            this._TapHost.Name = "_TapHost";
-            this._TapHost.SelectedIndex = 0;
-            this._TapHost.Size = new System.Drawing.Size(510, 203);
-            this._TapHost.TabIndex = 1;
+            this._TabHost.Controls.Add(this._EngineTabPage);
+            this._TabHost.Location = new System.Drawing.Point(12, 118);
+            this._TabHost.Name = "_TabHost";
+            this._TabHost.SelectedIndex = 0;
+            this._TabHost.Size = new System.Drawing.Size(510, 203);
+            this._TabHost.TabIndex = 1;
             // 
             // _EngineTabPage
             // 
@@ -178,7 +178,8 @@
             // 
             // _ExitButton
             // 
-            this._ExitButton.Location = new System.Drawing.Point(447, 327);
+            this._ExitButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this._ExitButton.Location = new System.Drawing.Point(362, 327);
             this._ExitButton.Name = "_ExitButton";
             this._ExitButton.Size = new System.Drawing.Size(75, 23);
             this._ExitButton.TabIndex = 2;
@@ -188,7 +189,7 @@
             // 
             // _StartButton
             // 
-            this._StartButton.Location = new System.Drawing.Point(366, 327);
+            this._StartButton.Location = new System.Drawing.Point(447, 327);
             this._StartButton.Name = "_StartButton";
             this._StartButton.Size = new System.Drawing.Size(75, 23);
             this._StartButton.TabIndex = 2;
@@ -208,12 +209,14 @@
             // 
             // Launcher
             // 
+            this.AcceptButton = this._StartButton;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.CancelButton = this._ExitButton;
             this.ClientSize = new System.Drawing.Size(534, 362);
             this.Controls.Add(this._StartButton);
             this.Controls.Add(this._ExitButton);
-            this.Controls.Add(this._TapHost);
+            this.Controls.Add(this._TabHost);
             this.Controls.Add(this._Banner);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
@@ -221,7 +224,7 @@
             this.Name = "Launcher";
             this.ShowIcon = false;
             this.Text = "Black Coat Game";
-            this._TapHost.ResumeLayout(false);
+            this._TabHost.ResumeLayout(false);
             this._EngineTabPage.ResumeLayout(false);
             this._EngineTabPage.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this._Banner)).EndInit();
@@ -232,7 +235,7 @@
         #endregion
 
         private System.Windows.Forms.PictureBox _Banner;
-        private System.Windows.Forms.TabControl _TapHost;
+        private System.Windows.Forms.TabControl _TabHost;
         private System.Windows.Forms.TabPage _EngineTabPage;
         private System.Windows.Forms.ComboBox _ResolutionComboBox;
         private System.Windows.Forms.Button _ExitButton;

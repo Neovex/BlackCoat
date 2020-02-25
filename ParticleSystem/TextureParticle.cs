@@ -36,7 +36,7 @@ namespace BlackCoat.ParticleSystem
             _TextureSize = info.Texture.Size;
             _TextureRect.Width = (int)_TextureSize.X;
             _TextureRect.Height = (int)_TextureSize.Y;
-            _Position = position;
+            _Position = position + info.Offset;
             _Origin = info.Origin;
             _Scale = info.Scale;
             _Rotation = info.Rotation;
