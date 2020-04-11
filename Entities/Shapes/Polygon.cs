@@ -43,7 +43,10 @@ namespace BlackCoat.Entities.Shapes
         /// Creates a new <see cref="Polygon"/> instance
         /// </summary>
         /// <param name="core">Engine Core</param>
-        public Polygon(Core core, IEnumerable<Vector2f> points = null):base(core, new ConvexShape((uint)points.Count()))
+        /// <param name="points">The points this <see cref="Polygon"/> is composed of</param>
+        /// <param name="fillColor">Color of the <see cref="Polygon"/>s area.</param>
+        /// <param name="outlineColor">Color of the <see cref="Polygon"/>s outline.</param>
+        public Polygon(Core core, IEnumerable<Vector2f> points = null, Color? fillColor = null, Color? outlineColor = null) :base(core, new ConvexShape((uint)points.Count()), fillColor, outlineColor)
         {
             if (points != null)
             {

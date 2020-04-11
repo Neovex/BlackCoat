@@ -1,25 +1,28 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Comment CommentText="                                                                Black Coat Input Systems">
+    <Position X="4.94" Y="0.5" Height="0.291" Width="5.801" />
+  </Comment>
   <Class Name="BlackCoat.Input">
-    <Position X="0.5" Y="0.5" Width="1.5" />
-    <Compartments>
-      <Compartment Name="Methods" Collapsed="true" />
-    </Compartments>
-    <AssociationLine Name="DEFAULT" Type="BlackCoat.Input">
-      <MemberNameLabel ManuallyPlaced="true">
-        <Position X="-0.057" Y="0.3" />
-      </MemberNameLabel>
+    <Position X="2" Y="3.75" Width="2" />
+    <AssociationLine Name="_Device" Type="SFML.Graphics.RenderWindow" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="4" Y="4.217" />
+        <Point X="4.812" Y="4.217" />
+        <Point X="4.812" Y="1.812" />
+      </Path>
     </AssociationLine>
     <TypeIdentifier>
-      <HashCode>IAACgpAMgQAigIiAAAABAAgAAAAgAgABAYAIQRliACE=</HashCode>
+      <HashCode>IAACwpAMgQIigIiAAAABAAAAAAAgAgABAYAIQRliACE=</HashCode>
       <FileName>Input\Input.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
-      <Property Name="DEFAULT" />
+      <Field Name="_Device" />
+      <Property Name="CurrentEventSource" />
     </ShowAsAssociation>
   </Class>
   <Class Name="BlackCoat.TextEnteredEventArgs">
-    <Position X="2.25" Y="0.5" Width="1.75" />
+    <Position X="21.5" Y="1.25" Width="1.5" />
     <Compartments>
       <Compartment Name="Nested Types" Collapsed="false" />
     </Compartments>
@@ -36,49 +39,106 @@
     </TypeIdentifier>
   </Class>
   <Class Name="BlackCoat.InputMapping.ComplexInputMap&lt;TMappedOperation&gt;" BaseTypeListCollapsed="true">
-    <Position X="4.25" Y="0.5" Width="3" />
+    <Position X="6.25" Y="1.25" Width="2.5" />
     <TypeIdentifier>
-      <HashCode>AAEAABABACAAAICAABAACAAAEQAAAAAAgAAoAAAAAAg=</HashCode>
+      <HashCode>AAEAABABAAAAAICAABAACAAAEQAAAAAAgAAoAAAAAAg=</HashCode>
       <FileName>Input\Mapping\ComplexInputMap.cs</FileName>
     </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Input" />
+    </ShowAsAssociation>
     <ShowAsCollectionAssociation>
       <Field Name="_KeyboardActions" />
       <Field Name="_MouseActions" />
       <Field Name="_ScrollActions" />
     </ShowAsCollectionAssociation>
-    <Lollipop Position="0.2" />
   </Class>
   <Class Name="BlackCoat.InputMapping.MappedOperation&lt;TCondition, TOperation&gt;">
-    <Position X="8.75" Y="0.5" Width="3.25" />
+    <Position X="10.25" Y="1.25" Width="1.75" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAACIAAAAQABAAAAAAAAACAAAAAAAAEAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAACIAAAAQAAAAAAAAAAACAAAAAAAAEAAAAA=</HashCode>
       <FileName>Input\Mapping\MappedOperation.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="BlackCoat.InputMapping.SimpleInputMap&lt;TMappedOperation&gt;" BaseTypeListCollapsed="true">
-    <Position X="12.25" Y="0.5" Width="3.25" />
+    <Position X="6.25" Y="5.75" Width="2.5" />
+    <AssociationLine Name="Input" Type="BlackCoat.Input" FixedFromPoint="true">
+      <Path>
+        <Point X="6.25" Y="6.312" />
+        <Point X="4" Y="6.312" />
+      </Path>
+    </AssociationLine>
     <TypeIdentifier>
-      <HashCode>AQAQABARACAAAICQABABCAQAEQAAAAAAgIAoAQgAIAg=</HashCode>
+      <HashCode>AQAQQBARACAAAACAABABAAQAEQAAAAAAgIAIAQgAIQg=</HashCode>
       <FileName>Input\Mapping\SimpleInputMap.cs</FileName>
-    </TypeIdentifier>
-    <Lollipop Position="0.2" />
-  </Class>
-  <Class Name="BlackCoat.Core" Collapsed="true">
-    <Position X="4.25" Y="5" Width="3" />
-    <TypeIdentifier>
-      <HashCode>AAQhEAAIgSAIgoEAGCAAQAgMVBQBJBohIIYAACFGAIc=</HashCode>
-      <FileName>Core.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
       <Property Name="Input" />
     </ShowAsAssociation>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="BlackCoat.UI.UIInput">
+    <Position X="13" Y="1.25" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAEEQIAZAACQQAgAAABAkCAQAAACEAAgAQAABgA=</HashCode>
+      <FileName>UI\InputMapping\UIInput.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Input" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="BlackCoat.UI.UIInputMap&lt;TMapped&gt;">
+    <Position X="13" Y="7.5" Width="2.25" />
+    <Compartments>
+      <Compartment Name="Nested Types" Collapsed="false" />
+    </Compartments>
+    <NestedTypes>
+      <Enum Name="BlackCoat.UI.UIInputMap&lt;TMapped&gt;.UiOperation">
+        <TypeIdentifier>
+          <NewMemberFileName>UI\InputMapping\UIInputMap.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAkAAAAAAA=</HashCode>
+      <FileName>UI\InputMapping\UIInputMap.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SFML.Graphics.RenderWindow" Collapsed="true">
+    <Position X="4" Y="1.25" Width="1.5" />
+    <TypeIdentifier />
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="BlackCoat.Core" Collapsed="true">
+    <Position X="0.5" Y="1.25" Width="1.5" />
+    <AssociationLine Name="_Input" Type="BlackCoat.Input" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="1.219" Y="1.812" />
+        <Point X="1.219" Y="4.217" />
+        <Point X="2" Y="4.217" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAQgEIAIgSAIAoEAGCAAQAgMRBQBJBohIIYAACFGAIc=</HashCode>
+      <FileName>Core.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_Input" />
+    </ShowAsAssociation>
     <Lollipop Position="0.2" />
   </Class>
   <Enum Name="BlackCoat.InputMapping.ScrollDirection">
-    <Position X="13" Y="7.25" Width="1.75" />
+    <Position X="10.25" Y="4" Width="1.75" />
     <TypeIdentifier>
       <HashCode>AAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAI=</HashCode>
-      <FileName>Input\Mapping\SimpleInputMap.cs</FileName>
+      <FileName>Input\Mapping\ScrollDirection.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="BlackCoat.InputSource">
+    <Position X="2.25" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgAAAAAAAIAAAAAQAAAAAAAAAAAAAAAAAAAABEAAAA=</HashCode>
+      <FileName>Input\InputSource.cs</FileName>
     </TypeIdentifier>
   </Enum>
   <Font Name="Segoe UI" Size="9" />

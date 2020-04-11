@@ -134,6 +134,7 @@ namespace BlackCoat.Tools
             _AnimationRunning = true;
 
             Visible = true;
+            BlackCoat.Input.MASTER_OVERRIDE = Input.Input;
             _InputBox.GiveFocus();
             _InputBox.StartEdit();
 
@@ -152,6 +153,7 @@ namespace BlackCoat.Tools
             {
                 IsOpen = false;
                 Visible = false;
+                BlackCoat.Input.MASTER_OVERRIDE = null;
                 _AnimationRunning = false;
                 _InputBox.Text = String.Empty;
             }, InterpolationType.OutCubic);

@@ -13,6 +13,8 @@ namespace BlackCoat
     /// </summary>
     public class Input : BlackCoatBase
     {
+        internal static Input MASTER_OVERRIDE;
+
         // Variables #######################################################################
         private RenderWindow _Device;
         private Vector2f _MousePosition;
@@ -275,10 +277,11 @@ namespace BlackCoat
                     break;
             }
 
+            // Manage Key Presses
             if (IsKeyDown(e.Code)) return;
             _KeyboardKeys.Add(e.Code);
             CurrentEventSource = InputSource.Keyboard;
-            KeyPressed(e.Code);
+            if (MASTER_OVERRIDE == null || MASTER_OVERRIDE == this) KeyPressed(e.Code);
             CurrentEventSource = InputSource.None;
         }
 
@@ -287,7 +290,7 @@ namespace BlackCoat
             if (!IsKeyDown(e.Code)) return;
             _KeyboardKeys.Remove(e.Code);
             CurrentEventSource = InputSource.Keyboard;
-            KeyReleased(e.Code);
+            if (MASTER_OVERRIDE == null || MASTER_OVERRIDE == this) KeyReleased(e.Code);
             CurrentEventSource = InputSource.None;
         }
 

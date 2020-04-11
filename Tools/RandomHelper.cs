@@ -1,5 +1,6 @@
 ﻿using System;
 using SFML.System;
+using SFML.Graphics;
 
 namespace BlackCoat.Tools
 {
@@ -10,11 +11,9 @@ namespace BlackCoat.Tools
     {
         // CTOR ############################################################################
         /// <summary>
-        /// Creates a new Instance of the RandomHelper class.
         /// Creates a Random with a default seed.
         /// </summary>
-        internal RandomHelper():base()
-        { }
+        internal RandomHelper():base() { }
 
 
         // Methods #########################################################################
@@ -28,7 +27,7 @@ namespace BlackCoat.Tools
         {
             // Prechecks
             if (min == max) return max;
-            if (min > max) throw new ArgumentException();
+            if (min > max) throw new ArgumentException("Min must not be larger than max");
 
             // Negative cases
             if (max < 0) return NextFloat(max * -1, min * -1) * -1;
@@ -41,9 +40,21 @@ namespace BlackCoat.Tools
             return ret;
         }
 
+        /// <summary>
+        /// Generates a random Vector
+        /// </summary>
+        /// <param name="xmin">Minimum value for x</param>
+        /// <param name="xmax">Maximum value for x</param>
+        /// <param name="ymin">Minimum value for y</param>
+        /// <param name="ymax">Maximum value for y</param>
+        /// <returns>A Vector within the bounds</returns>
+        public Vector2f NextVector(float xmin, float xmax, float ymin, float ymax)
+        {
+            return new Vector2f(NextFloat(xmin, xmax), NextFloat(ymin, ymax));
+        }
 
         /// <summary>
-        /// Generates a Vector with random coordinates
+        /// Generates a random Vector
         /// </summary>
         /// <param name="min">Minimum value for x and y</param>
         /// <param name="max">Maximum value for x and y</param>
@@ -52,19 +63,26 @@ namespace BlackCoat.Tools
         {
             return NextVector(min, max, min, max);
         }
+
         /// <summary>
-        /// Generates a Vector with random coordinates
+        /// Generates a random Vector within a rectangular space
         /// </summary>
-        /// <param name="xmin">Minimum value for x</param>
-        /// <param name="xmax">Maximum value for x</param>
-        /// <param name="ymin">Minimum value for y</param>
-        /// <param name="ymax">Maximum value for y</param>
-        /// <returns>
-        /// A Vector within the bounds
-        /// </returns>
-        public Vector2f NextVector(float xmin, float xmax, float ymin, float ymax)
+        /// <param name="min">Top left corner of the allowed space</param>
+        /// <param name="max">Bottom right corner of the allowed space</param>
+        /// <returns>A Vector within the bounds</returns>
+        public Vector2f NextVector(Vector2f min, Vector2f max)
         {
-            return new Vector2f(NextFloat(xmin, xmax), NextFloat(ymin, ymax));
+            return NextVector(min.X, max.X, min.Y, max.Y);
+        }
+
+        /// <summary>
+        /// Generates a random Vector within a rectangular space
+        /// </summary>
+        /// <param name="area">Rectangle defining the allowed space</param>
+        /// <returns>A Vector within the bounds</returns>
+        public Vector2f NextVector(FloatRect area)
+        {
+            return NextVector(area.Left, area.Top, area.Left + area.Width, area.Top + area.Height);
         }
     }
 }
