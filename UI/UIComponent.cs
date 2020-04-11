@@ -152,13 +152,13 @@ namespace BlackCoat.UI
 
         public Color BackgroundColor
         {
-            get => _Background.Color;
-            set => _Background.Visible = (_Background.Color = value).A != 0;
+            get => _Background.FillColor;
+            set { _Background.FillColor = value; _Background.Filled = value.A != 0; }
         }
         public float BackgroundAlpha
         {
             get => _Background.Alpha;
-            set => _Background.Visible = (_Background.Alpha = value) != 0;
+            set { _Background.Alpha = value; _Background.Filled = value != 0; }
         }
 
         public override bool Visible
@@ -191,7 +191,7 @@ namespace BlackCoat.UI
         {
             _Enabled = true;
             CollisionShape = new UICollisionShape(_Core.CollisionSystem, this);
-            Add(_Background = new Rectangle(_Core, new Vector2f()) { Alpha = 0 });
+            Add(_Background = new Rectangle(_Core, new Vector2f()));
         }
 
 
@@ -328,11 +328,11 @@ namespace BlackCoat.UI
         protected virtual void InvokeOriginChanged() => OriginChanged.Invoke(this);
         protected virtual void InvokeContainerChanged() => ContainerChanged.Invoke(this);
 
-        protected override void Destroy(bool disposing)
+        protected override void Dispose(bool disposing)
         {
             if (ACTIVE_COMPONENT == this) ACTIVE_COMPONENT = null;
             Input = null;
-            base.Destroy(disposing);
+            base.Dispose(disposing);
         }
     }
 }

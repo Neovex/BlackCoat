@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
+using System.Collections.Generic;
 using SFML.System;
 
 namespace BlackCoat.Collision
@@ -477,6 +477,22 @@ namespace BlackCoat.Collision
                 case Geometry.Polygon: return CheckCollision(self as IPolygon, other);
             }
             return HandleUnknownShape(self);
+        }
+
+        /// <summary>
+        /// Determines if objects touch or intersect.
+        /// </summary>
+        /// <returns>True when the objects touch or intersect.</returns>
+        public virtual bool CheckCollision(Vector2f self, ICollisionShape other)
+        {
+            switch (other.CollisionGeometry)
+            {
+                case Geometry.Line: return CheckCollision(self, other as ILine);
+                case Geometry.Circle: return CheckCollision(self, other as ICircle);
+                case Geometry.Rectangle: return CheckCollision(self, other as IRectangle);
+                case Geometry.Polygon: return CheckCollision(self, other as IPolygon);
+            }
+            return HandleUnknownShape(other);
         }
 
         /// <summary>

@@ -48,10 +48,10 @@ namespace BlackCoat.UI
             base.HandleInputCancel();
             Close();
         }
-        protected override void Destroy(bool disposing)
+        protected override void Dispose(bool disposing)
         {
             if (Input != null) Input.Confirm -= HandleInputConfirm;
-            base.Destroy(disposing);
+            base.Dispose(disposing);
         }
     }
 }

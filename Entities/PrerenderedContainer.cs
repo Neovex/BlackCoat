@@ -124,15 +124,15 @@ namespace BlackCoat.Entities
         }
 
         /// <summary>
-        /// Handles the destruction of the object
+        /// Releases unmanaged and - optionally - managed resources.
         /// </summary>
-        /// <param name="disposing">Determines if the GC is disposing the object (true), or it's an explicit call (false).</param>
-        protected override void Destroy(bool disposing)
+        /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
+        protected override void Dispose(bool disposing)
         {
             if (!FixedSize) _Core.DeviceResized -= Handle_DeviceResized;
             _RenderTarget.Dispose();
             _RenderTarget = null;
-            base.Destroy(disposing);
+            base.Dispose(disposing);
         }
     }
 }

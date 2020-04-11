@@ -66,6 +66,7 @@
     <Compile Include="BlackCoatBase.cs" />
     <Compile Include="Entities\Lights\Lightmap.cs" />
     <Compile Include="Entities\PrerenderedContainer.cs" />
+    <Compile Include="Entities\Shapes\ShapeEntity.cs" />
     <Compile Include="Extensions\ColorExtensions.cs" />
     <Compile Include="Extensions\RectangleExtensions.cs" />
     <Compile Include="Input\InputSource.cs" />
@@ -156,7 +157,7 @@
     <Compile Include="Entities\TextItem.cs" />
     <Compile Include="Entities\Graphic.cs" />
     <Compile Include="Entities\Layer.cs" />
-    <Compile Include="Extensions\IEntityExtensions.cs" />
+    <Compile Include="Extensions\EntityExtensions.cs" />
     <Compile Include="Input\Input.cs" />
     <Compile Include="Input\Mapping\MappedOperation.cs" />
     <Compile Include="Input\Mapping\ComplexInputMap.cs" />

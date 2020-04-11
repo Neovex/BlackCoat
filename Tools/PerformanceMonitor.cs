@@ -42,11 +42,10 @@ namespace BlackCoat.Tools
                 Alpha = 0.5f
             });
 
-            Add(_InfoDisplay = new TextItem(_Core)
+            Add(_InfoDisplay = new TextItem(_Core, characterSize: 10)
             {
                 Position = new Vector2f(5, 2),
-                FillColor = Color.Cyan,
-                CharacterSize = 10
+                Color = Color.Cyan
             });
         }
 

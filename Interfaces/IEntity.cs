@@ -8,13 +8,38 @@ namespace BlackCoat
     /// <summary>
     /// Common interface of all <see cref="BlackCoat"/> Entity Types
     /// </summary>
-    public interface IEntity:Drawable, ITransformable, IDisposable
+    public interface IEntity:Drawable, IDisposable
     {
         // Properties ######################################################################
         /// <summary>
         /// Name of the <see cref="IEntity"/>
         /// </summary>
         String Name { get; set; }
+
+        /// <summary>
+        /// Gets or sets the position of this <see cref="IEntity"/>
+        /// </summary>
+        Vector2f Position { get; set; }
+
+        /// <summary>
+        /// Gets the position of this <see cref="IEntity"/> independent from scene graph and view.
+        /// </summary>
+        Vector2f GlobalPosition { get; }
+
+        /// <summary>
+        /// Rotation of the <see cref="IEntity"/>
+        /// </summary>
+        float Rotation { get; set; }
+
+        /// <summary>
+        /// Scale of the <see cref="IEntity"/>
+        /// </summary>
+        Vector2f Scale { get; set; }
+
+        /// <summary>
+        /// The origin of an object defines the center point for transformations
+        /// </summary>
+        Vector2f Origin { get; set; }
 
         /// <summary>
         /// Parent Container of the <see cref="IEntity"/>
@@ -60,11 +85,6 @@ namespace BlackCoat
         /// Target device for rendering
         /// </summary>
         RenderTarget RenderTarget { get; set; }
-
-        /// <summary>
-        /// Gets the position of this <see cref="IEntity"/> independent from scene graph and view.
-        /// </summary>
-        Vector2f GlobalPosition { get; }
 
         /// <summary>
         /// Determines whether this <see cref="IEntity" /> is destroyed.

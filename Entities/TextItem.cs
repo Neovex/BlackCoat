@@ -4,21 +4,14 @@ using SFML.Graphics;
 using BlackCoat.Collision;
 using BlackCoat.Collision.Shapes;
 
-
 namespace BlackCoat.Entities
 {
     /// <summary>
     /// Renders Text onto the Scene
     /// </summary>
-    public class TextItem : Text, IEntity, ICollidable
+    public class TextItem : EntityBase<Text>, ICollidable
     {
         // Variables #######################################################################
-        protected Core _Core;
-        private Container _Parent;
-        private Boolean _Visible;
-        private View _View;
-        private float _Alpha;
-        private RenderTarget _RenderTarget;
         private ICollisionShape _CollisionShape;
 
 
@@ -26,105 +19,23 @@ namespace BlackCoat.Entities
         /// <summary>
         /// Text to Render
         /// </summary>
-        public String Text
-        {
-            get => DisplayedString;
-            set => DisplayedString = value;
-        }
-
+        public String Text { get => Target.DisplayedString; set => Target.DisplayedString = value; }
         /// <summary>
-        /// Name of the <see cref="IEntity" />
+        /// Font Size
         /// </summary>
-        public string Name { get; set; }
-
+        public uint CharacterSize { get => Target.CharacterSize; set => Target.CharacterSize = value; }
         /// <summary>
-        /// Parent Container of this Entity
+        /// Font used to display the text
         /// </summary>
-        public Container Parent
-        {
-            get => _Parent;
-            set => _Parent = value == null || !value.Contains(this) ? value : _Parent;
-        }
-
+        public Font Font { get => Target.Font; set => Target.Font = value; }
         /// <summary>
-        /// Determines the Visibility of the Entity
+        /// Style of the text <see cref="Text.Styles"/>
         /// </summary>
-        public Boolean Visible
-        {
-            get => _Visible && (_Parent == null || _Parent.Visible);
-            set => _Visible = value;
-        }
-
+        public Text.Styles Style { get => Target.Style; set => Target.Style = value; }
         /// <summary>
-        /// Target Render View
+        /// Text Color
         /// </summary>
-        public View View
-        {
-            get => _View ?? _Parent?.View;
-            set => _View = value;
-        }
-
-        /// <summary>
-        /// Alpha Visibility - 0-1f
-        /// </summary>
-        public virtual Single Alpha
-        {
-            get => _Alpha;
-            set
-            {
-                _Alpha = value < 0 ? 0 : value > 1 ? 1 : value;
-                var color = FillColor;
-                color.A = (Byte)(GlobalAlpha * Byte.MaxValue);
-                FillColor = color;
-            }
-        }
-        /// <summary>
-        /// Global Alpha Visibility according to the scene graph
-        /// </summary>
-        public virtual Single GlobalAlpha => _Alpha * (Parent == null ? 1 : _Parent.GlobalAlpha);
-
-        /// <summary>
-        /// Renderstate of the entity
-        /// </summary>
-        public RenderStates RenderState { get; set; }
-
-        /// <summary>
-        /// Target device for rendering
-        /// </summary>
-        public RenderTarget RenderTarget
-        {
-            get => _RenderTarget ?? _Parent?.RenderTarget;
-            set => _RenderTarget = value;
-        }
-
-        /// <summary>
-        /// Blend method for Rendering
-        /// </summary>
-        public virtual BlendMode BlendMode
-        {
-            get => RenderState.BlendMode;
-            set
-            {
-                var state = RenderState;
-                state.BlendMode = value;
-                RenderState = state;
-            }
-        }
-
-        /// <summary>
-        /// Shader for Rendering
-        /// </summary>
-        public virtual Shader Shader
-        {
-            get => RenderState.Shader;
-            set
-            {
-                var state = RenderState;
-                state.Shader = value;
-                RenderState = state;
-            }
-        }
-
+        public override Color Color { get => Target.FillColor; set => Target.FillColor = value.ApplyAlpha(GlobalAlpha); }
         /// <summary>
         /// Gets or sets the collision shape for collision detection
         /// </summary>
@@ -133,16 +44,14 @@ namespace BlackCoat.Entities
             get => _CollisionShape ?? (_CollisionShape = new BasicTextCollisionShape(_Core.CollisionSystem, this));
             set => _CollisionShape = value;
         }
-
         /// <summary>
-        /// Gets the position of this <see cref="IEntity"/> independent from scene graph and view.
+        /// Absolute bounds of the <see cref="TextItem"/>
         /// </summary>
-        public Vector2f GlobalPosition => Position - Origin.MultiplyBy(Scale) + (Parent == null ? default(Vector2f) : Parent.GlobalPosition);
-
+        public FloatRect GlobalBounds => Target.GetGlobalBounds();
         /// <summary>
-        /// Determines whether this <see cref="IEntity" /> is destroyed.
+        /// Local bounds of the <see cref="TextItem"/>
         /// </summary>
-        public bool Disposed => CPointer == IntPtr.Zero;
+        public FloatRect LocalBounds => Target.GetLocalBounds();
 
 
         // CTOR ############################################################################        
@@ -151,49 +60,19 @@ namespace BlackCoat.Entities
         /// </summary>
         /// <param name="core">Black Coat Engine Core.</param>
         /// <param name="text">The text to display.</param>
-        /// <param name="characterSize">The size of the texts characters. AKA: Fontsize.</param>
+        /// <param name="characterSize">The size of the texts characters.</param>
         /// <param name="font">Initial font.</param>
-        public TextItem(Core core, String text = "", uint characterSize = 16, Font font = null)
+        public TextItem(Core core, String text = "", uint characterSize = 16, Font font = null) : base(core, new Text(text, font ?? core.DefaultFont, characterSize))
         {
-            _Core = core;
-            Text = text;
-            CharacterSize = characterSize;
-            _Alpha = 1;
-            Visible = true;
-            RenderState = RenderStates.Default;
-            Font = font ?? _Core.DefaultFont;
         }
 
 
         // Methods #########################################################################
         /// <summary>
-        /// Updates the <see cref="TextItem"/>.
-        /// Can be overridden by derived classes.
+        /// Returns the visual position of the Index-th character of the text, in coordinates relative to the text (note : translation, origin, rotation and scale are not applied)
         /// </summary>
-        /// <param name="deltaT">Current game time</param>
-        public virtual void Update(Single deltaT) { }
-
-        /// <summary>
-        /// Draws the Text
-        /// </summary>
-        public virtual void Draw() => _Core.Draw(this);
-
-        /// <summary>
-        /// Handle the destruction of the object
-        /// </summary>
-        /// <param name="disposing">Is the GC disposing the object, or is it an explicit call ?</param>
-        protected override void Destroy(bool disposing)
-        {
-            if (Parent != null) Parent.Remove(this);
-            base.Destroy(disposing);
-        }
-
-        /// <summary>
-        /// Returns a <see cref="System.String" /> that represents this instance.
-        /// </summary>
-        /// <returns>
-        /// A <see cref="System.String" /> that represents this instance.
-        /// </returns>
-        public override string ToString() => this.CreateIdString();
+        /// <param name="index">Index of the character</param>
+        /// <returns>Position of the Index-th character (end of text if Index is out of range)</returns>
+        public Vector2f FindCharacterPos(uint index) => Target.FindCharacterPos(index);
     }
 }

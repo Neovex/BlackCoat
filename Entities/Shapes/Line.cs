@@ -7,7 +7,7 @@ namespace BlackCoat.Entities.Shapes
     /// <summary>
     /// Represents a Line Primitive
     /// </summary>
-    public class Line : EntityBase, IEntity, ICollidable, ILine
+    public class Line : EntityBase, ICollidable, ILine
     {
         // Variables #######################################################################
         private readonly Vertex[] _Vertices;
@@ -25,14 +25,6 @@ namespace BlackCoat.Entities.Shapes
 
 
         // Properties ######################################################################
-        /// <summary>
-        /// Line Color
-        /// </summary>
-        public override Color Color
-        {
-            get => Start.Color;
-            set => Start.Color = End.Color = value;
-        }
 
         /// <summary>
         /// Gets or sets the collision shape for collision detection
@@ -55,8 +47,22 @@ namespace BlackCoat.Entities.Shapes
         Vector2f ILine.End => End.Position;
 
 
-        public Vector2f HStart { get => Start.Position; set => Start.Position = value; }
-        public Vector2f HEnd { get => End.Position; set => End.Position = value; }
+        public override Vector2f Position
+        {
+            get => Start.Position;
+            set
+            {
+                var offset = Start.Position - value;
+                Start.Position += offset;
+                End.Position += offset;
+            }
+        }
+        public override float Rotation { get => Start.Position.AngleTowards(End.Position); set { } }
+        public override Vector2f Scale { get => new Vector2f(1,1); set { } }
+        public override Vector2f Origin { get => new Vector2f(); set { } }
+        public override Color Color { get => Start.Color; set => Start.Color = End.Color = value.ApplyAlpha(GlobalAlpha); }
+
+        public override bool Disposed => false; // Due to vertices being simple structs explicit disposal is unnecessary
 
 
         // CTOR ############################################################################
@@ -87,14 +93,8 @@ namespace BlackCoat.Entities.Shapes
             target.Draw(_Vertices, PrimitiveType.Lines, states);
         }
 
-        /// <summary>
-        /// Updates the <see cref="Line" />.
-        /// </summary>
-        /// <param name="deltaT">Current game-time</param>
-        public override void Update(float deltaT) { }
-
-
         // Collision Implementation ########################################################
+
         /// <summary>
         /// Determines if this <see cref="Line"/> contains the defined point
         /// </summary>
@@ -108,13 +108,5 @@ namespace BlackCoat.Entities.Shapes
         /// <param name="other">The other <see cref="ICollisionShape"/></param>
         /// <returns>True when the objects overlap or touch</returns>
         public virtual bool CollidesWith(ICollisionShape other) => _Core.CollisionSystem.CheckCollision(this, other);
-
-        /// <summary>
-        /// Returns a <see cref="System.String" /> that represents this instance.
-        /// </summary>
-        /// <returns>
-        /// A <see cref="System.String" /> that represents this instance.
-        /// </returns>
-        public override string ToString() => $"[{nameof(Line)}] Start({Start}) End ({End})";
     }
 }

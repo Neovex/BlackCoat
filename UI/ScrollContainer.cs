@@ -135,11 +135,11 @@ namespace BlackCoat.UI
         /// Handles the destruction of the object
         /// </summary>
         /// <param name="disposing">Determines if the GC is disposing the object (true), or it's an explicit call (false).</param>
-        protected override void Destroy(bool disposing)
+        protected override void Dispose(bool disposing)
         {
             _RenderTarget.Dispose();
             _RenderTarget = null;
-            base.Destroy(disposing);
+            base.Dispose(disposing);
         }
     }
 }

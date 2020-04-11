@@ -19,16 +19,16 @@ namespace BlackCoat.UI
         private TextAlignment _Alignment;
 
 
-        public override Vector2f InnerSize => _Text.GetGlobalBounds().Size() + _Padding.Position() + _Padding.Size();
+        public override Vector2f InnerSize => _Text.LocalBounds.Size() + _Padding.Position() + _Padding.Size();
 
         public string Text
         {
-            get => _Text.DisplayedString;
+            get => _Text.Text;
             set
             {
                 value = value ?? String.Empty;
-                if (_Text.DisplayedString == value) return;
-                _Text.DisplayedString = value;
+                if (_Text.Text == value) return;
+                _Text.Text = value;
                 InvokeTextChanged();
                 InvokeSizeChanged();
             }
@@ -95,11 +95,11 @@ namespace BlackCoat.UI
 
         public Color TextColor
         {
-            get => _Text.FillColor;
+            get => _Text.Color;
             set
             {
-                if (_Text.FillColor == value) return;
-                _Text.FillColor = value;
+                if (_Text.Color == value) return;
+                _Text.Color = value;
                 InvokeColorChanged();
             }
         }
@@ -124,7 +124,7 @@ namespace BlackCoat.UI
 
         protected override void InvokeSizeChanged()
         {
-            var bounds = _Text.GetGlobalBounds();
+            var bounds = _Text.GlobalBounds;
             _Text.Origin += bounds.Position() - _Text.Position;
             switch (Alignment)
             {

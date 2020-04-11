@@ -46,5 +46,11 @@ namespace BlackCoat
         {
             return ValidateAngle((360 - ValidateAngle(rayAngle)) + (2 * ValidateAngle(surfaceAngle)));
         }
+
+        public static float Clamp(float value, float min, float max)
+        {
+            return value < min ? min : value > max ? max : value;
+        }
+
     }
 }

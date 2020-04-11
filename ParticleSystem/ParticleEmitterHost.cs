@@ -10,7 +10,7 @@ namespace BlackCoat.ParticleSystem
     /// This class represents the bridge between the Particle System and the State/Entity scene graph.
     /// </summary>
     /// <seealso cref="BlackCoat.Entities.EntityBase" />
-    public sealed class ParticleEmitterHost : EntityBase
+    public sealed class ParticleEmitterHost : EntityBase<Sprite>
     {
         private readonly List<EmitterBase> _Emitters;
         private readonly SortedList<int, List<ParticleVertexRenderer>> _DepthLayers;
@@ -25,7 +25,7 @@ namespace BlackCoat.ParticleSystem
         /// Initializes a new instance of the <see cref="ParticleEmitterHost"/> class.
         /// </summary>
         /// <param name="core">The engine core.</param>
-        public ParticleEmitterHost(Core core) : base(core)
+        public ParticleEmitterHost(Core core) : base(core, new Sprite())
         {
             _Emitters = new List<EmitterBase>();
             _DepthLayers = new SortedList<int, List<ParticleVertexRenderer>>();

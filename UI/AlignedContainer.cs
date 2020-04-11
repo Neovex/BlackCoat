@@ -81,13 +81,13 @@ namespace BlackCoat.UI
             return ret;
         }
 
-        protected override void Destroy(bool disposing)
+        protected override void Dispose(bool disposing)
         {
             if (Container != null)
             {
                 Container.SizeChanged -= ContainerSizeChanged;
             }
-            base.Destroy(disposing);
+            base.Dispose(disposing);
         }
     }
 }

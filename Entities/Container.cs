@@ -19,25 +19,12 @@ namespace BlackCoat.Entities
         /// <summary>
         /// Transformation Matrix defining Position, Scale and Rotation of the Entity within the scene graph
         /// </summary>
-        public virtual Transform GlobalTransform => Parent == null ? Transform : Transform * Parent.GlobalTransform;
+        public virtual Transform GlobalTransform => Parent == null ? Target.Transform : Target.Transform * Parent.GlobalTransform;
 
         /// <summary>
         /// Retrieves the entity at the given index or null when the index is invalid
         /// </summary>
         public virtual IEntity this[int i] => i > -1 && i < _Entities.Count ? _Entities[i] : null;
-
-        /// <summary>
-        /// Alpha Visibility - 0-1f
-        /// </summary>
-        public override float Alpha
-        {
-            get => base.Alpha;
-            set
-            {
-                base.Alpha = value;
-                foreach (var entity in _Entities) entity.Alpha = entity.Alpha; // HACK
-            }
-        }
 
         /// <summary>
         /// Gets the amount of entities currently contained in this <see cref="Container"/>.
@@ -134,18 +121,26 @@ namespace BlackCoat.Entities
         }
 
         /// <summary>
-        /// Handles the destruction of the object
+        /// Called when the alpha value has changed.
         /// </summary>
-        /// <param name="disposing">Determines if the GC is disposing the object (true), or it's an explicit call (false).</param>
-        protected override void Destroy(bool disposing)
+        protected override void AlphaChanged()
         {
-            foreach (var entity in _Entities)
+            base.AlphaChanged();
+            foreach (var entity in _Entities) entity.Alpha = entity.Alpha; // Required for alpha inheritance
+        }
+
+        /// <summary>
+        /// Releases unmanaged and - optionally - managed resources.
+        /// </summary>
+        /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
+        protected override void Dispose(bool disposing)
+        {
+            for (int i = _Entities.Count - 1; i >= 0; i--)
             {
-                entity.Parent = null;
-                entity.Dispose();
+                _Entities[i].Dispose();
             }
             _Entities.Clear();
-            base.Destroy(disposing);
+            base.Dispose(disposing);
         }
     }
 }

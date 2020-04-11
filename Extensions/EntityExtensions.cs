@@ -1,5 +1,4 @@
 ﻿using System;
-using BlackCoat.Entities;
 using SFML.System;
 
 namespace BlackCoat
@@ -7,7 +6,7 @@ namespace BlackCoat
     /// <summary>
     /// Provides extension methods for all entity types.
     /// </summary>
-    public static class IEntityExtensions
+    public static class EntityExtensions
     {
         /// <summary>
         /// Retrieves the angle for an entity to look at the position of another entity
@@ -15,7 +14,7 @@ namespace BlackCoat
         /// <param name="entity">"Viewer" Entity</param>
         /// <param name="target">Entity to look at</param>
         /// <param name="offset">Offset from the target entity</param>
-        public static void LookAt(this IEntity entity, IEntity target, Vector2f offset = default(Vector2f))
+        public static void LookAt(this ITransformable entity, ITransformable target, Vector2f offset = default(Vector2f))
         {
             entity.Rotation = entity.Position.AngleTowards(target.Position + offset);
         }
@@ -26,7 +25,7 @@ namespace BlackCoat
         /// <param name="entity">"Viewer" Entity</param>
         /// <param name="target">Position to look at</param>
         /// <param name="offset">Offset from the target position</param>
-        public static void LookAt(this IEntity entity, Vector2f target, Vector2f offset = default(Vector2f))
+        public static void LookAt(this ITransformable entity, Vector2f target, Vector2f offset = default(Vector2f))
         {
             entity.Rotation = entity.Position.AngleTowards(target + offset);
         }
@@ -36,12 +35,12 @@ namespace BlackCoat
         /// </summary>
         /// <param name="entity">The entity.</param>
         /// <returns>Id string</returns>
-        public static string CreateIdString(this IEntity entity)
+        public static string CreateIdString(this IEntity entity, Vector2f position)
         {
             if (entity == null) return null;
             var name = String.Empty;
             if (!String.IsNullOrEmpty(entity.Name)) name = $"\"{entity.Name}\" ";
-            return $"{name}{entity.GetType().Name} Pos: {entity.Position.X} x {entity.Position.Y}";
+            return $"{name}{entity.GetType().Name} Pos: {position.X} x {position.Y}";
         }
     }
 }

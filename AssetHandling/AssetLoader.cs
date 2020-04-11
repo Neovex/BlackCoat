@@ -53,7 +53,7 @@ namespace BlackCoat
 
         ~AssetLoader()
         {
-            if (!Disposed) Dispose();
+            Dispose(false);
         }
 
 
@@ -135,7 +135,13 @@ namespace BlackCoat
         /// <summary>
         /// Releases all used unmanaged resources.
         /// </summary>
+
         public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+        protected virtual void Dispose(bool disposing)
         {
             if (Disposed) return;
             Disposed = true;
