@@ -3,8 +3,6 @@ using System.Linq;
 using System.Diagnostics;
 using System.Reflection;
 
-// TODO : move to tools DLL
-
 /// <summary>
 /// Log Severity
 /// </summary>
@@ -22,33 +20,41 @@ public enum LogLevel
 /// </summary>
 public static class Log
 {
+    /// <summary>
+    /// Occurs when a message is logged.
+    /// </summary>
     public static event Action<String, LogLevel> OnLog = (m, l) => Console.WriteLine(m);
+
+    /// <summary>
+    /// The current log Severity
+    /// </summary>
     public static LogLevel Level = LogLevel.Debug;
 
-    public static void Debug(params Object[] msgs)
-    {
-        DoLog(msgs, LogLevel.Debug);
-    }
-
-    public static void Info(params Object[] msgs)
-    {
-        DoLog(msgs, LogLevel.Info);
-    }
-
-    public static void Warning(params Object[] msgs)
-    {
-        DoLog(msgs, LogLevel.Warn);
-    }
-
-    public static void Error(params Object[] msgs)
-    {
-        DoLog(msgs, LogLevel.Error);
-    }
-
-    public static void Fatal(params Object[] msgs)
-    {
-        DoLog(msgs, LogLevel.Fatal);
-    }
+    /// <summary>
+    /// Logs a debug message
+    /// </summary>
+    /// <param name="msgs">The objects and or messages to log</param>
+    public static void Debug(params Object[] msgs) => DoLog(msgs, LogLevel.Debug);
+    /// <summary>
+    /// Logs a info message
+    /// </summary>
+    /// <param name="msgs">The objects and or messages to log</param>
+    public static void Info(params Object[] msgs) => DoLog(msgs, LogLevel.Info);
+    /// <summary>
+    /// Logs a warning
+    /// </summary>
+    /// <param name="msgs">The objects and or messages to log</param>
+    public static void Warning(params Object[] msgs) => DoLog(msgs, LogLevel.Warn);
+    /// <summary>
+    /// Logs an error
+    /// </summary>
+    /// <param name="msgs">The objects and or messages to log</param>
+    public static void Error(params Object[] msgs) => DoLog(msgs, LogLevel.Error);
+    /// <summary>
+    /// Logs a fatal error
+    /// </summary>
+    /// <param name="msgs">The objects and or messages to log</param>
+    public static void Fatal(params Object[] msgs) => DoLog(msgs, LogLevel.Fatal);
 
     private static void DoLog(Object[] msgs, LogLevel lvl)
     {
