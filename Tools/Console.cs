@@ -115,7 +115,7 @@ namespace BlackCoat.Tools
             }
         }
 
-        private void LogMessage(String msg)
+        private void LogMessage(String msg, LogLevel lvl)
         {
             _Messages.Enqueue(msg.Replace(Environment.NewLine, Constants.NEW_LINE));
             if (_Messages.Count > _MAX_MESSAGE_HISTORY) _Messages.Dequeue();
