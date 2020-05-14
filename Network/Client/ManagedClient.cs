@@ -32,13 +32,19 @@ namespace BlackCoat.Network
             _ConnectedClients = new List<NetUser>();
         }
 
-        public bool Connect(String host, Int32 port)
+        public override bool Connect(String host, Int32 port, Action<NetOutgoingMessage> connectMessage = null)
         {
-            return Connect(host, port, Alias);
+            return base.Connect(host, port, m => AttachAlias(m, connectMessage));
         }
-        public bool Connect(IPEndPoint host)
+        public override bool Connect(IPEndPoint host, Action<NetOutgoingMessage> connectMessage = null)
         {
-            return Connect(host, Alias);
+            return base.Connect(host, m => AttachAlias(m, connectMessage));
+        }
+
+        private void AttachAlias(NetOutgoingMessage message, Action<NetOutgoingMessage> connectMessage)
+        {
+            message.Write(Alias);
+            if (connectMessage != null) connectMessage.Invoke(message);
         }
 
         protected override void ProcessIncommingData(TEnum subType, NetIncomingMessage msg)
@@ -106,7 +112,7 @@ namespace BlackCoat.Network
         protected abstract void ConnectionValidated(int id, string alias);
         protected abstract void UserConnected(NetUser user);
         protected abstract void UserDisconnected(NetUser user);
-        protected abstract void DataReceived(TEnum subType, NetIncomingMessage msg); // hmm msg UU mit interface ersetzen
+        protected abstract void DataReceived(TEnum subType, NetIncomingMessage msg);
 
         protected override void Connected()
         {

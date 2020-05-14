@@ -29,14 +29,23 @@ namespace BlackCoat.Network
         }
 
 
-        public bool Connect(String host, Int32 port, String hail)
+        public virtual bool Connect(String host, Int32 port, Action<NetOutgoingMessage> connectMessage = null)
         {
             if (Disposed) throw new ObjectDisposedException(nameof(Client<TEnum>));
             if (String.IsNullOrWhiteSpace(host)) throw new ArgumentException(nameof(host));
             try
             {
                 _Client.Start();
-                _Client.Connect(host, port, _Client.CreateMessage(hail));
+                if (connectMessage == null)
+                {
+                    _Client.Connect(host, port);
+                }
+                else
+                {
+                    var message = _Client.CreateMessage();
+                    connectMessage.Invoke(message);
+                    _Client.Connect(host, port, message);
+                }
                 return true;
             }
             catch (Exception ex)
@@ -46,14 +55,23 @@ namespace BlackCoat.Network
                 return false;
             }
         }
-        public bool Connect(IPEndPoint host, String hail)
+        public virtual bool Connect(IPEndPoint host, Action<NetOutgoingMessage> connectMessage = null)
         {
             if (Disposed) throw new ObjectDisposedException(nameof(Client<TEnum>));
             if (host == null) throw new ArgumentNullException(nameof(host));
             try
             {
                 _Client.Start();
-                _Client.Connect(host, _Client.CreateMessage(hail));
+                if (connectMessage == null)
+                {
+                    _Client.Connect(host);
+                }
+                else
+                {
+                    var message = _Client.CreateMessage();
+                    connectMessage.Invoke(message);
+                    _Client.Connect(host, message);
+                }
                 return true;
             }
             catch (Exception ex)
@@ -74,7 +92,7 @@ namespace BlackCoat.Network
 
         // OVERRIDES (to hide the underlying NetConnection)
 
-        protected override void HandleDiscoveryRequest(NetOutgoingMessage msg) { }
+        protected override bool HandleDiscoveryRequest(NetOutgoingMessage msg) => false;
 
         protected override void NewConnection(NetConnection senderConnection) => Connected();
         protected override void ConnectionLost(NetConnection senderConnection) => Disconnected();

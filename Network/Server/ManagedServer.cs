@@ -59,7 +59,7 @@ namespace BlackCoat.Network
             // Inform other Clients of new user
             Broadcast(_Commands.UserConnected, new Action<NetOutgoingMessage>(m => { m.Write(user.Id); m.Write(user.Alias); }));
 
-            UserConnected(user);
+            UserConnected(user, connection.RemoteHailMessage);
         }
 
 
@@ -93,7 +93,7 @@ namespace BlackCoat.Network
 
         // NOTIFY INHERITANCE
 
-        protected abstract void UserConnected(ServerUser<NetConnection> user);
+        protected abstract void UserConnected(ServerUser<NetConnection> user, NetIncomingMessage message);
         protected abstract void UserDisconnected(ServerUser<NetConnection> user);
     }
 }

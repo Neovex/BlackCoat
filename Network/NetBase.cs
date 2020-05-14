@@ -27,15 +27,23 @@ namespace BlackCoat.Network
         }
         ~NetBase()
         {
-            Dispose();
+            Dispose(false);
         }
 
 
         public void Dispose()
         {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+        protected virtual void Dispose(bool safeToDisposeManaged)
+        {
             if (Disposed) return;
             Disposed = true;
-            _BasePeer.Shutdown("Unexpected Shutdown");
+            if (safeToDisposeManaged)
+            {
+                _BasePeer.Shutdown("Unexpected Shutdown");
+            }
             _BasePeer = null;
         }
 
@@ -71,8 +79,10 @@ namespace BlackCoat.Network
 
                     case NetIncomingMessageType.DiscoveryRequest:
                         var response = _BasePeer.CreateMessage();
-                        HandleDiscoveryRequest(response);
-                        _BasePeer.SendDiscoveryResponse(response, msg.SenderEndPoint);
+                        if (HandleDiscoveryRequest(response))
+                        {
+                            _BasePeer.SendDiscoveryResponse(response, msg.SenderEndPoint);
+                        }
                         break;
                     case NetIncomingMessageType.DiscoveryResponse:
                         DiscoveryResponseReceived(msg);
@@ -112,7 +122,7 @@ namespace BlackCoat.Network
 
         protected abstract void ConnectionLost(NetConnection senderConnection);
 
-        protected abstract void HandleDiscoveryRequest(NetOutgoingMessage msg);
+        protected abstract bool HandleDiscoveryRequest(NetOutgoingMessage msg);
         protected abstract void DiscoveryResponseReceived(NetIncomingMessage msg);
         protected abstract void LatencyUpdateReceived(NetConnection senderConnection, float latency);
 
