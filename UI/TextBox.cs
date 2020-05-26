@@ -38,7 +38,6 @@ namespace BlackCoat.UI
         }
         public Color EditingBackgroundColor { get; set; }
         public Color EditingTextColor { get; set; }
-        public Color CaretColor { get; set; }
         public Vector2f MinSize
         {
             get => _MinSize;
@@ -69,7 +68,6 @@ namespace BlackCoat.UI
             EditingBackgroundColor = Color.Cyan;
             TextColor = Color.Black;
             EditingTextColor = Color.Black;
-            CaretColor = Color.Black;
             _Caret = new Line(_Core, new Vector2f(), new Vector2f(0, InnerSize.Y), EditingBackgroundColor.Invert()) { Visible = false };
             Add(_Caret);
         }
@@ -121,7 +119,7 @@ namespace BlackCoat.UI
                 _TextColorBackup = TextColor;
                 BackgroundColor = EditingBackgroundColor;
                 TextColor = EditingTextColor;
-                _Caret.Color = CaretColor;
+                _Caret.Color = EditingTextColor;
                 InEdit = true;
             }
             UpdateCaretPosition();
