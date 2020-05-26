@@ -51,6 +51,10 @@ namespace BlackCoat
         {
             return value < min ? min : value > max ? max : value;
         }
+        public static int Clamp(int value, int min, int max)
+        {
+            return value < min ? min : value > max ? max : value;
+        }
 
     }
 }

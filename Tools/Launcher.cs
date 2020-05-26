@@ -7,7 +7,7 @@ using SFML.Window;
 namespace BlackCoat
 {
     /// <summary>
-    /// Represents a Launcher Window to easily acess and configure graphic settings.
+    /// Represents a Launcher Window to easily access and configure graphic settings.
     /// Custom application settings may be added as well
     /// </summary>
     public sealed partial class Launcher : Form
@@ -18,7 +18,7 @@ namespace BlackCoat
             public Resolution(VideoMode videoMode) => VideoMode = videoMode;
             public override string ToString() => $"{VideoMode.Width} x {VideoMode.Height}";
         }
-        public interface ISettings
+        public interface ISettingsAdapter
         {
             (uint X, uint Y) Resolution { get; set; }
             uint AntiAliasing { get; set; }
@@ -26,9 +26,11 @@ namespace BlackCoat
             bool Windowed { get; set; }
             bool Borderless { get; set; }
             bool VSync { get; set; }
+            int MusicVolume { get; set; }
+            int EffectVolume { get; set; }
         }
 
-        private readonly ISettings _Settings;
+        private readonly ISettingsAdapter _Settings;
 
         public Image BannerImage
         {
@@ -80,16 +82,27 @@ namespace BlackCoat
             set => _VsyncCheckBox.Checked = value;
         }
 
+        public int MusicVolume
+        {
+            get => _MusicVolumeTrackBar.Value;
+            set => _MusicVolumeNumericUpDown.Value = _MusicVolumeTrackBar.Value = MathHelper.Clamp(value, _MusicVolumeTrackBar.Minimum, _MusicVolumeTrackBar.Maximum);
+        }
+        public int EffectVolume
+        {
+            get => _EffectVolumeTrackBar.Value;
+            set => _EffectVolumeNumericUpDown.Value = _EffectVolumeTrackBar.Value = MathHelper.Clamp(value, _EffectVolumeTrackBar.Minimum, _EffectVolumeTrackBar.Maximum);
+        }
+
         /// <summary>
         /// Creates new instance of the <see cref="Launcher"/> class
         /// </summary>
-        /// <param name="settings">Optional instance of a <see cref="ISettings"/> implementation containing all required graphic initialization info</param>
+        /// <param name="settings">Optional instance of a <see cref="ISettingsAdapter"/> implementation containing all required graphic initialization info</param>
         /// <param name="customSettings">Optional user <see cref="Control"/> for editing application  specific settings</param>
-        public Launcher(ISettings settings = null, Control customSettings = null)
+        public Launcher(ISettingsAdapter settings = null, Control customSettings = null)
         {
             InitializeComponent();
 
-            // Add all available videomodes to UI
+            // Add all available video modes to UI
             _ResolutionComboBox.Items.AddRange(VideoMode.FullscreenModes.Where(m => m.BitsPerPixel == 32).Select(vm => new Resolution(vm)).ToArray());
 
             // Initialize Default Values
@@ -99,8 +112,11 @@ namespace BlackCoat
             Windowed = true;
             Borderless = false;
             VSync = false;
-            
-            if(settings != null) // load from settings
+            MusicVolume = 100;
+            EffectVolume = 100;
+
+
+            if (settings != null) // load from settings adapter
             {
                 _Settings = settings;
                 var vmode = new VideoMode(settings.Resolution.X, settings.Resolution.Y);
@@ -111,9 +127,11 @@ namespace BlackCoat
                 Windowed = settings.Windowed;
                 Borderless = settings.Borderless;
                 VSync = settings.VSync;
+                MusicVolume = settings.MusicVolume;
+                EffectVolume = settings.EffectVolume;
             }
 
-            // Initialize custom settings tabpage
+            // Initialize custom settings tab page
             if (customSettings != null)
             {
                 customSettings.Dock = DockStyle.Fill;
@@ -126,7 +144,7 @@ namespace BlackCoat
 
         private void StartButton_Click(object sender, EventArgs e)
         {
-            if (_Settings != null)
+            if (_Settings != null) // Write all settings back to the adapter
             {
                 _Settings.Resolution = (VideoMode.Width, VideoMode.Height);
                 _Settings.AntiAliasing = AntiAliasing;
@@ -134,6 +152,8 @@ namespace BlackCoat
                 _Settings.Windowed = Windowed;
                 _Settings.Borderless = Borderless;
                 _Settings.VSync = VSync;
+                _Settings.MusicVolume = MusicVolume;
+                _Settings.EffectVolume = EffectVolume;
             }
             DialogResult = DialogResult.OK;
             Close();
@@ -155,6 +175,26 @@ namespace BlackCoat
         {
             _FPSComboBox.Enabled = !_VsyncCheckBox.Checked;
             if(!_FPSComboBox.Enabled) _FPSComboBox.SelectedIndex = 1;
+        }
+
+        private void MusicVolumeTrackBar_Scroll(object sender, EventArgs e)
+        {
+            MusicVolume = _MusicVolumeTrackBar.Value;
+        }
+
+        private void MusicVolumeNumericUpDown_ValueChanged(object sender, EventArgs e)
+        {
+            MusicVolume = (int)_MusicVolumeNumericUpDown.Value;
+        }
+
+        private void EffectVolumeTrackBar_Scroll(object sender, EventArgs e)
+        {
+            EffectVolume = _EffectVolumeTrackBar.Value;
+        }
+
+        private void EffectVolumeNumericUpDown_ValueChanged(object sender, EventArgs e)
+        {
+            EffectVolume = (int)_EffectVolumeNumericUpDown.Value;
         }
     }
 }
