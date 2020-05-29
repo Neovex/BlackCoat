@@ -1,56 +1,98 @@
 ﻿using System;
-using System.Collections.Generic;
 using SFML.Audio;
 
-namespace BlackCoat
+namespace BlackCoat.AssetHandling
 {
     /// <summary>
     /// Represents a single Sound Effect
     /// </summary>
-    /// <seealso cref="SFML.Audio.Sound" />
-    public class ManagedSound : Sound
+    public class ManagedSound : IDisposable
     {
-        public const Int32 MAX_INSTANCES = 100;
-        private static Queue<ManagedSound> _INSTANCES = new Queue<ManagedSound>(MAX_INSTANCES);
-        private static void MANAGE_INSTANCE(ManagedSound newInstance)
+        private SoundBuffer _Buffer;
+        private Sound[] _Sounds;
+
+        /// <summary>
+        /// Gets the name of this <see cref="ManagedSound"/>.
+        /// </summary>
+        public String Name { get; }
+
+        /// <summary>
+        /// Determines whether this <see cref="ManagedSound"/> has been disposed.
+        /// </summary>
+        public bool Disposed { get; private set; }
+
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ManagedSound" /> class.
+        /// </summary>
+        /// <param name="name">The sounds name</param>
+        /// <param name="soundBuffer">Sound buffer containing the audio data to play with the sound instance</param>
+        /// <param name="parallelSounds">The maximum number of parallel playing sounds.</param>
+        public ManagedSound(String name, SoundBuffer soundBuffer, int parallelSounds)
         {
-            while (_INSTANCES.Count >= MAX_INSTANCES)
+            if (String.IsNullOrWhiteSpace(name)) throw new ArgumentException($"Invalid {nameof(name)}:{name}");
+            Name = name;
+            _Buffer = soundBuffer ?? throw new ArgumentNullException(nameof(soundBuffer));
+            _Sounds = new Sound[MathHelper.Clamp(parallelSounds, 1, 25)];
+        }
+        /// <summary>
+        /// Finalizes an instance of the <see cref="ManagedSound" /> class.
+        /// </summary>
+        ~ManagedSound()
+        {
+            Dispose(false);
+        }
+
+
+        /// <summary>
+        /// Plays the sound.
+        /// </summary>
+        public Sound GetSound()
+        {
+            if (Disposed) throw new ObjectDisposedException(Name);
+
+            for (int i = 0; i < _Sounds.Length; i++)
             {
-                var oldInstance = _INSTANCES.Dequeue();
-                if (oldInstance.Unmanaged) _INSTANCES.Enqueue(oldInstance);
-                else oldInstance.Dispose();
+                var sound = _Sounds[i];
+                if (sound == null) _Sounds[i] = sound = new Sound(_Buffer);
+                if (sound.Status != SoundStatus.Stopped) continue;
+                return sound;
             }
-            _INSTANCES.Enqueue(newInstance);
-        }
-
-
-        /// <summary>
-        /// Determines whether this <see cref="ManagedSound"/> has been destroyed.
-        /// </summary>
-        public bool Disposed => CPointer == IntPtr.Zero;
-
-        /// <summary>
-        /// Determines whether this <see cref="ManagedSound"/> is unmanaged.
-        /// </summary>
-        public bool Unmanaged { get; set; }
-
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ManagedSound"/> class.
-        /// </summary>
-        /// <param name="buffer">Sound buffer containing the audio data to play with the sound instance</param>
-        internal ManagedSound(SoundBuffer buffer) : base(buffer)
-        {
-            MANAGE_INSTANCE(this);
+            return null; // when all sounds are busy none shall be added
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ManagedSound"/> class.
+        /// Releases unmanaged and - optionally - managed resources.
         /// </summary>
-        /// <param name="sound">The sound this instance should be based on</param>
-        internal ManagedSound(Sound sound) : base(sound)
+        /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
+        protected virtual void Dispose(bool disposing)
         {
-            MANAGE_INSTANCE(this);
+            if (!Disposed)
+            {
+                if (disposing)
+                {
+                    for (int i = 0; i < _Sounds.Length; i++)
+                    {
+                        if (_Sounds[i] != null)
+                        {
+                            _Sounds[i].Dispose();
+                            _Sounds[i] = null;
+                        }
+                    }
+                }
+                _Sounds = null;
+                _Buffer = null;
+                Disposed = true;
+            }
+        }
+
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
     }
 }

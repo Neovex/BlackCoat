@@ -4,27 +4,36 @@ using System.Collections.Generic;
 using SFML.System;
 using SFML.Audio;
 
-namespace BlackCoat
+namespace BlackCoat.AssetHandling
 {
     /// <summary>
     /// Simplifies access and management of sound effects
     /// </summary>
     public class SfxManager
     {
-        //public static Int32 MAX_SOUNDS_PER_FRAME = 5; // TODO: check necessity of sound overlapping
-
-        private SfxLoader _Loader;
-        private Dictionary<String, Sound> _SoundLibrary;
+        private readonly SfxLoader _Loader;
+        private readonly Dictionary<String, ManagedSound> _SoundLibrary;
+        private readonly Func<int> _ReadVolume;
 
 
         /// <summary>
-        /// Gets or sets the global listener position for spatial sound.
+        /// Gets or sets the global listener position for spatial sounds.
         /// </summary>
         public Vector2f ListenerPosition
         {
-            get => new Vector2f(Listener.Position.X, Listener.Position.Z);
-            set => Listener.Position = new Vector3f(value.X, 0, value.Y);
+            get => Listener.Position.ToVector2f();
+            set => Listener.Position = value.ToVector3f();
         }
+        /// <summary>
+        /// Gets or sets the initial volume drop-off start distance for spatial sounds.
+        /// This defines the maximum distance a sound can still be heard at max volume.
+        /// </summary>
+        public float VolumeDropoffStartDistance { get; set; }
+        /// <summary>
+        /// Gets or sets the initial volume drop-off factor for spatial sounds.
+        /// Defines how fast the volume drops beyond the <see cref="VolumeDropoffStartDistance"/>
+        /// </summary>
+        public float VolumeDropoffFactor { get; set; }
 
 
         /// <summary>
@@ -32,10 +41,14 @@ namespace BlackCoat
         /// </summary>
         /// <param name="loader">A <see cref="SfxLoader" /> instance to load the required sound effects</param>
         /// <exception cref="ArgumentNullException">loader</exception>
-        public SfxManager(SfxLoader loader)
+        public SfxManager(SfxLoader loader, Func<int> volume)
         {
             _Loader = loader ?? throw new ArgumentNullException(nameof(loader));
-            _SoundLibrary = new Dictionary<String, Sound>();
+            _SoundLibrary = new Dictionary<String, ManagedSound>();
+            _ReadVolume = volume;
+
+            VolumeDropoffStartDistance = 500;
+            VolumeDropoffFactor = 10;
         }
 
 
@@ -43,7 +56,8 @@ namespace BlackCoat
         /// Loads all compatible files from a folder into the sound library.
         /// </summary>
         /// <param name="root">Optional: root folder path when different from the default asset root.</param>
-        public void LoadFromDirectory(string root = null)
+        /// <param name="parallelSounds">The amount of times each sound can be played in parallel.</param>
+        public void LoadFromDirectory(string root = null, int parallelSounds = 2)
         {
             if (_Loader.Disposed) throw new ObjectDisposedException(nameof(_Loader));
 
@@ -53,106 +67,84 @@ namespace BlackCoat
             Log.Debug(sounds.Length, "Sounds loaded");
             _Loader.RootFolder = oldRoot;
 
-            LoadFromFileList(sounds);
+            LoadFromFileList(sounds, parallelSounds);
         }
 
         /// <summary>
         /// Loads the specified files into the sound library.
         /// </summary>
         /// <param name="files">The files to load.</param>
-        public void LoadFromFileList(IEnumerable<String> files)
+        /// <param name="parallelSounds">The amount of times each sound can be played in parallel.</param>
+        public void LoadFromFileList(IEnumerable<String> files, int parallelSounds)
         {
-            foreach (var file in files) AddToLibrary(file);
+            foreach (var file in files) AddToLibrary(file, parallelSounds);
         }
 
         /// <summary>
-        /// Creates a new sound effect.
+        /// Loads a new entry into the sound library.
         /// </summary>
         /// <param name="name">The name of the sound effect.</param>
-        /// <param name="volume">The sounds volume 0-100.</param>
-        /// <param name="spatial">Determines if the sound should be handled spatial aka. as a 3D sound</param>
-        /// <param name="position">The position of the sound source.</param>
-        /// <param name="volumeDropoffStartDistance">The distance where the sounds volume diminishes in PX.</param>
-        /// <param name="volumeDropoffFactor">The factor how much the volume will loose strength after passing the drop-off distance 0-100.</param>
-        /// <returns>A copy of the loaded sound</returns>
-        public ManagedSound Create(String name, float volume = 100, bool spatial = false, Vector2f position = new Vector2f(), float volumeDropoffStartDistance = 500, float volumeDropoffFactor = 10)
+        /// <param name="parallelSounds">The amount of times this sound can be played in parallel.</param>
+        public void AddToLibrary(String name, int parallelSounds)
         {
             if (_Loader.Disposed) throw new ObjectDisposedException(nameof(_Loader));
 
-            if (!_SoundLibrary.TryGetValue(name, out Sound sound)) // Sound not in library?
+            if (_SoundLibrary.TryGetValue(name, out ManagedSound sound))
             {
-                sound = new Sound(_Loader.Load(name)); // -> create
+                // Replace ManagedSound
+                _SoundLibrary.Remove(name);
+                sound.Dispose();
+                AddToLibrary(name, parallelSounds);
+            }
+            else
+            {
+                // Add new ManagedSound
+                sound = new ManagedSound(name, _Loader.Load(name), parallelSounds);
                 _SoundLibrary.Add(name, sound);
             }
-
-            return new ManagedSound(sound) // create managed instance from lib sound
-            {
-                Volume = volume,
-                RelativeToListener = !spatial,
-                Position = position.ToVector3f(),
-                MinDistance = volumeDropoffStartDistance,
-                Attenuation = volumeDropoffFactor
-            };
         }
 
         /// <summary>
-        /// Adds or updates and entry in  the 
+        /// Retrieves a sound effect when currently available.
         /// </summary>
         /// <param name="name">The name of the sound effect.</param>
-        /// <param name="volume">The sounds volume 0-100.</param>
-        /// <param name="spatial">Determines if the sound should be handled spatial aka. as a 3D sound</param>
-        /// <param name="position">The position of the sound source.</param>
-        /// <param name="volumeDropoffStartDistance">The distance where the sounds volume diminishes in PX.</param>
-        /// <param name="volumeDropoffFactor">The factor how much the volume will loose strength after passing the drop-off distance 0-100.</param>
-        /// <returns>A copy of the loaded sound</returns>
-        public void AddToLibrary(String name, float volume = 100, bool spatial = false, Vector2f position = new Vector2f(), float volumeDropoffStartDistance = 500, float volumeDropoffFactor = 10)
+        /// <param name="position">Defines whether the sound is supposed to be spatial.</param>
+        public Sound GetSound(String name, bool spatial = false)
         {
             if (_Loader.Disposed) throw new ObjectDisposedException(nameof(_Loader));
 
-            if (!_SoundLibrary.TryGetValue(name, out Sound sound)) // Sound not in library?
+            if (_SoundLibrary.TryGetValue(name, out ManagedSound managedSound))
             {
-                sound = new Sound(_Loader.Load(name)); // -> create
-                _SoundLibrary.Add(name, sound);
+                var sound = managedSound.GetSound();
+                if (sound != null)
+                {
+                    sound.Volume = _ReadVolume.Invoke();
+                    sound.RelativeToListener = !spatial;
+                    if (spatial)
+                    {
+                        sound.MinDistance = VolumeDropoffStartDistance;
+                        sound.Attenuation = VolumeDropoffFactor;
+                    }
+                }
+                return sound;
             }
 
-            sound.Volume = volume;
-            sound.RelativeToListener = !spatial;
-            sound.Position = position.ToVector3f();
-            sound.MinDistance = volumeDropoffStartDistance;
-            sound.Attenuation = volumeDropoffFactor;
+            throw new ArgumentException($"There is no sound named '{name}'");
         }
 
         /// <summary>
-        /// Gets the specified sound effect.
-        /// </summary>
-        /// <param name="name">The name that identifies the sound effect</param>
-        /// <returns>The sound effect</returns>
-        public ManagedSound Get(String name)
-        {
-            if (_Loader.Disposed) throw new ObjectDisposedException(nameof(_Loader));
-            return new ManagedSound(_SoundLibrary[name]);
-        }
-
-        /// <summary>
-        /// Plays a sound effect.
+        /// Plays a sound effect when currently available.
         /// </summary>
         /// <param name="name">The name of the sound effect.</param>
-        /// <param name="position">Optional position of the sound. Only relevant when sound was created as a spatial sound.</param>
+        /// <param name="position">Optional position of the sound. Only relevant when sound is supposed to be spatial.</param>
         public void Play(String name, Vector2f? position = null)
         {
             if (_Loader.Disposed) throw new ObjectDisposedException(nameof(_Loader));
 
-            if (_SoundLibrary.TryGetValue(name, out Sound sound))
-            {
-                sound = new ManagedSound(sound);
-                sound.Position = !sound.RelativeToListener && position.HasValue ? position.Value.ToVector3f() : new Vector3f();
-                sound.Play();
-            }
-            else
-            {
-                AddToLibrary(name, spatial: position.HasValue);
-                Play(name, position);
-            }
+            var sound = GetSound(name, position.HasValue);
+            if (sound == null) return;
+            if (position.HasValue) sound.Position = position.Value.ToVector3f();
+            sound.Play();
         }
     }
 }
