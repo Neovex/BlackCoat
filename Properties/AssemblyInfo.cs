@@ -7,9 +7,9 @@ using System.Runtime.InteropServices;
 // associated with an assembly.
 [assembly: AssemblyTitle("BlackCoat Game Engine")]
 [assembly: AssemblyProduct("BlackCoat Game Engine")]
-[assembly: AssemblyDescription("BlackCoat Game Engine")]
-[assembly: AssemblyCompany("None")]
-[assembly: AssemblyCopyright("Copyright © Alexander Schwahl 2016")]
+[assembly: AssemblyDescription("")]
+[assembly: AssemblyCompany("")]
+[assembly: AssemblyCopyright("Copyright © Alexander Schwahl 2020")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -28,4 +28,4 @@ using System.Runtime.InteropServices;
 //      Build Number
 //      Revision
 //
-[assembly: AssemblyVersion("1.1.0.0")]
+[assembly: AssemblyVersion("1.4.0.0")]

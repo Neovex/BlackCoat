@@ -39,7 +39,7 @@ namespace BlackCoat
                 Alpha = 0,
             };
             Layer_BG.Add(_Bg);
-            _Bg.Scale /= 2; // TODO : double check scale
+            _Bg.Scale /= 2;
             _Bg.Position = _Core.DeviceSize / 2 - _Bg.Texture.Size.ToVector2f() * _Bg.Scale.X / 2;
 
             Input.KeyPressed += HandleKeyPressed;
