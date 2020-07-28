@@ -214,6 +214,7 @@
     <None Include="CoreSystems.cd" />
     <None Include="Entities\Entities.cd" />
     <None Include="Input\Input.cd" />
+    <None Include="Overview.cd" />
     <None Include="ParticleSystem\Particles.cd" />
     <None Include="SceneManagement\SceneManagement.cd" />
     <None Include="UI\UI.cd" />

@@ -282,20 +282,6 @@ namespace BlackCoat
         }
 
         /// <summary>
-        /// Performs a single update followed by a single render call. Resulting in a single Device refresh.
-        /// </summary>
-        /// <param name="deltaT">Optional time delta between frames in fractal seconds</param>
-        public void ManualRefresh(float deltaT = 0)
-        {
-            if (Disposed) throw new ObjectDisposedException(nameof(Core));
-            if (!Device.IsOpen) throw new InvalidStateException("Device is not open");
-            if (Fullscreen != _Fullscreen) ChangeFullscreen();
-            Device.DispatchEvents();
-            Update(deltaT);
-            Draw();
-        }
-
-        /// <summary>
         /// Exits the Update / Rendering Loop (if present) and closes and disposes the Renderwindow
         /// </summary>
         /// <param name="reason">Optional reason for logging</param>
