@@ -8,18 +8,18 @@ using BlackCoat.Collision;
 namespace BlackCoat.Entities.Shapes
 {
     /// <summary>
-    /// Represents a convex Polygon
+    /// Represents a convex Polygon with a fixed amount of points
     /// </summary>
     public class Polygon : ShapeEntity<ConvexShape>, IPolygon
     {
         // Properties ######################################################################
         /// <summary>
-        /// Vectors this <see cref="Polygon"/> is composed of. Read Only.
+        /// Retrieves a <see cref="IReadOnlyList{Vector2f}"/> containing the points this <see cref="Polygon"/> is composed of.
         /// </summary>
         public IReadOnlyList<Vector2f> Points => EnumeratePoints().ToList();
 
         /// <summary>
-        /// Gets the <see cref="Vector2f"/> of the <see cref="Polygon"/> at the specified index.
+        /// Gets or sets the <see cref="Vector2f"/> at the specified index.
         /// </summary>
         public Vector2f this[uint index]
         {
@@ -27,7 +27,7 @@ namespace BlackCoat.Entities.Shapes
             set
             {
                 var count = Target.GetPointCount();
-                if (index >= count) Target.SetPointCount(count + 1);
+                if (index >= count) throw new IndexOutOfRangeException();
                 Target.SetPoint(index, value);
             }
         }

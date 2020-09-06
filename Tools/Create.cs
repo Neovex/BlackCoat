@@ -19,7 +19,8 @@ namespace BlackCoat
         /// <returns>A new Vector</returns>
         public static Vector2f Vector2fFromAngle(float angle, float length = 1)
         {
-            if (length == 0) return default(Vector2f);
+            if (angle == 0) return new Vector2f(length, 0);
+            if (length == 0) return new Vector2f(0, 0);
             return new Vector2f((float)(Math.Cos(angle * Constants.DEG_TO_RAD)) * length,
                                 (float)(Math.Sin(angle * Constants.DEG_TO_RAD)) * length);
         }

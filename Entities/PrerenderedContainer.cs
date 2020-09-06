@@ -6,13 +6,26 @@ namespace BlackCoat.Entities
     /// <summary>
     /// The <see cref="PrerenderedContainer"/> works just like a <see cref="Container"/> with the difference that all its child elements will be drawn
     /// onto its texture instead of the default <see cref="RenderTarget"/> of the <see cref="Core"/>. This way it can be used to reduce draw calls or 
-    /// create blending effects that weren't possible otherwise.
+    /// create blend effects that are impossible otherwise.
     /// </summary>
     /// <seealso cref="BlackCoat.Entities.Container" />
     public class PrerenderedContainer : Container
     {
         // Statics #########################################################################
-        public static readonly Color DEFAULT_CLEAR_COLOR = new Color(byte.MaxValue, byte.MaxValue, byte.MaxValue, 0);
+        /// <summary>
+        /// The default <see cref="Color"/> used to clear the contents of the <see cref="PrerenderedContainer"/> before each draw call.
+        /// </summary>
+        public static readonly Color DEFAULT_CLEAR_COLOR = new Color(byte.MaxValue, byte.MaxValue, byte.MaxValue, byte.MinValue);
+
+        /// <summary>
+        /// Default <see cref="BlendMode"/> for alpha masks. Works only in combination with a <see cref="PrerenderedContainer"/>.
+        /// </summary>
+        public static readonly BlendMode ALPHA_MASK = new BlendMode(BlendMode.Factor.Zero, // ignore mask colors (source * 0)
+                                                                    BlendMode.Factor.One, // use present colors instead (target * 1)
+                                                                    BlendMode.Equation.Add, // add them together (s * 0 + t * 1)
+                                                                    BlendMode.Factor.Zero, // ignore mask alpha - see next step (sourceAplha * 0)
+                                                                    BlendMode.Factor.SrcAlpha, // multiply source alpha with mask alpha (tA * sA)
+                                                                    BlendMode.Equation.Add); // add them together (sA * 0 + tA * sA)
 
 
         // Variables #######################################################################

@@ -66,6 +66,7 @@
     <Compile Include="BlackCoatBase.cs" />
     <Compile Include="Entities\Lights\Lightmap.cs" />
     <Compile Include="Entities\PrerenderedContainer.cs" />
+    <Compile Include="Entities\Shapes\FreeShape.cs" />
     <Compile Include="Entities\Shapes\ShapeEntity.cs" />
     <Compile Include="Extensions\ColorExtensions.cs" />
     <Compile Include="Extensions\RectangleExtensions.cs" />

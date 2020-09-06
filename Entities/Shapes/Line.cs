@@ -14,12 +14,12 @@ namespace BlackCoat.Entities.Shapes
 
 
         /// <summary>
-        /// Point to start the line from
+        /// Point to start the <see cref="Line"/> from
         /// </summary>
         public Vertex Start;
 
         /// <summary>
-        /// Point to draw the line to
+        /// Point to draw the <see cref="Line"/> to
         /// </summary>
         public Vertex End;
 
@@ -67,7 +67,7 @@ namespace BlackCoat.Entities.Shapes
 
         // CTOR ############################################################################
         /// <summary>
-        /// Creates a Line instance.
+        /// Creates a <see cref="Line"/> instance.
         /// </summary>
         /// <param name="core">Engine Core</param>
         /// <param name="start">Start Position</param>
@@ -84,7 +84,7 @@ namespace BlackCoat.Entities.Shapes
 
         // Methods #########################################################################
         /// <summary>
-        /// Draws the Line respective to its parameters and view
+        /// Draws the <see cref="Line"/> respective to its parameters and view
         /// </summary>
         public override void Draw(RenderTarget target, RenderStates states)
         {

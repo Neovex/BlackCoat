@@ -49,7 +49,7 @@
     <Position X="11.864" Y="5.049" Height="0.291" Width="2.13" />
   </Comment>
   <Comment CommentText="Input Management">
-    <Position X="19.62" Y="11.203" Height="0.291" Width="9.181" />
+    <Position X="19.62" Y="11.203" Height="0.291" Width="8.077" />
   </Comment>
   <Comment CommentText="PARTICLE SYSTEM">
     <Position X="33.711" Y="2.248" Height="0.291" Width="10.729" />
@@ -74,9 +74,9 @@
     <AssociationLine Name="_Console" Type="BlackCoat.Tools.Console" FixedFromPoint="true" FixedToPoint="true">
       <Path>
         <Point X="5.5" Y="7.188" />
-        <Point X="9.292" Y="7.187" Type="JumpStart" />
+        <Point X="9.292" Y="7.188" Type="JumpStart" />
         <Point X="9.458" Y="7.188" Type="JumpEnd" />
-        <Point X="9.792" Y="7.187" Type="JumpStart" />
+        <Point X="9.792" Y="7.188" Type="JumpStart" />
         <Point X="9.958" Y="7.188" Type="JumpEnd" />
         <Point X="11.375" Y="7.188" />
         <Point X="11.375" Y="7.5" />
@@ -164,6 +164,17 @@
         <Position X="0.11" Y="0.45" />
       </MemberNameLabel>
     </AssociationLine>
+    <AssociationLine Name="TextureLoader" Type="BlackCoat.TextureLoader" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="10.5" Y="3.8" />
+        <Point X="9.875" Y="3.8" />
+        <Point X="9.875" Y="12.625" />
+        <Point X="10.25" Y="12.625" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="-0.54" Y="-0.679" />
+      </MemberNameLabel>
+    </AssociationLine>
     <AssociationLine Name="Layer_Game" Type="BlackCoat.Entities.Layer" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
       <Path>
         <Point X="11.625" Y="3.941" />
@@ -194,17 +205,6 @@
         <Position X="0.157" Y="-0.303" />
       </MemberNameLabel>
     </AssociationLine>
-    <AssociationLine Name="TextureLoader" Type="BlackCoat.TextureLoader" FixedFromPoint="true" FixedToPoint="true">
-      <Path>
-        <Point X="10.5" Y="3.8" />
-        <Point X="9.875" Y="3.8" />
-        <Point X="9.875" Y="12.625" />
-        <Point X="10.25" Y="12.625" />
-      </Path>
-      <MemberNameLabel ManuallyPlaced="true">
-        <Position X="-0.54" Y="-0.679" />
-      </MemberNameLabel>
-    </AssociationLine>
     <TypeIdentifier>
       <HashCode>EgQVhIQAgAECAiAEAQAKAAwAEgBCAAAAAAEAAAQAILA=</HashCode>
       <FileName>SceneManagement\Scene.cs</FileName>
@@ -213,9 +213,9 @@
       <Field Name="_PerformanceMonitor" />
       <Field Name="_PropertyInspector" />
       <Property Name="Input" />
+      <Property Name="TextureLoader" />
       <Property Name="Layer_Game" />
       <Property Name="Layer_Cursor" />
-      <Property Name="TextureLoader" />
     </ShowAsAssociation>
   </Class>
   <Class Name="SFML.Graphics.Font" Collapsed="true">
@@ -1017,8 +1017,8 @@
       <Path>
         <Point X="20.25" Y="8.191" />
         <Point X="20.25" Y="8.45" />
-        <Point X="30.206" Y="8.45" Type="JumpStart" />
-        <Point X="30.373" Y="8.45" Type="JumpEnd" />
+        <Point X="30.195" Y="8.45" Type="JumpStart" />
+        <Point X="30.372" Y="8.45" Type="JumpEnd" />
         <Point X="30.777" Y="8.45" />
         <Point X="30.777" Y="10.399" />
         <Point X="37.25" Y="10.399" />
@@ -1135,6 +1135,24 @@
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>UI\UIGraphic.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BlackCoat.Entities.Shapes.FreeShape" Collapsed="true">
+    <Position X="28" Y="11" Width="1.5" />
+    <InheritanceLine Type="BlackCoat.Entities.EntityBase" ManuallyRouted="true" FixedToPoint="true">
+      <Path>
+        <Point X="23.5" Y="3.941" />
+        <Point X="23.5" Y="4.241" />
+        <Point X="29.26" Y="4.241" Type="JumpStart" />
+        <Point X="29.427" Y="4.241" Type="JumpEnd" />
+        <Point X="30.278" Y="4.241" />
+        <Point X="30.278" Y="11.312" />
+        <Point X="29.5" Y="11.312" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAIAAAAIAEAQAoAgCAIAhAGAAAgAAAAAJAAAgIgCAAA=</HashCode>
+      <FileName>Entities\Shapes\FreeShape.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Interface Name="BlackCoat.Collision.ICircle" Collapsed="true">
