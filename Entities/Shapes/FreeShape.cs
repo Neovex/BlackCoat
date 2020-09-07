@@ -100,7 +100,7 @@ namespace BlackCoat.Entities.Shapes
             get
             {
                 if (index < 0 || index >= VertexCount) throw new IndexOutOfRangeException();
-                return _Vertices[index];
+                return _VertexList[index];
             }
             set
             {

@@ -95,7 +95,7 @@ namespace BlackCoat.Tools
 
         private void HandleKeyPressed(Keyboard.Key key)
         {
-            if (Input.Input.Control && Input.Input.Shift && key == Keyboard.Key.Num1)
+            if (Input.Input.ControlKeyPressed && Input.Input.ShiftKeyPressed && key == Keyboard.Key.Num1)
             {
                 if (IsOpen) Close();
                 else Open();

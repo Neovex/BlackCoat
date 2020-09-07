@@ -204,8 +204,8 @@ namespace BlackCoat
         internal void DestroyInternal()
         {
             Destroyed = true;
-            
-            if(_DefaultInput != null) _DefaultInput.Enabled = false;
+
+            if (_DefaultInput != null) _DefaultInput.Dispose();
             _Input = _DefaultInput = null;
 
             _Core.DebugChanged -= HandleDebugChanged;

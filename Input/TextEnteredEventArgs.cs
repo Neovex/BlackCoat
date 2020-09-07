@@ -3,16 +3,16 @@
 namespace BlackCoat
 {
     /// <summary>
-    /// Contains information on text input and deletion
+    /// Contains information on text input, deletion and navigation
     /// </summary>
     public class TextEnteredEventArgs
     {
         /// <summary>
-        /// Defines a type of modification to a string.
+        /// Defines a type of navigation or modification to a string.
         /// </summary>
         public enum Operation
         {
-            Edit,
+            TextInput,
             Backspace,
             Del,
             Home,
@@ -28,7 +28,7 @@ namespace BlackCoat
         public String Text { get; }
 
         /// <summary>
-        /// Determines what kind of text modification occurred.
+        /// Determines what kind of navigation or text modification occurred.
         /// </summary>
         public Operation Modification { get; }
 
@@ -40,7 +40,7 @@ namespace BlackCoat
         public TextEnteredEventArgs(String text)
         {
             Text = text;
-            Modification = Operation.Edit;
+            Modification = Operation.TextInput;
         }
         /// <summary>
         /// Initializes a new instance of the <see cref="TextEnteredEventArgs"/> class.
@@ -71,7 +71,7 @@ namespace BlackCoat
             // Modify
             switch (Modification)
             {
-                case Operation.Edit:
+                case Operation.TextInput:
                     original = original.Insert((int)index, Text);
                     index += (uint)Text.Length;
                     break;

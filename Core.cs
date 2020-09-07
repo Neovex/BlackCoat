@@ -201,8 +201,8 @@ namespace BlackCoat
             CollisionSystem = new CollisionSystem();
 
             // Init Input
-            _Input = new Input(this, false, true);
-            _Input.KeyPressed += k => { if (_Input.Alt && k == Keyboard.Key.Enter) Fullscreen = !Fullscreen; };
+            _Input = new Input(this, false, true, false);
+            _Input.KeyPressed += k => { if (_Input.AltKeyPressed && k == Keyboard.Key.Enter) Fullscreen = !Fullscreen; };
             Log.Debug("Input ready");
 
             // Init Console

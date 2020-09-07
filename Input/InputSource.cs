@@ -5,7 +5,6 @@
         None,
         Mouse,
         Keyboard,
-        Gamepad,
-        Touch
+        Joystick
     }
 }

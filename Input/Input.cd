@@ -7,19 +7,20 @@
     <Position X="2" Y="3.75" Width="2" />
     <AssociationLine Name="_Device" Type="SFML.Graphics.RenderWindow" FixedFromPoint="true" FixedToPoint="true">
       <Path>
-        <Point X="4" Y="4.217" />
-        <Point X="4.812" Y="4.217" />
+        <Point X="4" Y="4.389" />
+        <Point X="4.812" Y="4.389" />
         <Point X="4.812" Y="1.812" />
       </Path>
     </AssociationLine>
     <TypeIdentifier>
-      <HashCode>IAACwpAMgQIigIiAAAABAAAAAAAgAgABAYAIQRliACE=</HashCode>
+      <HashCode>IEIG5pAogWIigAKAIIABgAAANBAgCgABEYIIQRlioCg=</HashCode>
       <FileName>Input\Input.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
       <Field Name="_Device" />
       <Property Name="CurrentEventSource" />
     </ShowAsAssociation>
+    <Lollipop Position="1.21" />
   </Class>
   <Class Name="BlackCoat.TextEnteredEventArgs">
     <Position X="16.25" Y="1.25" Width="1.5" />
@@ -61,11 +62,11 @@
     </TypeIdentifier>
   </Class>
   <Class Name="BlackCoat.InputMapping.SimpleInputMap&lt;TMappedOperation&gt;" BaseTypeListCollapsed="true">
-    <Position X="6.25" Y="5.75" Width="2.5" />
+    <Position X="6.25" Y="6" Width="2.5" />
     <AssociationLine Name="Input" Type="BlackCoat.Input" FixedFromPoint="true">
       <Path>
-        <Point X="6.25" Y="6.312" />
-        <Point X="4" Y="6.312" />
+        <Point X="6.25" Y="6.562" />
+        <Point X="4" Y="6.562" />
       </Path>
     </AssociationLine>
     <TypeIdentifier>
@@ -75,7 +76,7 @@
     <ShowAsAssociation>
       <Property Name="Input" />
     </ShowAsAssociation>
-    <Lollipop Position="0.2" Collapsed="true" />
+    <Lollipop Position="0.638" />
   </Class>
   <Class Name="BlackCoat.UI.UIInput">
     <Position X="13" Y="1.25" Width="2.25" />
@@ -114,8 +115,8 @@
     <AssociationLine Name="_Input" Type="BlackCoat.Input" FixedFromPoint="true" FixedToPoint="true">
       <Path>
         <Point X="1.219" Y="1.812" />
-        <Point X="1.219" Y="4.217" />
-        <Point X="2" Y="4.217" />
+        <Point X="1.219" Y="4.389" />
+        <Point X="2" Y="4.389" />
       </Path>
     </AssociationLine>
     <TypeIdentifier>
@@ -137,7 +138,7 @@
   <Enum Name="BlackCoat.InputSource">
     <Position X="2.25" Y="1.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAgAAAAAAAIAAAAAQAAAAAAAAAAAAAAAAAAAABEAAAA=</HashCode>
+      <HashCode>AAgAAQAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAEAAAA=</HashCode>
       <FileName>Input\InputSource.cs</FileName>
     </TypeIdentifier>
   </Enum>
