@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 using SFML.Window;
 
 namespace BlackCoat.InputMapping
@@ -14,47 +13,54 @@ namespace BlackCoat.InputMapping
     /// <seealso cref="System.IDisposable" />
     public class SimpleInputMap<TMappedOperation> : IDisposable
     {
+        // Events ##########################################################################
+        /// <summary>
+        /// Occurs when a mapped operation is invoked.
+        /// </summary>
+        public event Action<TMappedOperation, Boolean> MappedOperationInvoked = (o, a) => { };
+
+
+        // Variables #######################################################################
         private Dictionary<Keyboard.Key, TMappedOperation> _KeyboardActions;
         private Dictionary<Mouse.Button, TMappedOperation> _MouseActions;
+        private Dictionary<uint, TMappedOperation> _JoystickButtonActions;
+        private Dictionary<Joystick.Axis, (float, TMappedOperation)> _JoystickMovementActions;
+
+        private uint _JoystickFilter;
         private Boolean _ScrollUpActionSet;
         private TMappedOperation _ScrollUpAction;
         private Boolean _ScrollDownActionSet;
         private TMappedOperation _ScrollDownAction;
 
 
+        // Properties ######################################################################
         /// <summary>
         /// The input source for this map.
         /// </summary>
         public Input Input { get; }
 
-        /// <summary>
-        /// Gets the name of this instance.
-        /// </summary>
-        public String Name { get; private set; }
 
-
+        // CTOR ############################################################################
         /// <summary>
-        /// Occurs when a mapped operation is invoked.
+        /// Initializes a new instance of the <see cref="SimpleInputMap{TMappedOperation}" /> class.
         /// </summary>
-        public event Action<TMappedOperation, Boolean> MappedOperationInvoked = (o, a) => { };
-        
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SimpleInputMap{TMappedOperation}"/> class.
-        /// </summary>
-        public SimpleInputMap(Input eventSource, string name)
+        /// <param name="eventSource">The <see cref="Input"/> event source.</param>
+        /// <param name="players">Optional filter for joystick use.</param>
+        public SimpleInputMap(Input eventSource, uint joystickFilter = 0)
         {
             Input = eventSource ?? throw new ArgumentNullException(nameof(eventSource));
-            if (String.IsNullOrEmpty(name)) throw new ArgumentException(nameof(name));
-            Name = name;
 
             _KeyboardActions = new Dictionary<Keyboard.Key, TMappedOperation>();
             _MouseActions = new Dictionary<Mouse.Button, TMappedOperation>();
+            _JoystickButtonActions = new Dictionary<uint, TMappedOperation>();
+            _JoystickMovementActions = new Dictionary<Joystick.Axis, (float, TMappedOperation)>();
+
+            _JoystickFilter = joystickFilter;
             _ScrollUpActionSet = false;
             _ScrollDownActionSet = false;
 
             AttachEvents();
-            Log.Debug(nameof(SimpleInputMap<TMappedOperation>), Name, "created");
+            Log.Debug(nameof(SimpleInputMap<TMappedOperation>), "created. Filter:", joystickFilter);
         }
         ~SimpleInputMap()
         {
@@ -62,9 +68,7 @@ namespace BlackCoat.InputMapping
         }
 
 
-        /// <summary>
-        /// Enables this instance.
-        /// </summary>
+        // Methods #########################################################################
         private void AttachEvents()
         {
             Input.MouseButtonPressed += HandleMouseButtonPressed;
@@ -72,11 +76,11 @@ namespace BlackCoat.InputMapping
             Input.MouseWheelScrolled += HandleMouseWheelScrolled;
             Input.KeyPressed += HandleKeyPressed;
             Input.KeyReleased += HandleKeyReleased;
+            Input.JoystickMoved += HandleJoystickMoved;
+            Input.JoystickButtonPressed += HandleJoystickButtonPressed;
+            Input.JoystickButtonReleased += HandleJoystickButtonReleased;
         }
 
-        /// <summary>
-        /// Disables this instance.
-        /// </summary>
         private void DetachEvents()
         {
             Input.MouseButtonPressed -= HandleMouseButtonPressed;
@@ -84,14 +88,24 @@ namespace BlackCoat.InputMapping
             Input.MouseWheelScrolled -= HandleMouseWheelScrolled;
             Input.KeyPressed -= HandleKeyPressed;
             Input.KeyReleased -= HandleKeyReleased;
+            Input.JoystickMoved -= HandleJoystickMoved;
+            Input.JoystickButtonPressed -= HandleJoystickButtonPressed;
+            Input.JoystickButtonReleased -= HandleJoystickButtonReleased;
+        }
+
+        private void RaiseMappedOperationInvoked<TKey>(Dictionary<TKey, TMappedOperation> lookup, TKey key, Boolean activate)
+        {
+            if (lookup.TryGetValue(key, out TMappedOperation operation))
+            {
+                MappedOperationInvoked.Invoke(operation, activate);
+            }
         }
 
         /// <summary>
         /// Adds a keyboard mapping.
         /// </summary>
         /// <param name="key">The Keyboard.Key.</param>
-        /// <param name="action">The mapped value.</param>
-        /// <returns>The created InputAction</returns>
+        /// <param name="action">The mapped action.</param>
         public void AddKeyboardMapping(Keyboard.Key key, TMappedOperation action)
         {
             _KeyboardActions[key] = action;
@@ -101,19 +115,17 @@ namespace BlackCoat.InputMapping
         /// Adds a mouse mapping.
         /// </summary>
         /// <param name="button">The Mouse.Button.</param>
-        /// <param name="action">The mapped value.</param>
-        /// <returns>The created InputAction</returns>
+        /// <param name="action">The mapped action.</param>
         public void AddMouseMapping(Mouse.Button button, TMappedOperation action)
         {
             _MouseActions[button] = action;
         }
 
         /// <summary>
-        /// Adds a scroll mapping.
+        /// Adds a mouse scroll mapping.
         /// </summary>
         /// <param name="direction">The scroll direction.</param>
-        /// <param name="action">The mapped value.</param>
-        /// <returns>The created InputAction</returns>
+        /// <param name="action">The mapped action.</param>
         public void AddScrollMapping(ScrollDirection direction, TMappedOperation action)
         {
             switch (direction)
@@ -128,6 +140,28 @@ namespace BlackCoat.InputMapping
                 break;
                 default: throw new ArgumentException(nameof(direction));
             }
+        }
+
+        /// <summary>
+        /// Adds a joystick button mapping.
+        /// </summary>
+        /// <param name="button">The joystick button id.</param>
+        /// <param name="action">The mapped action.</param>
+        public void AddJoystickButtonMapping(uint button, TMappedOperation action)
+        {
+            _JoystickButtonActions[button] = action;
+        }
+
+        /// <summary>
+        /// Adds a joystick movement mapping.
+        /// </summary>
+        /// <param name="axis">The joy axis</param>
+        /// <param name="limit">The limit when to trigger the action</param>
+        /// <param name="action">The mapped action.</param>
+        public void AddJoystickMovementMapping(Joystick.Axis axis, float limit, TMappedOperation action)
+        {
+            if (limit == 0) throw new Exception($"{nameof(limit)} must not be zero");
+            _JoystickMovementActions[axis] = (limit, action);
         }
 
 
@@ -161,12 +195,25 @@ namespace BlackCoat.InputMapping
             }
         }
 
-        private void RaiseMappedOperationInvoked<TKey>(Dictionary<TKey, TMappedOperation> lookup, TKey key, Boolean activate)
+        private void HandleJoystickMoved(uint joystickId, Joystick.Axis axis, float position)
         {
-            if (lookup.TryGetValue(key, out TMappedOperation operation))
+            if (joystickId == _JoystickFilter &&
+               _JoystickMovementActions.TryGetValue(axis, out (float limit, TMappedOperation action) kvp))
             {
-                MappedOperationInvoked.Invoke(operation, activate);
+                var activate = (kvp.limit < 0 && position < kvp.limit) ||
+                               (kvp.limit > 0 && position > kvp.limit);
+                MappedOperationInvoked.Invoke(kvp.action, activate);
             }
+        }
+
+        private void HandleJoystickButtonPressed(uint joystickId, uint button)
+        {
+            if (joystickId == _JoystickFilter) RaiseMappedOperationInvoked(_JoystickButtonActions, button, true);
+        }
+
+        private void HandleJoystickButtonReleased(uint joystickId, uint button)
+        {
+            if (joystickId == _JoystickFilter) RaiseMappedOperationInvoked(_JoystickButtonActions, button, false);
         }
 
         protected virtual void Dispose(bool managed)

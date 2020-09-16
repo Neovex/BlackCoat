@@ -7,8 +7,8 @@
     <Position X="2" Y="3.75" Width="2" />
     <AssociationLine Name="_Device" Type="SFML.Graphics.RenderWindow" FixedFromPoint="true" FixedToPoint="true">
       <Path>
-        <Point X="4" Y="4.389" />
-        <Point X="4.812" Y="4.389" />
+        <Point X="4" Y="4" />
+        <Point X="4.812" Y="4" />
         <Point X="4.812" Y="1.812" />
       </Path>
     </AssociationLine>
@@ -40,7 +40,13 @@
     </TypeIdentifier>
   </Class>
   <Class Name="BlackCoat.InputMapping.ComplexInputMap&lt;TMappedOperation&gt;" BaseTypeListCollapsed="true">
-    <Position X="6.25" Y="1.25" Width="2.5" />
+    <Position X="5.75" Y="1.25" Width="3" />
+    <AssociationLine Name="Input" Type="BlackCoat.Input" FixedToPoint="true">
+      <Path>
+        <Point X="5.75" Y="4.438" />
+        <Point X="4" Y="4.438" />
+      </Path>
+    </AssociationLine>
     <TypeIdentifier>
       <HashCode>AAEAABABAAAAAICAABAACAAAEQAAAAAAgAAoAAAAAAg=</HashCode>
       <FileName>Input\Mapping\ComplexInputMap.cs</FileName>
@@ -62,15 +68,15 @@
     </TypeIdentifier>
   </Class>
   <Class Name="BlackCoat.InputMapping.SimpleInputMap&lt;TMappedOperation&gt;" BaseTypeListCollapsed="true">
-    <Position X="6.25" Y="6" Width="2.5" />
+    <Position X="6.25" Y="6.25" Width="2.5" />
     <AssociationLine Name="Input" Type="BlackCoat.Input" FixedFromPoint="true">
       <Path>
-        <Point X="6.25" Y="6.562" />
-        <Point X="4" Y="6.562" />
+        <Point X="6.25" Y="6.915" />
+        <Point X="4" Y="6.915" />
       </Path>
     </AssociationLine>
     <TypeIdentifier>
-      <HashCode>AQAQQBARACAAAACAABABAAQAEQAAAAAAgIAIAQgAIQg=</HashCode>
+      <HashCode>AUCQRBARAGAAQCCAABABAAAAEYAAEAAAgIAIAQgAIQg=</HashCode>
       <FileName>Input\Mapping\SimpleInputMap.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -89,7 +95,7 @@
     </ShowAsAssociation>
   </Class>
   <Class Name="BlackCoat.UI.UIInputMap&lt;TMapped&gt;">
-    <Position X="13" Y="7.5" Width="2.25" />
+    <Position X="13" Y="7.75" Width="2.25" />
     <Compartments>
       <Compartment Name="Nested Types" Collapsed="false" />
     </Compartments>
@@ -115,8 +121,8 @@
     <AssociationLine Name="_Input" Type="BlackCoat.Input" FixedFromPoint="true" FixedToPoint="true">
       <Path>
         <Point X="1.219" Y="1.812" />
-        <Point X="1.219" Y="4.389" />
-        <Point X="2" Y="4.389" />
+        <Point X="1.219" Y="4" />
+        <Point X="2" Y="4" />
       </Path>
     </AssociationLine>
     <TypeIdentifier>
