@@ -29,14 +29,6 @@ namespace BlackCoat
         }
 
         /// <summary>
-        /// Multiplied Length based on angle and length of another Vector
-        /// </summary>
-        //public static Double DotProduct(this Vector2f vector, Single angle, Double length)
-        //{
-        //    return vector.Length() * length * Math.Cos(angle * Constants.DEG_TO_RAD);
-        //}
-
-        /// <summary>
         /// Multiplied Lengths of 2 Vectors
         /// </summary>
         public static Double DotProduct(this Vector2f vector, Vector2f axis)
@@ -53,14 +45,6 @@ namespace BlackCoat
         }
 
         /// <summary>
-        /// Projected Length of the Vector to a surface of the provided angle
-        /// </summary>
-        //public static Double ProjectedLength(this Vector2f vector, Single angle)
-        //{
-        //    return vector.DotProduct(angle, 1);
-        //}
-
-        /// <summary>
         /// Projects a Vector onto another calculation its new Position
         /// </summary>
         public static Vector2f ProjectOnto(Vector2f vector, Vector2f axis)
@@ -68,7 +52,6 @@ namespace BlackCoat
             axis = axis.Normalize();
             return (float)vector.DotProduct(axis) * axis;
         }
-
 
         /// <summary>
         /// Creates a new Vector pointing in the same direction as the original but with a fixed length of 1
@@ -157,7 +140,7 @@ namespace BlackCoat
         public static Vector2i ToVector2i(this Vector2u v) => new Vector2i((int)v.X, (int)v.Y);
         public static Vector2f ToVector2f(this Vector2u v) => new Vector2f(v.X, v.Y);
 
-        public static Vector2f ToVector2f(this (int, int) v) => new Vector2f(v.Item1, v.Item2);
-        public static Vector2f ToVector2f(this (float, float) v) => new Vector2f(v.Item1, v.Item2);
+        public static Vector2f ToVector2f(this (int x, int y) v) => new Vector2f(v.x, v.y);
+        public static Vector2f ToVector2f(this (float x, float y) v) => new Vector2f(v.x, v.y);
     }
 }

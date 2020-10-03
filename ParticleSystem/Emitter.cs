@@ -10,7 +10,7 @@ namespace BlackCoat.ParticleSystem
     /// <typeparam name="TInfo">The type of the initialization information.</typeparam>
     /// <seealso cref="BlackCoat.ParticleSystem.ITriggerEmitter" />
     /// <seealso cref="BlackCoat.ParticleSystem.EmitterBase" />
-    public class Emitter<Tparticle, TInfo> : EmitterBase, ITriggerEmitter where Tparticle : ParticleBase, IInitializableByInfo<TInfo> where TInfo : PixelParticleInitializationInfo
+    public class Emitter<Tparticle, TInfo> : EmitterBase, ITriggerEmitter where Tparticle : ParticleBase, IInitializableByInfo<TInfo> where TInfo : ParticleSpawnInfo
     {
         private static readonly Guid _GUID = typeof(Tparticle).GUID;
         public override Guid ParticleTypeGuid => _GUID;

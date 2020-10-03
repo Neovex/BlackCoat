@@ -73,6 +73,9 @@
     <Compile Include="Input\InputSource.cs" />
     <Compile Include="Input\Mapping\ScrollDirection.cs" />
     <Compile Include="Interfaces\IPropertyInspector.cs" />
+    <Compile Include="ParticleSystem\SpawnInfos\ParticleSpawnInfo.cs" />
+    <Compile Include="ParticleSystem\SpawnInfos\RadialTexturedSpawnInfo.cs" />
+    <Compile Include="ParticleSystem\SpawnInfos\RadialSpawnInfo.cs" />
     <Compile Include="Tools\BlendmodeConverter.cs" />
     <Compile Include="Tools\Launcher.cs">
       <SubType>Form</SubType>
@@ -107,8 +110,7 @@
     <Compile Include="InvalidStateException.cs" />
     <Compile Include="ParticleSystem\EmitterBase.cs" />
     <Compile Include="ParticleSystem\ITriggerEmitter.cs" />
-    <Compile Include="ParticleSystem\TextureParticleInitializationInfo.cs" />
-    <Compile Include="ParticleSystem\PixelParticleInitializationInfo.cs" />
+    <Compile Include="ParticleSystem\SpawnInfos\TexturedSpawnInfo.cs" />
     <Compile Include="ParticleSystem\TextureParticle.cs" />
     <Compile Include="ParticleSystem\PixelParticle.cs" />
     <Compile Include="ParticleSystem\Emitter.cs" />

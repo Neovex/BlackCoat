@@ -8,7 +8,7 @@ namespace BlackCoat.ParticleSystem
     /// Simple Texture Particle Implementation. Supports simple movement and blending.
     /// </summary>
     /// <seealso cref="BlackCoat.ParticleSystem.TextureParticleBase" />
-    public class TextureParticle : TextureParticleBase, IInitializableByInfo<TextureParticleInitializationInfo>
+    public class TextureParticle : TextureParticleBase, IInitializableByInfo<TexturedSpawnInfo>
     {
         protected Vector2f _Velocity;
         protected Vector2f _Acceleration;
@@ -30,7 +30,7 @@ namespace BlackCoat.ParticleSystem
         /// <summary>
         /// Initializes the particle with the provided animation parameters.
         /// </summary>
-        public virtual void Initialize(Vector2f position, TextureParticleInitializationInfo info)
+        public virtual void Initialize(Vector2f position, TexturedSpawnInfo info)
         {
             // Init particle
             _TextureSize = info.Texture.Size;

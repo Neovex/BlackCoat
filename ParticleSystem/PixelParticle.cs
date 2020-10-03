@@ -8,7 +8,7 @@ namespace BlackCoat.ParticleSystem
     /// Simple Pixel Particle Implementation. Supports simple movement and alpha blending.
     /// </summary>
     /// <seealso cref="BlackCoat.ParticleSystem.PixelParticleBase" />
-    public class PixelParticle : PixelParticleBase, IInitializableByInfo<PixelParticleInitializationInfo>
+    public class PixelParticle : PixelParticleBase, IInitializableByInfo<ParticleSpawnInfo>
     {
         protected Vector2f _Velocity;
         protected Vector2f _Acceleration;
@@ -28,7 +28,7 @@ namespace BlackCoat.ParticleSystem
         /// <summary>
         /// Initializes the particle with the provided animation parameters.
         /// </summary>
-        public virtual void Initialize(Vector2f position, PixelParticleInitializationInfo info)
+        public virtual void Initialize(Vector2f position, ParticleSpawnInfo info)
         {
             // init particle
             _Position = position + info.Offset;

@@ -4,7 +4,7 @@ using SFML.System;
 
 namespace BlackCoat.ParticleSystem
 {
-    public class TextureParticleInitializationInfo : PixelParticleInitializationInfo
+    public class TexturedSpawnInfo : ParticleSpawnInfo
     {
         public Texture Texture { get; }
 
@@ -14,7 +14,7 @@ namespace BlackCoat.ParticleSystem
         public virtual float Rotation { get; set; }
         public virtual float RotationVelocity { get; set; }
 
-        public TextureParticleInitializationInfo(Texture texture) : base()
+        public TexturedSpawnInfo(Texture texture) : base()
         {
             Texture = texture ?? throw new ArgumentNullException(nameof(texture));
             Scale = new Vector2f(1, 1);
