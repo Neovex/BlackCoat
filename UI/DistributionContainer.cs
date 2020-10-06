@@ -16,10 +16,11 @@ namespace BlackCoat.UI
         public override bool DockX { get => base.DockX || Orientation == Orientation.Horizontal; set => base.DockX = value || Orientation == Orientation.Horizontal; }
         public override bool DockY { get => base.DockY || Orientation == Orientation.Vertical;   set => base.DockY = value || Orientation == Orientation.Vertical; }
 
-            
-        public DistributionContainer(Core core, Orientation orientation, Vector2f? size = null, params UIComponent[] components) : base(core, orientation, size, components)
-        {
-        }
+
+        public DistributionContainer(Core core, Orientation orientation, Vector2f? size = null, params UIComponent[] components) : this(core, orientation, size, components as IEnumerable<UIComponent>)
+        { }
+        public DistributionContainer(Core core, Orientation orientation, Vector2f? size = null, IEnumerable<UIComponent> components = null) : base(core, orientation, size, components)
+        { }
 
         protected override void InvokeSizeChanged()
         {

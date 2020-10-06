@@ -17,7 +17,9 @@ namespace BlackCoat.UI
         public override bool DockY { get => base.DockY && Orientation == Orientation.Horizontal; set => base.DockY = value && Orientation == Orientation.Horizontal; }
 
 
-        public OffsetContainer(Core core, Orientation orientation, float offset = 0, params UIComponent[] components) : base(core, orientation, null, components)
+        public OffsetContainer(Core core, Orientation orientation, float offset = 0, params UIComponent[] components) : this(core, orientation, offset, components as IEnumerable<UIComponent>)
+        { }
+        public OffsetContainer(Core core, Orientation orientation, float offset = 0, IEnumerable<UIComponent> components = null) : base(core, orientation, null, components)
         {
             Offset = offset;
         }

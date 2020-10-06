@@ -38,27 +38,29 @@ namespace BlackCoat.UI
             }
         }
 
+        public IEnumerable<UIComponent> Components => _Entities?.OfType<UIComponent>() ?? Enumerable.Empty<UIComponent>();
+        public IEnumerable<UIComponent> ComponentsFlattened => Components.SelectMany(c => new[] { c }.Concat(c is UIContainer cont ? cont.ComponentsFlattened : Enumerable.Empty<UIComponent>()));
+
         public IEnumerable<UIComponent> Init
         {
             set
             {
-                foreach (var component in Components) Remove(component);
-                if (value == null) return;
-                Add(value.ToArray());
+                if (value != null) Add(value);
             }
         }
 
-        public IEnumerable<UIComponent> Components => _Entities?.OfType<UIComponent>() ?? Enumerable.Empty<UIComponent>();
-        public IEnumerable<UIComponent> ComponentsFlattened => Components.SelectMany(c => new[] { c }.Concat(c is UIContainer cont ? cont.ComponentsFlattened : Enumerable.Empty<UIComponent>()));
 
-
-        public UIContainer(Core core, params UIComponent[] components) : base(core)
+        public UIContainer(Core core, params UIComponent[] components) : this(core, components as IEnumerable<UIComponent>)
+        { }
+        public UIContainer(Core core, IEnumerable<UIComponent> components) : base(core)
         {
-            Add(components);
+            if(components != null) Add(components);
         }
 
 
-        public void Add(params UIComponent[] components)
+        public void Add(params UIComponent[] components) => Add(components as IEnumerable<UIComponent>);
+
+        public void Add(IEnumerable<UIComponent> components)
         {
             _UpdateLock = true;
             foreach (var component in components) Add(component);
@@ -88,6 +90,14 @@ namespace BlackCoat.UI
             component.MarginChanged -= HandleChildComponentModified;
             Remove(component as IEntity);
             InvokeComponentRemoved(component);
+            InvokeSizeChanged();
+        }
+
+        public override void Clear()
+        {
+            _UpdateLock = true;
+            foreach (var component in Components) Remove(component);
+            _UpdateLock = false;
             InvokeSizeChanged();
         }
 

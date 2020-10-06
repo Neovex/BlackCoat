@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using SFML.System;
 
 namespace BlackCoat.UI
@@ -31,7 +32,9 @@ namespace BlackCoat.UI
         public Vector2f RealPosition => base.Position;
 
 
-        public AnchoredContainer(Core core, Anchor anchor, params UIComponent[] components) : base(core, components)
+        public AnchoredContainer(Core core, Anchor anchor, params UIComponent[] components) : this(core, anchor, components as IEnumerable<UIComponent>)
+        { }
+        public AnchoredContainer(Core core, Anchor anchor, IEnumerable<UIComponent> components) : base(core, components)
         {
             Anchor = anchor;
         }

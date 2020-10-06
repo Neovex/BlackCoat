@@ -19,7 +19,7 @@ namespace BlackCoat.UI
         public Orientation Orientation { get => _Orientation; set { _Orientation = value; InvokeSizeChanged(); } }
 
 
-        public AutomatedCanvas(Core core, Orientation orientation, Vector2f? size = null, params UIComponent[] components) : base(core, size, components)
+        public AutomatedCanvas(Core core, Orientation orientation, Vector2f? size = null, IEnumerable<UIComponent> components = null) : base(core, size, components)
         {
             Orientation = orientation;
         }

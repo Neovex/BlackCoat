@@ -1,9 +1,9 @@
 ﻿using System.Linq;
 using SFML.System;
 using SFML.Graphics;
-using BlackCoat;
 using BlackCoat.Entities;
 using System;
+using System.Collections.Generic;
 
 namespace BlackCoat.UI
 {
@@ -44,11 +44,20 @@ namespace BlackCoat.UI
 
         // CTOR ############################################################################
         /// <summary>
-        /// Initializes a new instance of the <see cref="ScrollContainer"/> class.
+        /// Initializes a new instance of the <see cref="ScrollContainer" /> class.
         /// </summary>
         /// <param name="core">The engine core.</param>
-        /// <param name="fixedSize">Optional size of the container.</param>
-        public ScrollContainer(Core core, Vector2f? size = null) : base(core, size)
+        /// <param name="size">The size of the display area.</param>
+        /// <param name="components">UI components for functional layout construction.</param>
+        public ScrollContainer(Core core, Vector2f? size = null, params UIComponent[] components) : this(core, size, components as IEnumerable<UIComponent>)
+        { }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ScrollContainer" /> class.
+        /// </summary>
+        /// <param name="core">The engine core.</param>
+        /// <param name="size">The size of the display area.</param>
+        /// <param name="components">UI components for functional layout construction.</param>
+        public ScrollContainer(Core core, Vector2f? size = null, IEnumerable<UIComponent> components = null) : base(core, size, components)
         {
             _BufferSize = MinSize.ToVector2u();
             _RenderTarget = new RenderTexture(_BufferSize.X, _BufferSize.Y);

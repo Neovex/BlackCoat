@@ -47,7 +47,9 @@ namespace BlackCoat.UI
         }
 
 
-        public Canvas(Core core, Vector2f? size = null, params UIComponent[] components) : base(core, components)
+        public Canvas(Core core, Vector2f? size = null, params UIComponent[] components) : this(core, size, components as IEnumerable<UIComponent>)
+        { }
+        public Canvas(Core core, Vector2f? size = null, IEnumerable<UIComponent> components = null) : base(core, components)
         {
             _MinSize = new Vector2f(10, 10);
             if (size.HasValue) Resize(size.Value);

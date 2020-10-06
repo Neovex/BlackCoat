@@ -1,4 +1,5 @@
-﻿using SFML.System;
+﻿using System.Collections.Generic;
+using SFML.System;
 
 namespace BlackCoat.UI
 {
@@ -26,7 +27,9 @@ namespace BlackCoat.UI
             }
         }
 
-        public AlignedContainer(Core core, Alignment alignment, params UIComponent[] components) : base(core, components)
+        public AlignedContainer(Core core, Alignment alignment, params UIComponent[] components) : this(core, alignment, components as IEnumerable<UIComponent>)
+        { }
+        public AlignedContainer(Core core, Alignment alignment, IEnumerable<UIComponent> components) : base(core, components)
         {
             Alignment = alignment;
         }

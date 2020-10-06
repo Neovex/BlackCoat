@@ -1,11 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
+using System.Collections.Generic;
+
 using SFML.System;
 using SFML.Window;
 using SFML.Graphics;
-using BlackCoat.Animation;
+
 using BlackCoat.UI;
+using BlackCoat.Animation;
+
 
 namespace BlackCoat.Tools
 {
@@ -50,27 +53,23 @@ namespace BlackCoat.Tools
             BackgroundAlpha = 0.6f;
 
             // Setup Controls
-            Add(new OffsetContainer(_Core, Orientation.Vertical)
-            {
-                Init = new UIComponent[]
+            Add(new OffsetContainer(_Core, Orientation.Vertical, 0,
+                _InputBox = new TextBox(_Core)
                 {
-                    _InputBox = new TextBox(_Core)
-                    {
-                        BackgroundAlpha = 0.3f,
-                        TextColor = Color.Cyan,
-                        EditingTextColor = Color.Cyan,
-                        Padding = new FloatRect(3,3,3,3),
-                        MinSize = new Vector2f(_Core.DeviceSize.X, 7),
-                        CharacterSize = _FONT_SIZE
-                    },
-                    _Output = new Label(_Core)
-                    {
-                        Padding  = new FloatRect(3,0,3,0),
-                        TextColor     = _InputBox.TextColor,
-                        CharacterSize = _FONT_SIZE,
-                    }
+                    BackgroundAlpha = 0.3f,
+                    TextColor = Color.Cyan,
+                    EditingTextColor = Color.Cyan,
+                    Padding = new FloatRect(3,3,3,3),
+                    MinSize = new Vector2f(_Core.DeviceSize.X, 7),
+                    CharacterSize = _FONT_SIZE
+                },
+                _Output = new Label(_Core)
+                {
+                    Padding = new FloatRect(3,0,3,0),
+                    TextColor = _InputBox.TextColor,
+                    CharacterSize = _FONT_SIZE,
                 }
-            });
+            ));
 
             // Events
             Log.OnLog += LogMessage;
