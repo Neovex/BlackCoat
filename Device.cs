@@ -82,7 +82,7 @@ namespace BlackCoat
         /// A new Graphic Device using a 800x600 window.
         /// </summary>
         /// <returns>The default device</returns>
-        public static Device Demo => new Device(new VideoMode(800, 600), nameof(BlackCoat), Styles.Titlebar);
+        public static Device Demo => new Device(new VideoMode(800, 600), nameof(BlackCoat), Styles.Close);
 
         /// <summary>
         /// A new Render Device using a windowed full screen window.
