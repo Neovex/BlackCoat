@@ -196,6 +196,10 @@
     <Reference Include="System" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
+    <Reference Include="TinyTools, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\lib\TinyTools.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -232,11 +236,5 @@
     <PackageReference Include="SFML.Net">
       <Version>2.5.0</Version>
     </PackageReference>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\TinyTools\TinyTools.csproj">
-      <Project>{0e401db7-d512-4181-8f4a-ad074a2d994a}</Project>
-      <Name>TinyTools</Name>
-    </ProjectReference>
   </ItemGroup>
 </Project>
