@@ -76,7 +76,7 @@ namespace ConwaysGameOfLife
             }
             else if (_TimeTillUpdate <= 0)
             {
-                // Update data map on every update impulse except when mouse is down
+                // Update data map on every update impulse when mouse isn't down
                 UpdateDataMap();
                 _TimeTillUpdate = UpdateImpulse;
             }
@@ -102,7 +102,7 @@ namespace ConwaysGameOfLife
 
         protected override void Destroy()
         {
-            // Intentionally empty. There is no need for explicit destruction.
+            // Intentionally empty. There is nothing in this scene that needs explicit destruction.
         }
 
 
