@@ -7,21 +7,43 @@ namespace BlackCoat.ParticleSystem
     /// <summary>
     /// Vertex renderer for vertices of particles
     /// </summary>
-    /// <seealso cref="BlackCoat.VertexRenderer" />
-    public sealed class ParticleVertexRenderer : VertexRenderer
+    /// <seealso cref="BlackCoat.BlackCoatBase" />
+    public sealed class ParticleVertexRenderer : BlackCoatBase
     {
+        // Constants #######################################################################
         private const int _GROWTH_MULTIPLIER = 1000;
 
+
+        // Variables #######################################################################
         private readonly Stack<int> _FreeIndexes;
         private readonly int _GroupSize;
+        internal Vertex[] Verticies;
 
 
+        // Properties ######################################################################
+        /// <summary>
+        /// Gets a value indicating whether this instance is empty.
+        /// </summary>
+        public bool IsEmpty => Verticies.Length == 0;
+        /// <summary>
+        /// Texture associated with this layer.
+        /// </summary>
+        public Texture Texture { get; }
+        /// <summary>
+        /// Gets or sets the blend mode of this layer.
+        /// </summary>
+        public BlendMode BlendMode { get; }
+        /// <summary>
+        /// Gets the type of the primitive.
+        /// </summary>
+        public PrimitiveType PrimitiveType { get; }
         /// <summary>
         /// Gets or sets the amount of associated emitters.
         /// </summary>
-        public int AssociatedEmitters { get; internal set; }
+        public int AssociatedEmitterCount { get; set; }
 
 
+        // CTOR ############################################################################
         /// <summary>
         /// Initializes a new instance of the <see cref="ParticleVertexRenderer" /> class.
         /// </summary>
@@ -30,11 +52,15 @@ namespace BlackCoat.ParticleSystem
         /// <param name="blendMode">The blend mode.</param>
         /// <param name="texture">Optional texture that will be mapped onto the vertices.</param>
         /// <exception cref="NotSupportedException">PrimitiveTypes TrianglesStrip, TrianglesFan, LinesStrip</exception>
-        public ParticleVertexRenderer(Core core, PrimitiveType primitiveType, BlendMode blendMode, Texture texture = null) : base(core, primitiveType, blendMode, texture)
+        public ParticleVertexRenderer(Core core, PrimitiveType primitiveType, BlendMode blendMode, Texture texture = null) : base(core)
         {
+            Verticies = new Vertex[0];
+            PrimitiveType = primitiveType;
+            BlendMode = blendMode;
+            Texture = texture;
             _FreeIndexes = new Stack<int>();
 
-            switch (primitiveType)
+            switch (PrimitiveType)
             {
                 case PrimitiveType.Points:
                     _GroupSize = 1;
@@ -51,8 +77,22 @@ namespace BlackCoat.ParticleSystem
                 case PrimitiveType.TriangleStrip:
                 case PrimitiveType.TriangleFan:
                 case PrimitiveType.LineStrip:
-                    throw new NotSupportedException($"The {nameof(SFML.Graphics.PrimitiveType)} \"{primitiveType}\" is not supported.");
+                    throw new NotSupportedException($"The {nameof(SFML.Graphics.PrimitiveType)} \"{PrimitiveType}\" is not supported.");
             }
+        }
+
+
+        // Methods #########################################################################
+        /// <summary>
+        /// Draws the vertices on to the defined render target.
+        /// </summary>
+        /// <param name="target">The render target.</param>
+        /// <param name="states">Additional render information.</param>
+        public void Draw(RenderTarget target, RenderStates states)
+        {
+            states.Texture = Texture;
+            states.BlendMode = BlendMode;
+            target.Draw(Verticies, PrimitiveType, states);
         }
 
         /// <summary>

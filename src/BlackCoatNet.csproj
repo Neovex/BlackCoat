@@ -190,7 +190,6 @@
     <Compile Include="Tools\ColorConverter.cs" />
     <Compile Include="Tools\Vector2Converter.cs" />
     <Compile Include="UI\UIGraphic.cs" />
-    <Compile Include="VertexRenderer.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -215,13 +214,16 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\LICENSE">
+      <Link>LICENSE</Link>
+    </None>
     <None Include="Animation\Animation.cd" />
     <None Include="AssetHandling\AssetHandling.cd" />
+    <None Include="Black Coat Class Overview.cd" />
     <None Include="Collision\Collision.cd" />
-    <None Include="CoreSystems.cd" />
+    <None Include="Core Systems.cd" />
     <None Include="Entities\Entities.cd" />
     <None Include="Input\Input.cd" />
-    <None Include="Overview.cd" />
     <None Include="ParticleSystem\Particles.cd" />
     <None Include="SceneManagement\SceneManagement.cd" />
     <None Include="UI\UI.cd" />
