@@ -14,7 +14,7 @@ namespace BlackCoat
         /// <param name="entity">"Viewer" Entity</param>
         /// <param name="target">Entity to look at</param>
         /// <param name="offset">Offset from the target entity</param>
-        public static void LookAt(this ITransformable entity, ITransformable target, Vector2f offset = default(Vector2f))
+        public static void LookAt(this ITransformable entity, ITransformable target, Vector2f offset = default)
         {
             entity.Rotation = entity.Position.AngleTowards(target.Position + offset);
         }
@@ -24,10 +24,9 @@ namespace BlackCoat
         /// </summary>
         /// <param name="entity">"Viewer" Entity</param>
         /// <param name="target">Position to look at</param>
-        /// <param name="offset">Offset from the target position</param>
-        public static void LookAt(this ITransformable entity, Vector2f target, Vector2f offset = default(Vector2f))
+        public static void LookAt(this ITransformable entity, Vector2f target)
         {
-            entity.Rotation = entity.Position.AngleTowards(target + offset);
+            entity.Rotation = entity.Position.AngleTowards(target);
         }
 
         /// <summary>
