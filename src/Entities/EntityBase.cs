@@ -180,7 +180,7 @@ namespace BlackCoat.Entities
         }
 
         /// <summary>
-        /// Releases unmanaged and - optionally - managed resources.
+        /// Releases unmanaged and managed resources.
         /// </summary>
         /// <param name="disposeManaged"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
         protected virtual void Dispose(bool disposeManaged)

@@ -346,7 +346,7 @@ namespace BlackCoat
             }
 
             var renderTarget = entity.RenderTarget ?? Device;
-            if (entity.View == null) // view inheritance is handled by the property
+            if (entity.View == null) // view inheritance is handled by the property itself
             {
                 entity.Draw(renderTarget, state);
             }
