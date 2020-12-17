@@ -158,18 +158,33 @@ namespace BlackCoat.Entities.Shapes
             target.Draw(_Vertices, Primitive, states);
         }
 
+        /// <summary>
+        /// Adds a new vertex to the <see cref="FreeShape"/>.
+        /// </summary>
+        /// <param name="position">The position of the new vertex.</param>
+        /// <param name="color">The color of the new vertex.</param>
+        /// <param name="index">The optional index of where to add the new vertex.</param>
         public void Add(Vector2f position, Color color, int index = -1)
         {
             _VertexList.Insert(index < 0 ? _VertexList.Count : index, new Vertex(position, color));
             _Dirty = true;
         }
 
+        /// <summary>
+        /// Adds the specified vertex to the <see cref="FreeShape"/>.
+        /// </summary>
+        /// <param name="vertex">The vertex to add.</param>
+        /// <param name="index">The optional index of where to add the vertex.</param>
         public void Add(Vertex vertex, int index = -1)
         {
             _VertexList.Insert(index < 0 ? _VertexList.Count : index, vertex);
             _Dirty = true;
         }
 
+        /// <summary>
+        /// Removes the the vertex at the specified index.
+        /// </summary>
+        /// <param name="index">The index.</param>
         public void Remove(int index)
         {
             _VertexList.RemoveAt(index);
