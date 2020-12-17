@@ -40,7 +40,7 @@ namespace BlackCoat.ParticleSystem
         /// <summary>
         /// Gets or sets the amount of associated emitters.
         /// </summary>
-        public int AssociatedEmitterCount { get; set; }
+        public int AssociatedEmitterCount { get; internal set; }
 
 
         // CTOR ############################################################################

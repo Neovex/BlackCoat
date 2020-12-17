@@ -83,7 +83,21 @@ namespace BlackCoat.Entities.Shapes
         }
 
         /// <summary>
-        /// Always False. A <see cref="FreeShape"/> cannot be explicitly disposed.
+        /// Optional texture displayed by the <see cref="FreeShape"/>.
+        /// </summary>
+        public Texture Texture
+        {
+            get => RenderState.Texture;
+            set
+            {
+                var state = RenderState;
+                state.Texture = value;
+                RenderState = state;
+            }
+        }
+
+        /// <summary>
+        /// Always False. A <see cref="FreeShape"/> doesn't need to be explicitly disposed.
         /// </summary>
         public override bool Disposed => false;
 
