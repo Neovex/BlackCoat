@@ -11,8 +11,11 @@ namespace BlackCoat.Collision.Shapes
     /// <seealso cref="BlackCoat.Collision.IRectangle" />
     public class BasicGraphicCollisionShape : CollisionShape, IRectangle
     {
+        // Variables #######################################################################
         private Graphic _Graphic;
 
+
+        // Properties ######################################################################
         /// <summary>
         /// Determines the geometric primitive used for collision detection
         /// </summary>
@@ -29,6 +32,7 @@ namespace BlackCoat.Collision.Shapes
         public Vector2f Size => _Graphic.TextureRect.Size().ToVector2f().MultiplyBy(_Graphic.Scale);
 
 
+        // CTOR ############################################################################
         /// <summary>
         /// Initializes a new instance of the <see cref="BasicGraphicCollisionShape"/> class.
         /// </summary>
@@ -39,6 +43,8 @@ namespace BlackCoat.Collision.Shapes
             _Graphic = graphic ?? throw new ArgumentNullException(nameof(graphic));
         }
 
+
+        // Methods #########################################################################
         /// <summary>
         /// Determines if this <see cref="BasicGraphicCollisionShape"/> contains the defined point
         /// </summary>

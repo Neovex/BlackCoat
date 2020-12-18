@@ -10,12 +10,14 @@ namespace BlackCoat.Collision
     /// </summary>
     public class CollisionSystem
     {
+        // Properties ######################################################################
         /// <summary>
         /// Gets or sets a value indicating whether the <see cref="CollisionSystem"/> should raise exceptions.
         /// </summary>
         public Boolean RaiseCollisionExceptions { get; set; }
 
 
+        // CTOR ############################################################################
         /// <summary>
         /// Initializes a new instance of the <see cref="CollisionSystem"/> class.
         /// </summary>
@@ -23,10 +25,8 @@ namespace BlackCoat.Collision
         { }
 
 
-        //#########################################################################################################################################
-
-        // Helper methods
-
+        // Methods #########################################################################
+        #region Helper methods
         /// <summary>
         /// Determines if value-range minA-maxA intersects with a second value-range minB-maxB
         /// </summary>
@@ -101,11 +101,25 @@ namespace BlackCoat.Collision
             }
         }
 
+        /// <summary>
+        /// Helper method to handle invalid shape combinations - should never happen
+        /// </summary>
+        protected virtual bool HandleUnknownShape(ICollisionShape shape)
+        {
+            Log.Error("Invalid collision shape", shape, shape?.CollisionGeometry);
+            if (RaiseCollisionExceptions) throw new Exception("Invalid collision shape");
+            return false;
+        }
+        #endregion
 
-        //#########################################################################################################################################
-
-        // Ray casting
-
+        #region Ray Casts
+        /// <summary>
+        /// Determines if a ray collides the provided target
+        /// </summary>
+        /// <param name="rayOrigin">The ray origin.</param>
+        /// <param name="rayAngle">The ray angle.</param>
+        /// <param name="target">The collision target.</param>
+        /// <returns>An array of intersections - if any</returns>
         public virtual (Vector2f Position, float Angle)[] Raycast(Vector2f rayOrigin, float rayAngle, ICollisionShape target)
         {
             switch (target.CollisionGeometry)
@@ -124,6 +138,14 @@ namespace BlackCoat.Collision
             return new(Vector2f Position, float Angle)[0];
         }
 
+        /// <summary>
+        /// Determines if a ray collides the provided line
+        /// </summary>
+        /// <param name="rayOrigin">The ray origin.</param>
+        /// <param name="rayAngle">The ray angle.</param>
+        /// <param name="targetStart">The target lines start point.</param>
+        /// <param name="targetEnd">The target lines end point.</param>
+        /// <returns>An array of intersections - if any</returns>
         public virtual (Vector2f Position, float Angle)[] Raycast(Vector2f rayOrigin, float rayAngle, Vector2f targetStart, Vector2f targetEnd)
         {
             if (rayAngle < 0) throw new ArgumentOutOfRangeException(nameof(rayAngle), rayAngle, "Angle must be positive.");
@@ -144,17 +166,38 @@ namespace BlackCoat.Collision
             return new(Vector2f Position, float Angle)[0];
         }
 
+        /// <summary>
+        /// Determines if a ray collides the provided target
+        /// </summary>
+        /// <param name="rayOrigin">The ray origin.</param>
+        /// <param name="rayAngle">The ray angle.</param>
+        /// <param name="rectangle">The collision target.</param>
+        /// <returns>An array of intersections - if any</returns>
         public virtual (Vector2f Position, float Angle)[] Raycast(Vector2f rayOrigin, float rayAngle, IRectangle rectangle)
         {
             var points = CalcGlobalRectVerticies(rectangle);
             return points.SelectMany((p, i) => Raycast(rayOrigin, rayAngle, p, points[(i + 1) % points.Length])).OrderBy(i=>rayOrigin.DistanceBetweenSquared(i.Position)).ToArray();
         }
 
+        /// <summary>
+        /// Determines if a ray collides the provided target
+        /// </summary>
+        /// <param name="rayOrigin">The ray origin.</param>
+        /// <param name="rayAngle">The ray angle.</param>
+        /// <param name="polygon">The collision target.</param>
+        /// <returns>An array of intersections - if any</returns>
         public virtual (Vector2f Position, float Angle)[] Raycast(Vector2f rayOrigin, float rayAngle, IPolygon polygon)
         {
             return polygon.Points.SelectMany((p, i) => Raycast(rayOrigin, rayAngle, p.ToGlobal(polygon.Position), polygon.Points[(i + 1) % polygon.Points.Count].ToGlobal(polygon.Position))).OrderBy(i => rayOrigin.DistanceBetweenSquared(i.Position)).ToArray();
         }
 
+        /// <summary>
+        /// Determines if a ray collides the provided target
+        /// </summary>
+        /// <param name="rayOrigin">The ray origin.</param>
+        /// <param name="rayAngle">The ray angle.</param>
+        /// <param name="circle">The collision target.</param>
+        /// <returns>An array of intersections - if any</returns>
         public virtual (Vector2f Position, float Angle)[] Raycast(Vector2f rayOrigin, float rayAngle, ICircle circle)
         {
             if (rayAngle < 0) throw new ArgumentOutOfRangeException(nameof(rayAngle), rayAngle, "Angle must be positive.");
@@ -176,12 +219,9 @@ namespace BlackCoat.Collision
                 return (Position: Create.Vector2fFromAngle(faceAngle - 90, circle.Radius).ToGlobal(circle.Position), Angle: faceAngle); // add angle and convert to global
             }).OrderBy(i => rayOrigin.DistanceBetweenSquared(i.Position)).ToArray();
         }
+        #endregion
 
-        //#########################################################################################################################################
-
-        // Collision Calculation
-
-        //POINT
+        # region POINT Collisions
         /// <summary>
         /// Determines if objects touch or intersect.
         /// </summary>
@@ -235,9 +275,9 @@ namespace BlackCoat.Collision
             var v = a.ToLocal(b.Position);
             return b.Points.Select((p, i) => v.ToLocal(p).DotProduct(FindPolyProjectionAxis(i, b.Points))).All(p => p > 0);
         }
+        #endregion
 
-
-        //CIRCLE
+        # region CIRCLE Collisions
         /// <summary>
         /// Determines if objects touch or intersect.
         /// </summary>
@@ -300,9 +340,9 @@ namespace BlackCoat.Collision
             var limits = CalcProjectionLimits(localPoints, FindCircleProjectionAxis(localPoints));
             return Intersect(-a.Radius, a.Radius, limits.X, limits.Y);
         }
+        #endregion
 
-
-        //RECT
+        #region RECTANGLE Collisions
         /// <summary>
         /// Determines if objects touch or intersect.
         /// </summary>
@@ -366,9 +406,9 @@ namespace BlackCoat.Collision
                    })
                    .All(limits => Intersect(limits.limitA.X, limits.limitA.Y, limits.limitB.X, limits.limitB.Y));
         }
+        #endregion
 
-
-        // POLY
+        #region POLYGON Collisions
         /// <summary>
         /// Determines if objects touch or intersect.
         /// </summary>
@@ -436,9 +476,9 @@ namespace BlackCoat.Collision
                    })
                    .All(limits => limits.projection.X > limits.axisRoot || limits.projection.Y > limits.axisRoot);
         }
+        #endregion
 
-
-        // LINES
+        #region LINE Collisions
         /// <summary>
         /// Determines if objects touch or intersect.
         /// </summary>
@@ -457,12 +497,9 @@ namespace BlackCoat.Collision
             Sort((float)a.Start.DotProduct(axis), (float)a.End.DotProduct(axis), out min, out max);
             return min <= p && max >= p;
         }
+        #endregion
 
-
-        //#########################################################################################################################################
-
-        // Collision Mapping
-
+        #region Collision Mapping
         /// <summary>
         /// Determines if objects touch or intersect.
         /// </summary>
@@ -555,13 +592,6 @@ namespace BlackCoat.Collision
             }
             return HandleUnknownShape(other);
         }
-
-        // Helper method to handle invalid shape combinations - should never happen
-        protected virtual bool HandleUnknownShape(ICollisionShape shape)
-        {
-            Log.Error("Invalid collision shape", shape, shape?.CollisionGeometry);
-            if (RaiseCollisionExceptions) throw new Exception("Invalid collision shape");
-            return false;
-        }
+        #endregion
     }
 }

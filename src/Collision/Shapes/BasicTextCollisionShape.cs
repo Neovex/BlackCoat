@@ -11,8 +11,11 @@ namespace BlackCoat.Collision.Shapes
     /// <seealso cref="BlackCoat.Collision.IRectangle" />
     public class BasicTextCollisionShape : CollisionShape, IRectangle
     {
+        // Variables #######################################################################
         private TextItem _Text;
 
+
+        // Properties ######################################################################
         /// <summary>
         /// Determines the geometric primitive used for collision detection
         /// </summary>
@@ -29,6 +32,7 @@ namespace BlackCoat.Collision.Shapes
         public Vector2f Size => _Text.LocalBounds.Size();
 
 
+        // CTOR ############################################################################
         /// <summary>
         /// Initializes a new instance of the <see cref="BasicTextCollisionShape"/> class.
         /// </summary>
@@ -39,6 +43,8 @@ namespace BlackCoat.Collision.Shapes
             _Text = text ?? throw new ArgumentNullException(nameof(text));
         }
 
+
+        // Methods #########################################################################
         /// <summary>
         /// Determines if this <see cref="BasicTextCollisionShape"/> contains the defined point
         /// </summary>

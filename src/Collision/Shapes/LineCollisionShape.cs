@@ -9,6 +9,7 @@ namespace BlackCoat.Collision.Shapes
     /// <seealso cref="BlackCoat.Collision.ILine"/>
     public class LineCollisionShape : CollisionShape, ILine
     {
+        // Properties ######################################################################
         /// <summary>
         /// Startposition of the <see cref="LineCollisionShape"/>.
         /// </summary>
@@ -25,6 +26,7 @@ namespace BlackCoat.Collision.Shapes
         public override Geometry CollisionGeometry => Geometry.Line;
 
 
+        // CTOR ############################################################################
         /// <summary>
         /// Initializes a new instance of the <see cref="LineCollisionShape"/> class.
         /// </summary>
@@ -38,6 +40,7 @@ namespace BlackCoat.Collision.Shapes
         }
 
 
+        // Methods #########################################################################
         /// <summary>
         /// Determines if this <see cref="LineCollisionShape"/> contains the defined point
         /// </summary>

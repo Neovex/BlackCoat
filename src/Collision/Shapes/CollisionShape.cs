@@ -9,13 +9,18 @@ namespace BlackCoat.Collision.Shapes
     /// <seealso cref="BlackCoat.Collision.ICollisionShape" />
     public abstract class CollisionShape : ICollisionShape
     {
+        // Variables #######################################################################
         protected CollisionSystem _CollisionSystem;
 
+
+        // Properties ######################################################################
         /// <summary>
         /// Determines the geometric primitive used for collision detection
         /// </summary>
         public abstract Geometry CollisionGeometry { get; }
 
+
+        // CTOR ############################################################################
         /// <summary>
         /// Initializes the base class <see cref="CollisionShape"/>
         /// </summary>
@@ -25,6 +30,8 @@ namespace BlackCoat.Collision.Shapes
             _CollisionSystem = collisionSystem ?? throw new ArgumentNullException(nameof(collisionSystem));
         }
 
+
+        // Methods #########################################################################
         /// <summary>
         /// Determines if this  <see cref="CollisionShape"/> contains the defined point
         /// </summary>

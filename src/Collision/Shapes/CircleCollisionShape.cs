@@ -9,6 +9,7 @@ namespace BlackCoat.Collision.Shapes
     /// <seealso cref="BlackCoat.Collision.ICircle"/>
     public class CircleCollisionShape : CollisionShape, ICircle
     {
+        // Properties ######################################################################
         /// <summary>
         /// Position of the <see cref="CircleCollisionShape"/>.
         /// </summary>
@@ -25,6 +26,7 @@ namespace BlackCoat.Collision.Shapes
         public override Geometry CollisionGeometry => Geometry.Circle;
 
 
+        // CTOR ############################################################################
         /// <summary>
         /// Initializes a new instance of the <see cref="CircleCollisionShape"/> class.
         /// </summary>
@@ -38,6 +40,7 @@ namespace BlackCoat.Collision.Shapes
         }
 
 
+        // Methods #########################################################################
         /// <summary>
         /// Determines if this <see cref="CircleCollisionShape"/> contains the defined point
         /// </summary>

@@ -11,6 +11,7 @@ namespace BlackCoat.Collision.Shapes
     /// <seealso cref="BlackCoat.Collision.IPolygon"/>
     public class PolygonCollisionShape : CollisionShape, IPolygon
     {
+        // Properties ######################################################################
         /// <summary>
         /// Position of the <see cref="PolygonCollisionShape"/>.
         /// </summary>
@@ -32,6 +33,7 @@ namespace BlackCoat.Collision.Shapes
         public override Geometry CollisionGeometry => Geometry.Polygon;
 
 
+        // CTOR ############################################################################
         /// <summary>
         /// Initializes a new instance of the <see cref="PolygonCollisionShape"/> class.
         /// </summary>
@@ -45,6 +47,7 @@ namespace BlackCoat.Collision.Shapes
         }
 
 
+        // Methods #########################################################################
         /// <summary>
         /// Determines if this <see cref="PolygonCollisionShape"/> contains the defined point
         /// </summary>

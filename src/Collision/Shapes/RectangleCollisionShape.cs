@@ -9,6 +9,7 @@ namespace BlackCoat.Collision.Shapes
     /// <seealso cref="BlackCoat.Collision.IRectangle"/>
     public class RectangleCollisionShape : CollisionShape, IRectangle
     {
+        // Properties ######################################################################
         /// <summary>
         /// Rectangle position.
         /// </summary>
@@ -25,6 +26,7 @@ namespace BlackCoat.Collision.Shapes
         public override Geometry CollisionGeometry => Geometry.Rectangle;
 
 
+        // CTOR ############################################################################
         /// <summary>
         /// Initializes a new instance of the <see cref="RectangleCollisionShape"/> class.
         /// </summary>
@@ -38,6 +40,7 @@ namespace BlackCoat.Collision.Shapes
         }
 
 
+        // Methods #########################################################################
         /// <summary>
         /// Determines if this <see cref="RectangleCollisionShape"/> contains the defined point
         /// </summary>
