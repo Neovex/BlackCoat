@@ -315,7 +315,7 @@
   <Class Name="BlackCoat.VectorExtensions" Collapsed="true">
     <Position X="11.25" Y="17.75" Width="1.75" />
     <TypeIdentifier>
-      <HashCode>AAAAQgAAAAAAAAAQkAgAAABAAEAAKACAAECgAAACAAQ=</HashCode>
+      <HashCode>AAAAQgAAAAAAAAYQkAgAAABAAEAAKACAAECgAAACAAQ=</HashCode>
       <FileName>Extensions\VectorExtensions.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -474,7 +474,7 @@
   <Class Name="BlackCoat.Animation.Animation" Collapsed="true">
     <Position X="12.25" Y="15" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>QARgACAAQAAgAAIAAAQAAAAAAAIAAAQAAAAAAAEAAAA=</HashCode>
+      <HashCode>QARgACAAAAAgAAIAAAQAAAAAAgIAAAQAIAAAAAEAAAA=</HashCode>
       <FileName>Animation\Animation.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -488,21 +488,21 @@
   <Class Name="BlackCoat.Animation.TimeAnimation" Collapsed="true">
     <Position X="12.25" Y="16.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAQAAACAAAAACgAAAAAAAIAAAAAAAAAABAAAAA=</HashCode>
+      <HashCode>AAAAAAAQAAACAAAAACgAAAAAAgAAAAAAAAAAABAAAAA=</HashCode>
       <FileName>Animation\TimeAnimation.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="BlackCoat.Animation.Timer" Collapsed="true">
     <Position X="14.25" Y="16.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Animation\Timer.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="BlackCoat.Animation.ValueAnimation" Collapsed="true">
     <Position X="10.25" Y="16.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAABAAAAAAAAAAAAAQAAAAAAAIAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAABAAAAAAAAAAAAAQAAAAAAgAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Animation\ValueAnimation.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -700,16 +700,8 @@
   </Class>
   <Class Name="BlackCoat.ParticleSystem.ParticleEmitterHost" Collapsed="true">
     <Position X="28" Y="7.5" Width="1.75" />
-    <InheritanceLine Type="BlackCoat.Entities.EntityBase&lt;T&gt;" ManuallyRouted="true">
-      <Path>
-        <Point X="23.5" Y="5.191" />
-        <Point X="23.5" Y="5.869" />
-        <Point X="28.875" Y="5.869" />
-        <Point X="28.875" Y="7.5" />
-      </Path>
-    </InheritanceLine>
     <TypeIdentifier>
-      <HashCode>AgQAAAAAAQAAAgAAAIAABAAAAAAAAAAAAgAAgAAQAAA=</HashCode>
+      <HashCode>AgQAAAAAASAAAoBgAIIABAAAAAAAAAAAAgAAgAgSAAA=</HashCode>
       <FileName>ParticleSystem\ParticleEmitterHost.cs</FileName>
     </TypeIdentifier>
     <ShowAsCollectionAssociation>
@@ -884,14 +876,6 @@
       <FileName>ParticleSystem\TextureEmitter.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="BlackCoat.VertexRenderer" Collapsed="true">
-    <Position X="44" Y="3.25" Width="2" />
-    <TypeIdentifier>
-      <HashCode>AABAAAAAAAAABgAAAAAAAAAgAAAAAAAAAAIAAAAIAAA=</HashCode>
-      <FileName>VertexRenderer.cs</FileName>
-      <NewMemberFileName>ParticleSystem\VertexRenderer.cs</NewMemberFileName>
-    </TypeIdentifier>
-  </Class>
   <Class Name="BlackCoat.ParticleSystem.ParticleBase" Collapsed="true">
     <Position X="39.75" Y="3.25" Width="2" />
     <TypeIdentifier>
@@ -944,9 +928,9 @@
     </TypeIdentifier>
   </Class>
   <Class Name="BlackCoat.ParticleSystem.ParticleVertexRenderer" Collapsed="true">
-    <Position X="44" Y="4.5" Width="2" />
+    <Position X="44" Y="3.25" Width="2" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAIAQAAAAgAAAAAACAIAQAAI=</HashCode>
+      <HashCode>AABAAAAAAAAABgAAAAAAAIAgAAAAkAAAAAICAIAYAAI=</HashCode>
       <FileName>ParticleSystem\ParticleVertexRenderer.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -961,7 +945,7 @@
     <Position X="0.5" Y="8.75" Width="1.75" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>InvalidStateException.cs</FileName>
+      <FileName>Tools\InvalidStateException.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="BlackCoat.UI.Button" Collapsed="true">
@@ -1152,7 +1136,7 @@
       </Path>
     </InheritanceLine>
     <TypeIdentifier>
-      <HashCode>AAIAAAAIAEAQAoAgCAIAhAGAAAgAAAAAJAAAgIgCAAA=</HashCode>
+      <HashCode>AAIAAAAIAEAQAoAgCAIAhAGAAAgAAAAAJAIAgIgCAAA=</HashCode>
       <FileName>Entities\Shapes\FreeShape.cs</FileName>
     </TypeIdentifier>
   </Class>
