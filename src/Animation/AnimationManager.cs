@@ -43,7 +43,6 @@ namespace BlackCoat.Animation
             if (Animation.Finished) throw new InvalidOperationException("Animations cannot be reused");
             Animation.AnimationComplete += HandleAnimationCompleted;
             _AnimationsToAdd.Add(Animation);
-
             ACTIVE_ANIMATIONS++;
         }
 
@@ -172,7 +171,6 @@ namespace BlackCoat.Animation
         {
             animation.AnimationComplete -= HandleAnimationCompleted;
             _AnimationsToRemove.Add(animation);
-
             ACTIVE_ANIMATIONS--;
         }
     }

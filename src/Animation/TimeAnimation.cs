@@ -9,8 +9,8 @@ namespace BlackCoat.Animation
     public class TimeAnimation : Animation
     {
         // Variables #######################################################################
-        private Func<float, float, float, float, float> _Interpolation;
-        private float _Distance;
+        private readonly Func<float, float, float, float, float> _Interpolation;
+        private readonly float _Distance;
         private float _ElapsedTime;
 
 
@@ -40,8 +40,6 @@ namespace BlackCoat.Animation
             TargetValue = targetValue;
             Duration = duration;
             _Interpolation = interpolation;
-
-            // Calculate Distance
             _Distance = TargetValue - StartValue;
         }
 
@@ -51,13 +49,12 @@ namespace BlackCoat.Animation
         /// Updates the current Value of this <see cref="Animation"/> based on the current frame time.
         /// </summary>
         /// <param name="deltaT">Frame Time</param>
-        override public void UpdateAnimation(float deltaT)
+        override protected void UpdateInternal(float deltaT)
         {
-            if (Paused) return;
             _ElapsedTime += deltaT;
             CurrentValue = _Interpolation.Invoke(StartValue, _Distance, _ElapsedTime, Duration);
             OnUpdate(CurrentValue);
-            if (CurrentValue == TargetValue) Cancel();
+            if (CurrentValue == TargetValue) Stop();
         }
     }
 }

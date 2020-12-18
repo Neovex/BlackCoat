@@ -3,7 +3,7 @@
 namespace BlackCoat.Animation
 {
     /// <summary>
-    /// Abstract basclass of all animation types
+    /// Abstract base class of all animation types
     /// </summary>
     public abstract class Animation
     {   // Events ##########################################################################
@@ -49,12 +49,21 @@ namespace BlackCoat.Animation
         /// Updates the current Value of this <see cref="Animation"/> based on the current frame time.
         /// </summary>
         /// <param name="deltaT">Frame Time</param>
-        public abstract void UpdateAnimation(float deltaT);
+        public void UpdateAnimation(float deltaT)
+        {
+            if (!Finished && !Paused) UpdateInternal(deltaT);
+        }
+
+        /// <summary>
+        /// Updates the current Value of this <see cref="Animation"/> based on the current frame time.
+        /// </summary>
+        /// <param name="deltaT">Frame Time</param>
+        protected abstract void UpdateInternal(float deltaT);
 
         /// <summary>
         /// Immediately stops the <see cref="Animation"/>.
         /// </summary>
-        public virtual void Cancel()
+        public virtual void Stop()
         {
             if (Finished) return;
             Finished = true;

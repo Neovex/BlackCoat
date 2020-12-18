@@ -2,7 +2,11 @@
 
 namespace BlackCoat.Animation
 {
-	public enum InterpolationType
+    /// <summary>
+    /// All available interpolations for animations
+    /// </summary>
+    /// <seealso cref="Interpolation"/>
+    public enum InterpolationType
 	{
 		Linear,
 		InQuad,
@@ -31,8 +35,9 @@ namespace BlackCoat.Animation
 	}
 
 	/// <summary>
-	/// Common interpolations for Tweening
+	/// Provides methods to calculate common interpolations for animations
 	/// </summary>
+	/// <seealso cref="InterpolationType"/>
 	public static class Interpolation
 	{
 		/// <summary>

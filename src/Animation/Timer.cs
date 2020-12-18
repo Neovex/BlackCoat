@@ -11,7 +11,7 @@ namespace BlackCoat.Animation
         /// <summary>
         /// Creates a <see cref="Timer"/> that represents a waiting time period
         /// </summary>
-        /// <param name="duration">Length of thie <see cref="Timer"/> in Fractal Seconds</param>
+        /// <param name="duration">Length of this <see cref="Timer"/> in Fractal Seconds</param>
         public Timer(float duration)
         {
             if (duration <= 0) throw new ArgumentException("duration must be greater than 0");
@@ -24,12 +24,11 @@ namespace BlackCoat.Animation
         /// Updates the current Value of this <see cref="Animation"/> based on the current frame time.
         /// </summary>
         /// <param name="deltaT">Frame Time</param>
-        override public void UpdateAnimation(float deltaT)
+        override protected void UpdateInternal(float deltaT)
         {
-            if (Paused) return;
             CurrentValue += deltaT;
             OnUpdate(CurrentValue);
-            if (CurrentValue >= TargetValue) Cancel();
+            if (CurrentValue >= TargetValue) Stop();
         }
     }
 }

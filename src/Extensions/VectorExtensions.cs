@@ -142,5 +142,9 @@ namespace BlackCoat
 
         public static Vector2f ToVector2f(this (int x, int y) v) => new Vector2f(v.x, v.y);
         public static Vector2f ToVector2f(this (float x, float y) v) => new Vector2f(v.x, v.y);
+
+        // HELPERS
+        public static Vector2f SetX(this Vector2f v, float x) => new Vector2f(x, v.Y);
+        public static Vector2f SetY(this Vector2f v, float y) => new Vector2f(v.X, y);
     }
 }
