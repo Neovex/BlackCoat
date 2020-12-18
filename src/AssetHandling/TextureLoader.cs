@@ -90,27 +90,5 @@ namespace BlackCoat
             }
             return Load(name, data);
         }
-
-        /// <summary>
-        /// Creates a rectangular Texture or retrieves an already created instance
-        /// </summary>
-        /// <param name="width">Width of the Image that should be created</param>
-        /// <param name="height">Height of the Image that should be created</param>
-        /// <param name="color">Color of the Image as hex value 0xAARRGGBB</param>
-        /// <param name="name">Name of the generated Texture</param>
-        /// <returns>The new or present Texture</returns>
-        [Obsolete("CreateTexture is deprecated, please use a Rectangle or a PrerenderedContainer instead.")]
-        public Texture CreateTexture(UInt32 width, UInt32 height, UInt32 color, String name)
-        {
-            if (Disposed) throw new ObjectDisposedException("TextureManager");
-            if (_Assets.ContainsKey(name)) return _Assets[name];
-            var c = new Color((Byte)((color >> 0x10) & 0xff),
-                              (Byte)((color >> 0x08) & 0xff),
-                              (Byte) (color & 0xff),
-                              (Byte)((color >> 0x18) & 0xff));
-            var img = new Texture(new Image(width, height, c));
-            if (!String.IsNullOrEmpty(name)) _Assets.Add(name, img);
-            return img;
-        }
     }
 }

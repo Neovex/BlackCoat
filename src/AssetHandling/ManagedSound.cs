@@ -8,9 +8,12 @@ namespace BlackCoat.AssetHandling
     /// </summary>
     public class ManagedSound : IDisposable
     {
+        // Variables #######################################################################
         private SoundBuffer _Buffer;
         private Sound[] _Sounds;
 
+
+        // Properties ######################################################################
         /// <summary>
         /// Gets the name of this <see cref="ManagedSound"/>.
         /// </summary>
@@ -22,6 +25,7 @@ namespace BlackCoat.AssetHandling
         public bool Disposed { get; private set; }
 
 
+        // CTOR ############################################################################
         /// <summary>
         /// Initializes a new instance of the <see cref="ManagedSound" /> class.
         /// </summary>
@@ -44,9 +48,11 @@ namespace BlackCoat.AssetHandling
         }
 
 
+        // Methods #########################################################################
         /// <summary>
-        /// Plays the sound.
+        /// Retrieves a sound when available. The amount of sounds per frame is limited.
         /// </summary>
+        /// <returns>The sound instance or null when too many instances of the same sound are already active</returns>
         public Sound GetSound()
         {
             if (Disposed) throw new ObjectDisposedException(Name);
@@ -62,7 +68,16 @@ namespace BlackCoat.AssetHandling
         }
 
         /// <summary>
-        /// Releases unmanaged and - optionally - managed resources.
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        /// <summary>
+        /// Releases unmanaged and managed resources.
         /// </summary>
         /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
         protected virtual void Dispose(bool disposing)
@@ -84,15 +99,6 @@ namespace BlackCoat.AssetHandling
                 _Buffer = null;
                 Disposed = true;
             }
-        }
-
-        /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
         }
     }
 }

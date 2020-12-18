@@ -50,7 +50,9 @@ namespace BlackCoat
             RootFolder = assetRoot;
             _FileEndings = new[] { String.Empty }.Concat(supportedFileEndings).Distinct().ToArray();
         }
-
+        /// <summary>
+        /// Finalizes an instance of the <see cref="AssetLoader{T}"/> class.
+        /// </summary>
         ~AssetLoader()
         {
             Dispose(false);
@@ -133,14 +135,18 @@ namespace BlackCoat
         }
 
         /// <summary>
-        /// Releases all used unmanaged resources.
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
-
         public void Dispose()
         {
             Dispose(true);
             GC.SuppressFinalize(this);
         }
+
+        /// <summary>
+        /// Releases unmanaged and managed resources.
+        /// </summary>
+        /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
         protected virtual void Dispose(bool disposing)
         {
             if (Disposed) return;

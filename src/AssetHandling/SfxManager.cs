@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Linq;
 using System.Collections.Generic;
+
 using SFML.System;
 using SFML.Audio;
 
@@ -11,11 +11,13 @@ namespace BlackCoat.AssetHandling
     /// </summary>
     public class SfxManager
     {
+        // Variables #######################################################################
         private readonly SfxLoader _Loader;
         private readonly Dictionary<String, ManagedSound> _SoundLibrary;
         private readonly Func<int> _ReadVolume;
 
 
+        // Properties ######################################################################
         /// <summary>
         /// Gets or sets the global listener position for spatial sounds.
         /// </summary>
@@ -36,6 +38,7 @@ namespace BlackCoat.AssetHandling
         public float VolumeDropoffFactor { get; set; }
 
 
+        // CTOR ############################################################################
         /// <summary>
         /// Initializes a new instance of the <see cref="SfxManager" /> class.
         /// </summary>
@@ -52,6 +55,7 @@ namespace BlackCoat.AssetHandling
         }
 
 
+        // Methods #########################################################################
         /// <summary>
         /// Loads all compatible files from a folder into the sound library.
         /// </summary>
