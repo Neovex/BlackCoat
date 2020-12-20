@@ -1,5 +1,6 @@
 ﻿using System;
 using SFML.System;
+using BlackCoat.Entities;
 
 namespace BlackCoat
 {

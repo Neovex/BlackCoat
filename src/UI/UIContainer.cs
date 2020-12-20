@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using SFML.System;
+using BlackCoat.Entities;
 
 namespace BlackCoat.UI
 {

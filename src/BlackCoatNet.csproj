@@ -72,7 +72,7 @@
     <Compile Include="Extensions\RectangleExtensions.cs" />
     <Compile Include="Input\InputSource.cs" />
     <Compile Include="Input\Mapping\ScrollDirection.cs" />
-    <Compile Include="Interfaces\IPropertyInspector.cs" />
+    <Compile Include="Tools\IPropertyInspector.cs" />
     <Compile Include="ParticleSystem\SpawnInfos\ParticleSpawnInfo.cs" />
     <Compile Include="ParticleSystem\SpawnInfos\RadialTexturedSpawnInfo.cs" />
     <Compile Include="ParticleSystem\SpawnInfos\RadialSpawnInfo.cs" />
@@ -142,8 +142,8 @@
     <Compile Include="Entities\Roles\GraphicRoleHost.cs" />
     <Compile Include="Entities\Shapes\Circle.cs" />
     <Compile Include="Entities\Shapes\Polygon.cs" />
-    <Compile Include="Interfaces\IRoleHost.cs" />
-    <Compile Include="Interfaces\IEntity.cs" />
+    <Compile Include="Entities\Roles\IRoleHost.cs" />
+    <Compile Include="Entities\IEntity.cs" />
     <Compile Include="Entities\Container.cs" />
     <Compile Include="Entities\Shapes\Line.cs" />
     <Compile Include="Entities\Shapes\Rectangle.cs" />
@@ -156,7 +156,6 @@
     <Compile Include="Input\Mapping\ComplexInputMap.cs" />
     <Compile Include="Input\Mapping\SimpleInputMap.cs" />
     <Compile Include="Input\TextEnteredEventArgs.cs" />
-    <Compile Include="Interfaces\ITransformable.cs" />
     <Compile Include="ParticleSystem\TextureParticleBase.cs" />
     <Compile Include="ParticleSystem\ParticleEmitterHost.cs" />
     <Compile Include="ParticleSystem\ParticleVertexRenderer.cs" />

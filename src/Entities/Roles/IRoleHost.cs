@@ -1,18 +1,20 @@
 ﻿using System;
-using BlackCoat.Entities.Roles;
 
-namespace BlackCoat
+namespace BlackCoat.Entities.Roles
 {
     /// <summary>
     /// Common interface of all <see cref="BlackCoat"/> Entity Types that can be host for a <see cref="Role"/>
     /// </summary>
     public interface IRoleHost
     {
+        // Properties ######################################################################
         /// <summary>
         /// Current <see cref="Role"/> that describes the <see cref="IRoleHost"/>s Behavior
         /// </summary>
         Role CurrentRole { get; }
 
+
+        // Methods #########################################################################
         /// <summary>
         /// Assigns a new <see cref="Role"/> to the <see cref="IRoleHost" /> without removing the current one.
         /// </summary>

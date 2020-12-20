@@ -8,6 +8,7 @@ using SFML.Window;
 using SFML.Graphics;
 
 using BlackCoat.Tools;
+using BlackCoat.Entities;
 using BlackCoat.Animation;
 using BlackCoat.Properties;
 using BlackCoat.Collision;

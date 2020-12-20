@@ -1,9 +1,8 @@
 ﻿using System;
 using SFML.Graphics;
-using BlackCoat.Entities;
 using SFML.System;
 
-namespace BlackCoat
+namespace BlackCoat.Entities
 {
     /// <summary>
     /// Common interface of all <see cref="BlackCoat"/> Entity Types
