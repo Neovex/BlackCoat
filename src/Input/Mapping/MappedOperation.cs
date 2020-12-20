@@ -10,15 +10,20 @@ namespace BlackCoat.InputMapping
     /// <typeparam name="TOperation">The type of the operation.</typeparam>
     public class MappedOperation<TCondition, TOperation>
     {
+        // Variables #######################################################################
         protected TCondition[] _Conditions;
         protected TOperation _Operation;
         protected Func<TCondition, Boolean> _Validator;
 
+
+        // Events ##########################################################################
         /// <summary>
         /// Occurs when the operation condition is met.
         /// </summary>
         public event Action<TOperation> Invoked = o => { };
 
+
+        // CTOR ############################################################################
         /// <summary>
         /// Initializes a new instance of the <see cref="MappedOperation{TCondition, TOperation}"/> class with multiple conditions.
         /// </summary>
@@ -37,6 +42,8 @@ namespace BlackCoat.InputMapping
             _Validator = validator;
         }
 
+
+        // Methods #########################################################################
         /// <summary>
         /// Invokes the operation when the condition is met
         /// </summary>

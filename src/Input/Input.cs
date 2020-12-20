@@ -13,7 +13,10 @@ namespace BlackCoat
     /// </summary>
     public class Input : BlackCoatBase, IDisposable
     {
+        // Statics #########################################################################
         internal static Input MASTER_OVERRIDE;
+        private static Boolean _MOUSE_VISIBLE = true;
+
 
         // Events ##########################################################################
         public event Action<Vector2f> MouseMoved = p => { };
@@ -34,7 +37,6 @@ namespace BlackCoat
         // Variables #######################################################################
         private RenderWindow _Device;
         private Vector2f _MousePosition;
-        private static Boolean _MouseVisible = true;
         private HashSet<Mouse.Button> _MouseButtons;
         private HashSet<Keyboard.Key> _KeyboardKeys;
         private HashSet<uint> _ConnectedJoysticks;
@@ -47,7 +49,9 @@ namespace BlackCoat
 
 
         // Properties ######################################################################
-        public Boolean Disposed { get; private set; }
+        /// <summary>
+        /// Determines the source of the last input event.
+        /// </summary>
         public InputSource CurrentEventSource { get; private set; }
         public Boolean ShiftKeyPressed => IsKeyDown(Keyboard.Key.LShift) || IsKeyDown(Keyboard.Key.RShift);
         public Boolean ControlKeyPressed => IsKeyDown(Keyboard.Key.LControl) || IsKeyDown(Keyboard.Key.RControl);
@@ -60,8 +64,8 @@ namespace BlackCoat
 
         public Boolean MouseVisible
         {
-            get => _MouseVisible;
-            set => _Device.SetMouseCursorVisible(_MouseVisible = value);
+            get => _MOUSE_VISIBLE;
+            set => _Device.SetMouseCursorVisible(_MOUSE_VISIBLE = value);
         }
 
         public Boolean MouseEnabled
@@ -137,6 +141,8 @@ namespace BlackCoat
             }
         }
 
+        public Boolean Disposed { get; private set; }
+
 
         // Constructor #####################################################################
         /// <summary>
@@ -148,7 +154,7 @@ namespace BlackCoat
         /// <param name="joystick">If set to <c>true</c> game joystick will be available.</param>
         public Input(Core core, bool mouse = true, bool keyboard = true, bool joystick = false) : base(core)
         {
-            // Init Class
+            // Setup
             _Device = _Core.Device;
             _MousePosition = new Vector2f(-1, -1);
             _MouseButtons = new HashSet<Mouse.Button>();

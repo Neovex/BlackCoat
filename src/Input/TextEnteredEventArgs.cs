@@ -7,6 +7,7 @@ namespace BlackCoat
     /// </summary>
     public class TextEnteredEventArgs
     {
+        // Nested Types ####################################################################
         /// <summary>
         /// Defines a type of navigation or modification to a string.
         /// </summary>
@@ -22,6 +23,7 @@ namespace BlackCoat
         }
 
 
+        // Properties ######################################################################
         /// <summary>
         /// Entered Text. Usually not more than one character at a time.
         /// </summary>
@@ -33,6 +35,7 @@ namespace BlackCoat
         public Operation Modification { get; }
 
 
+        // CTOR ############################################################################
         /// <summary>
         /// Initializes a new instance of the <see cref="TextEnteredEventArgs"/> class.
         /// </summary>
@@ -42,6 +45,7 @@ namespace BlackCoat
             Text = text;
             Modification = Operation.TextInput;
         }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="TextEnteredEventArgs"/> class.
         /// </summary>
@@ -53,6 +57,7 @@ namespace BlackCoat
         }
 
 
+        // Methods #########################################################################
         /// <summary>
         /// Updates a string based on the input represented by this <see cref="TextEnteredEventArgs"/> instance.
         /// </summary>

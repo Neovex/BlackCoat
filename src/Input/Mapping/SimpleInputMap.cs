@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-
 using SFML.Window;
 
 namespace BlackCoat.InputMapping
@@ -216,15 +214,18 @@ namespace BlackCoat.InputMapping
             if (joystickId == _JoystickFilter) RaiseMappedOperationInvoked(_JoystickButtonActions, button, false);
         }
 
-        protected virtual void Dispose(bool managed)
-        {
-            if (managed) DetachEvents();
-        }
-
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
         public void Dispose()
         {
             Dispose(true);
             GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool managed)
+        {
+            if (managed) DetachEvents();
         }
     }
 }

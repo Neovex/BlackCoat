@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using SFML.Window;
 
 namespace BlackCoat.InputMapping
@@ -14,11 +11,13 @@ namespace BlackCoat.InputMapping
     /// <seealso cref="System.IDisposable" />
     public class ComplexInputMap<TMappedOperation>
     {
+        // Variables #######################################################################
         private readonly List<MappedOperation<Keyboard.Key, TMappedOperation>> _KeyboardActions;
         private readonly List<MappedOperation<Mouse.Button, TMappedOperation>> _MouseActions;
         private readonly List<MappedOperation<ScrollDirection, TMappedOperation>> _ScrollActions;
 
 
+        // Properties ######################################################################
         /// <summary>
         /// The input source for this map.
         /// </summary>
@@ -35,7 +34,7 @@ namespace BlackCoat.InputMapping
         public event Action<TMappedOperation> MappedOperationInvoked = o => { };
 
 
-        //CTOR
+        // CTOR ############################################################################
         /// <summary>
         /// Initializes a new instance of the <see cref="ComplexInputMap{TMappedOperation}"/> class.
         /// </summary>
@@ -53,6 +52,8 @@ namespace BlackCoat.InputMapping
             if (Enabled) Disable();
         }
 
+
+        // Methods #########################################################################
         /// <summary>
         /// Enables this instance.
         /// </summary>
@@ -110,7 +111,6 @@ namespace BlackCoat.InputMapping
         {
             foreach (var action in _MouseActions) action.Invoke();
         }
-
 
         private void RaiseMappedOperationInvoked(TMappedOperation operation)
         {
