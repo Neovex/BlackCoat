@@ -11,6 +11,7 @@ namespace BlackCoat
         /// Calculates the inverse of the color disregarding its alpha value.
         /// </summary>
         public static Color Invert(this Color source) => new Color((byte)(byte.MaxValue - source.R), (byte)(byte.MaxValue - source.G), (byte)(byte.MaxValue - source.B));
+        
         /// <summary>
         /// Applies an alpha value to a color.
         /// </summary>

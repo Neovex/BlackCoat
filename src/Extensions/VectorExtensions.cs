@@ -8,8 +8,7 @@ namespace BlackCoat
     /// </summary>
     public static class VectorExtensions
     {
-        // VECTOR MATH
-
+        #region VECTOR MATH
         /// <summary>
         /// Retrieves the angle in degree for the viewer to look at a given point
         /// </summary>
@@ -128,23 +127,23 @@ namespace BlackCoat
         {
             return new Vector2f(v.X * other.X, v.Y * other.Y);
         }
-
-        // CONVERSIONS
-
+        #endregion
+        
+        #region CONVERSIONS
         public static Vector2i ToVector2i(this Vector2f v) => new Vector2i((int)v.X, (int)v.Y);
-        public static Vector2u ToVector2u(this Vector2i v) => new Vector2u((uint)v.X, (uint)v.Y);
         public static Vector2u ToVector2u(this Vector2f v) => new Vector2u((uint)v.X, (uint)v.Y);
-        public static Vector3f ToVector3f(this Vector2f v) => new Vector3f(v.X, 0, v.Y);
-        public static Vector2f ToVector2f(this Vector3f v) => new Vector2f(v.X, v.Z);
+
+        public static Vector2u ToVector2u(this Vector2i v) => new Vector2u((uint)v.X, (uint)v.Y);
         public static Vector2f ToVector2f(this Vector2i v) => new Vector2f(v.X, v.Y);
+
         public static Vector2i ToVector2i(this Vector2u v) => new Vector2i((int)v.X, (int)v.Y);
         public static Vector2f ToVector2f(this Vector2u v) => new Vector2f(v.X, v.Y);
 
+        public static Vector3f ToVector3f(this Vector2f v) => new Vector3f(v.X, 0, v.Y);
+        public static Vector2f ToVector2f(this Vector3f v) => new Vector2f(v.X, v.Z);
+
         public static Vector2f ToVector2f(this (int x, int y) v) => new Vector2f(v.x, v.y);
         public static Vector2f ToVector2f(this (float x, float y) v) => new Vector2f(v.x, v.y);
-
-        // HELPERS
-        public static Vector2f SetX(this Vector2f v, float x) => new Vector2f(x, v.Y);
-        public static Vector2f SetY(this Vector2f v, float y) => new Vector2f(v.X, y);
+        #endregion
     }
 }
