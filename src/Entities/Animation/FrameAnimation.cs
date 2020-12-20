@@ -16,7 +16,7 @@ namespace BlackCoat.Entities.Animation
 
         // Properties ######################################################################
         /// <summary>
-        /// Duration of one frame
+        /// Duration of each frame
         /// </summary>
         public virtual Single FrameDuration { get; set; }
 
@@ -29,7 +29,8 @@ namespace BlackCoat.Entities.Animation
         /// <param name="frames">All frame textures</param>
         public FrameAnimation(Core core, Texture[] frames) : base(core)
         {
-            if (frames == null || frames.Length < 2) throw new NullReferenceException("FrameAnimation must have at least 2 frames");
+            if (frames == null) throw new NullReferenceException(nameof(frames));
+            if (frames.Length < 2) throw new ArgumentException("A FrameAnimation must have at least 2 frames");
             _Frames = frames;
         }
 

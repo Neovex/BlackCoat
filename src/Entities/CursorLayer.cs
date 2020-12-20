@@ -36,6 +36,7 @@ namespace BlackCoat.Entities
         /// <param name="origin">The optional origin of the texture.</param>
         public void SetCursor(Texture texture, Vector2f origin = new Vector2f())
         {
+            if (Disposed) throw new ObjectDisposedException(nameof(CursorLayer));
             if (texture == null)
             {
                 Input.MouseVisible = true;

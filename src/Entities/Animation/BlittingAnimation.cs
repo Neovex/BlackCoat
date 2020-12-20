@@ -25,7 +25,7 @@ namespace BlackCoat.Entities.Animation
 
         // Properties ######################################################################
         /// <summary>
-        /// Duration of one frame
+        /// Duration of each frame
         /// </summary>
         public virtual Single FrameDuration { get; protected set; }
 
@@ -52,7 +52,8 @@ namespace BlackCoat.Entities.Animation
         /// <param name="frameDuration">Duration of one frame</param>
         /// <param name="texture">The texture containing all frames</param>
         /// <param name="frameSize">Size of a single frame inside the texture</param>
-        public BlittingAnimation(Core core, Single frameDuration, Texture texture, Vector2u frameSize) : this(core, frameDuration, texture, CalculateFrames(texture, frameSize))
+        public BlittingAnimation(Core core, Single frameDuration, Texture texture, Vector2u frameSize) 
+                               : this(core, frameDuration, texture, CalculateFrames(texture, frameSize))
         {
         }
 

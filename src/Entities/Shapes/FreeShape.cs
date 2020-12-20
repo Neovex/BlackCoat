@@ -39,6 +39,7 @@ namespace BlackCoat.Entities.Shapes
                 _Dirty = true;
             }
         }
+
         public override float Rotation
         {
             get => _Rotation;
@@ -48,6 +49,7 @@ namespace BlackCoat.Entities.Shapes
                 _Dirty = true;
             }
         }
+
         public override Vector2f Origin
         {
             get => _Origin;
@@ -57,6 +59,7 @@ namespace BlackCoat.Entities.Shapes
                 _Dirty = true;
             }
         }
+
         public override Vector2f Scale
         {
             get => _Scale;
@@ -66,6 +69,7 @@ namespace BlackCoat.Entities.Shapes
                 _Dirty = true;
             }
         }
+
         /// <summary>
         /// Vertex Color
         /// </summary>
@@ -205,6 +209,9 @@ namespace BlackCoat.Entities.Shapes
             _Dirty = true;
         }
 
+        /// <summary>
+        /// Recreates the vertex array based on changes in the Vertex List as well as Position, Rotation or Scale changes.
+        /// </summary>
         private void UpdateVertexArray()
         {
             _Vertices = _VertexList.ToArray();

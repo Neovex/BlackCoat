@@ -1,5 +1,4 @@
-﻿using SFML.System;
-using SFML.Graphics;
+﻿using SFML.Graphics;
 using BlackCoat.Collision;
 
 namespace BlackCoat.Entities.Shapes
@@ -29,7 +28,8 @@ namespace BlackCoat.Entities.Shapes
         /// <param name="radius">The radius</param>
         /// <param name="fillColor">Color of the shapes area.</param>
         /// <param name="outlineColor">Color of the shapes outline.</param>
-        public Circle(Core core, float radius, Color? fillColor = null, Color? outlineColor = null) : base(core, new CircleShape(radius), fillColor, outlineColor)
+        public Circle(Core core, float radius, Color? fillColor = null, Color? outlineColor = null) :
+                      base(core, new CircleShape(radius), fillColor, outlineColor)
         {
         }
     }

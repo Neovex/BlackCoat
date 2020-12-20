@@ -1,25 +1,25 @@
-﻿using System;
-using System.IO;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.IO;
+
 using SFML.System;
 using SFML.Graphics;
-using BlackCoat.Entities.Shapes;
+
 using BlackCoat.Properties;
+using BlackCoat.Entities.Shapes;
 
 namespace BlackCoat.Entities.Lights
 {
     /// <summary>
-    /// Special Overlay to darken / brighten everything beneath it creating th illusion of a lit object / area
+    /// Special Overlay to darken / brighten everything beneath it, creating the illusion of a lit object or area.
     /// </summary>
     /// <seealso cref="BlackCoat.Entities.PrerenderedContainer" />
     public class Lightmap : PrerenderedContainer
     {
+        // Variables #######################################################################
         private Container _Lights;
         private Rectangle _AmbientLight;
 
+
+        // Properties ######################################################################
         /// <summary>
         /// Gets or sets the ambient color. Alpha value defines brightness.
         /// </summary>
@@ -30,6 +30,7 @@ namespace BlackCoat.Entities.Lights
         }
 
 
+        // CTOR ############################################################################
         /// <summary>
         /// Initializes a new instance of the <see cref="Lightmap"/> class.
         /// </summary>
@@ -49,6 +50,17 @@ namespace BlackCoat.Entities.Lights
             });
         }
 
+
+        // Methods #########################################################################        
+        /// <summary>
+        /// Adds a default point light to the <see cref="Lightmap"/>.
+        /// </summary>
+        /// <param name="loader">The <see cref="TextureLoader"/> of the current scene.</param>
+        /// <param name="position">The position to place the light.</param>
+        /// <param name="color">Optional light color.</param>
+        /// <param name="scale">Optional light scale.</param>
+        /// <param name="rotation">Optional light rotation.</param>
+        /// <returns></returns>
         public Graphic AddLight(TextureLoader loader, Vector2f position, Color? color = null, Vector2f? scale = null, float rotation = 0)
         {
             var tex = loader.Load(nameof(Resources.Pointlight), Resources.Pointlight);
@@ -65,8 +77,19 @@ namespace BlackCoat.Entities.Lights
             return light;
         }
 
+        /// <summary>
+        /// Adds a custom light based on an entity.
+        /// </summary>
+        /// <param name="entity">The entity to be utilized as light.</param>
         public void AddCustomLight(IEntity entity) => _Lights.Add(entity);
 
+        /// <summary>
+        /// Saves the <see cref="Lightmap" /> definition to a file.
+        /// </summary>
+        /// <param name="file">The file path to save to.</param>
+        /// <remarks>
+        /// While lights based on custom entities can be saved they cannot be loaded.
+        /// </remarks>
         public void Save(string file)
         {
             using (var stream = new FileStream(file, FileMode.Create))
@@ -87,6 +110,14 @@ namespace BlackCoat.Entities.Lights
             }
         }
 
+        /// <summary>
+        /// Loads a <see cref="Lightmap" /> definition from a file.
+        /// </summary>
+        /// <param name="loader">The <see cref="TextureLoader"/> of the current scene.</param>
+        /// <param name="file">The file path to load from.</param>
+        /// <remarks>
+        /// While lights based on custom entities can be saved they cannot be loaded.
+        /// </remarks>
         public void Load(TextureLoader loader, string file)
         {
             using (var stream = new FileStream(file, FileMode.Open))

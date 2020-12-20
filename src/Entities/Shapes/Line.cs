@@ -25,7 +25,6 @@ namespace BlackCoat.Entities.Shapes
 
 
         // Properties ######################################################################
-
         /// <summary>
         /// Gets or sets the collision shape for collision detection
         /// </summary>

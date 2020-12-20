@@ -19,6 +19,7 @@ namespace BlackCoat.Entities.Shapes
         /// Gets or sets a value indicating whether this <see cref="ShapeEntity"/> is filled.
         /// </summary>
         public bool Filled { get => _Filled; set => Target.FillColor = (_Filled = value) ? _FillColor : Color.Transparent; }
+
         /// <summary>
         /// Gets or sets the fill color of the <see cref="ShapeEntity"/>.
         /// </summary>
@@ -31,6 +32,7 @@ namespace BlackCoat.Entities.Shapes
                 if (Filled) Target.FillColor = _FillColor;
             }
         }
+
         /// <summary>
         /// Gets or sets the color of the <see cref="ShapeEntity"/>.
         /// </summary>
@@ -44,10 +46,12 @@ namespace BlackCoat.Entities.Shapes
         /// Gets or sets a value indicating whether this <see cref="ShapeEntity"/> is outlined.
         /// </summary>
         public bool Outlined { get => OutlineThickness != 0; set => OutlineThickness = !value ? 0 : !Outlined ? 1 : OutlineThickness; }
+
         /// <summary>
         /// Gets or sets the outline color of the <see cref="ShapeEntity"/>.
         /// </summary>
         public Color OutlineColor { get => Target.OutlineColor; set => Target.OutlineColor = value.ApplyAlpha(GlobalAlpha); }
+
         /// <summary>
         /// Gets or sets the outline thickness of the <see cref="ShapeEntity"/>.
         /// </summary>
@@ -57,6 +61,7 @@ namespace BlackCoat.Entities.Shapes
         /// Determines the collision shape for collision detection
         /// </summary>
         public virtual ICollisionShape CollisionShape => this;
+
         /// <summary>
         /// Determines the geometric primitive used for collision detection
         /// </summary>

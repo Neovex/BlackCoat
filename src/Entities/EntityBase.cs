@@ -146,6 +146,7 @@ namespace BlackCoat.Entities
             Dispose(false);
         }
 
+
         // Methods #########################################################################
         /// <summary>
         /// Updates the <see cref="IEntity"/>.

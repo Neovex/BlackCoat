@@ -1,20 +1,23 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
+using System.Collections.Generic;
 
 namespace BlackCoat.Entities.Roles
 {
     public class TextRoleHost : TextItem, IRoleHost
     {
+        // Variables #######################################################################
         protected List<Role> _Roles = new List<Role>();
 
 
+        // Properties ######################################################################
         /// <summary>
         /// Current <see cref="Role"/> that describes the <see cref="IRoleHost"/>s Behavior
         /// </summary>
         public Role CurrentRole => _Roles.LastOrDefault();
 
 
+        // CTOR ############################################################################
         /// <summary>
         /// Initializes a new instance of the <see cref="TextRoleHost"/> class.
         /// </summary>
@@ -24,6 +27,7 @@ namespace BlackCoat.Entities.Roles
         }
 
 
+        // Methods #########################################################################
         /// <summary>
         /// Updates the <see cref="IRoleHost"/> using its applied <see cref="Role"/>.
         /// Can be overridden by derived classes.

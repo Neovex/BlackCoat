@@ -20,12 +20,13 @@ namespace BlackCoat.Entities
         /// <summary>
         /// Default <see cref="BlendMode"/> for alpha masks. Works only in combination with a <see cref="PrerenderedContainer"/>.
         /// </summary>
-        public static readonly BlendMode ALPHA_MASK = new BlendMode(BlendMode.Factor.Zero, // ignore mask colors (source * 0)
-                                                                    BlendMode.Factor.One, // use present colors instead (target * 1)
-                                                                    BlendMode.Equation.Add, // add them together (s * 0 + t * 1)
-                                                                    BlendMode.Factor.Zero, // ignore mask alpha - see next step (sourceAplha * 0)
-                                                                    BlendMode.Factor.SrcAlpha, // multiply source alpha with mask alpha (tA * sA)
-                                                                    BlendMode.Equation.Add); // add them together (sA * 0 + tA * sA)
+        public static readonly BlendMode ALPHA_MASK = 
+            new BlendMode(BlendMode.Factor.Zero, // ignore mask colors (source * 0)
+                BlendMode.Factor.One, // use present colors instead (target * 1)
+                BlendMode.Equation.Add, // add them together (s * 0 + t * 1)
+                BlendMode.Factor.Zero, // ignore mask alpha for now - see next step (sourceAplha * 0)
+                BlendMode.Factor.SrcAlpha, // now multiply the source alpha with masks alpha (tA * sA)
+                BlendMode.Equation.Add); // add them together (sA * 0 + tA * sA)
 
 
         // Variables #######################################################################
@@ -37,23 +38,27 @@ namespace BlackCoat.Entities
         /// Gets a value indicating whether this <see cref="PrerenderedContainer"/> has a fixed size.
         /// </summary>
         public bool FixedSize { get; }
+
         /// <summary>
         /// Gets or sets a value indicating whether child elements should be redrawn each frame.
         /// Be wary: setting this to true will defeat any performance increase purposes.
         /// </summary>
         public bool RenderEachFrame { get; set; }
+
         /// <summary>
         /// The <see cref="Color"/> to fill the <see cref="Texture"/> with before all child elements will drawn on top.
         /// </summary>
         public Color ClearColor { get; set; }
+
         /// <summary>
         /// Transformation Matrix defining Position, Scale and Rotation of the Entity within the scene graph
         /// </summary>
         public override Transform GlobalTransform => Transform.Identity;
+
         /// <summary>
         /// Global Alpha Visibility according to the scene graph
         /// </summary>
-        public override float GlobalAlpha => 1;
+        public override float GlobalAlpha => 1f;
 
 
         // CTOR ############################################################################

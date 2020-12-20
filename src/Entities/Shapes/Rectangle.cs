@@ -29,7 +29,8 @@ namespace BlackCoat.Entities.Shapes
         /// <param name="size"><see cref="Rectangle" /> dimensions</param>
         /// <param name="fillColor">Color of the shapes area.</param>
         /// <param name="outlineColor">Color of the shapes outline.</param>
-        public Rectangle(Core core, Vector2f size, Color? fillColor = null, Color? outlineColor = null) : base(core, new RectangleShape(size), fillColor, outlineColor)
+        public Rectangle(Core core, Vector2f size, Color? fillColor = null, Color? outlineColor = null) :
+                         base(core, new RectangleShape(size), fillColor, outlineColor)
         {
         }
     }

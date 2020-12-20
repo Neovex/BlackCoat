@@ -18,14 +18,17 @@ namespace BlackCoat.Entities
         /// Tint Color
         /// </summary>
         public override Color Color { get => Target.Color; set => Target.Color = value.ApplyAlpha(GlobalAlpha); }
+
         /// <summary>
         /// Source texture displayed by the <see cref="Graphic"/>
         /// </summary>
         public Texture Texture { get => Target.Texture; set => Target.Texture = value; }
+
         /// <summary>
         /// Gets or sets the source texture rectangle.
         /// </summary>
         public IntRect TextureRect { get => Target.TextureRect; set => Target.TextureRect = value; }
+
         /// <summary>
         /// Gets or sets the collision shape for collision detection
         /// </summary>
@@ -34,6 +37,7 @@ namespace BlackCoat.Entities
             get => _CollisionShape ?? (_CollisionShape = new BasicGraphicCollisionShape(_Core.CollisionSystem, this));
             set => _CollisionShape = value;
         }
+
         /// <summary>
         /// Absolute bounds of the <see cref="Graphic"/>
         /// </summary>

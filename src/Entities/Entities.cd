@@ -4,13 +4,13 @@
     <Position X="4.032" Y="0.5" Height="0.354" Width="1.44" />
   </Comment>
   <Comment CommentText="Common Interfaces">
-    <Position X="0.5" Y="0.5" Height="0.354" Width="1.44" />
+    <Position X="0.5" Y="1.333" Height="0.354" Width="1.44" />
   </Comment>
   <Comment CommentText="Vertex Entities">
     <Position X="8.26" Y="0.5" Height="0.354" Width="1.669" />
   </Comment>
   <Comment CommentText="Animations">
-    <Position X="2.531" Y="2.417" Height="0.354" Width="0.878" />
+    <Position X="2.521" Y="2.344" Height="0.354" Width="0.878" />
   </Comment>
   <Comment CommentText="Scenegraph Components">
     <Position X="6.115" Y="2.302" Height="0.5" Width="0.929" />
@@ -158,16 +158,16 @@
   <Class Name="BlackCoat.ParticleSystem.ParticleEmitterHost" Collapsed="true">
     <Position X="8.5" Y="6.75" Width="1.75" />
     <TypeIdentifier>
-      <HashCode>AgQAAAAAAQAAAgAAAIAABAAAAAAAAAAAAgAAgAAQAAA=</HashCode>
+      <HashCode>AgQAAAAAASAAAoBgAIIABAAAAAAAAAAAAgAAgAgSAAA=</HashCode>
       <FileName>ParticleSystem\ParticleEmitterHost.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="BlackCoat.Scene" Collapsed="true">
-    <Position X="0.5" Y="5.5" Width="1.5" />
+    <Position X="0.5" Y="6.75" Width="1.5" />
     <AssociationLine Name="Layer_Game" Type="BlackCoat.Entities.Layer" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
       <Path>
-        <Point X="2" Y="5.75" />
-        <Point X="5.042" Y="5.75" />
+        <Point X="2" Y="7" />
+        <Point X="5.042" Y="7" />
         <Point X="5.042" Y="4.625" />
         <Point X="5.25" Y="4.625" />
       </Path>
@@ -177,11 +177,12 @@
     </AssociationLine>
     <AssociationLine Name="Layer_Cursor" Type="BlackCoat.Entities.CursorLayer" FixedFromPoint="true">
       <Path>
-        <Point X="2" Y="5.875" />
-        <Point X="5.25" Y="5.875" />
+        <Point X="2" Y="7.125" />
+        <Point X="6" Y="7.125" />
+        <Point X="6" Y="6.191" />
       </Path>
       <MemberNameLabel ManuallyPlaced="true">
-        <Position X="0.11" Y="-0.284" />
+        <Position X="-1.117" Y="0.391" />
       </MemberNameLabel>
     </AssociationLine>
     <TypeIdentifier>
@@ -204,19 +205,19 @@
   <Class Name="BlackCoat.Entities.Shapes.FreeShape" Collapsed="true">
     <Position X="7.5" Y="5.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAIAAAAIAEAQAoAgCAIAhAGAAAgAAAAAJAAAgIgCAAA=</HashCode>
+      <HashCode>AAIAAAAIAEAQAoAgCAIAhAGAAAgAAAAAJAIAgIgCAAA=</HashCode>
       <FileName>Entities\Shapes\FreeShape.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Interface Name="BlackCoat.IEntity" Collapsed="true">
-    <Position X="0.5" Y="3" Width="1.5" />
+    <Position X="0.5" Y="2" Width="1.5" />
     <TypeIdentifier>
       <HashCode>QAQAAAAAAACAA4AgIAIAQAQgAAABABAIAAAAgAgCAAA=</HashCode>
       <FileName>Interfaces\IEntity.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Interface Name="BlackCoat.ITransformable" Collapsed="true">
-    <Position X="0.5" Y="1.5" Width="1.5" />
+    <Position X="0.5" Y="0.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAIAgAAIAQAQAAAAAAAAAAAAAAAgAAAA=</HashCode>
       <FileName>Interfaces\ITransformable.cs</FileName>
