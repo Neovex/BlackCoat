@@ -5,7 +5,7 @@ using SFML.Graphics;
 namespace BlackCoat.ParticleSystem
 {
     /// <summary>
-    /// Vertex renderer for vertices of particles
+    /// Custom vertex renderer for particle rendering
     /// </summary>
     /// <seealso cref="BlackCoat.BlackCoatBase" />
     public sealed class ParticleVertexRenderer : BlackCoatBase
@@ -25,18 +25,22 @@ namespace BlackCoat.ParticleSystem
         /// Gets a value indicating whether this instance is empty.
         /// </summary>
         public bool IsEmpty => Verticies.Length == 0;
+
         /// <summary>
         /// Texture associated with this layer.
         /// </summary>
         public Texture Texture { get; }
+
         /// <summary>
         /// Gets or sets the blend mode of this layer.
         /// </summary>
         public BlendMode BlendMode { get; }
+
         /// <summary>
         /// Gets the type of the primitive.
         /// </summary>
         public PrimitiveType PrimitiveType { get; }
+
         /// <summary>
         /// Gets or sets the amount of associated emitters.
         /// </summary>
@@ -84,7 +88,7 @@ namespace BlackCoat.ParticleSystem
 
         // Methods #########################################################################
         /// <summary>
-        /// Draws the vertices on to the defined render target.
+        /// Draws the vertices onto the defined render target.
         /// </summary>
         /// <param name="target">The render target.</param>
         /// <param name="states">Additional render information.</param>

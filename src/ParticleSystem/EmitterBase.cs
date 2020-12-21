@@ -11,56 +11,69 @@ namespace BlackCoat.ParticleSystem
     /// <seealso cref="BlackCoat.BlackCoatBase" />
     public abstract class EmitterBase : BlackCoatBase
     {
-        static EmitterBase() => INSTANCE_POOL = new Dictionary<Guid, Stack<ParticleBase>>();
-        private static Dictionary<Guid, Stack<ParticleBase>> INSTANCE_POOL { get; }
+        // Particle Pool ###################################################################
+        static EmitterBase() => PARTICLE_CACHE = new Dictionary<Guid, Stack<ParticleBase>>();
+        private static Dictionary<Guid, Stack<ParticleBase>> PARTICLE_CACHE { get; }
 
+
+        // Variables #######################################################################
         private ParticleVertexRenderer _VertexRenderer;
         private List<ParticleBase> _Particles;
 
 
+        // Properties ######################################################################
         /// <summary>
         /// Gets the particle type <see cref="Guid"/> this emitter is associated with.
         /// </summary>
         public abstract Guid ParticleTypeGuid { get; }
+        
         /// <summary>
         /// Gets the depth of this instance within the <see cref="ParticleEmitterHost"/> hierarchy
         /// </summary>
         public int Depth { get; }
+        
         /// <summary>
         /// Gets the type of the particle primitive.
         /// </summary>
         public PrimitiveType PrimitiveType { get; }
+        
         /// <summary>
         /// Gets the particle blend mode.
         /// </summary>
         public BlendMode BlendMode { get; }
+        
         /// <summary>
         /// Gets the texture mapped onto the vertices. Can be null.
         /// </summary>
         public Texture Texture { get; }
+        
         /// <summary>
         /// Gets or sets the position of this instance.
         /// </summary>
         public virtual Vector2f Position { get; set; }
+        
         /// <summary>
         /// Gets a value indicating whether this instance is initialized.
         /// </summary>
         public bool IsInitialized => _VertexRenderer != null;
+        
         /// <summary>
         /// Parent Emitter when part of a composition
         /// </summary>
         public EmitterComposition Composition { get; internal set; }
 
 
+        // CTOR ############################################################################
         /// <summary>
         /// Initializes a new instance of the <see cref="EmitterBase" /> class.
         /// </summary>
         /// <param name="core">The engine core.</param>
         /// <param name="primitiveType">Type of the particle primitive.</param>
         /// <param name="texture">Optional Texture to be mapped onto the vertices.</param>
-        public EmitterBase(Core core, PrimitiveType primitiveType, Texture texture = null) : this(core, 0, primitiveType, BlendMode.Alpha, texture)
-        {
-        }
+        public EmitterBase(Core core, PrimitiveType primitiveType, Texture texture = null) :
+                           this(core, 0, primitiveType, BlendMode.Alpha, texture)
+        { }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="EmitterBase"/> class.
         /// </summary>
@@ -79,6 +92,7 @@ namespace BlackCoat.ParticleSystem
         }
 
 
+        // Methods #########################################################################
         /// <summary>
         /// Adds a particle to the emitter.
         /// </summary>
@@ -96,7 +110,7 @@ namespace BlackCoat.ParticleSystem
         /// <param name="deltaT">Current game-time</param>
         internal virtual unsafe void UpdateInternal(Single deltaT)
         {
-            if (!IsInitialized) throw new InvalidStateException();
+            if (!IsInitialized) throw new InvalidStateException("Emitter is not initialized");
 
             Update(deltaT);
 
@@ -109,7 +123,7 @@ namespace BlackCoat.ParticleSystem
                         _VertexRenderer.Free(_Particles[i].Index);
                         _Particles[i].Release(vPtr);
                         AddToCache(_Particles[i]);
-                        // O(3) Swap Removal - faster removal but destroys order which is not important here
+                        // O(3) Swap Removal - faster removal but destroys order which isn't needed
                         _Particles[i] = _Particles[_Particles.Count - 1];
                         _Particles.RemoveAt(_Particles.Count - 1);
                     }
@@ -149,18 +163,18 @@ namespace BlackCoat.ParticleSystem
         }
 
 
-        // Cache Handling        
+        #region Particle Cache        
         /// <summary>
         /// Adds to a particle to the instance cache.
         /// </summary>
         /// <param name="particle">The particle.</param>
         protected void AddToCache(ParticleBase particle)
         {
-            if (!INSTANCE_POOL.ContainsKey(ParticleTypeGuid))
+            if (!PARTICLE_CACHE.ContainsKey(ParticleTypeGuid))
             {
-                INSTANCE_POOL.Add(ParticleTypeGuid, new Stack<ParticleBase>());
+                PARTICLE_CACHE.Add(ParticleTypeGuid, new Stack<ParticleBase>());
             }
-            INSTANCE_POOL[ParticleTypeGuid].Push(particle);
+            PARTICLE_CACHE[ParticleTypeGuid].Push(particle);
         }
 
         /// <summary>
@@ -169,10 +183,11 @@ namespace BlackCoat.ParticleSystem
         /// <returns>A particle of the type this emitter is associated with.</returns>
         protected ParticleBase RetrieveFromCache()
         {
-            if (!INSTANCE_POOL.ContainsKey(ParticleTypeGuid)) return null;
-            var pool = INSTANCE_POOL[ParticleTypeGuid];
+            if (!PARTICLE_CACHE.ContainsKey(ParticleTypeGuid)) return null;
+            var pool = PARTICLE_CACHE[ParticleTypeGuid];
             if (pool.Count == 0) return null;
             return pool.Pop();
         }
+        #endregion
     }
 }

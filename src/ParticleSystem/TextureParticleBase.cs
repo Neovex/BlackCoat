@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using SFML.Graphics;
 using SFML.System;
+using SFML.Graphics;
 
 namespace BlackCoat.ParticleSystem
 {
@@ -14,6 +10,7 @@ namespace BlackCoat.ParticleSystem
     /// <seealso cref="BlackCoat.ParticleSystem.ParticleBase" />
     public abstract class TextureParticleBase : ParticleBase
     {
+        // Variables #######################################################################
         protected Vector2u _TextureSize;
         protected IntRect _TextureRect;
         protected Vector2f _Origin;
@@ -21,6 +18,7 @@ namespace BlackCoat.ParticleSystem
         protected Single _Rotation;
 
 
+        // CTOR ############################################################################
         /// <summary>
         /// Initializes a new instance of the <see cref="TextureParticleBase"/> class.
         /// </summary>
@@ -30,6 +28,8 @@ namespace BlackCoat.ParticleSystem
             _Scale.X = _Scale.Y = 1f;
         }
 
+
+        // Methods #########################################################################
         /// <summary>
         /// Resets the used vertices into a neutral/reusable state.
         /// </summary>

@@ -1,6 +1,6 @@
 ﻿using System;
-using SFML.Graphics;
 using SFML.System;
+using SFML.Graphics;
 
 namespace BlackCoat.ParticleSystem
 {
@@ -10,15 +10,16 @@ namespace BlackCoat.ParticleSystem
     /// <seealso cref="BlackCoat.ParticleSystem.TextureParticleBase" />
     public class TextureParticle : TextureParticleBase, IInitializableByInfo<TexturedSpawnInfo>
     {
+        // Variables #######################################################################
         protected Vector2f _Velocity;
         protected Vector2f _Acceleration;
         protected Single _AlphaFade;
         protected Boolean _UseAlphaAsTTL;
-
         protected Single _RotationVelocity;
         protected Vector2f _ScaleVelocity;
 
 
+        // CTOR ############################################################################
         /// <summary>
         /// Initializes a new instance of the <see cref="TextureParticle"/> class.
         /// </summary>
@@ -27,6 +28,8 @@ namespace BlackCoat.ParticleSystem
         {
         }
 
+
+        // Methods #########################################################################
         /// <summary>
         /// Initializes the particle with the provided animation parameters.
         /// </summary>

@@ -10,12 +10,14 @@ namespace BlackCoat.ParticleSystem
     /// <seealso cref="BlackCoat.ParticleSystem.PixelParticleBase" />
     public class PixelParticle : PixelParticleBase, IInitializableByInfo<ParticleSpawnInfo>
     {
+        // Variables #######################################################################
         protected Vector2f _Velocity;
         protected Vector2f _Acceleration;
         protected Single _AlphaFade;
         protected Boolean _UseAlphaAsTTL;
 
 
+        // CTOR ############################################################################
         /// <summary>
         /// Initializes a new instance of the <see cref="PixelParticle"/> class.
         /// </summary>
@@ -25,6 +27,7 @@ namespace BlackCoat.ParticleSystem
         }
 
 
+        // Methods #########################################################################
         /// <summary>
         /// Initializes the particle with the provided animation parameters.
         /// </summary>

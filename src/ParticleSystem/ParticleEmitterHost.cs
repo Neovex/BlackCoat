@@ -10,7 +10,7 @@ using BlackCoat.Entities;
 namespace BlackCoat.ParticleSystem
 {
     /// <summary>
-    /// This class represents the bridge between the Particle System and the State/Entity scene graph.
+    /// This class represents the bridge between the Particle System and the entity scene graph.
     /// </summary>
     /// <seealso cref="BlackCoat.Entities.EntityBase" />
     public sealed class ParticleEmitterHost : EntityBase
@@ -27,26 +27,31 @@ namespace BlackCoat.ParticleSystem
         /// Use the appropriate Position property of the corresponding <see cref="EmitterBase"/>.
         /// </summary>
         public override Vector2f Position { get => default; set { } }
+
         /// <summary>
         /// The Rotation of the <see cref="ParticleEmitterHost"/> has no effect on emitters.
         /// Use the appropriate Rotation property of the corresponding <see cref="ParticleSpawnInfo"/> of each emitter.
         /// </summary>
         public override float Rotation { get => default; set { } }
+
         /// <summary>
         /// The Origin of the <see cref="ParticleEmitterHost"/> has no effect on emitters.
         /// Use the appropriate Origin property of the corresponding <see cref="TexturedSpawnInfo"/> of each emitter.
         /// </summary>
         public override Vector2f Origin { get => default; set { } }
+
         /// <summary>
         /// The Scale of the <see cref="ParticleEmitterHost"/> has no effect on emitters.
         /// Use the appropriate Scale property of the corresponding <see cref="TexturedSpawnInfo"/> of each emitter.
         /// </summary>
         public override Vector2f Scale { get => new Vector2f(1, 1); set { } }
+
         /// <summary>
         /// The Color of the <see cref="ParticleEmitterHost"/> has no effect on emitters.
         /// Use the appropriate color property of the corresponding <see cref="ParticleSpawnInfo"/> of each emitter.
         /// </summary>
         public override Color Color { get; set; }
+
         /// <summary>
         /// Determines whether this <see cref="ParticleEmitterHost" /> is destroyed.
         /// </summary>

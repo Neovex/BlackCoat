@@ -10,20 +10,26 @@ namespace BlackCoat.ParticleSystem
     /// <seealso cref="BlackCoat.BlackCoatBase" />
     public abstract class ParticleBase : BlackCoatBase
     {
-        internal static uint _PARTICLES = 0;
+        // Statics #########################################################################
+        internal static uint _PARTICLES = 0; // 4 statistics
 
+
+        // Variables #######################################################################
         private float _TTL;
         private int _Index;
         protected Vector2f _Position;
         protected Color _Color;
         protected float _Alpha;
 
+
+        // Properties ######################################################################
         /// <summary>
         /// Assigned particle index. Required by the <see cref="ParticleVertexRenderer"/>
         /// </summary>
         internal int Index => _Index;
 
 
+        // CTOR ############################################################################
         /// <summary>
         /// Initializes a new instance of the <see cref="ParticleBase"/> class.
         /// </summary>
@@ -36,6 +42,7 @@ namespace BlackCoat.ParticleSystem
         }
 
 
+        // Methods #########################################################################
         /// <summary>
         /// Initializes the <see cref="ParticleBase" />.
         /// </summary>

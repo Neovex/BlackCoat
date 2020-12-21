@@ -7,6 +7,7 @@ namespace BlackCoat.ParticleSystem
     /// </summary>
     public sealed class PixelEmitter : Emitter<PixelParticle, ParticleSpawnInfo>
     {
+        // CTOR ############################################################################
         /// <summary>
         /// Initializes a new instance of the <see cref="PixelEmitter" /> class.
         /// </summary>

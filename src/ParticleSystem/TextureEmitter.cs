@@ -1,8 +1,8 @@
-﻿using System;
-using SFML.Graphics;
+﻿using SFML.Graphics;
 
 namespace BlackCoat.ParticleSystem
 {
+    // CTOR ############################################################################
     /// <summary>
     /// Very basic Emitter that continuously emits texture particles when triggered.
     /// </summary>

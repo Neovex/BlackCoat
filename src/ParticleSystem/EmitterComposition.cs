@@ -12,11 +12,14 @@ namespace BlackCoat.ParticleSystem
     /// <seealso cref="BlackCoat.ParticleSystem.EmitterBase" />
     public class EmitterComposition : EmitterBase, ITriggerEmitter
     {
+        // Variables #######################################################################
         protected List<EmitterBase> _Emitters;
         private ParticleEmitterHost _Host;
         private Vector2f _Position;
         private Vector2f _PositionOffset;
 
+
+        // Properties ######################################################################
         /// <summary>
         /// Always returns an empty <see cref="Guid"/> because Composites don't have particles.
         /// </summary>
@@ -48,6 +51,7 @@ namespace BlackCoat.ParticleSystem
                 foreach (var emitter in _Emitters) emitter.Position = _Position + _PositionOffset;
             }
         }
+
         /// <summary>
         /// Gets or sets the position offset for all child emitters.
         /// </summary>
@@ -61,9 +65,13 @@ namespace BlackCoat.ParticleSystem
             }
         }
 
+        /// <summary>
+        /// Gets an enumeration of all emitters of this <see cref="EmitterComposition"/>.
+        /// </summary>
         internal IEnumerable<EmitterBase> Emitters => _Emitters;
 
 
+        // CTOR ############################################################################
         /// <summary>
         /// Initializes a new instance of the <see cref="EmitterComposition"/> class.
         /// </summary>
@@ -75,6 +83,7 @@ namespace BlackCoat.ParticleSystem
         }
 
 
+        // Methods #########################################################################
         /// <summary>
         /// Adds an emitter to the composition.
         /// </summary>

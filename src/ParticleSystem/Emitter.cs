@@ -4,31 +4,37 @@ using SFML.Graphics;
 namespace BlackCoat.ParticleSystem
 {
     /// <summary>
-    /// Generic Emitter implementation.
+    /// Generic particle emitter implementation.
     /// </summary>
     /// <typeparam name="Tparticle">The type of the spawned particle.</typeparam>
-    /// <typeparam name="TInfo">The type of the initialization information.</typeparam>
-    /// <seealso cref="BlackCoat.ParticleSystem.ITriggerEmitter" />
-    /// <seealso cref="BlackCoat.ParticleSystem.EmitterBase" />
+    /// <typeparam name="TInfo">The type of the particle spawn information.</typeparam>
+    /// <seealso cref="EmitterBase" />
+    /// <seealso cref="ITriggerEmitter" />
+    /// <seealso cref="IInitializableByInfo{TInfo}"/>
     public class Emitter<Tparticle, TInfo> : EmitterBase, ITriggerEmitter where Tparticle : ParticleBase, IInitializableByInfo<TInfo> where TInfo : ParticleSpawnInfo
     {
+        // Particle Pool Association #######################################################
         private static readonly Guid _GUID = typeof(Tparticle).GUID;
         public override Guid ParticleTypeGuid => _GUID;
 
 
+        // Variables #######################################################################
         protected Single _SpawnTimer;
 
 
+        // Properties ######################################################################
         /// <summary>
         /// Gets a value indicating whether this instance is currently triggered.
         /// </summary>
         public Boolean IsTriggered { get; protected set; }
+
         /// <summary>
         /// Particle animation information for particle initialization.
         /// </summary>
         public TInfo ParticleInfo { get; private set; }
 
 
+        // CTOR ############################################################################
         /// <summary>
         /// Initializes a new instance of the <see cref="Emitter" /> class.
         /// </summary>
@@ -45,6 +51,7 @@ namespace BlackCoat.ParticleSystem
         }
 
 
+        // Methods #########################################################################
         /// <summary>
         /// Triggers the emitter. Causing it to start emitting particles.
         /// </summary>

@@ -8,6 +8,7 @@ namespace BlackCoat.ParticleSystem
     /// <seealso cref="BlackCoat.ParticleSystem.ParticleBase" />
     public abstract class PixelParticleBase : ParticleBase
     {
+        // CTOR ############################################################################
         /// <summary>
         /// Initializes a new instance of the <see cref="PixelParticleBase"/> class.
         /// </summary>
@@ -16,6 +17,8 @@ namespace BlackCoat.ParticleSystem
         {
         }
 
+
+        // Methods #########################################################################
         /// <summary>
         /// Resets the used vertices into a neutral/reusable state.
         /// </summary>
