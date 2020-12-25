@@ -1,8 +1,10 @@
 ﻿namespace BlackCoat
 {
+    /// <summary>
+    /// Provides angle constants for common directions.
+    /// </summary>
     public static class Direction
     {
-        // Constants #######################################################################
         public const float RIGHT = 0f;
         public const float DOWN_RIGHT = 45f;
         public const float DOWN = 90f;

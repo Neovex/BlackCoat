@@ -7,47 +7,106 @@ using SFML.Window;
 namespace BlackCoat
 {
     /// <summary>
-    /// Represents a Launcher Window to easily access and configure graphic settings.
-    /// Custom application settings may be added as well
+    /// Represents a Launcher Window to easily access and configure engine settings.
+    /// Custom application specific setting pages can be added as well.
     /// </summary>
     public sealed partial class Launcher : Form
     {
+        #region Nested Types
+        /// <summary>
+        /// Wrapper class for the <see cref="SFML.Window.VideoMode"/>.
+        /// </summary>
         private class Resolution
         {
             public VideoMode VideoMode { get; }
             public Resolution(VideoMode videoMode) => VideoMode = videoMode;
             public override string ToString() => $"{VideoMode.Width} x {VideoMode.Height}";
         }
+
+        /// <summary>
+        /// Interface for classes used for communicating with the <see cref="Launcher"/>.
+        /// </summary>
         public interface ISettingsAdapter
         {
-            (uint X, uint Y) Resolution { get; set; }
+            /// <summary>
+            /// Gets or sets the resolutions width and height. Default 800x600.
+            /// </summary>
+            (uint Width, uint Height) Resolution { get; set; }
+
+            /// <summary>
+            /// Gets or sets the anti aliasing level. Default 0.
+            /// </summary>
             uint AntiAliasing { get; set; }
+
+            /// <summary>
+            /// Gets or sets the FPS limit. Default 120.
+            /// </summary>
             uint FpsLimit { get; set; }
+
+            /// <summary>
+            /// Gets or sets a value indicating whether this <see cref="ISettingsAdapter"/> is windowed. Default true.
+            /// </summary>
             bool Windowed { get; set; }
+
+            /// <summary>
+            /// Gets or sets a value indicating whether this <see cref="ISettingsAdapter"/> is running in a window without borders. Default false.
+            /// </summary>
             bool Borderless { get; set; }
+
+            /// <summary>
+            /// Gets or sets a value indicating whether the renderer will try to sync with the screens refresh rate. Default false.
+            /// </summary>
             bool VSync { get; set; }
+
+            /// <summary>
+            /// Gets or sets the music volume. Default 100 (max).
+            /// </summary>
             int MusicVolume { get; set; }
+
+            /// <summary>
+            /// Gets or sets the sound effects volume. Default 100 (max).
+            /// </summary>
             int EffectVolume { get; set; }
         }
+        #endregion
 
+
+        // Variables #######################################################################
         private readonly ISettingsAdapter _Settings;
 
+
+        // Properties ######################################################################        
+        /// <summary>
+        /// Image to be used as banner for the launcher window.
+        /// Optimal resolution: 510x100 (72)
+        /// </summary>
         public Image BannerImage
         {
             get => _Banner.Image;
             set => _Banner.Image = value;
         }
 
+        /// <summary>
+        /// Gets or sets the video mode for rendering.
+        /// </summary>
         public VideoMode VideoMode
         {
             get => ((Resolution)_ResolutionComboBox.SelectedItem).VideoMode;
             set => _ResolutionComboBox.SelectedIndex = _ResolutionComboBox.Items.IndexOf(_ResolutionComboBox.Items.Cast<Resolution>().FirstOrDefault(c => c.VideoMode.Equals(value)) ?? _ResolutionComboBox.Items[0]);
         }
+
+        /// <summary>
+        /// Gets or sets the anti aliasing level. Default 0.
+        /// </summary>
         public uint AntiAliasing
         {
             get => _AAComboBox.SelectedIndex == 0 ? 0 : Convert.ToUInt32(_AAComboBox.SelectedItem.ToString());
             set => _AAComboBox.SelectedIndex = value == 0 ? 0 : _AAComboBox.Items.IndexOf(value.ToString());
         }
+
+        /// <summary>
+        /// Gets or sets the FPS limit. Default 120.
+        /// </summary>
         public uint FpsLimit
         {
             get
@@ -66,33 +125,54 @@ namespace BlackCoat
                 }
             }
         }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether this <see cref="ISettingsAdapter"/> is windowed. Default true.
+        /// </summary>
         public bool Windowed
         {
             get => _WindowedCheckBox.Checked;
             set => _WindowedCheckBox.Checked = true;
         }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether this <see cref="ISettingsAdapter"/> is running in a window without borders. Default false.
+        /// </summary>
         public bool Borderless
         {
             get => _BorderCheckBox.Checked;
             set => _BorderCheckBox.Checked = value;
         }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the renderer will try to sync with the screens refresh rate. Default false.
+        /// </summary>
         public bool VSync
         {
             get => _VsyncCheckBox.Checked;
             set => _VsyncCheckBox.Checked = value;
         }
 
+        /// <summary>
+        /// Gets or sets the music volume. Default 100 (max).
+        /// </summary>
         public int MusicVolume
         {
             get => _MusicVolumeTrackBar.Value;
             set => _MusicVolumeNumericUpDown.Value = _MusicVolumeTrackBar.Value = MathHelper.Clamp(value, _MusicVolumeTrackBar.Minimum, _MusicVolumeTrackBar.Maximum);
         }
+
+        /// <summary>
+        /// Gets or sets the sound effects volume. Default 100 (max).
+        /// </summary>
         public int EffectVolume
         {
             get => _EffectVolumeTrackBar.Value;
             set => _EffectVolumeNumericUpDown.Value = _EffectVolumeTrackBar.Value = MathHelper.Clamp(value, _EffectVolumeTrackBar.Minimum, _EffectVolumeTrackBar.Maximum);
         }
 
+
+        // CTOR ############################################################################
         /// <summary>
         /// Creates new instance of the <see cref="Launcher"/> class
         /// </summary>
@@ -115,13 +195,13 @@ namespace BlackCoat
             MusicVolume = 100;
             EffectVolume = 100;
 
-
-            if (settings != null) // load from settings adapter
+            // Initialize settings from settings adapter
+            if (settings != null)
             {
                 _Settings = settings;
-                var vmode = new VideoMode(settings.Resolution.X, settings.Resolution.Y);
+                var vmode = new VideoMode(settings.Resolution.Width, settings.Resolution.Height);
                 if (vmode.IsValid()) VideoMode = vmode;
-                else MessageBox.Show("Invalid video mode loaded - resetting.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                else MessageBox.Show("Invalid video mode loaded -> resetting.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 AntiAliasing = settings.AntiAliasing;
                 FpsLimit = settings.FpsLimit;
                 Windowed = settings.Windowed;
@@ -142,6 +222,7 @@ namespace BlackCoat
         }
 
 
+        // Methods #########################################################################
         private void StartButton_Click(object sender, EventArgs e)
         {
             if (_Settings != null) // Write all settings back to the adapter

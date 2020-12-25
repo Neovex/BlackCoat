@@ -22,7 +22,10 @@ namespace BlackCoat.Tools
         private const int _MAX_MESSAGE_HISTORY = 30;
 
 
-        // Events ##########################################################################
+        // Events ##########################################################################        
+        /// <summary>
+        /// Occurs whenever a command is issued.
+        /// </summary>
         internal event Action<String> Command;
 
 
@@ -34,7 +37,10 @@ namespace BlackCoat.Tools
         private Queue<String> _Messages;
 
 
-        // Properties ######################################################################
+        // Properties ######################################################################        
+        /// <summary>
+        /// Determines whether the <see cref="Console"/> is open.
+        /// </summary>
         internal bool IsOpen { get; private set; }
 
 
@@ -82,7 +88,11 @@ namespace BlackCoat.Tools
         }
 
 
-        // Methods #########################################################################
+        // Methods #########################################################################        
+        /// <summary>
+        /// Keeps the display proportions aligned with the current render device.
+        /// </summary>
+        /// <param name="size">The size of the current render device.</param>
         private void UpdateDisplayProportions(Vector2f size)
         {
             _Height = size.Y / 3;
@@ -92,6 +102,10 @@ namespace BlackCoat.Tools
             UpdateOutputText();
         }
 
+        /// <summary>
+        /// Handles the key presses for opening and closing the <see cref="Console"/>.
+        /// </summary>
+        /// <param name="key">The key being pressed.</param>
         private void HandleKeyPressed(Keyboard.Key key)
         {
             if (Input.Input.ControlKeyPressed && Input.Input.ShiftKeyPressed && key == Keyboard.Key.Num1)
@@ -103,7 +117,7 @@ namespace BlackCoat.Tools
             {
                 if (!String.IsNullOrWhiteSpace(_InputBox.Text))
                 {
-                    Command.Invoke(_InputBox.Text);
+                    Command.Invoke(_InputBox.Text.Trim());
                 }
                 _InputBox.Text = String.Empty;
                 UpdateOutputText();
@@ -114,6 +128,11 @@ namespace BlackCoat.Tools
             }
         }
 
+        /// <summary>
+        /// Logs a message to the <see cref="Console"/>.
+        /// </summary>
+        /// <param name="msg">The message.</param>
+        /// <param name="lvl">The <see cref="LogLevel"/> of the message.</param>
         private void LogMessage(String msg, LogLevel lvl)
         {
             _Messages.Enqueue(msg.Replace(Environment.NewLine, Constants.NEW_LINE));
@@ -121,12 +140,18 @@ namespace BlackCoat.Tools
             if(!_Core.Disposed) UpdateOutputText();
         }
 
+        /// <summary>
+        /// Updates the <see cref="Console"/>s output history.
+        /// </summary>
         private void UpdateOutputText()
         {
             var availableLines = Convert.ToInt32(Math.Floor(_Height / _InputBox.InnerSize.Y));
             _Output.Text = String.Join(Constants.NEW_LINE, new[] { _InputBox.Text ?? String.Empty }.Concat(_Messages.Reverse().Take(availableLines)));
         }
 
+        /// <summary>
+        /// Opens the <see cref="Console"/>.
+        /// </summary>
         internal void Open()
         {
             if (_AnimationRunning) return;
@@ -143,6 +168,10 @@ namespace BlackCoat.Tools
                 _AnimationRunning = false;
             }, InterpolationType.OutCubic);
         }
+
+        /// <summary>
+        /// Closes the <see cref="Console"/>.
+        /// </summary>
         internal void Close()
         {
             if (_AnimationRunning) return;

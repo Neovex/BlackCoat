@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using SFML.System;
-using SFML.Graphics;
 
 namespace BlackCoat
 {
     /// <summary>
-    /// Static helper class containing some convenience factory functions.
+    /// Static helper class containing convenience factory functions.
     /// </summary>
     public static class Create
     {
@@ -20,9 +18,9 @@ namespace BlackCoat
         public static Vector2f Vector2fFromAngle(float angle, float length = 1)
         {
             if (angle == 0) return new Vector2f(length, 0);
-            if (length == 0) return new Vector2f(0, 0);
-            return new Vector2f((float)(Math.Cos(angle * Constants.DEG_TO_RAD)) * length,
-                                (float)(Math.Sin(angle * Constants.DEG_TO_RAD)) * length);
+            if (length == 0) return default;
+            return new Vector2f((float)Math.Cos(angle * Constants.DEG_TO_RAD) * length,
+                                (float)Math.Sin(angle * Constants.DEG_TO_RAD) * length);
         }
 
         /// <summary>
@@ -34,8 +32,10 @@ namespace BlackCoat
         /// <returns>A new Vector</returns>
         public static Vector2f Vector2fFromAngleLookup(float angle, float length = 1)
         {
-            if (length == 0) return default(Vector2f);
-            return new Vector2f(MathHelper.Cos(angle) * length, MathHelper.Sin(angle) * length);
+            if (angle == 0) return new Vector2f(length, 0);
+            if (length == 0) return default;
+            return new Vector2f(MathHelper.Cos(angle) * length,
+                                MathHelper.Sin(angle) * length);
         }
 
         /// <summary>

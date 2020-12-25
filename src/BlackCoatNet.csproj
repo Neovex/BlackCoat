@@ -72,11 +72,11 @@
     <Compile Include="Extensions\RectangleExtensions.cs" />
     <Compile Include="Input\InputSource.cs" />
     <Compile Include="Input\Mapping\ScrollDirection.cs" />
-    <Compile Include="Tools\IPropertyInspector.cs" />
+    <Compile Include="Tools\Inspector\IPropertyInspector.cs" />
     <Compile Include="ParticleSystem\SpawnInfos\ParticleSpawnInfo.cs" />
     <Compile Include="ParticleSystem\SpawnInfos\RadialTexturedSpawnInfo.cs" />
     <Compile Include="ParticleSystem\SpawnInfos\RadialSpawnInfo.cs" />
-    <Compile Include="Tools\BlendmodeConverter.cs" />
+    <Compile Include="Tools\Inspector\BlendmodeConverter.cs" />
     <Compile Include="Tools\InvalidStateException.cs" />
     <Compile Include="Tools\Launcher.cs">
       <SubType>Form</SubType>
@@ -84,7 +84,7 @@
     <Compile Include="Tools\Launcher.Designer.cs">
       <DependentUpon>Launcher.cs</DependentUpon>
     </Compile>
-    <Compile Include="Tools\RectangleConverter.cs" />
+    <Compile Include="Tools\Inspector\RectangleConverter.cs" />
     <Compile Include="UI\Alignment.cs" />
     <Compile Include="UI\Anchor.cs" />
     <Compile Include="UI\AlignedContainer.cs" />
@@ -175,10 +175,10 @@
     <Compile Include="Tools\Direction.cs" />
     <Compile Include="Tools\MathHelper.cs" />
     <Compile Include="Tools\PerformanceMonitor.cs" />
-    <Compile Include="Tools\PropertyInspector.cs">
+    <Compile Include="Tools\Inspector\PropertyInspector.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Tools\PropertyInspector.Designer.cs">
+    <Compile Include="Tools\Inspector\PropertyInspector.Designer.cs">
       <DependentUpon>PropertyInspector.cs</DependentUpon>
     </Compile>
     <Compile Include="Tools\RandomHelper.cs" />
@@ -186,8 +186,8 @@
     <Compile Include="Animation\TimeAnimation.cs" />
     <Compile Include="Animation\AnimationManager.cs" />
     <Compile Include="Extensions\VectorExtensions.cs" />
-    <Compile Include="Tools\ColorConverter.cs" />
-    <Compile Include="Tools\Vector2Converter.cs" />
+    <Compile Include="Tools\Inspector\ColorConverter.cs" />
+    <Compile Include="Tools\Inspector\Vector2Converter.cs" />
     <Compile Include="UI\UIGraphic.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -208,7 +208,7 @@
     <EmbeddedResource Include="Tools\Launcher.resx">
       <DependentUpon>Launcher.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Tools\PropertyInspector.resx">
+    <EmbeddedResource Include="Tools\Inspector\PropertyInspector.resx">
       <DependentUpon>PropertyInspector.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
@@ -219,9 +219,10 @@
     <None Include="Animation\Animation.cd" />
     <None Include="AssetHandling\AssetHandling.cd" />
     <None Include="Black Coat Class Overview.cd" />
+    <None Include="Entities\Entity Hierarchy.cd" />
     <None Include="Collision\Collision.cd" />
     <None Include="Core Systems.cd" />
-    <None Include="Entities\Entities.cd" />
+    <None Include="Entities\Entity Categories.cd" />
     <None Include="Input\Input.cd" />
     <None Include="ParticleSystem\Particles.cd" />
     <None Include="SceneManagement\SceneManagement.cd" />

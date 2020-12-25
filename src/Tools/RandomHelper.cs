@@ -5,7 +5,7 @@ using SFML.Graphics;
 namespace BlackCoat.Tools
 {
     /// <summary>
-    /// Helperclass that extends the default C# Pseudo Random Number Generator with float numbers
+    /// Helper class that extends the default C# pseudo random number generator with float values and vectors.
     /// </summary>
     public class RandomHelper : Random
     {
@@ -13,7 +13,8 @@ namespace BlackCoat.Tools
         /// <summary>
         /// Creates a Random with a default seed.
         /// </summary>
-        internal RandomHelper():base() { }
+        internal RandomHelper():base()
+        { }
 
 
         // Methods #########################################################################
@@ -25,11 +26,11 @@ namespace BlackCoat.Tools
         /// <returns>A random number within the bounds</returns>
         public Single NextFloat(float min, float max)
         {
-            // Prechecks
+            // Sanity
             if (min == max) return max;
             if (min > max) throw new ArgumentException("Min must not be larger than max");
 
-            // Negative cases
+            // Handle negative values
             if (max < 0) return NextFloat(max * -1, min * -1) * -1;
             if (min < 0) return NextFloat(0, max - min) + min;
 
