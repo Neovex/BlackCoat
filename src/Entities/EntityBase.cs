@@ -151,7 +151,7 @@ namespace BlackCoat.Entities
         /// <summary>
         /// Updates the <see cref="IEntity"/>.
         /// </summary>
-        /// <param name="deltaT">Current game-time</param>
+        /// <param name="deltaT">Duration of the last frame</param>
         public virtual void Update(Single deltaT) { }
 
         /// <summary>

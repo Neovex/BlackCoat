@@ -22,7 +22,7 @@ namespace BlackCoat
     /// </summary>
     public sealed class Core : IDisposable
     {
-        internal static int DRAW_CALLS = 0;
+        internal static int DRAW_CALLS = 0; // 4 statistics
 
         // Events ##########################################################################
         /// <summary>

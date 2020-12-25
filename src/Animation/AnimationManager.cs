@@ -9,9 +9,9 @@ namespace BlackCoat.Animation
     public sealed class AnimationManager
     {
         // Statics #########################################################################
-        public static Int32 ACTIVE_ANIMATIONS = 0;
+        public static Int32 ACTIVE_ANIMATIONS = 0; // 4 statistics
 
-        
+
         // Variables #######################################################################
         private List<Animation> _ActiveAnimations = new List<Animation>();
         private List<Animation> _AnimationsToAdd = new List<Animation>();

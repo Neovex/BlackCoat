@@ -64,21 +64,21 @@ namespace BlackCoat.Entities
         }
 
         /// <summary>
-        /// Gets the index of a Child Entity
+        /// Gets the index of a Child Entity.
         /// </summary>
         /// <param name="entity">The target entity</param>
         /// <returns>The index of the entity or -1 if it is not contained</returns>
         public virtual Int32 IndexOf(IEntity entity) => _Entities.IndexOf(entity);
 
         /// <summary>
-        /// Determines if the given entity is inside of this container
+        /// Determines if the given entity is inside of this <see cref="Container"/>.
         /// </summary>
         /// <param name="entity">Entity to check</param>
         /// <returns>True if the entity is inside of this container otherwise false</returns>
         public virtual Boolean Contains(IEntity entity) => _Entities.Contains(entity);
 
         /// <summary>
-        /// Gets the first entity of the provided type inside this <see cref="Container"/>
+        /// Gets the first entity of the provided type inside this <see cref="Container"/>.
         /// </summary>
         /// <typeparam name="T">Type of the entity</typeparam>
         /// <returns>The first entity of the given type or null when there is none</returns>
@@ -92,7 +92,7 @@ namespace BlackCoat.Entities
         public T[] GetAll<T>() where T : IEntity => _Entities.OfType<T>().ToArray();
 
         /// <summary>
-        /// Clears all entities from this container.
+        /// Clears all entities from this <see cref="Container"/>.
         /// </summary>
         public virtual void Clear()
         {
@@ -101,17 +101,16 @@ namespace BlackCoat.Entities
         }
 
         /// <summary>
-        /// Updates the container and all subsequent entities along the scene graph using their respective roles
+        /// Updates the <see cref="Container"/> and all its entities along the scene graph.
         /// </summary>
-        /// <param name="deltaT">Last frame duration</param>
+        /// <param name="deltaT">Duration of the last frame</param>
         override public void Update(Single deltaT)
         {
-            base.Update(deltaT);
             for (int i = _Entities.Count - 1; i > -1; i--) _Entities[i].Update(deltaT);
         }
 
         /// <summary>
-        /// Draws the Graphic of the container and all subsequent entities along the scene graph
+        /// Draws the Graphic of the <see cref="Container"/> and all subsequent entities along the scene graph.
         /// </summary>
         override public void Draw()
         {
@@ -132,15 +131,15 @@ namespace BlackCoat.Entities
         /// <summary>
         /// Releases unmanaged and managed resources.
         /// </summary>
-        /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
-        protected override void Dispose(bool disposing)
+        /// <param name="disposeManaged"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
+        protected override void Dispose(bool disposeManaged)
         {
             for (int i = _Entities.Count - 1; i >= 0; i--)
             {
                 _Entities[i].Dispose();
             }
             _Entities.Clear();
-            base.Dispose(disposing);
+            base.Dispose(disposeManaged);
         }
     }
 }

@@ -26,11 +26,13 @@ namespace BlackCoat.AssetHandling
             get => Listener.Position.ToVector2f();
             set => Listener.Position = value.ToVector3f();
         }
+
         /// <summary>
         /// Gets or sets the initial volume drop-off start distance for spatial sounds.
         /// This defines the maximum distance a sound can still be heard at max volume.
         /// </summary>
         public float VolumeDropoffStartDistance { get; set; }
+
         /// <summary>
         /// Gets or sets the initial volume drop-off factor for spatial sounds.
         /// Defines how fast the volume drops beyond the <see cref="VolumeDropoffStartDistance"/>
