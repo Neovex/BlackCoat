@@ -1,0 +1,179 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Comment CommentText="SFML Shapes">
+    <Position X="10.51" Y="4.917" Height="0.333" Width="0.94" />
+  </Comment>
+  <Comment CommentText="Textured">
+    <Position X="3.948" Y="4.938" Height="0.323" Width="0.721" />
+  </Comment>
+  <Comment CommentText="Text">
+    <Position X="0.5" Y="4.354" Height="0.323" Width="0.7" />
+  </Comment>
+  <Comment CommentText="Custom Renderers / Shapes">
+    <Position X="4.323" Y="2.323" Height="0.312" Width="1.794" />
+  </Comment>
+  <Comment CommentText="UI Base">
+    <Position X="12.573" Y="7.156" Height="0.291" Width="0.7" />
+  </Comment>
+  <Comment CommentText="All entities are either based on EntityBase when thei are standalone or EntityBase&lt;T&gt; when they wrap a SFML Type.">
+    <Position X="2.25" Y="0.5" Height="0.896" Width="1.992" />
+  </Comment>
+  <Class Name="BlackCoat.Entities.EntityBase" Collapsed="true">
+    <Position X="0.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAQAAAEAACCFA4AkICIAQAQgAIABABAIAAAAgAgSAAA=</HashCode>
+      <FileName>Entities\EntityBase.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="BlackCoat.Entities.EntityBase&lt;T&gt;" Collapsed="true">
+    <Position X="0.5" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAQCAAAoAgAAIAACAAAAAAAAAAAAAAAAgCAAA=</HashCode>
+      <FileName>Entities\EntityBase.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BlackCoat.Entities.Shapes.FreeShape" Collapsed="true">
+    <Position X="2.75" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAIAEAQAoAgCAIAhAGAAAgAAAAAJAIAgIgCAAA=</HashCode>
+      <FileName>Entities\Shapes\FreeShape.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BlackCoat.Entities.Shapes.Line" Collapsed="true">
+    <Position X="7.25" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAIACAAAoAwAAIABAAAAAgCgAAAAAAAgAgCAAA=</HashCode>
+      <FileName>Entities\Shapes\Line.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="1.008" />
+  </Class>
+  <Class Name="BlackCoat.ParticleSystem.ParticleEmitterHost" Collapsed="true">
+    <Position X="5" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgQAAAAAASAAAoBgAIIABAAAAAAAAAAAAgAAgAgSAAA=</HashCode>
+      <FileName>ParticleSystem\ParticleEmitterHost.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BlackCoat.Entities.Graphic" Collapsed="true">
+    <Position X="5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAACAAAAAgAAAAAAAIAgAAAQEA=</HashCode>
+      <FileName>Entities\Graphic.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="1.008" />
+  </Class>
+  <Class Name="BlackCoat.Entities.Shapes.ShapeEntity&lt;T&gt;" Collapsed="true">
+    <Position X="11.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAQAAAAAAAAAQAAAABAAAAIgQQAAAAAAAgAgAECQ=</HashCode>
+      <FileName>Entities\Shapes\ShapeEntity.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.976" />
+  </Class>
+  <Class Name="BlackCoat.Entities.TextItem" Collapsed="true">
+    <Position X="0.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAIAAAAAAQAiAAAAAgAAAAABAAAiAACQAA=</HashCode>
+      <FileName>Entities\TextItem.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.96" />
+  </Class>
+  <Class Name="BlackCoat.Entities.Shapes.Circle" Collapsed="true">
+    <Position X="9.5" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAIAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Entities\Shapes\Circle.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.913" />
+  </Class>
+  <Class Name="BlackCoat.Entities.Shapes.Polygon" Collapsed="true">
+    <Position X="11.75" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAACAAAAgAAQCAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Entities\Shapes\Polygon.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.85" />
+  </Class>
+  <Class Name="BlackCoat.Entities.Shapes.Rectangle" Collapsed="true">
+    <Position X="14" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAgAAQAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Entities\Shapes\Rectangle.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.881" />
+  </Class>
+  <Class Name="BlackCoat.Entities.Roles.TextRoleHost" Collapsed="true">
+    <Position X="0.5" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAAAAAAAAAAAAQQAAAAAAAAAQAAAAAAA=</HashCode>
+      <FileName>Entities\Roles\TextRoleHost.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.929" />
+  </Class>
+  <Class Name="BlackCoat.Entities.Animation.BlittingAnimation" Collapsed="true">
+    <Position X="2.75" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AATsAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAACAAA=</HashCode>
+      <FileName>Entities\Animation\BlittingAnimation.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BlackCoat.Entities.Animation.FrameAnimation" Collapsed="true">
+    <Position X="5" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AARMAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Entities\Animation\FrameAnimation.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BlackCoat.Entities.Container" Collapsed="true">
+    <Position X="7.25" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEYAAAAAACAAAgAACAAABAQAAIAAAAAAAgAAAQhQABA=</HashCode>
+      <FileName>Entities\Container.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BlackCoat.Entities.Layer" Collapsed="true">
+    <Position X="2.75" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAYAAAAAAAAAAIAgAAIAAAAAAAAQAAAAAAIAAAAAAAA=</HashCode>
+      <FileName>Entities\Layer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BlackCoat.Entities.PrerenderedContainer" Collapsed="true">
+    <Position X="5" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAKAAAECACAEigAAAAAABAAEAAAAAAgAAAAAAAgAABA=</HashCode>
+      <FileName>Entities\PrerenderedContainer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BlackCoat.Entities.Roles.GraphicRoleHost" Collapsed="true">
+    <Position X="7.25" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAAAAAAAAAAAAQQAAAAAAAAAQAAAAAAA=</HashCode>
+      <FileName>Entities\Roles\GraphicRoleHost.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.897" />
+  </Class>
+  <Class Name="BlackCoat.Tools.PerformanceMonitor" Collapsed="true">
+    <Position X="9.5" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAYAAAAABACgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Tools\PerformanceMonitor.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BlackCoat.UI.UIComponent" Collapsed="true">
+    <Position X="11.75" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>KAZgGYUQBSCjBKE4KICABQEkGoAjAAFI7IQAAUsABAQ=</HashCode>
+      <FileName>UI\UIComponent.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Interface Name="BlackCoat.Entities.IEntity" Collapsed="true">
+    <Position X="0.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAQAAAAAAACAA4AgIAIAQAQgAAABABAIAAAAgAgCAAA=</HashCode>
+      <FileName>Entities\IEntity.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
