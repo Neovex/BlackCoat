@@ -1,61 +1,114 @@
 ﻿using System;
 using BlackCoat.Entities;
 using BlackCoat.Tools;
-using SFML.Graphics;
-using SFML.System;
 
 namespace BlackCoat
 {
     /// <summary>
-    /// Base class for all Scenes
+    /// Base class for all Scenes.
     /// </summary>
     public abstract class Scene : BlackCoatBase
     {
+        // Variables #######################################################################
         private PerformanceMonitor _PerformanceMonitor;
         private PropertyInspector _PropertyInspector;
         private Input _DefaultInput;
         private Input _Input;
 
-        // Scene Info
-        public String Name { get; protected set; }
-        public Boolean Destroyed { get; private set; }
 
-        // Input
+        // Properties ######################################################################
+        #region Fundamentals
+        /// <summary>
+        /// Gets or sets the name of this <see cref="Scene"/>.
+        /// </summary>
+        public String Name { get; protected set; }
+
+        /// <summary>
+        /// Gets a value indicating whether this <see cref="Scene"/> is destroyed.
+        /// </summary>
+        public Boolean Destroyed { get; private set; }
+   
+        /// <summary>
+        /// Gets or sets the default input source for his <see cref="Scene"/>.
+        /// </summary>
         public Input Input
         {
             get => _Input ?? _DefaultInput ?? (_DefaultInput = new Input(_Core));
-            protected set => _Input = Layer_Cursor.Input = value;
+            protected set => _Input = value;
         }
+        #endregion
 
-        // Asset Managers
+        #region Asset Managers
+        /// <summary>
+        /// Use the <see cref="TextureLoader"/> to load all sorts of pixel based graphics.
+        /// </summary>
         protected internal TextureLoader TextureLoader { get; }
+
+        /// <summary>
+        /// Use the <see cref="MusicLoader"/> to load the music for your <see cref="Scene"/>.
+        /// For short sound effects use the <see cref="Scene.SfxLoader"/> instead.
+        /// </summary>
         protected internal MusicLoader MusicLoader { get; }
+
+        /// <summary>
+        /// Use the <see cref="FontLoader"/> to load custom fonts for your text based entities.
+        /// </summary>
         protected internal FontLoader FontLoader { get; }
+
+        /// <summary>
+        /// Use the <see cref="SfxLoader"/> to load short sound effects.
+        /// For your scenes music use the <see cref="Scene.MusicLoader"/> instead.
+        /// </summary>
+        /// <seealso cref="BlackCoat.AssetHandling.SfxManager"/>
         protected internal SfxLoader SfxLoader { get; }
+        #endregion
 
-        // Layers
-        protected internal Layer Layer_BG { get; }
+        #region Layers
+        /// <summary>
+        /// Lowest layer for background graphics or animations.
+        /// </summary>
+        protected internal Layer Layer_Background { get; }
+
+        /// <summary>
+        /// Default layer for your games entities.
+        /// </summary>
         protected internal Layer Layer_Game { get; }
+
+        /// <summary>
+        /// Top layer for all kinds of special effects overlays like
+        /// <see cref="UI.Canvas"/>es, <see cref="Entities.Lights.Lightmap"/>s
+        /// or <see cref="ParticleSystem.ParticleEmitterHost"/>s.
+        /// </summary>
         protected internal Layer Layer_Overlay { get; }
-        protected internal Layer Layer_Debug { get; }
+
+        /// <summary>
+        /// Debug Layer - internal use only - for now.
+        /// </summary>
+        internal Layer Layer_Debug { get; }
+
+        //fixme!
         protected internal CursorLayer Layer_Cursor { get; }
+        #endregion
 
-        // Events
 
+        // Events ##########################################################################
         /// <summary>
         /// Occurs when the Scene has been successfully initialized.
         /// </summary>
         public event Action Loaded = () => { };
+
         /// <summary>
         /// Occurs when the Scene has failed to initialize.
         /// </summary>
         public event Action LoadingFailed = () => { };
+
         /// <summary>
         /// Occurs when the Scene is about to be destroyed.
         /// </summary>
         public event Action OnDestroy = () => { };
 
 
+        // CTOR ############################################################################
         /// <summary>
         /// Initializes a new instance of the <see cref="Scene" /> class.
         /// </summary>
@@ -89,12 +142,12 @@ namespace BlackCoat
 
             // Create Default Layer Structure
             // Game Layer
-            Layer_BG = new Layer(_Core);
-            Layer_Game = new Layer(_Core);
-            Layer_Overlay = new Layer(_Core);
+            Layer_Background = new Layer(_Core) { Name = nameof(Layer_Background) };
+            Layer_Game = new Layer(_Core) { Name = nameof(Layer_Game) };
+            Layer_Overlay = new Layer(_Core) { Name = nameof(Layer_Overlay) };
             // System Layer
-            Layer_Debug = new Layer(_Core);
-            Layer_Cursor = new CursorLayer(_Core, Input);
+            Layer_Debug = new Layer(_Core) { Name = nameof(Layer_Debug) };
+            Layer_Cursor = new CursorLayer(_Core) { Name = nameof(Layer_Cursor) };
 
             // Handle Debug Features
             HandleDebugChanged(_Core.Debug);
@@ -157,7 +210,7 @@ namespace BlackCoat
         /// </summary>
         internal void Draw()
         {
-            Layer_BG.Draw();
+            Layer_Background.Draw();
             Layer_Game.Draw();
             Layer_Overlay.Draw();
             Layer_Debug.Draw();
@@ -190,7 +243,7 @@ namespace BlackCoat
         /// <param name="deltaT">Current frame time.</param>
         internal void UpdateInternal(float deltaT)
         {
-            Layer_BG.Update(deltaT);
+            Layer_Background.Update(deltaT);
             Layer_Game.Update(deltaT);
             Layer_Overlay.Update(deltaT);
             Layer_Debug.Update(deltaT);
@@ -205,9 +258,6 @@ namespace BlackCoat
         {
             Destroyed = true;
 
-            if (_DefaultInput != null) _DefaultInput.Dispose();
-            _Input = _DefaultInput = null;
-
             _Core.DebugChanged -= HandleDebugChanged;
             _Core.ConsoleCommand -= HandleConsoleCommand;
 
@@ -221,11 +271,14 @@ namespace BlackCoat
             MusicLoader.Dispose();
             TextureLoader.Dispose();
 
-            Layer_BG.Dispose();
+            Layer_Background.Dispose();
             Layer_Game.Dispose();
             Layer_Overlay.Dispose();
             Layer_Debug.Dispose();
             Layer_Cursor.Dispose();
+
+            if (_DefaultInput != null) _DefaultInput.Dispose();
+            _Input = _DefaultInput = null;
 
             Log.Debug(Name, "destroyed");
         }
@@ -237,25 +290,18 @@ namespace BlackCoat
         protected abstract Boolean Load();
 
         /// <summary>
-        /// Updates the Scene and its children.
+        /// Called each Frame to update the scenes user code.
         /// </summary>
         /// <param name="deltaT">Current frame time.</param>
         protected abstract void Update(float deltaT);
 
         /// <summary>
-        /// Destroys the Scene.
+        /// Cleanup everything that is not managed by either the scene graph or the asset loaders.
         /// </summary>
         protected abstract void Destroy();
 
         /// <summary>Returns a <see cref="System.String" /> that represents this instance.</summary>
         /// <returns>A <see cref="System.String" /> that represents this instance.</returns>
         public override string ToString() => $"{base.ToString()} \"{Name}\"";
-
-        /// <summary>
-        /// Replaces the cursor with a texture or restores the original.
-        /// </summary>
-        /// <param name="texture">The texture to replace the cursor or null to restore system default.</param>
-        /// <param name="origin">The optional origin of the texture.</param>
-        public void SetCursor(Texture texture, Vector2f origin = new Vector2f()) => Layer_Cursor.SetCursor(texture, origin);
     }
 }

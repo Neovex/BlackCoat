@@ -1,14 +1,19 @@
 ﻿using System;
-using SFML.Graphics;
-using SFML.Window;
 using SFML.Audio;
+using SFML.Graphics;
 using BlackCoat.Properties;
 using BlackCoat.Entities;
 
 namespace BlackCoat
 {
+    /// <summary>
+    /// Default intro animation of the Black Coat Engine.
+    /// </summary>
+    /// <example><code>core.SceneManager.ChangeScene(new BlackCoatIntro(core, new MyScene(core)));</code></example>
+    /// <seealso cref="BlackCoat.Scene" />
     public class BlackCoatIntro : Scene
     {
+        // Variables #######################################################################
         private Scene _NextScene;
         private Graphic _Bg;
         private Texture _BgTex;
@@ -16,38 +21,51 @@ namespace BlackCoat
         private Sound _Sound;
         private Boolean _Done = false;
 
-        public BlackCoatIntro(Core core, Scene nextScene):base(core, "BlackCoatIntro")
+
+        // CTOR ############################################################################
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BlackCoatIntro"/> class.
+        /// </summary>
+        /// <param name="core">The engine core.</param>
+        /// <param name="nextScene">The next scene to load after completion of the intro animation.</param>
+        /// <exception cref="ArgumentNullException">nextScene</exception>
+        public BlackCoatIntro(Core core, Scene nextScene):base(core)
         {
             _NextScene = nextScene ?? throw new ArgumentNullException(nameof(nextScene));
         }
 
+
+        // Methods #########################################################################
         /// <summary>
-        /// Loads the required data for this state.
+        /// Loads and prepares all required asset and entities for the scene.
         /// </summary>
         /// <returns>True on success.</returns>
         protected override bool Load()
         {
-            _BgTex = TextureLoader.Load("bg", Resources.Loader);
-            _SoundBuffer = SfxLoader.Load("snd", Resources.BCPad);
-            _Sound = new Sound(_SoundBuffer);
-
+            _BgTex = TextureLoader.Load(nameof(Resources.Loader), Resources.Loader);
+            _SoundBuffer = SfxLoader.Load(nameof(Resources.BCPad), Resources.BCPad);
             if (_BgTex == null || _SoundBuffer == null) return false;
+            _Sound = new Sound(_SoundBuffer);
 
             _Bg = new Graphic(_Core)
             {
                 Texture = _BgTex,
                 Alpha = 0,
             };
-            Layer_BG.Add(_Bg);
+            Layer_Background.Add(_Bg);
             _Bg.Scale /= 2;
             _Bg.Position = _Core.DeviceSize / 2 - _Bg.Texture.Size.ToVector2f() * _Bg.Scale.X / 2;
 
-            Input.KeyPressed += HandleKeyPressed;
+            Input.KeyPressed += k => _Done = true;
+            Input.JoystickButtonPressed += (joyId, btn) => _Done = true;
             _Core.AnimationManager.Wait(1, Start);
 
             return true;
         }
 
+        /// <summary>
+        /// Helper to start the animation sequence
+        /// </summary>
         private void Start()
         {
             if (_Done) return;
@@ -56,11 +74,10 @@ namespace BlackCoat
             _Core.AnimationManager.Wait(4, () => _Core.AnimationManager.Run(1, 0, 1f, v => _Bg.Alpha = v, () => _Done = true));
         }
 
-        private void HandleKeyPressed(Keyboard.Key key)
-        {
-            _Done = true;
-        }
-
+        /// <summary>
+        /// Check each frame if we need to change to the next scene.
+        /// </summary>
+        /// <param name="deltaT">Current frame time.</param>
         protected override void Update(float deltaT)
         {
             if (_Done)
@@ -70,12 +87,12 @@ namespace BlackCoat
             }
         }
 
+        /// <summary>
+        /// Cleanup everything that is not managed by either the scene graph or the asset loaders.
+        /// </summary>
         protected override void Destroy()
         {
-            Input.KeyPressed -= HandleKeyPressed;
-            Layer_BG.Remove(_Bg);
-            TextureLoader.Release("bg");
-            SfxLoader.Release("snd");
+            _Sound.Dispose();
         }
     }
 }

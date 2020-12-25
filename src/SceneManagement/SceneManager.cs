@@ -7,26 +7,31 @@ namespace BlackCoat
     /// </summary>
     public sealed class SceneManager : BlackCoatBase
     {
+        // Events ##########################################################################
         /// <summary>
         /// Occurs when a new Scene has successfully finished loading an becomes the new active Scene.
         /// </summary>
         public event Action<Scene> SceneChanged = s => { };
+
         /// <summary>
         /// Occurs when a new Scene has failed to load.
         /// </summary>
         public event Action<Scene> SceneChangeFailed = s => { };
 
-        
+
+        // Variables #######################################################################
         private Scene _CurrentScene;
         private Scene _RequestedScene;
 
 
+        // Properties ######################################################################
         /// <summary>
-        /// Name of the currently active Scene. NULL if none active.
+        /// Name of the currently active Scene. NULL if none is active.
         /// </summary>
         public String CurrentSceneName => _CurrentScene?.Name;
 
 
+        // CTOR ############################################################################
         /// <summary>
         /// Initializes a new instance of the <see cref="SceneManager"/> class.
         /// </summary>
@@ -117,10 +122,7 @@ namespace BlackCoat
         /// <summary>
         /// Draws the current Scene if any.
         /// </summary>
-        internal void Draw()
-        {
-            _CurrentScene?.Draw();
-        }
+        internal void Draw() => _CurrentScene?.Draw();
 
         /// <summary>
         /// Destroys this instance and the current Scene if any.
