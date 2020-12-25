@@ -11,15 +11,32 @@ namespace BlackCoat.Entities
     {
         // Properties ######################################################################
         /// <summary>
-        /// Gets or sets the time multiplier. Default Value 1. Changing this value will slow down or speed up all time based entities on this <see cref="Layer"/>
+        /// Gets or sets the time multiplier. Default Value 1. 
+        /// Changing this value will slow down or speed up all entities
+        /// that base their actions on the frame time.
         /// </summary>
         public float TimeMultiplier { get; set; }
 
-        // Disabled Properties
-        public new Vector2f Position { set { throw new Exception("Invalid Operation"); } }
-        public new float Rotation { set { throw new Exception("Invalid Operation"); } }
-        public new Vector2f Scale { set { throw new Exception("Invalid Operation"); } }
-        public new Texture Texture { set { throw new Exception("Invalid Operation"); } }
+        // Disabled
+        /// <summary>
+        /// A <see cref="Layer"/>s position cannot be changed.
+        /// </summary>
+        public override Vector2f Position { get => base.Position; set => throw new Exception("Invalid Operation"); }
+
+        /// <summary>
+        /// A <see cref="Layer"/>s Rotation cannot be changed.
+        /// </summary>
+        public override float Rotation { get => base.Rotation; set => throw new Exception("Invalid Operation"); }
+
+        /// <summary>
+        /// A <see cref="Layer"/>s Scale cannot be changed.
+        /// </summary>
+        public override Vector2f Scale { get => base.Scale; set => throw new Exception("Invalid Operation"); }
+
+        /// <summary>
+        /// A <see cref="Layer"/>s texture must not be defined.
+        /// </summary>
+        public new Texture Texture { get => null; set => throw new Exception("Invalid Operation"); }
 
 
         // CTOR ############################################################################
@@ -30,11 +47,11 @@ namespace BlackCoat.Entities
 
 
         // Methods #########################################################################
-        public override void Update(Single deltaT)
-        {
-            deltaT *= TimeMultiplier;
-            for (int i = _Entities.Count - 1; i > -1; i--) _Entities[i].Update(deltaT);
-        }
+        /// <summary>
+        /// Updates the <see cref="Layer"/> and all its entities along the scene graph.
+        /// </summary>
+        /// <param name="deltaT">Duration of the last frame</param>
+        public override void Update(Single deltaT) => base.Update(deltaT * TimeMultiplier);
 
         /// <summary>
         /// Adds the specified entities.
