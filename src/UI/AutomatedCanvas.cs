@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using SFML.System;
 
 namespace BlackCoat.UI
@@ -11,19 +9,51 @@ namespace BlackCoat.UI
     /// <seealso cref="BlackCoat.UI.Canvas" />
     public abstract class AutomatedCanvas : Canvas
     {
+        // Variables #######################################################################
         private Orientation _Orientation;
         protected float _Offset;
         private float _CurrentOffset;
 
+
+        // Properties ######################################################################
+        /// <summary>
+        /// Gets a value indicating whether this <see cref="AutomatedCanvas"/> is currently updating its child components positions.
+        /// </summary>
         protected bool Updating { get; private set; }
-        public Orientation Orientation { get => _Orientation; set { _Orientation = value; InvokeSizeChanged(); } }
+
+        /// <summary>
+        /// Gets or sets the orientation for the automatic child component positioning.
+        /// </summary>
+        public Orientation Orientation
+        {
+            get => _Orientation;
+            set
+            {
+                _Orientation = value;
+                InvokeSizeChanged();
+            }
+        }
 
 
-        public AutomatedCanvas(Core core, Orientation orientation, Vector2f? size = null, IEnumerable<UIComponent> components = null) : base(core, size, components)
+        // CTOR ############################################################################
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AutomatedCanvas"/> class.
+        /// </summary>
+        /// <param name="core">The engine core.</param>
+        /// <param name="orientation">The initial orientation.</param>
+        /// <param name="size">Optional initial size of the <see cref="AutomatedCanvas"/>.</param>
+        /// <param name="components">Optional enumeration of <see cref="UIComponent"/>s for functional construction.</param>
+        public AutomatedCanvas(Core core, Orientation orientation, Vector2f? size = null, IEnumerable<UIComponent> components = null) :
+                          base(core, size, components)
         {
             Orientation = orientation;
         }
 
+
+        // Methods #########################################################################
+        /// <summary>
+        /// Invokes the size changed event.
+        /// </summary>
         protected override void InvokeSizeChanged()
         {
             if (Updating) return;
@@ -38,12 +68,19 @@ namespace BlackCoat.UI
             Updating = false;
         }
 
+        /// <summary>
+        /// Updates the position and size of all docked components.
+        /// </summary>
         protected override void UpdateDockedComponents()
         {
             base.UpdateDockedComponents();
             ResizeToFitContent();
         }
 
+        /// <summary>
+        /// Updates the position and size of a docked component.
+        /// </summary>
+        /// <param name="c">The component to update.</param>
         protected override void UpdateDockedComponent(UIComponent c)
         {
             // Reset
@@ -67,7 +104,8 @@ namespace BlackCoat.UI
                 _CurrentOffset += c.Margin.Height;
             }
             _CurrentOffset += _Offset;
-            // base intentionally not called - automated canvas does not support docking (yet)
+
+            // base intentionally not called - automated canvas does not support docking
         }
     }
 }

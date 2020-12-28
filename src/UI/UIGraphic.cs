@@ -1,17 +1,22 @@
-﻿using SFML.Graphics;
-using SFML.System;
+﻿using SFML.System;
+using SFML.Graphics;
 
 namespace BlackCoat.UI
 {
-    /// <summary>Represents a simple graphic object within a UI.</summary>
+    /// <summary>
+    /// Represents a simple graphic object within a UI.
+    /// </summary>
     /// <seealso cref="BlackCoat.UI.UIComponent" />
     public class UIGraphic : UIComponent
     {
+        // Properties ######################################################################
         /// <summary>
         /// Gets the inner size of this <see cref="UIComponent"/>.
         /// </summary>
-        public override Vector2f InnerSize => Texture != null ? Texture.Size.ToVector2f().MultiplyBy(Scale) : default(Vector2f);
+        public override Vector2f InnerSize => Texture == null ? default : Texture.Size.ToVector2f().MultiplyBy(Scale);
 
+
+        // CTOR ############################################################################
         /// <summary>
         /// Initializes a new instance of the <see cref="UIGraphic"/> class.
         /// </summary>

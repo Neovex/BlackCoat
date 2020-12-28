@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using SFML.System;
 
@@ -11,17 +10,58 @@ namespace BlackCoat.UI
     /// <seealso cref="BlackCoat.UI.Canvas" />
     public class DistributionContainer : AutomatedCanvas
     {
+        // Variables #######################################################################
         private Vector2f _DockingSize;
 
-        public override bool DockX { get => base.DockX || Orientation == Orientation.Horizontal; set => base.DockX = value || Orientation == Orientation.Horizontal; }
-        public override bool DockY { get => base.DockY || Orientation == Orientation.Vertical;   set => base.DockY = value || Orientation == Orientation.Vertical; }
+
+        // Properties ######################################################################
+        /// <summary>
+        /// Gets or sets a value indicating whether this <see cref="DistributionContainer" /> should automatically span across its parent X axis.
+        /// </summary>
+        public override bool DockX
+        {
+            get => base.DockX || Orientation == Orientation.Horizontal;
+            set => base.DockX = value || Orientation == Orientation.Horizontal;
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether this <see cref="DistributionContainer" /> should automatically span across its parent Y axis.
+        /// </summary>
+        public override bool DockY
+        {
+            get => base.DockY || Orientation == Orientation.Vertical;
+            set => base.DockY = value || Orientation == Orientation.Vertical;
+        }
 
 
-        public DistributionContainer(Core core, Orientation orientation, Vector2f? size = null, params UIComponent[] components) : this(core, orientation, size, components as IEnumerable<UIComponent>)
+        // CTOR ############################################################################
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DistributionContainer"/> class.
+        /// </summary>
+        /// <param name="core">The engine core.</param>
+        /// <param name="orientation">The initial orientation.</param>
+        /// <param name="size">Optional initial size of the <see cref="DistributionContainer" />.</param>
+        /// <param name="components">Optional <see cref="UIComponent"/>s for functional construction.</param>
+        public DistributionContainer(Core core, Orientation orientation, Vector2f? size = null, params UIComponent[] components) :
+                                base(core, orientation, size, components)
         { }
-        public DistributionContainer(Core core, Orientation orientation, Vector2f? size = null, IEnumerable<UIComponent> components = null) : base(core, orientation, size, components)
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DistributionContainer"/> class.
+        /// </summary>
+        /// <param name="core">The engine core.</param>
+        /// <param name="orientation">The initial orientation.</param>
+        /// <param name="size">Optional initial size of the <see cref="DistributionContainer" />.</param>
+        /// <param name="components">Optional enumeration of <see cref="UIComponent" />s for functional construction.</param>
+        public DistributionContainer(Core core, Orientation orientation, Vector2f? size = null, IEnumerable<UIComponent> components = null) :
+                                base(core, orientation, size, components)
         { }
 
+
+        // Methods #########################################################################
+        /// <summary>
+        /// Invokes the size changed event.
+        /// </summary>
         protected override void InvokeSizeChanged()
         {
             if (Updating) return;
@@ -36,6 +76,10 @@ namespace BlackCoat.UI
             base.InvokeSizeChanged();
         }
 
+        /// <summary>
+        /// Updates the position and size of a docked component.
+        /// </summary>
+        /// <param name="c">The component to update.</param>
         protected override void UpdateDockedComponent(UIComponent c)
         {
             if (c is IDockable dockee && (dockee.DockX || dockee.DockY))
@@ -62,6 +106,10 @@ namespace BlackCoat.UI
             base.UpdateDockedComponent(c);
         }
 
+        /// <summary>
+        /// Calculates the offset automatically for when the <see cref="DistributionContainer"/> is docked.
+        /// </summary>
+        /// <returns>Optimal offset for space distribution</returns>
         protected virtual float CalculateOffset()
         {
             var components = Components.ToArray();
@@ -76,6 +124,10 @@ namespace BlackCoat.UI
             return Orientation == Orientation.Horizontal ? r.X : r.Y;
         }
 
+        /// <summary>
+        /// Calculates the size of the <see cref="DistributionContainer"/> for when its docked.
+        /// </summary>
+        /// <returns>Required space</returns>
         protected virtual Vector2f CalculateDockingSize()
         {
             var dockeeCount = 0;
@@ -84,13 +136,13 @@ namespace BlackCoat.UI
                 if (c is IDockable dockee)
                 {
                     if ((Orientation == Orientation.Horizontal && dockee.DockX) || (Orientation == Orientation.Vertical && dockee.DockY)) dockeeCount++;
-                    return new Vector2f(Orientation == Orientation.Horizontal && dockee.DockX ? dockee.OuterMinSize.X : c.OuterSize.X,
-                                        Orientation == Orientation.Vertical   && dockee.DockY ? dockee.OuterMinSize.Y : c.OuterSize.Y);
+                    return new Vector2f(Orientation == Orientation.Horizontal && dockee.DockX ? dockee.OuterBounds.X : c.OuterSize.X,
+                                        Orientation == Orientation.Vertical   && dockee.DockY ? dockee.OuterBounds.Y : c.OuterSize.Y);
                 }
                 return c.OuterSize;
             }).ToArray();
 
-            if (componentSizes.Length == 0 || dockeeCount == 0) return default(Vector2f);
+            if (componentSizes.Length == 0 || dockeeCount == 0) return default;
             
             return (InnerSize - new Vector2f(componentSizes.Sum(v => v.X), componentSizes.Sum(v => v.Y))) / dockeeCount;
         }

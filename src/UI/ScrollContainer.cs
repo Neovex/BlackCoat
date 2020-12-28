@@ -1,22 +1,23 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
+using System.Collections.Generic;
+
 using SFML.System;
 using SFML.Graphics;
+
 using BlackCoat.Entities;
-using System;
-using System.Collections.Generic;
 
 namespace BlackCoat.UI
 {
     /// <summary>
     /// The <see cref="ScrollContainer"/> works just like a <see cref="Canvas"/> with the difference that all its child elements will be drawn
-    /// onto its texture instead of the default <see cref="RenderTarget"/> of the <see cref="Core"/>. This way properly cropped scrolling can be achieved.
+    /// onto its texture instead of the default <see cref="RenderTarget"/> of the <see cref="Core"/>. This way properly cropped scrolling is achieved.
     /// </summary>
     /// <seealso cref="BlackCoat.UI.Canvas" />
     public class ScrollContainer : Canvas
     {
         // Statics #########################################################################
         public static int SCROLLSPEED = 25;
-
 
 
         // Variables #######################################################################
@@ -26,7 +27,7 @@ namespace BlackCoat.UI
 
         // Properties ######################################################################
         /// <summary>
-        /// The <see cref="Color"/> to fill the <see cref="Texture"/> with before all child elements will drawn on top.
+        /// The <see cref="Color"/> to clear the render <see cref="Texture"/> before all child components will be drawn.
         /// </summary>
         public Color ClearColor { get; set; }
 
@@ -38,7 +39,7 @@ namespace BlackCoat.UI
         /// <summary>
         /// Global Alpha Visibility according to the scene graph
         /// </summary>
-        public override float GlobalAlpha => 1;
+        public override float GlobalAlpha => 1f;
 
 
 
@@ -48,15 +49,17 @@ namespace BlackCoat.UI
         /// </summary>
         /// <param name="core">The engine core.</param>
         /// <param name="size">The size of the display area.</param>
-        /// <param name="components">UI components for functional layout construction.</param>
-        public ScrollContainer(Core core, Vector2f? size = null, params UIComponent[] components) : this(core, size, components as IEnumerable<UIComponent>)
+        /// <param name="components">Optional <see cref="UIComponent"/>s for functional construction.</param>
+        public ScrollContainer(Core core, Vector2f? size = null, params UIComponent[] components) :
+                          this(core, size, components as IEnumerable<UIComponent>)
         { }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="ScrollContainer" /> class.
         /// </summary>
         /// <param name="core">The engine core.</param>
         /// <param name="size">The size of the display area.</param>
-        /// <param name="components">UI components for functional layout construction.</param>
+        /// <param name="components">Optional enumeration of <see cref="UIComponent" />s for functional construction.</param>
         public ScrollContainer(Core core, Vector2f? size = null, IEnumerable<UIComponent> components = null) : base(core, size, components)
         {
             _BufferSize = MinSize.ToVector2u();
@@ -66,6 +69,9 @@ namespace BlackCoat.UI
 
 
         // Methods #########################################################################
+        /// <summary>
+        /// Invokes the size changed event.
+        /// </summary>
         protected override void InvokeSizeChanged()
         {
             // Calculate necessary buffer size
@@ -92,6 +98,10 @@ namespace BlackCoat.UI
             base.InvokeSizeChanged();
         }
 
+        /// <summary>
+        /// Handles the mouse wheel scrolled event.
+        /// </summary>
+        /// <param name="direction">The scroll direction.</param>
         protected override void HandleMouseWheelScrolled(float direction)
         {
             if (!CollisionShape.CollidesWith(Input.Input.MousePosition)) return;
@@ -108,7 +118,6 @@ namespace BlackCoat.UI
         /// Adds an Entity to this Container
         /// </summary>
         /// <param name="entity">The Entity to add</param>
-        /// <returns>True if the Entity could be added</returns>
         public override void Add(IEntity entity)
         {
             base.Add(entity);
@@ -140,14 +149,14 @@ namespace BlackCoat.UI
         }
 
         /// <summary>
-        /// Handles the destruction of the object
+        /// Releases unmanaged and managed resources.
         /// </summary>
-        /// <param name="disposing">Determines if the GC is disposing the object (true), or it's an explicit call (false).</param>
-        protected override void Dispose(bool disposing)
+        /// <param name="disposeManaged"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
+        protected override void Dispose(bool disposeManaged)
         {
             _RenderTarget.Dispose();
             _RenderTarget = null;
-            base.Dispose(disposing);
+            base.Dispose(disposeManaged);
         }
     }
 }

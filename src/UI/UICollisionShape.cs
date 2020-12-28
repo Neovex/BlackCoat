@@ -12,8 +12,11 @@ namespace BlackCoat.UI
     /// <seealso cref="BlackCoat.Collision.IRectangle" />
     public class UICollisionShape : CollisionShape, IRectangle
     {
+        // Variables #######################################################################
         private UIComponent _Component;
 
+
+        // Properties ######################################################################
         /// <summary>
         /// Determines the geometric primitive used for collision detection
         /// </summary>
@@ -30,6 +33,7 @@ namespace BlackCoat.UI
         public Vector2f Size => _Component.InnerSize;
 
 
+        // CTOR ############################################################################        
         /// <summary>
         /// Initializes a new instance of the <see cref="UICollisionShape"/> class.
         /// </summary>
@@ -40,6 +44,8 @@ namespace BlackCoat.UI
             _Component = component ?? throw new ArgumentNullException(nameof(component));
         }
 
+
+        // Methods #########################################################################
         /// <summary>
         /// Determines if this <see cref="UICollisionShape"/> contains the defined point
         /// </summary>

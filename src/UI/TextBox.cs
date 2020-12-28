@@ -1,17 +1,21 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using BlackCoat.Entities.Shapes;
-using SFML.Graphics;
 using SFML.System;
+using SFML.Graphics;
+using BlackCoat.Entities.Shapes;
 
 namespace BlackCoat.UI
 {
     public class TextBox : Label
     {
-        // Events ##########################################################################
+        // Events ##########################################################################        
+        /// <summary>
+        /// Occurs when the edit mode begins or ends.
+        /// </summary>
         public event Action<TextBox> InEditChanged = tb => { };
+
+        /// <summary>
+        /// Initialization helper for the <see cref="InEditChanged"/> event.
+        /// </summary>
         public Action<TextBox> InitInEditChanged { set => InEditChanged += value; }
 
 
@@ -26,6 +30,9 @@ namespace BlackCoat.UI
 
 
         // Properties ######################################################################
+        /// <summary>
+        /// Determines whether this <see cref="TextBox"/> is currently being edited.
+        /// </summary>
         public Boolean InEdit
         {
             get => _InEdit;
@@ -36,8 +43,20 @@ namespace BlackCoat.UI
                 InEditChanged.Invoke(this);
             }
         }
+
+        /// <summary>
+        /// Gets or sets the background color during editing.
+        /// </summary>
         public Color EditingBackgroundColor { get; set; }
+
+        /// <summary>
+        /// Gets or sets the text color during editing.
+        /// </summary>
         public Color EditingTextColor { get; set; }
+
+        /// <summary>
+        /// Gets or sets the minimum size of this <see cref="TextBox" />.
+        /// </summary>
         public Vector2f MinSize
         {
             get => _MinSize;
@@ -48,6 +67,10 @@ namespace BlackCoat.UI
                 InvokeSizeChanged();
             }
         }
+
+        /// <summary>
+        /// Gets the inner size of this <see cref="TextBox" />.
+        /// </summary>
         public override Vector2f InnerSize
         {
             get
@@ -59,6 +82,14 @@ namespace BlackCoat.UI
         }
 
 
+        // CTOR ############################################################################
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TextBox"/> class.
+        /// </summary>
+        /// <param name="core">The engine core.</param>
+        /// <param name="minSize">The minimum size.</param>
+        /// <param name="characterSize">Initial size of the texts characters.</param>
+        /// <param name="font">Initial font. Null for default.</param>
         public TextBox(Core core, Vector2f? minSize = null, uint characterSize = 16, Font font = null) : base(core, String.Empty, characterSize, font)
         {
             CanFocus = true;
@@ -73,32 +104,55 @@ namespace BlackCoat.UI
         }
 
 
+        // Methods #########################################################################
+        /// <summary>
+        /// Occurs when the focus tries to move.
+        /// </summary>
+        /// <param name="direction">The movements direction.</param>
         protected override void HandleInputMove(float direction)
         {
             if (!InEdit) base.HandleInputMove(direction);
         }
 
+        /// <summary>
+        /// Occurs when the user confirms an operation. I.e.: Clicks on a button.
+        /// </summary>
         protected override void HandleInputConfirm()
         {
             base.HandleInputConfirm();
             StartEdit();
         }
+
+        /// <summary>
+        /// Occurs when the user desires to enter an edit state. I.e.: Focusing a text field.
+        /// </summary>
         protected override void HandleInputEdit()
         {
             base.HandleInputEdit();
             StartEdit();
         }
+
+        /// <summary>
+        /// Occurs when the user wants to chancel the current operation or dialog.
+        /// </summary>
         protected override void HandleInputCancel()
         {
             base.HandleInputCancel();
             StopEdit();
         }
+
+        /// <summary>
+        /// Invokes the focus lost event.
+        /// </summary>
         protected override void InvokeFocusLost()
         {
             base.InvokeFocusLost();
             StopEdit();
         }
 
+        /// <summary>
+        /// Starts the edit mode enabling the <see cref="TextBox"/>s text to be edited.
+        /// </summary>
         public virtual void StartEdit()
         {
             if (!HasFocus || !Visible || !Enabled) return;
@@ -124,6 +178,10 @@ namespace BlackCoat.UI
             }
             UpdateCaretPosition();
         }
+
+        /// <summary>
+        /// Stops the edit mode and blocks further text input.
+        /// </summary>
         public virtual void StopEdit()
         {
             if (!InEdit) return;
@@ -133,6 +191,10 @@ namespace BlackCoat.UI
             _Caret.Visible = false;
         }
 
+        /// <summary>
+        /// Occurs when the user enters text.
+        /// </summary>
+        /// <param name="tArgs"></param>
         protected override void HandleTextEntered(TextEnteredEventArgs tArgs)
         {
             if (InEdit)
@@ -143,6 +205,9 @@ namespace BlackCoat.UI
             }
         }
 
+        /// <summary>
+        /// Updates the caret position.
+        /// </summary>
         private void UpdateCaretPosition()
         {
             if (!InEdit) return;
@@ -150,10 +215,13 @@ namespace BlackCoat.UI
             _Caret.End.Position = _Caret.Start.Position + new Vector2f(0, InnerSize.Y - Padding.Top - Padding.Height);
         }
 
+        /// <summary>
+        /// Updates the <see cref="TextBox" />. Used for animating the caret.
+        /// </summary>
+        /// <param name="deltaT">Duration of the last frame</param>
         public override void Update(float deltaT)
         {
             base.Update(deltaT);
-
             if (HasFocus && Visible && Enabled && InEdit)
             {
                 _Caret.Visible = _CaretBlinkTimer % 1f < 0.5f;
@@ -162,12 +230,19 @@ namespace BlackCoat.UI
             }
         }
 
+        /// <summary>
+        /// Invokes the text changed event.
+        /// </summary>
         protected override void InvokeTextChanged()
         {
             base.InvokeTextChanged();
             _Index = Math.Min(_Index, (uint)Text.Length);
             UpdateCaretPosition();
         }
+
+        /// <summary>
+        /// Invokes the size changed event.
+        /// </summary>
         protected override void InvokeSizeChanged()
         {
             base.InvokeSizeChanged();

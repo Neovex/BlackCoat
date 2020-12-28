@@ -1,26 +1,43 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using BlackCoat.Entities;
-using SFML.Graphics;
 using SFML.System;
+using SFML.Graphics;
+using BlackCoat.Entities;
 
 namespace BlackCoat.UI
 {
+    /// <summary>
+    /// Represents a simple piece of text within the UI.
+    /// </summary>
+    /// <seealso cref="BlackCoat.UI.UIComponent" />
     public class Label : UIComponent
     {
+        // Events ##########################################################################        
+        /// <summary>
+        /// Occurs when text changes.
+        /// </summary>
         public event Action<Label> TextChanged = l => { };
+
+        /// <summary>
+        /// Occurs when text color changes.
+        /// </summary>
         public event Action<Label> ColorChanged = l => { };
 
 
+        // Variables #######################################################################
         protected TextItem _Text;
         private FloatRect _Padding;
         private TextAlignment _Alignment;
 
 
+        // Properties ######################################################################
+        /// <summary>
+        /// Gets the inner size of this <see cref="Label" />.
+        /// </summary>
         public override Vector2f InnerSize => _Text.LocalBounds.Size() + _Padding.Position() + _Padding.Size();
 
+        /// <summary>
+        /// Gets or sets the text to display.
+        /// </summary>
         public string Text
         {
             get => _Text.Text;
@@ -49,6 +66,9 @@ namespace BlackCoat.UI
             }
         }
 
+        /// <summary>
+        /// Font used to display the text
+        /// </summary>
         public Font Font
         {
             get => _Text.Font;
@@ -60,6 +80,9 @@ namespace BlackCoat.UI
             }
         }
 
+        /// <summary>
+        /// Font Size
+        /// </summary>
         public uint CharacterSize
         {
             get => _Text.CharacterSize;
@@ -71,6 +94,9 @@ namespace BlackCoat.UI
             }
         }
 
+        /// <summary>
+        /// Style of the text <see cref="Text.Styles"/>
+        /// </summary>
         public Text.Styles Style
         {
             get => _Text.Style;
@@ -82,6 +108,9 @@ namespace BlackCoat.UI
             }
         }
 
+        /// <summary>
+        /// Gets or sets the <see cref="Label"/>s text alignment.
+        /// </summary>
         public TextAlignment Alignment
         {
             get => _Alignment;
@@ -93,6 +122,9 @@ namespace BlackCoat.UI
             }
         }
 
+        /// <summary>
+        /// Gets or sets the color of the text.
+        /// </summary>
         public Color TextColor
         {
             get => _Text.Color;
@@ -104,6 +136,9 @@ namespace BlackCoat.UI
             }
         }
 
+        /// <summary>
+        /// Initialization helper for the <see cref="TextChanged"/> event.
+        /// </summary>
         public Action<Label> InitTextChanged { set => TextChanged += value; }
 
 
@@ -114,7 +149,7 @@ namespace BlackCoat.UI
         /// <param name="core">Black Coat Engine Core.</param>
         /// <param name="text">The text to display.</param>
         /// <param name="characterSize">Initial size of the texts characters.</param>
-        /// <param name="font">Initial font.</param>
+        /// <param name="font">Initial font. Null for default.</param>
         public Label(Core core, String text = "", UInt32 characterSize = 16, Font font = null) : base(core)
         {
             Add(_Text = new TextItem(core, text, characterSize, font));
@@ -122,6 +157,10 @@ namespace BlackCoat.UI
         }
 
 
+        // Methods #########################################################################
+        /// <summary>
+        /// Invokes the size changed event.
+        /// </summary>
         protected override void InvokeSizeChanged()
         {
             var bounds = _Text.GlobalBounds;
@@ -130,22 +169,31 @@ namespace BlackCoat.UI
             {
                 case TextAlignment.Left:
                     Origin = new Vector2f(0, Origin.Y);
-                    break;
+                break;
                 case TextAlignment.Centered:
                     Origin = new Vector2f(bounds.Width / 2, Origin.Y);
-                    break;
+                break;
                 case TextAlignment.Right:
                     Origin = new Vector2f(bounds.Width, Origin.Y);
-                    break;
+                break;
             }
             base.InvokeSizeChanged();
         }
 
+        /// <summary>
+        /// Invokes the text changed event.
+        /// </summary>
         protected virtual void InvokeTextChanged() => TextChanged.Invoke(this);
 
+        /// <summary>
+        /// Invokes the color changed event.
+        /// </summary>
         protected virtual void InvokeColorChanged() => ColorChanged.Invoke(this);
     }
 
+    /// <summary>
+    /// Defines the alignment for text based elements of the UI System.
+    /// </summary>
     public enum TextAlignment
     {
         Left,
