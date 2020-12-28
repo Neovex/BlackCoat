@@ -29,7 +29,7 @@ namespace BlackCoat.Entities
         public abstract Vector2f Origin { get; set; }
 
         /// <summary>
-        /// Determines the Visibility of the Entity
+        /// Determines the Visibility of this <see cref="IEntity"/>.
         /// </summary>
         public virtual Boolean Visible
         {
@@ -41,6 +41,7 @@ namespace BlackCoat.Entities
         /// Tint Color
         /// </summary>
         public abstract Color Color { get; set; }
+
         /// <summary>
         /// Alpha Visibility - 0-1f
         /// </summary>

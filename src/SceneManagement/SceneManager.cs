@@ -42,6 +42,7 @@ namespace BlackCoat
         }
 
 
+        // Methods #########################################################################
         /// <summary>
         /// Begins a Scene change. Note: the new Scene usually becomes active in the next frame.
         /// </summary>

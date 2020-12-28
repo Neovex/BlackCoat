@@ -15,7 +15,7 @@
   <Comment CommentText="UI Base">
     <Position X="12.573" Y="7.156" Height="0.291" Width="0.7" />
   </Comment>
-  <Comment CommentText="All entities are either based on EntityBase when thei are standalone or EntityBase&lt;T&gt; when they wrap a SFML Type.">
+  <Comment CommentText="All entities are either based on EntityBase when they are standalone or EntityBase&lt;T&gt; when they wrap a SFML Type.">
     <Position X="2.25" Y="0.5" Height="0.896" Width="1.992" />
   </Comment>
   <Class Name="BlackCoat.Entities.EntityBase" Collapsed="true">
@@ -164,7 +164,7 @@
   <Class Name="BlackCoat.UI.UIComponent" Collapsed="true">
     <Position X="11.75" Y="7.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>KAZgGYUQBSCjBKE4KICABQEkGoAjAAFI7IQAAUsABAQ=</HashCode>
+      <HashCode>KAZgGYUQBSCjBaE4KICABQEEGoAjAAFI7IQAAUsABAQ=</HashCode>
       <FileName>UI\UIComponent.cs</FileName>
     </TypeIdentifier>
   </Class>

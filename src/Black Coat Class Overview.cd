@@ -27,9 +27,6 @@
   <Comment CommentText="Texture Based Entities">
     <Position X="17.712" Y="5.862" Height="0.291" Width="1.44" />
   </Comment>
-  <Comment CommentText="Common Interfaces">
-    <Position X="19.75" Y="4" Height="0.291" Width="1.33" />
-  </Comment>
   <Comment CommentText="Vertex Entities">
     <Position X="26.969" Y="6.865" Height="0.291" Width="1.669" />
   </Comment>
@@ -182,7 +179,7 @@
         <Point X="16.072" Y="4.546" />
         <Point X="16.072" Y="9.65" />
         <Point X="16.692" Y="9.65" Type="JumpStart" />
-        <Point X="16.858" Y="9.65" Type="JumpEnd" />
+        <Point X="16.883" Y="9.65" Type="JumpEnd" />
         <Point X="19.261" Y="9.65" />
         <Point X="19.261" Y="9.096" />
         <Point X="19.5" Y="9.096" />
@@ -198,7 +195,7 @@
         <Point X="15.724" Y="4.721" />
         <Point X="15.724" Y="10.346" />
         <Point X="16.692" Y="10.346" Type="JumpStart" />
-        <Point X="16.858" Y="10.346" Type="JumpEnd" />
+        <Point X="16.883" Y="10.346" Type="JumpEnd" />
         <Point X="19.5" Y="10.346" />
       </Path>
       <MemberNameLabel ManuallyPlaced="true">
@@ -206,7 +203,7 @@
       </MemberNameLabel>
     </AssociationLine>
     <TypeIdentifier>
-      <HashCode>EgQVhIQAgAECAiAEAQAKAAwAEgBCAAAAAAEAAAQAILA=</HashCode>
+      <HashCode>EgQVhIQAgAECAiAEAQAKAAQAEgBCAAACAAEAAAQAILA=</HashCode>
       <FileName>SceneManagement\Scene.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -256,7 +253,7 @@
   <Class Name="BlackCoat.Input" Collapsed="true">
     <Position X="13.25" Y="3.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>IEIG5pAogWIigAKAIIABgAAANBAgCgABEYIIQRlioCg=</HashCode>
+      <HashCode>AEIG5pAogWIigAKAIIABgAAANBAgCgABEZIIQRlioCg=</HashCode>
       <FileName>Input\Input.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
@@ -264,7 +261,7 @@
   <Class Name="BlackCoat.Tools.PerformanceMonitor" Collapsed="true" HideInheritanceLine="true">
     <Position X="10.5" Y="6.25" Width="1.75" />
     <TypeIdentifier>
-      <HashCode>AAYAAAAABACAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAYAAAAABACgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Tools\PerformanceMonitor.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -279,7 +276,7 @@
     <Position X="13.25" Y="6.25" Width="1.75" />
     <TypeIdentifier>
       <HashCode>sAYKASkyACABAk4AYUSEEAACYElAgAAggAMABoBgADw=</HashCode>
-      <FileName>Tools\PropertyInspector.cs</FileName>
+      <FileName>Tools\Inspector\PropertyInspector.cs</FileName>
     </TypeIdentifier>
     <Lollipop Orientation="Bottom" Position="0.321" />
   </Class>
@@ -301,21 +298,21 @@
   <Class Name="BlackCoat.EntityExtensions" Collapsed="true">
     <Position X="13.25" Y="17.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAI=</HashCode>
+      <HashCode>AEAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAEAAEAAAI=</HashCode>
       <FileName>Extensions\EntityExtensions.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="BlackCoat.RectangleExtensions" Collapsed="true">
     <Position X="11.25" Y="18.75" Width="1.75" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAgAAgAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAgAAAAAAAAgAAgAAAAAAAAAACAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Extensions\RectangleExtensions.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="BlackCoat.VectorExtensions" Collapsed="true">
     <Position X="11.25" Y="17.75" Width="1.75" />
     <TypeIdentifier>
-      <HashCode>AAAAQgAAAAAAAAYQkAgAAABAAEAAKACAAECgAAACAAQ=</HashCode>
+      <HashCode>AAAAQgAAAAAAAAAQkAgAAABAAEAAKACAAECgAAACAAQ=</HashCode>
       <FileName>Extensions\VectorExtensions.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -323,28 +320,28 @@
     <Position X="24.25" Y="18.75" Width="2" />
     <TypeIdentifier>
       <HashCode>AAAAggAAAAAAAAAAAAAAAAAAAAAAACAAAAIAAAAABAA=</HashCode>
-      <FileName>Tools\BlendmodeConverter.cs</FileName>
+      <FileName>Tools\Inspector\BlendmodeConverter.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="BlackCoat.Tools.ColorConverter" Collapsed="true">
     <Position X="26.75" Y="18.75" Width="2" />
     <TypeIdentifier>
       <HashCode>AAAAgAAAAAAAAAAAAAAAAAAAAAAAACAAAAIAAAAAAAA=</HashCode>
-      <FileName>Tools\ColorConverter.cs</FileName>
+      <FileName>Tools\Inspector\ColorConverter.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="BlackCoat.Tools.RectangleConverter&lt;T&gt;" Collapsed="true">
     <Position X="26.75" Y="17.75" Width="2" />
     <TypeIdentifier>
       <HashCode>AAAAgAAAAAAAAAAAAAAAAAAAAAAAACAAAAIAAAAAAAA=</HashCode>
-      <FileName>Tools\RectangleConverter.cs</FileName>
+      <FileName>Tools\Inspector\RectangleConverter.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="BlackCoat.Tools.Vector2Converter&lt;T&gt;" Collapsed="true">
     <Position X="24.25" Y="17.75" Width="2" />
     <TypeIdentifier>
       <HashCode>AAAAgAAAAAAAAAAAAAAAAAAAAAAAACAAAAIAAAAAAAA=</HashCode>
-      <FileName>Tools\Vector2Converter.cs</FileName>
+      <FileName>Tools\Inspector\Vector2Converter.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="BlackCoat.Create" Collapsed="true">
@@ -425,7 +422,7 @@
       </Path>
     </InheritanceLine>
     <TypeIdentifier>
-      <HashCode>AAAAgAAAAIAAAAABAAAAAAAAAAAAAAAAAAIAAAAEAAA=</HashCode>
+      <HashCode>AAAAgAAAAAAAAAABAAAAAAAAAAAAAAAAAAIAAAAEAAA=</HashCode>
       <FileName>AssetHandling\TextureLoader.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -625,8 +622,8 @@
       <Path>
         <Point X="23.5" Y="3.941" />
         <Point X="23.5" Y="4.241" />
-        <Point X="29.26" Y="4.241" Type="JumpStart" />
-        <Point X="29.427" Y="4.241" Type="JumpEnd" />
+        <Point X="28.792" Y="4.241" Type="JumpStart" />
+        <Point X="28.958" Y="4.241" Type="JumpEnd" />
         <Point X="30.289" Y="4.241" />
         <Point X="30.289" Y="10.375" />
         <Point X="29.5" Y="10.375" />
@@ -671,7 +668,7 @@
   <Class Name="BlackCoat.Entities.CursorLayer" Collapsed="true">
     <Position X="19.5" Y="10" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAQAAAAAAAAAAAAAAAAAAAAAEAAAAAAgAAEAAAAAAAA=</HashCode>
+      <HashCode>AAQBAIAAACAAAAAAAAAAAAAAAAAAAAAgAAEAAAAAAAA=</HashCode>
       <FileName>Entities\CursorLayer.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -700,6 +697,17 @@
   </Class>
   <Class Name="BlackCoat.ParticleSystem.ParticleEmitterHost" Collapsed="true">
     <Position X="28" Y="7.5" Width="1.75" />
+    <InheritanceLine Type="BlackCoat.Entities.EntityBase" FixedToPoint="true">
+      <Path>
+        <Point X="23.5" Y="3.941" />
+        <Point X="23.5" Y="4.241" />
+        <Point X="28.792" Y="4.241" Type="JumpStart" />
+        <Point X="28.958" Y="4.241" Type="JumpEnd" />
+        <Point X="30.278" Y="4.241" />
+        <Point X="30.278" Y="7.875" />
+        <Point X="29.75" Y="7.875" />
+      </Path>
+    </InheritanceLine>
     <TypeIdentifier>
       <HashCode>AgQAAAAAASAAAoBgAIIABAAAAAAAAAAAAgAAgAgSAAA=</HashCode>
       <FileName>ParticleSystem\ParticleEmitterHost.cs</FileName>
@@ -761,10 +769,22 @@
         <Position X="0.185" Y="0.528" />
       </MemberNameLabel>
     </AssociationLine>
+    <AssociationLine Name="Input" Type="BlackCoat.Input" ManuallyRouted="true">
+      <Path>
+        <Point X="23.5" Y="12.25" />
+        <Point X="23.5" Y="11.684" />
+        <Point X="16.8" Y="11.684" />
+        <Point X="16.8" Y="3.392" />
+        <Point X="14.75" Y="3.392" />
+      </Path>
+    </AssociationLine>
     <TypeIdentifier>
       <HashCode>AAEAABABAAAAAICAABAACAAAEQAAAAAAgAAoAAAAAAg=</HashCode>
       <FileName>Input\Mapping\ComplexInputMap.cs</FileName>
     </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Input" />
+    </ShowAsAssociation>
     <ShowAsCollectionAssociation>
       <Field Name="_KeyboardActions" />
       <Field Name="_MouseActions" />
@@ -780,13 +800,13 @@
   </Class>
   <Class Name="BlackCoat.InputMapping.SimpleInputMap&lt;TMappedOperation&gt;" Collapsed="true" BaseTypeListCollapsed="true">
     <Position X="18.5" Y="12.25" Width="3" />
-    <AssociationLine Name="Input" Type="BlackCoat.Input" ManuallyRouted="true">
+    <AssociationLine Name="Input" Type="BlackCoat.Input" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
       <Path>
         <Point X="20" Y="12.25" />
         <Point X="20" Y="11.731" />
         <Point X="16.775" Y="11.731" />
-        <Point X="16.775" Y="3.596" />
-        <Point X="14.75" Y="3.596" />
+        <Point X="16.775" Y="3.75" />
+        <Point X="14.75" Y="3.75" />
       </Path>
     </AssociationLine>
     <TypeIdentifier>
@@ -851,7 +871,7 @@
       </MemberNameLabel>
     </AssociationLine>
     <TypeIdentifier>
-      <HashCode>gAQBAAAAAAAACQAgAAAAAAAgAgAAAAAggAIgBEAIAAA=</HashCode>
+      <HashCode>gAQBAAAAAAAACQAgBAAAAAAgAgAAAAAgAAIgBEAIAAA=</HashCode>
       <FileName>ParticleSystem\EmitterBase.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -980,7 +1000,7 @@
   <Class Name="BlackCoat.UI.Canvas" Collapsed="true">
     <Position X="42.75" Y="16" Width="2" />
     <TypeIdentifier>
-      <HashCode>CACAAAACABABAACAAIAAAAIAABAAAAAABEAgAAEAAAA=</HashCode>
+      <HashCode>AACAAAACABABAQCAAIAAAAIAABAAAAAABEAgAAEAAAA=</HashCode>
       <FileName>UI\Canvas.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="1.242" />
@@ -988,7 +1008,7 @@
   <Class Name="BlackCoat.UI.AlignedContainer" Collapsed="true">
     <Position X="35.75" Y="16" Width="1.75" />
     <TypeIdentifier>
-      <HashCode>AAAAAAQAACAAAQAAACAABAAAAAAAABAEAIAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAQAACAAAQAAACAABAAAAAAAAAAEAIAAAAAAAAA=</HashCode>
       <FileName>UI\AlignedContainer.cs</FileName>
       <NewMemberFileName>UI\AnchoredContainer.cs</NewMemberFileName>
     </TypeIdentifier>
@@ -1013,8 +1033,8 @@
     <AssociationLine Name="ACTIVE_COMPONENT" Type="BlackCoat.UI.UIComponent" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
       <Path>
         <Point X="36.25" Y="12.437" />
-        <Point X="35.347" Y="12.437" />
-        <Point X="35.347" Y="12.75" />
+        <Point X="34.309" Y="12.437" />
+        <Point X="34.309" Y="12.75" />
         <Point X="36.25" Y="12.75" />
       </Path>
       <MemberNameLabel ManuallyPlaced="true">
@@ -1050,7 +1070,7 @@
       </MemberNameLabel>
     </AssociationLine>
     <TypeIdentifier>
-      <HashCode>KAZgGYUQBSCjBKE4KICABQEkGoAjAAFI7IQAAUsABAQ=</HashCode>
+      <HashCode>KAZgGYUQBSCjBaE4KICABQEEGoAjAAFI7IQAAUsABAQ=</HashCode>
       <FileName>UI\UIComponent.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -1111,7 +1131,7 @@
   <Class Name="BlackCoat.UI.DialogContainer" Collapsed="true">
     <Position X="45.25" Y="17.25" Width="2" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAACCCAAAAAAAAAAAAEAAAAQAAAAAAAACAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAACAAAAAAAAAAAAAAAAAQAAAAAAAACAAAA=</HashCode>
       <FileName>UI\DialogContainer.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -1128,8 +1148,8 @@
       <Path>
         <Point X="23.5" Y="3.941" />
         <Point X="23.5" Y="4.241" />
-        <Point X="29.26" Y="4.241" Type="JumpStart" />
-        <Point X="29.427" Y="4.241" Type="JumpEnd" />
+        <Point X="28.792" Y="4.241" Type="JumpStart" />
+        <Point X="28.958" Y="4.241" Type="JumpEnd" />
         <Point X="30.278" Y="4.241" />
         <Point X="30.278" Y="11.312" />
         <Point X="29.5" Y="11.312" />
@@ -1188,34 +1208,6 @@
       <FileName>Collision\Interfaces\IRectangle.cs</FileName>
     </TypeIdentifier>
   </Interface>
-  <Interface Name="BlackCoat.IEntity" Collapsed="true">
-    <Position X="18.75" Y="4.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>QAQAAAAAAACAA4AgIAIAQAQgAAABABAIAAAAgAgCAAA=</HashCode>
-      <FileName>Interfaces\IEntity.cs</FileName>
-    </TypeIdentifier>
-  </Interface>
-  <Interface Name="BlackCoat.ITransformable" Collapsed="true">
-    <Position X="20.75" Y="4.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAIAgAAIAQAQAAAAAAAAAAAAAAAgAAAA=</HashCode>
-      <FileName>Interfaces\ITransformable.cs</FileName>
-    </TypeIdentifier>
-  </Interface>
-  <Interface Name="BlackCoat.IRoleHost" Collapsed="true">
-    <Position X="23.75" Y="8.75" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAQQAAAAAAAAAQAAAAAAA=</HashCode>
-      <FileName>Interfaces\IRoleHost.cs</FileName>
-    </TypeIdentifier>
-  </Interface>
-  <Interface Name="BlackCoat.IPropertyInspector" Collapsed="true">
-    <Position X="13.25" Y="7.5" Width="1.75" />
-    <TypeIdentifier>
-      <HashCode>AAIAAAAAAAAAAAIAAAAEAAAAAAgAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Interfaces\IPropertyInspector.cs</FileName>
-    </TypeIdentifier>
-  </Interface>
   <Interface Name="BlackCoat.ParticleSystem.ITriggerEmitter" Collapsed="true">
     <Position X="36.5" Y="7.5" Width="1.75" />
     <TypeIdentifier>
@@ -1233,8 +1225,29 @@
   <Interface Name="BlackCoat.UI.IDockable" Collapsed="true">
     <Position X="43" Y="14.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>CACAAAACABAAAAAAAAAAAAAAAAAAAAAABAAAAAEAAAA=</HashCode>
+      <HashCode>AACAAAACABAAAQAAAAAAAAAAAAAAAAAABAAAAAEAAAA=</HashCode>
       <FileName>UI\IDockable.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="BlackCoat.Tools.IPropertyInspector" Collapsed="true">
+    <Position X="13.25" Y="7.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAAAAAIAAAAEAAAAAAgAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Tools\Inspector\IPropertyInspector.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="BlackCoat.Entities.IEntity" Collapsed="true">
+    <Position X="20.5" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAQAAAAAAACAA4AgIAIAQAQgAAABABAIAAAAgAgCAAA=</HashCode>
+      <FileName>Entities\IEntity.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="BlackCoat.Entities.Roles.IRoleHost" Collapsed="true">
+    <Position X="23.75" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAQQAAAAAAAAAQAAAAAAA=</HashCode>
+      <FileName>Entities\Roles\IRoleHost.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Enum Name="BlackCoat.Animation.InterpolationType" Collapsed="true">

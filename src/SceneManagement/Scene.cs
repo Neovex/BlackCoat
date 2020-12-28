@@ -156,6 +156,11 @@ namespace BlackCoat
         }
 
 
+        // Methods #########################################################################
+        /// <summary>
+        /// Handles the debug changed event.
+        /// </summary>
+        /// <param name="debug">Current debug value</param>
         private void HandleDebugChanged(bool debug)
         {
             // Show / Hide Performance Monitor
@@ -176,6 +181,11 @@ namespace BlackCoat
             SfxLoader.Debug = debug;
         }
 
+        /// <summary>
+        /// Handles the console command event.
+        /// </summary>
+        /// <param name="cmd">The command.</param>
+        /// <returns>True when the command was recognized otherwise false.</returns>
         private bool HandleConsoleCommand(string cmd)
         {
             if (_Core.Debug && cmd == "inspect")
@@ -187,6 +197,11 @@ namespace BlackCoat
             return false;
         }
 
+        /// <summary>
+        /// Opens the inspector window.
+        /// </summary>
+        /// <param name="target">Optional object for inspection. This is only necessary when the object is not part of the scene graph.</param>
+        /// <returns>Inspector interface for further interactions</returns>
         protected IPropertyInspector OpenInspector(object target = null)
         {
             _PropertyInspector = _PropertyInspector ?? new PropertyInspector(_Core, TextureLoader);
@@ -197,6 +212,9 @@ namespace BlackCoat
             return _PropertyInspector;
         }
 
+        /// <summary>
+        /// Manually opens / closes the console.
+        /// </summary>
         protected void ToggleConsole()
         {
             if (_Core._Console.IsOpen)

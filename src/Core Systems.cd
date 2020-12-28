@@ -4,7 +4,7 @@
     <Position X="10.71" Y="1.544" Height="0.291" Width="1.075" />
   </Comment>
   <Comment CommentText="                                                 BLACK COAT ENGINE">
-    <Position X="2.208" Y="0.5" Height="0.291" Width="4.7" />
+    <Position X="5.375" Y="0.5" Height="0.291" Width="4.7" />
   </Comment>
   <Comment CommentText="SUPPORT SYSTEMS">
     <Position X="8.953" Y="6.083" Height="0.291" Width="1.304" />
@@ -21,7 +21,7 @@
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>AAQgEIAIgSAIAoEAGCAAQAgMQBQBJBohIIYAACFGAIc=</HashCode>
+      <HashCode>AAQgEIAIgSAIAoEAGCAAQAgEQBQBJBohIIYAAiFGAIc=</HashCode>
       <FileName>Core.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -35,7 +35,7 @@
       <Property Name="DefaultView" />
       <Property Name="Device" />
     </ShowAsAssociation>
-    <Lollipop Position="1.384" />
+    <Lollipop Position="1.072" />
   </Class>
   <Class Name="BlackCoat.Tools.Console" Collapsed="true">
     <Position X="7.25" Y="8.5" Width="1.75" />
@@ -83,18 +83,12 @@
       <Path>
         <Point X="12" Y="3.812" />
         <Point X="12.274" Y="3.812" />
-        <Point X="12.274" Y="7.094" />
-        <Point X="12" Y="7.094" />
+        <Point X="12.274" Y="6.875" />
+        <Point X="12" Y="6.875" />
       </Path>
       <MemberNameLabel ManuallyPlaced="true">
-        <Position X="-1.316" Y="1.15" />
+        <Position X="-1.316" Y="0.91" />
       </MemberNameLabel>
-    </AssociationLine>
-    <AssociationLine Name="Input" Type="BlackCoat.Input" FixedFromPoint="true">
-      <Path>
-        <Point X="12" Y="3.438" />
-        <Point X="13.25" Y="3.438" />
-      </Path>
     </AssociationLine>
     <AssociationLine Name="_PropertyInspector" Type="BlackCoat.Tools.PropertyInspector" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
       <Path>
@@ -104,11 +98,17 @@
         <Point X="12" Y="7.846" />
       </Path>
       <MemberNameLabel ManuallyPlaced="true">
-        <Position X="0.565" Y="1.905" />
+        <Position X="0.555" Y="1.863" />
       </MemberNameLabel>
     </AssociationLine>
+    <AssociationLine Name="Input" Type="BlackCoat.Input" FixedFromPoint="true">
+      <Path>
+        <Point X="12" Y="3.438" />
+        <Point X="13.25" Y="3.438" />
+      </Path>
+    </AssociationLine>
     <TypeIdentifier>
-      <HashCode>EgQVhIQAgAECAiAEAQAKAAwAEgBCAAAAAAEAAAQAILA=</HashCode>
+      <HashCode>EgQVhIQAgAECAiAEAQAKAAQAEgBCAAACAAEAAAQAILA=</HashCode>
       <FileName>SceneManagement\Scene.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -120,7 +120,7 @@
   <Class Name="BlackCoat.Animation.Animation" Collapsed="true">
     <Position X="10.5" Y="4.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>QARgACAAQAAgAAIAAAQAAAAAAAIAAAQAAAAAAAEAAAA=</HashCode>
+      <HashCode>QARgACAAAAAgAAIAAAQAAAAAAgIAAAQAIAAAAAEAAAA=</HashCode>
       <FileName>Animation\Animation.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -162,14 +162,15 @@
   <Class Name="BlackCoat.Input" Collapsed="true">
     <Position X="13.25" Y="3.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>IAACwpAMgQIigIiAAAABAAAAAAAgAgABAYAIQRliACE=</HashCode>
+      <HashCode>AEIG5pAogWIigAKAIIABgAAANBAgCgABEZIIQRlioCg=</HashCode>
       <FileName>Input\Input.cs</FileName>
     </TypeIdentifier>
+    <Lollipop Position="0.2" />
   </Class>
   <Class Name="BlackCoat.Tools.PerformanceMonitor" Collapsed="true">
     <Position X="10.25" Y="6.5" Width="1.75" />
     <TypeIdentifier>
-      <HashCode>AAYAAAAABACAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAYAAAAABACgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Tools\PerformanceMonitor.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -184,7 +185,7 @@
     <Position X="10.25" Y="7.5" Width="1.75" />
     <TypeIdentifier>
       <HashCode>sAYKASkyACABAk4AYUSEEAACYElAgAAggAMABoBgADw=</HashCode>
-      <FileName>Tools\PropertyInspector.cs</FileName>
+      <FileName>Tools\Inspector\PropertyInspector.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
@@ -195,34 +196,6 @@
       <FileName>AssetHandling\AssetLoader.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
-  </Class>
-  <Class Name="BlackCoat.ColorExtensions" Collapsed="true">
-    <Position X="1.25" Y="10.75" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgA=</HashCode>
-      <FileName>Extensions\ColorExtensions.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="BlackCoat.EntityExtensions" Collapsed="true">
-    <Position X="3" Y="10.75" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAI=</HashCode>
-      <FileName>Extensions\EntityExtensions.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="BlackCoat.RectangleExtensions" Collapsed="true">
-    <Position X="1.25" Y="11.75" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAgAAgAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Extensions\RectangleExtensions.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="BlackCoat.VectorExtensions" Collapsed="true">
-    <Position X="3" Y="11.75" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAQgAAAAAAAAAQkAgAAABAAEAAKACAAECgAAACAAQ=</HashCode>
-      <FileName>Extensions\VectorExtensions.cs</FileName>
-    </TypeIdentifier>
   </Class>
   <Font Name="Segoe UI" Size="9" />
 </ClassDiagram>

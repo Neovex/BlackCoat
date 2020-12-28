@@ -22,7 +22,9 @@ namespace BlackCoat
     /// </summary>
     public sealed class Core : IDisposable
     {
+        // Statics ########################################################################
         internal static int DRAW_CALLS = 0; // 4 statistics
+
 
         // Events ##########################################################################
         /// <summary>
@@ -190,7 +192,8 @@ namespace BlackCoat
             Disposed = false;
             DefaultView = Device.DefaultView;
             DefaultFont = new Font(Resources.Squares_Bold_Free);
-            for (uint i = 4; i <= 42; i += 2) InitializeFontHack(DefaultFont, i); // Unfortunate necessity to prevent SFML from disposing parts of a font.
+            // FIX
+            for (uint i = 4; i <= 42; i += 2) InitializeFontHack(DefaultFont, i);
 
             // Attach Core-relevant Device Events
             AttachToDevice(Device);
@@ -213,10 +216,7 @@ namespace BlackCoat
             Log.Info("Black Coat Engine Creation Completed. - Version", GetType().Assembly.GetName().Version);
         }
 
-        ~Core()
-        {
-            if (!Disposed) Dispose();
-        }
+        ~Core() => Dispose();
 
 
         // Methods #########################################################################
@@ -235,7 +235,7 @@ namespace BlackCoat
         }
 
         /// <summary>
-        /// Displays the Renderwindow to the User.
+        /// Displays the RenderWindow to the User.
         /// </summary>
         public void ShowRenderWindow()
         {
@@ -244,7 +244,7 @@ namespace BlackCoat
         }
 
         /// <summary>
-        /// Hides the Renderwindow to the User without closing it.
+        /// Hides the RenderWindow to the User without closing it.
         /// Use ShowRenderWindow() to reveal it again.
         /// </summary>
         public void HideRenderWindow()
@@ -254,7 +254,7 @@ namespace BlackCoat
         }
 
         /// <summary>
-        /// Begins the Update / Rendering Loop.
+        /// Starts the Update / Rendering Loop.
         /// This method is blocking until Exit() is called.
         /// </summary>
         public void Run()
@@ -264,8 +264,9 @@ namespace BlackCoat
             ShowRenderWindow();
             while (Device.IsOpen)
             {
-                if (Fullscreen != _Fullscreen) ChangeFullscreen();
+                if (Fullscreen != _Fullscreen) ToggleFullscreen();
                 Device.DispatchEvents();
+
                 if (HasFocus || !PauseUpdateOnFocusLoss) // run updates
                 {
                     var deltaT = (float)(_Timer.Elapsed.TotalMilliseconds / 1000d);// fractal second
@@ -283,18 +284,18 @@ namespace BlackCoat
         }
 
         /// <summary>
-        /// Exits the Update / Rendering Loop (if present) and closes and disposes the Renderwindow
+        /// Stops the Update / Rendering Loop and closes the RenderWindow.
         /// </summary>
         /// <param name="reason">Optional reason for logging</param>
         public void Exit(String reason = null)
         {
             if (Disposed) throw new ObjectDisposedException(nameof(Core));
-            Log.Info(reason ?? "Begin Engine shutdown");
+            Log.Info(reason ?? "Beginning Engine shutdown");
             Device.Close();
         }
 
         /// <summary>
-        /// Calls the Update methods of the SceneGraph Hierarchy
+        /// Calls the Update methods of the Scene Graph Hierarchy
         /// </summary>
         /// <param name="deltaT">Frame time</param>
         private void Update(Single deltaT)
@@ -313,7 +314,7 @@ namespace BlackCoat
         }
 
         /// <summary>
-        /// Draws the SceneGraph to the Render Device
+        /// Draws the Scene Graph onto the Render Device
         /// </summary>
         private void Draw()
         {
@@ -361,7 +362,7 @@ namespace BlackCoat
         }
 
         /// <summary>
-        /// Handles Core Commands and broadcasts other Commands to the remaining application
+        /// Handles Core Commands and broadcasts other Commands to the user application
         /// </summary>
         /// <param name="cmd">Console input</param>
         private void HandleConsoleCommand(String cmd)
@@ -385,36 +386,51 @@ namespace BlackCoat
                     return;
             }
 
-            // Then broadcast Commands to all other systems and the client application
+            // Then broadcast Commands to all other systems and the user application
             if (ConsoleCommand.GetInvocationList().All(listener => !(bool)listener.DynamicInvoke(cmd)))
             {
                 Log.Warning("Unknown Command:", cmd);
             }
         }
 
-        #region Debug Handler
+        /// <summary>
+        /// Quits the application when the escape button is pressed.
+        /// </summary>
         private void QuitOnEsc(Keyboard.Key key)
         {
             if (key == Keyboard.Key.Escape) Exit();
         }
-        #endregion
 
         #region Device Event handlers
+        /// <summary>
+        /// Attaches all required event handlers to a device.
+        /// </summary>
+        /// <param name="device">The device that is the new event source.</param>
         private void AttachToDevice(Device device)
         {
-            Device.Resized += HandleDeviceResized;
-            Device.Closed += HandleWindowClose;
-            Device.LostFocus += HandleLostFocus;
-            Device.GainedFocus += HandleGainedFocus;
-        }
-        private void DetachFromDevice(Device device)
-        {
-            Device.Resized -= HandleDeviceResized;
-            Device.Closed -= HandleWindowClose;
-            Device.LostFocus -= HandleLostFocus;
-            Device.GainedFocus -= HandleGainedFocus;
+            device.Resized += HandleDeviceResized;
+            device.Closed += HandleWindowClose;
+            device.LostFocus += HandleLostFocus;
+            device.GainedFocus += HandleGainedFocus;
         }
 
+        /// <summary>
+        /// Detaches all event handlers from a device.
+        /// </summary>
+        /// <param name="device">The device to detach from.</param>
+        private void DetachFromDevice(Device device)
+        {
+            device.Resized -= HandleDeviceResized;
+            device.Closed -= HandleWindowClose;
+            device.LostFocus -= HandleLostFocus;
+            device.GainedFocus -= HandleGainedFocus;
+        }
+
+        /// <summary>
+        /// Handles the device resized event.
+        /// </summary>
+        /// <param name="sender">The source device.</param>
+        /// <param name="e">The <see cref="SizeEventArgs"/> instance containing the event data.</param>
         private void HandleDeviceResized(object sender, SizeEventArgs e)
         {
             DefaultView.Size = DeviceSize;
@@ -423,12 +439,18 @@ namespace BlackCoat
             DeviceResized.Invoke(DeviceSize);
         }
 
-        private void HandleWindowClose(object sender, EventArgs e)
-        {
-            // Needed for when the close button is clicked
-            Exit();
-        }
+        /// <summary>
+        /// Handles the window close event.
+        /// </summary>
+        /// <param name="sender">The source device.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
+        private void HandleWindowClose(object sender, EventArgs e) => Exit();
 
+        /// <summary>
+        /// Handles the lost focus event.
+        /// </summary>
+        /// <param name="sender">The source device.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         private void HandleLostFocus(object sender, EventArgs e)
         {
             _Timer.Stop();
@@ -436,6 +458,11 @@ namespace BlackCoat
             FocusLost.Invoke();
         }
 
+        /// <summary>
+        /// Handles the gained focus event.
+        /// </summary>
+        /// <param name="sender">The source device.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         private void HandleGainedFocus(object sender, EventArgs e)
         {
             HasFocus = true;
@@ -443,7 +470,10 @@ namespace BlackCoat
             _Timer.Start();
         }
 
-        private void ChangeFullscreen()
+        /// <summary>
+        /// Toggles between a fullscreen render device and a windowed one.
+        /// </summary>
+        private void ToggleFullscreen()
         {
             _Fullscreen = Fullscreen;
             if (OldDevice == null)
@@ -479,10 +509,14 @@ namespace BlackCoat
             if (Disposed) return;
             Disposed = true;
 
+            GC.SuppressFinalize(this);
+
             SceneManager.Destroy();
 
             DisposeDevice(Device);
+            Device = null;
             DisposeDevice(OldDevice);
+            OldDevice = null;
 
             DefaultFont.Dispose();
             DefaultFont = null;
@@ -490,7 +524,11 @@ namespace BlackCoat
             Log.Info("Engine Destroyed");
         }
 
-        private void DisposeDevice(Device device)
+        /// <summary>
+        /// Small helper to dispose a <see cref="Device"/>.
+        /// </summary>
+        /// <param name="device">The <see cref="Device"/> to dispose.</param>
+        private static void DisposeDevice(Device device)
         {
             if (device == null) return;
             if (device.CPointer != IntPtr.Zero)
@@ -498,7 +536,6 @@ namespace BlackCoat
                 if (device.IsOpen) device.Close();
                 device.Dispose();
             }
-            device = null;
         }
     }
 }

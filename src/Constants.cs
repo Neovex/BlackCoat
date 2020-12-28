@@ -2,6 +2,9 @@
 
 namespace BlackCoat
 {
+    /// <summary>
+    /// Contains all relevant engine constants.
+    /// </summary>
     public static class Constants
     {
         /// <summary>
@@ -15,7 +18,7 @@ namespace BlackCoat
         public const double RAD_TO_DEG = 180 / Math.PI;
 
         /// <summary>
-        /// Defines the fault tolerance of a distance in pixels when projecting points
+        /// Defines the fault tolerance when projecting points as a distance in pixels
         /// </summary>
         public const float POINT_PROJECTION_TOLERANCE = 1.5f;
 

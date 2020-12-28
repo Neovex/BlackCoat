@@ -114,6 +114,11 @@ namespace BlackCoat
             return assetNames.ToArray();
         }
 
+        /// <summary>
+        /// Resolves the file endings.
+        /// </summary>
+        /// <param name="name">The name of the file.</param>
+        /// <returns>Filename + proper file ending or the original string in case no file could be found.</returns>
         private String ResolveFileEndings(string name)
         {
             var path = _FileEndings.Select(f => Path.Combine(RootFolder, String.Concat(name, f))).FirstOrDefault(f => File.Exists(f));

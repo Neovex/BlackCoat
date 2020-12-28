@@ -6,7 +6,8 @@ namespace BlackCoat.Animation
     /// Abstract base class of all animation types
     /// </summary>
     public abstract class Animation
-    {   // Events ##########################################################################
+    {
+        // Events ##########################################################################
         /// <summary>
         /// Occurs when the Timer reached its assigned target value and is therefore complete.
         /// </summary>

@@ -8,7 +8,7 @@ namespace BlackCoat
 {
     /// <summary>
     /// Represents a Launcher Window to easily access and configure engine settings.
-    /// Custom application specific setting pages can be added as well.
+    /// Custom, application specific setting pages can be added as well.
     /// </summary>
     public sealed partial class Launcher : Form
     {
