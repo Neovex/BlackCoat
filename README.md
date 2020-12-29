@@ -35,7 +35,7 @@ Black Coat is build with:
 - Download and reference the [Black Coat DLL](/lib/BlackCoat.dll)
 
 Too fast? No problem.
-Take your time with the detailed first steps tutorial [here](</doc/First Steps.md>).
+Take your time with the detailed first steps tutorial [here](/doc/FirstSteps.md).
 
 ## Preview
 See how easy it is to get the engine up and running:
