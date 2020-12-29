@@ -7,13 +7,13 @@
     <Position X="5.375" Y="0.5" Height="0.291" Width="4.7" />
   </Comment>
   <Comment CommentText="SUPPORT SYSTEMS">
-    <Position X="8.953" Y="6.083" Height="0.291" Width="1.304" />
+    <Position X="9.047" Y="6.25" Height="0.291" Width="1.304" />
   </Comment>
   <Comment CommentText="DISPLAY">
-    <Position X="0.879" Y="1.628" Height="0.291" Width="0.7" />
+    <Position X="0.879" Y="1.378" Height="0.291" Width="0.7" />
   </Comment>
-  <Comment CommentText="MISC.">
-    <Position X="0.915" Y="6.048" Height="0.291" Width="0.7" />
+  <Comment CommentText="Misc.">
+    <Position X="0.915" Y="6.298" Height="0.291" Width="0.7" />
   </Comment>
   <Class Name="BlackCoat.Core">
     <Position X="3.25" Y="1.5" Width="2.25" />
@@ -38,23 +38,23 @@
     <Lollipop Position="1.072" />
   </Class>
   <Class Name="BlackCoat.Tools.Console" Collapsed="true">
-    <Position X="7.25" Y="8.5" Width="1.75" />
+    <Position X="7.25" Y="8" Width="1.75" />
     <TypeIdentifier>
       <HashCode>IAAAAQAAAAAAIQCQAAABBAAAABAAAEAAAAAAQICAABA=</HashCode>
       <FileName>Tools\Console.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="SFML.Graphics.RenderWindow" Collapsed="true">
-    <Position X="0.5" Y="2.25" Width="1.5" />
+    <Position X="0.5" Y="2" Width="1.5" />
     <TypeIdentifier />
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="System.Diagnostics.Stopwatch" Collapsed="true">
-    <Position X="0.5" Y="6.5" Width="1.5" />
+    <Position X="0.5" Y="6.75" Width="1.5" />
     <TypeIdentifier />
   </Class>
   <Class Name="BlackCoat.Animation.AnimationManager" Collapsed="true">
-    <Position X="7.25" Y="4.75" Width="1.75" />
+    <Position X="7.25" Y="4.5" Width="1.75" />
     <TypeIdentifier>
       <HashCode>AAQAAAAAACAAgAAAAAAAgAAAIAQAAQAAAgAAAAAAEBI=</HashCode>
       <FileName>Animation\AnimationManager.cs</FileName>
@@ -64,14 +64,14 @@
     </ShowAsCollectionAssociation>
   </Class>
   <Class Name="BlackCoat.Collision.CollisionSystem" Collapsed="true">
-    <Position X="7.25" Y="6.5" Width="1.75" />
+    <Position X="7.25" Y="5.5" Width="1.75" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAACAAgIAAEAAUAAAAAAAAAECAAAAAAigAAAA=</HashCode>
       <FileName>Collision\CollisionSystem.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="BlackCoat.Tools.RandomHelper" Collapsed="true">
-    <Position X="7.25" Y="7.5" Width="1.75" />
+    <Position X="7.25" Y="6.75" Width="1.75" />
     <TypeIdentifier>
       <HashCode>AAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAA=</HashCode>
       <FileName>Tools\RandomHelper.cs</FileName>
@@ -83,8 +83,8 @@
       <Path>
         <Point X="12" Y="3.812" />
         <Point X="12.274" Y="3.812" />
-        <Point X="12.274" Y="6.875" />
-        <Point X="12" Y="6.875" />
+        <Point X="12.274" Y="7.125" />
+        <Point X="12" Y="7.125" />
       </Path>
       <MemberNameLabel ManuallyPlaced="true">
         <Position X="-1.316" Y="0.91" />
@@ -94,17 +94,17 @@
       <Path>
         <Point X="12" Y="3.625" />
         <Point X="12.442" Y="3.625" />
-        <Point X="12.442" Y="7.846" />
-        <Point X="12" Y="7.846" />
+        <Point X="12.442" Y="8.346" />
+        <Point X="12" Y="8.346" />
       </Path>
       <MemberNameLabel ManuallyPlaced="true">
-        <Position X="0.555" Y="1.863" />
+        <Position X="0.555" Y="2.103" />
       </MemberNameLabel>
     </AssociationLine>
     <AssociationLine Name="Input" Type="BlackCoat.Input" FixedFromPoint="true">
       <Path>
         <Point X="12" Y="3.438" />
-        <Point X="13.25" Y="3.438" />
+        <Point X="13" Y="3.438" />
       </Path>
     </AssociationLine>
     <TypeIdentifier>
@@ -118,18 +118,18 @@
     </ShowAsAssociation>
   </Class>
   <Class Name="BlackCoat.Animation.Animation" Collapsed="true">
-    <Position X="10.5" Y="4.75" Width="1.5" />
+    <Position X="10.5" Y="4.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>QARgACAAAAAgAAIAAAQAAAAAAgIAAAQAIAAAAAEAAAA=</HashCode>
       <FileName>Animation\Animation.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="SFML.Graphics.Font" Collapsed="true">
-    <Position X="0.5" Y="5.25" Width="1.5" />
+    <Position X="0.5" Y="5.5" Width="1.5" />
     <TypeIdentifier />
   </Class>
   <Class Name="SFML.Graphics.View" Collapsed="true">
-    <Position X="0.5" Y="4.25" Width="1.5" />
+    <Position X="0.5" Y="4.5" Width="1.5" />
     <TypeIdentifier />
   </Class>
   <Class Name="BlackCoat.BlackCoatBase" Collapsed="true">
@@ -160,29 +160,29 @@
     </ShowAsAssociation>
   </Class>
   <Class Name="BlackCoat.Input" Collapsed="true">
-    <Position X="13.25" Y="3.25" Width="1.5" />
+    <Position X="13" Y="3.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AEIG5pAogWIigAKAIIABgAAANBAgCgABEZIIQRlioCg=</HashCode>
       <FileName>Input\Input.cs</FileName>
     </TypeIdentifier>
-    <Lollipop Position="0.2" />
+    <Lollipop Position="0.867" />
   </Class>
   <Class Name="BlackCoat.Tools.PerformanceMonitor" Collapsed="true">
-    <Position X="10.25" Y="6.5" Width="1.75" />
+    <Position X="10.25" Y="6.75" Width="1.75" />
     <TypeIdentifier>
       <HashCode>AAYAAAAABACgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Tools\PerformanceMonitor.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="BlackCoat.Launcher" Collapsed="true">
-    <Position X="10.25" Y="8.5" Width="1.75" />
+    <Position X="8.75" Y="9.25" Width="1.75" />
     <TypeIdentifier>
       <HashCode>gEQAIAAAVCBUAAAAAASQAAACQgQLJBkQoUQABwAQBAA=</HashCode>
       <FileName>Tools\Launcher.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="BlackCoat.Tools.PropertyInspector" Collapsed="true">
-    <Position X="10.25" Y="7.5" Width="1.75" />
+    <Position X="10.25" Y="8" Width="1.75" />
     <TypeIdentifier>
       <HashCode>sAYKASkyACABAk4AYUSEEAACYElAgAAggAMABoBgADw=</HashCode>
       <FileName>Tools\Inspector\PropertyInspector.cs</FileName>
@@ -190,12 +190,12 @@
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="BlackCoat.AssetLoader&lt;T&gt;" Collapsed="true">
-    <Position X="13.25" Y="4.75" Width="1.5" />
+    <Position X="13" Y="4.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAggAAADAAIIAAAAAAgCAAAAAAAAAAAAACABACAAA=</HashCode>
       <FileName>AssetHandling\AssetLoader.cs</FileName>
     </TypeIdentifier>
-    <Lollipop Position="0.2" />
+    <Lollipop Position="0.846" />
   </Class>
   <Font Name="Segoe UI" Size="9" />
 </ClassDiagram>

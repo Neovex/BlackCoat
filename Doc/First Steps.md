@@ -1,4 +1,3 @@
-<Image
 # Black Coat Engine First Steps
 
 ## Project Setup
@@ -8,7 +7,7 @@
 4. Click on the Browse Tab and search for `SFML`
 5. Install the NuGet Package `SFML.Net` by Laurent Gomila then close NuGet.
 6. Add the Black Coat Engine either by
-A) Adding its DLL to the list of dependencies (recommended) or
+A) Adding its appropriate DLL to the list of dependencies (recommended) or
 B) Adding its project to your solution and reference it via project reference.
 7. Delete the default Form1 file. The engine will provide the necessary window.
 8. Open the Programm.cs and clear out the `Main()` method.
@@ -27,9 +26,11 @@ Optional: grab the destroy method and move it to the bottom of your class.
 If you haven´t cleared the contents of your `Main()` method do so now.
 2. Add `using BlackCoat;` to the list of namespaces
 3. Inside your `Main()` create a new using block and define the engine core and device:
-`using (var core = new Core(Device.Demo))`
-`{`
-`}`
+```
+using (var core = new Core(Device.Demo))
+{
+}
+```
 4. Inside the using block we now want to use the stage we created earlier:
 `core.SceneManager.ChangeScene(new MyFirstScene(core));`
 5. Finally lets start the engine itself:
