@@ -71,7 +71,6 @@ namespace BlackCoat.ParticleSystem
         {
             TTL = 1;
             ParticlesPerSpawn = 1;
-
             Color = Color.White;
             Alpha = 1;
         }

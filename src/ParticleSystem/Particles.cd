@@ -68,7 +68,7 @@
       </MemberNameLabel>
     </AssociationLine>
     <TypeIdentifier>
-      <HashCode>gAQBAAAAAAAACQAgAAAAAAAgAgAAAAAggAIgBEAIAAA=</HashCode>
+      <HashCode>gAQBAAAAAAAACQAgBAAAAAAgAgAAAAAgAAIgBEAIAAA=</HashCode>
       <FileName>ParticleSystem\EmitterBase.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -89,7 +89,7 @@
       </Path>
     </InheritanceLine>
     <TypeIdentifier>
-      <HashCode>AAYAAAAAAAAAARAgAIAAhEAAEgAACAAAAAAAAEAQAAA=</HashCode>
+      <HashCode>AAYAAAAAAAAAAQggAIAAhEAAEgAACAAAAAAAAEAQAAA=</HashCode>
       <FileName>ParticleSystem\EmitterComposition.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.367" />
@@ -153,9 +153,9 @@
     </TypeIdentifier>
   </Class>
   <Class Name="BlackCoat.ParticleSystem.Emitter&lt;Tparticle, TInfo&gt;">
-    <Position X="1.5" Y="3.5" Width="2" />
+    <Position X="1.5" Y="3.25" Width="2" />
     <TypeIdentifier>
-      <HashCode>AAQCAAAAAAAAEZAAAAAAAAAAIAAAAgIAAAAAAABAAAA=</HashCode>
+      <HashCode>AAQCAAAAAAQAEYgAAAAAAAAAIAAAAgIAAAAAAAAAAAA=</HashCode>
       <FileName>ParticleSystem\Emitter.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="1.305" />
@@ -177,7 +177,7 @@
   <Class Name="BlackCoat.ParticleSystem.RadialSpawnInfo">
     <Position X="18.25" Y="1.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAEACAAAAQAAAABAAAIEAAAEgAA=</HashCode>
+      <HashCode>AAAIAAAAAAAAAAAAAAEACAAAAQAAAAAAAAIEAAAEgAA=</HashCode>
       <FileName>ParticleSystem\SpawnInfos\RadialSpawnInfo.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -187,14 +187,14 @@
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAEACAAAAQAAAABAAAIEAAAEgAA=</HashCode>
+      <HashCode>AAAIAAAAAAAAAAAAAAEACAAAAQAAAAAAAAIEAAAEgAA=</HashCode>
       <FileName>ParticleSystem\SpawnInfos\RadialTexturedSpawnInfo.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Interface Name="BlackCoat.ParticleSystem.ITriggerEmitter">
     <Position X="0.75" Y="8.25" Width="1.75" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>ParticleSystem\ITriggerEmitter.cs</FileName>
     </TypeIdentifier>
   </Interface>

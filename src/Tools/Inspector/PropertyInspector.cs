@@ -339,7 +339,7 @@ namespace BlackCoat.Tools
         // Triggers an emitter
         private void EmitterTriggerToolStripMenuItemClicked(object sender, EventArgs e)
         {
-            if (_Inspector.SelectedObject is ITriggerEmitter emitter) emitter.Trigger();
+            if (_Inspector.SelectedObject is ITriggerEmitter emitter) emitter.Triggered = !emitter.Triggered;
         }
 
         // Raise InspectionItemChanged Event

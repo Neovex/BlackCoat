@@ -213,7 +213,7 @@ namespace BlackCoat
             _Console = new Tools.Console(this, _Input);
             _Console.Command += HandleConsoleCommand;
 
-            Log.Info("Black Coat Engine Creation Completed. - Version", GetType().Assembly.GetName().Version);
+            Log.Info("Black Coat loaded. - Version", GetType().Assembly.GetName().Version);
         }
 
         ~Core() => Dispose();

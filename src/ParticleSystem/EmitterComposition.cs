@@ -10,10 +10,10 @@ namespace BlackCoat.ParticleSystem
     /// Represents a composition of multiple emitters.
     /// </summary>
     /// <seealso cref="BlackCoat.ParticleSystem.EmitterBase" />
-    public class EmitterComposition : EmitterBase, ITriggerEmitter
+    public sealed class EmitterComposition : EmitterBase, ITriggerEmitter
     {
         // Variables #######################################################################
-        protected List<EmitterBase> _Emitters;
+        private List<EmitterBase> _Emitters;
         private ParticleEmitterHost _Host;
         private Vector2f _Position;
         private Vector2f _PositionOffset;
@@ -36,6 +36,21 @@ namespace BlackCoat.ParticleSystem
                 if (_Host != null) foreach (var emitter in _Emitters) _Host.Remove(emitter);
                 _Host = value;
                 if (_Host != null) foreach (var emitter in _Emitters) _Host.AddEmitter(emitter);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether this instance is currently triggered.
+        /// </summary>
+        public bool Triggered
+        {
+            get => _Emitters.OfType<ITriggerEmitter>().All(e => e.Triggered);
+            set
+            {
+                foreach (var e in _Emitters.OfType<ITriggerEmitter>())
+                {
+                    e.Triggered = value;
+                }
             }
         }
 
@@ -112,20 +127,12 @@ namespace BlackCoat.ParticleSystem
             if (_Host != null) _Host.Remove(emitter);
         }
 
-        /// <summary>
-        /// Triggers the composite. Causing its child emitters to start emitting particles.
-        /// </summary>
-        public void Trigger()
-        {
-            foreach (var e in _Emitters.OfType<ITriggerEmitter>()) e.Trigger();
-        }
-
-        internal override void UpdateInternal(float deltaT)
+        protected override void Update(float deltaT)
         {
             // not needed - child emitters are updated by the emitter host
         }
 
-        protected override void Update(float deltaT)
+        internal override void UpdateInternal(float deltaT)
         {
             // not needed - child emitters are updated by the emitter host
         }

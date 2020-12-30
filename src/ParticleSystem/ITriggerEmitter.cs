@@ -7,8 +7,8 @@
     {
         // Methods #########################################################################
         /// <summary>
-        /// Triggers the emitter. Causing it to start emitting particles.
+        /// Gets or sets a value indicating whether this instance is currently triggered.
         /// </summary>
-        void Trigger();
+        bool Triggered { get; set; }
     }
 }

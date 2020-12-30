@@ -19,14 +19,30 @@ namespace BlackCoat.ParticleSystem
 
 
         // Variables #######################################################################
-        protected Single _SpawnTimer;
+        private float _SpawnTimer;
+        private bool _Triggered;
 
 
         // Properties ######################################################################
         /// <summary>
-        /// Gets a value indicating whether this instance is currently triggered.
+        /// Gets or sets a value indicating whether this instance is currently triggered.
         /// </summary>
-        public Boolean IsTriggered { get; protected set; }
+        public bool Triggered
+        {
+            get => _Triggered;
+            set
+            {
+                if (value && !ParticleInfo.Loop)
+                {
+                    SpawnParticles();
+                }
+                else if(value != _Triggered)
+                {
+                    _Triggered = value;
+                    _SpawnTimer = 0f;
+                }
+            }
+        }
 
         /// <summary>
         /// Particle animation information for particle initialization.
@@ -44,8 +60,8 @@ namespace BlackCoat.ParticleSystem
         /// <param name="blendMode">The particle blend mode.</param>
         /// <param name="texture">Optional Texture to be mapped onto the vertices.</param>
         /// <param name="depth">The optional hierarchical depth.</param>
-        public Emitter(Core core, TInfo info, PrimitiveType primitiveType, BlendMode? blendMode, Texture texture = null, int depth = 0) : 
-                       base(core, depth, primitiveType, blendMode ?? BlendMode.Alpha, texture)
+        public Emitter(Core core, TInfo info, PrimitiveType primitiveType, BlendMode? blendMode, Texture texture = null, int depth = 0) :
+                  base(core, depth, primitiveType, blendMode ?? BlendMode.Alpha, texture)
         {
             ParticleInfo = info ?? throw new ArgumentNullException(nameof(info));
         }
@@ -53,27 +69,17 @@ namespace BlackCoat.ParticleSystem
 
         // Methods #########################################################################
         /// <summary>
-        /// Triggers the emitter. Causing it to start emitting particles.
-        /// </summary>
-        public virtual void Trigger()
-        {
-            if (ParticleInfo.SpawnRate == 0) SpawnParticles();
-            else IsTriggered = true;
-        }
-
-        /// <summary>
         /// Updates Emitter logic.
         /// </summary>
         /// <param name="deltaT">Current game-time</param>
         protected override void Update(float deltaT)
         {
-            if (IsTriggered)
+            if (Triggered)
             {
                 _SpawnTimer -= deltaT;
                 if (_SpawnTimer < 0)
                 {
                     _SpawnTimer = ParticleInfo.SpawnRate;
-                    IsTriggered = ParticleInfo.Loop;
                     SpawnParticles();
                 }
             }
