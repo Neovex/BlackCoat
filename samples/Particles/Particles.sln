@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30804.86
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Particles", "Particles.csproj", "{93F19189-1FE8-4617-862F-A6041CAB83AD}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlackCoat", "..\..\src\BlackCoat.csproj", "{AC7E79BC-A5BB-4692-A922-154168D77052}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{93F19189-1FE8-4617-862F-A6041CAB83AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{93F19189-1FE8-4617-862F-A6041CAB83AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{93F19189-1FE8-4617-862F-A6041CAB83AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{93F19189-1FE8-4617-862F-A6041CAB83AD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AC7E79BC-A5BB-4692-A922-154168D77052}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AC7E79BC-A5BB-4692-A922-154168D77052}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AC7E79BC-A5BB-4692-A922-154168D77052}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AC7E79BC-A5BB-4692-A922-154168D77052}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D6990B38-67B9-4423-9B60-2BFA23DB6039}
+	EndGlobalSection
+EndGlobal
