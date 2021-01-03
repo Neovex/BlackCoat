@@ -46,20 +46,16 @@ using (var core = new Core(Device.Demo))
 ```
 
 ## Adding Entities
-Now that you got the engine running lets do something about the vast emptiness of your scene.
-Inside your scenes `Load()` method you can setup whichever actors you'd like to see in it.
-"Actors" are called entities throughout Black Coat and there are over a dozen different types of entities available to you.
+Now that you got the engine running lets do something about the vast emptiness of your scene. Inside your scenes `Load()` method you can setup whichever actors you'd like to see in it. "Actors" are called entities throughout Black Coat and there are over a dozen different types of entities available to you.
 1. Lets start simple by adding a plain rectangle to your scene. To do so add the Shapes namespace via `using BlackCoat.Entities.Shapes;` to the list of namespaces.
 2. Now create a new Rectangle instance inside the `Load()` method `var rect = new Rectangle(_Core, new Vector2f(100, 100), Color.Cyan);`
 If you would start your project right now however you wouldn't see a thing. Thats is because every entity needs to be explicitly added to the scene.
 3. To add any entity to your scene simply add it to one of the scenes layers. In our case this looks like so: `Layer_Game.Add(rect);`
 Now when you start the project you will see your newly created entity in the top left corner of your scene:
-![First Steps](/img/FirstSteps.jpg)
+![First Steps](img/FirstSteps.jpg)
 
 ## Get Moving!
-Now that you have an entity in your scene it'll get boring pretty fast since nothing is happening. Lets change that!
-The `Update(float deltaT)` method is being called each and every frame as long as the engine window has focus.
-You can use that to bring all your entities to live. In this example lets attach our rectangle to the mouse like so:
+Now that you have an entity in your scene it'll get boring pretty fast since nothing is happening. Lets change that! The `Update(float deltaT)` method is being called each and every frame as long as the engine window has focus. You can use that to bring all your entities to live. In this example lets attach our rectangle to the mouse like so:
 1. Promote the rect variable to a field `private Rectangle rect;` You can also do so automatically by using the Visual Studio refactoring features.
 2. Now that the rectangle is inside the scope of the class we can use it in the `Update(float deltaT)` method and reassign its position:
 `rect.Position = Input.MousePosition;`
@@ -90,5 +86,4 @@ class MyFirstScene : Scene
     { }
 }
 ```
-Of course this only scratches the surface of what you can do with Black Coat - there is a lot more you can create and a lot more to explore.
-So check out the other tutorials [here](.) and the samples section [here](../samples) where you can find example code for some of the more complex features.
+Of course this only scratches the surface of what you can do with Black Coat - there is a lot more you can create and a lot more to explore. So check out the other tutorials [here](README.md) and the samples section [here](../samples) where you can find example code for some of the more complex features.
