@@ -25,12 +25,14 @@ namespace BlackCoat.Entities.Animation
         /// <summary>
         /// Creates a new Instance of the FrameAnimation class.
         /// </summary>
-        /// <param name="core">Engine Core</param>
-        /// <param name="frames">All frame textures</param>
-        public FrameAnimation(Core core, Texture[] frames) : base(core)
+        /// <param name="core">The Engine Core</param>
+        /// <param name="frameDuration">Duration of one frame</param>
+        /// <param name="frames">All frame textures - one per frame</param>
+        public FrameAnimation(Core core, Single frameDuration, Texture[] frames) : base(core)
         {
+            FrameDuration = frameDuration;
             if (frames == null) throw new NullReferenceException(nameof(frames));
-            if (frames.Length < 2) throw new ArgumentException("A FrameAnimation must have at least 2 frames");
+            if (frames.Length < 2) throw new ArgumentException("Animations must have at least 2 frames");
             _Frames = frames;
         }
 
@@ -39,7 +41,7 @@ namespace BlackCoat.Entities.Animation
         /// <summary>
         /// Updates the Animation and its applied Roles.
         /// </summary>
-        /// <param name="deltaT">Current gametime</param>
+        /// <param name="deltaT">Duration of the last frame</param>
         public override void Update(float deltaT)
         {
             base.Update(deltaT);

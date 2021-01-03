@@ -54,8 +54,7 @@ namespace BlackCoat.Entities.Animation
         /// <param name="frameSize">Size of a single frame inside the texture</param>
         public BlittingAnimation(Core core, Single frameDuration, Texture texture, Vector2u frameSize) 
                                : this(core, frameDuration, texture, CalculateFrames(texture, frameSize))
-        {
-        }
+        { }
 
         /// <summary>
         /// Creates a new Instance of the BlittingAnimation class.
@@ -67,7 +66,9 @@ namespace BlackCoat.Entities.Animation
         public BlittingAnimation(Core core, Single frameDuration, Texture texture, IntRect[] frames) : base(core)
         {
             FrameDuration = frameDuration;
-            Texture = texture;
+            Texture = texture ?? throw new NullReferenceException(nameof(texture));
+            if (frames == null) throw new NullReferenceException(nameof(frames));
+            if (frames.Length < 2) throw new ArgumentException("Animations must have at least 2 frames");
             _Frames = frames;
             CurrentFrame = 0;
         }
@@ -77,7 +78,7 @@ namespace BlackCoat.Entities.Animation
         /// <summary>
         /// Updates the Animation and its applied Roles.
         /// </summary>
-        /// <param name="deltaT">Current game time</param>
+        /// <param name="deltaT">Duration of the last frame</param>
         public override void Update(float deltaT)
         {
             base.Update(deltaT);
