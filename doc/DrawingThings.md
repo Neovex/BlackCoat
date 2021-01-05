@@ -23,14 +23,11 @@ Layer_Game.Add(tank);
 ```
 Now you also know why you don't see a thing when you forget to add an entity to the scene: Entities that are not part of the scene graph hierarchy are neither drawn nor updated. This is useful for managing stuff in the background. You can always remove something from the scene change it around and add it at a different location within the scene graph. You can imagine this as your "backstage area" - VIPs (aka. coders) only. :wink:
 
-<span style="color:blue">
 Keep in mind: you cannot add an entity nor an entity container to the scene directly. Instead use one of the scenes predefined layers:
 - Layer_Background:  Lowest layer for background graphics or animations.
 - Layer_Game: Default layer for your games entities.
 - Layer_Overlay: Top layer for all kinds of special effects overlays like UIs, Lightmaps or ParticleEmitterHosts.
 - Layer_Cursor: You cannot place entities on this layer directly but it allows for custom cursors. Checkout `Layer_Cursor.SetCursor()`
-</span>
-
 
 ## Drawing Shapes
 
@@ -59,7 +56,8 @@ To load textures, or any asset for that matter you need the appropriate asset lo
 - SfxLoader: loads short audio clips for sound effects like laser beams or jump sounds
 
 All asset loaders work the same, simply call its `Load(fileName)` method where fileName is the desired file you want to load **without** its file ending. It is important to notice that multiple calls to `Load(fileName)` will not result in multiple load operations. Once a file is loaded it will be cached and can be accessed very quickly. This way you can preload assets and use them at a later time without delay. You can even load an entire folders worth of assets with just one call to `LoadAllFilesInDirectory()`. It will then automatically cache all compatible files for later.
-<span style="color:blue">
+
+
 When creating a scene you can define an asset root path in its base constructor call. This will be used as the folder where all asset loaders will look for their respective files. This way you could separate your assets into one folder per scene.
 Additionally you can alter an asset loaders root folder separately for even more fine grained asset management. This way your asset folder may end up looking like this:
 - Assets
@@ -70,7 +68,6 @@ Additionally you can alter an asset loaders root folder separately for even more
     - Textures
     - Music
     - Sounds
-</span>
 
 ### Drawing Textures (for real this time)
 

@@ -49,9 +49,7 @@ private void MyMoveHelper(float value)
     myEntity.Position = new Vector2f(value, 0));
 }
 ```
-<span style="color:blue">
-It is important to point out that value based animations are not limited to moving stuff around. Since your code decides what happens with the interpolated value you can use the animation system to animate basically everything. Making stuff grow or shrink? Animate its scale. Blending or fading entities? Just use their Alpha property. Animating color transitions? No Problem. Animating sound positions or volume? You betcha! Want to see it all happen in slow motion? Checkout ` Layer_Game.TimeMultiplier ` and since its a float value you could even animate that too!
-</span>
+It is important to point out that value based animations are not limited to moving stuff around. Since your code decides what happens with the interpolated value you can use the animation system to animate basically everything. Making stuff grow or shrink? Animate its scale. Blending or fading entities? Just use their Alpha property. Animating color transitions? No Problem. Animating sound positions or volume? You betcha! Want to see it all happen in slow motion? Checkout `Layer_Game.TimeMultiplier` and since its a float value you could even animate that too!
 
 ## Frame based Animations
 
@@ -66,10 +64,8 @@ Black Coat supports both Blitting Animations (as in having all frames in one gra
     - duration defines the time it takes from one frame to the next
     - texture defines the source texture where all your frames are stored
     - frames simply is the IntRect array you created earlier
-<span style="color:blue">
 Your done.
 Don't forget to add your entity to a layer or container of your choosing and watch your animation go.
-</span>
 
 ### Frame Animations
 
@@ -80,7 +76,5 @@ Trouble loading your textures? Check out the tutorial on loading assets [HERE](D
 3. Finally instantiate the right entity type for the job `var myAnimation = new FrameAnimation(_Core, duration, frames);`
     - duration defines the time it takes from one frame to the next
     - frames is the Texture array you created earlier
-<span style="color:blue">
 Thats it.
 Don't forget to add your entity to a layer or container of your choosing and watch your animation go.
-</span>

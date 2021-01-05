@@ -10,8 +10,8 @@ The following tutorials are available. For an optimal learning experience comple
 1. [First Steps](FirstSteps.md)
 2. [Drawing Things](DrawingThings.md)
 3. [Creating Animations](CreatingAnimations.md)
-4. Creating Particle Effects - under construction
-5. Handling Devices and Launchers - planned
+4. [Creating Particle Effects](Particles.md)
+5. Handling Devices and Launchers - under construction
 6. Adding sounds and music - planned
 7. Handling User Interfaces - planned
 
