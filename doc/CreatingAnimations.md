@@ -59,22 +59,26 @@ Black Coat supports both Blitting Animations (as in having all frames in one gra
 
 1. To create a blitting animation you first need to provide a set of rectangular area definitions that describe each frame within your source graphic. To do so simply create an array of IntRects `var frames = new IntRect[size]` where size is the amount of frames in your animation.
 2. You can now define each frame i.e.: `var frames[0] = new IntRect(0,0, 32,32)`. If you have large animations with a lot of frames I recommend to automate this process with a `for` loop.
-3. Now that you got your frames all set up you need a way to display them. Remember when you were told that there are a lot of prefab entities available? Exactly! Black Coat has an entity type for that already included ;-). You'll need the name space `using BlackCoat.Entities.Animation;`
-4. All thats left is putting it all together var `var myAnimation = new BlittingAnimation(_Core, duration, texture, frames);`
+3. Now that you got your frames all set up you need a way to display them. Remember when you were told that there are a lot of prefab entities available? Exactly! Black Coat has an entity type for that already included. You'll need to add the name space `using BlackCoat.Entities.Animation;`
+4. All thats left is putting it all together `var myAnimation = new BlittingAnimation(_Core, duration, texture, frames);`
     - duration defines the time it takes from one frame to the next
     - texture defines the source texture where all your frames are stored
     - frames simply is the IntRect array you created earlier
+
 Your done.
+
 Don't forget to add your entity to a layer or container of your choosing and watch your animation go.
 
 ### Frame Animations
 
-Frame animations work almost identical to blitting animations with the major difference that each of its frames is a standalone texture. Lets go:
+Frame animations work almost identical to blitting animations with the only difference that each of its frames is a standalone texture. Lets go:
 1. Load all your frame textures in a texture array `var frames = new Texture[size]` where size is the amount of frames in your animation.
 Trouble loading your textures? Check out the tutorial on loading assets [HERE](DrawingThings.md).
 2. Add `using BlackCoat.Entities.Animation;` to your list of name spaces.
 3. Finally instantiate the right entity type for the job `var myAnimation = new FrameAnimation(_Core, duration, frames);`
     - duration defines the time it takes from one frame to the next
     - frames is the Texture array you created earlier
+
 Thats it.
+
 Don't forget to add your entity to a layer or container of your choosing and watch your animation go.

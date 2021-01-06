@@ -51,6 +51,7 @@ Now things are starting to move! Lets have a look at the most common spawn prope
 - Acceleration: change in movement over time
 - Loop: this one is vital - it defines whether the emitter must be triggered for each particle (false) or just keeps on spewing more (true)
 - SpawnRate: defines the time to wait until a new batch of particles should be emitted - only functional when Loop = true
+
 There are many more properties you can play with to create many different types of effects. For example with `Alpha` and `AlphaFade` you can blend particles neatly into each other, both of these become especially important when you are using `UseAlphaAsTTL` which does **NOT override the TTL** but is used as a preemptive condition. So make sure your `TTL` is big enough to give `UseAlphaAsTTL` enough time to do its magic.
 
 ### More Randomness... MOOORE!
@@ -87,4 +88,5 @@ This shrinks down you emitter creation to this: `var pixelEmitter = new PixelEmi
 
 When working with particles you'll often find yourself constantly changing spawn infos then immediately building and restarting your application over and over again to see the results. This can get tedious very fast. To avoid frustration I recommend using the live inspection feature of Black Coat. You can activate it either by calling `OpenInspector();` at the end of your `Load()` method or by typing "inspect" into the scenes console (Strg+Shift+1). With the inspector you are able to modify most properties of most items inside your scene. This is specifically useful for tuning particles as you can see any modification to your spawn info immediately.
 ![Inspector](img/Inspector.jpg)
+
 Pro Tip: you can even inspect and test emitters where `Loop = false`. Checkout Inspector -> Menue -> Extras -> ITriggerEmitter.Trigger
