@@ -37,7 +37,7 @@ As you can see the constructor of an `SfxManager` requires a callback from where
 
 To play a sound it must be added to the managers sound library so make sure to load everything you need first. Using the `LoadFromDirectory()` method or the `LoadFromFileList()` method can help to prevent missing files.
 
-Apart from making you life easier, the job of the `SfxManager` is to prevent sound stacking. Sound stacking is the effect of a single sound played multiple times within a single frame cycle. If this happens the sounds amplitudes are added together by your sound hardware creating a deafening noise. This is why you have to provide the `SfxManager` with the maximum amount of parallel sounds whenever you add one to the library. The higher the probability of a sound the lower the amount of parallel sounds should be. My recommendation is to set all sound effects to a parallel value of 1 and only raise it when you hear a sound not properly playing.
+Apart from making your life easier, the job of the `SfxManager` is to prevent sound stacking. Sound stacking is the effect of a single sound played multiple times within a single frame cycle. If this happens the sounds amplitudes are added together by your sound hardware creating a deafening noise. This is why you have to provide the `SfxManager` with the maximum amount of parallel sounds whenever you add one to the library. The higher the probability of a sound the lower the amount of parallel sounds should be. My recommendation is to set all sound effects to a parallel value of 1 and only raise it when you hear a sound not properly playing.
 
 ### 3D Sound
 

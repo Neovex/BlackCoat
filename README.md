@@ -17,7 +17,7 @@ Some of the work the engine handles for you:
 - Customizable game launchers
 - Vector math
 - Polygon collisions
-- UI automation, Buttons, Dialogs
+- A complete UI framework
 - Input mapping for mouse, keyboard and game pads/joysticks
 - In-game console with customizable commands
 - and more...
