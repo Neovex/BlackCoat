@@ -12,8 +12,8 @@ The following tutorials are available. For an optimal learning experience comple
 3. [Creating Animations](CreatingAnimations.md)
 4. [Creating Particle Effects](Particles.md)
 5. [Handling Devices and Launchers](DevicesAndLaunchers.md)
-6. Adding sounds and music - under construction
-7. Creating User Interfaces - planned
+6. [Adding sounds and music](SoundsAndMusic.md)
+7. Creating User Interfaces - under construction
 
 
 ## Core Systems Overview

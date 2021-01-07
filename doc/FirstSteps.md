@@ -20,6 +20,7 @@ B) Adding its project to your solution and reference it via project reference.
 4. Press Alt+Enter to bring up the quick actions then select `Implement abstract class`
 5. Press Alt+Enter again then select `Generate Constructor`
 6. Delete all occurrences of `throw new NotImplementedException();`
+
 Optional: grab the destroy method and move it to the bottom of your class.
 
 ## Starting the Engine

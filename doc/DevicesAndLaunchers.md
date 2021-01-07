@@ -3,9 +3,9 @@
 So far in this tutorial series you got used to using the default demo device for creating the engine core. While for small demos and tests this is perfectly fine, for actual games or larger projects one would usually like more control over the devices settings or even hand over defining those settings to the user. In Black Coat you can do it all. Before we dive in on the "how" lets have a quick look at the "what". The term "device" defines the primary target for rendering visual components, like your scene and your entities. Basically the device is either the window or full screen device (i.e: Monitor) which will display your scene to the user.
 
 The Black Coat Engine give you 3 options on device creation:
-1: Using the default devices aka: `Demo` and `Fullscreen` (you already know these)
-2: Use a customizable launcher window that allows the user to create the device
-3: Manually create a custom device, defining all options yourself
+1. Using the default devices aka: `Demo` and `Fullscreen` (you already know these)
+2. Use a customizable launcher window that allows the user to create the device
+3. Manually create a custom device, defining all options yourself
 
 Lets dive in.
 
