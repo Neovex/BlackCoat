@@ -5,28 +5,12 @@ using BlackCoat.InputMapping;
 namespace BlackCoat.UI
 {
     /// <summary>
-    /// Specialist mapping class for mapping <see cref="MappedOperation{TCondition, TOperation}" /> to UI Events
+    /// Specialized mapping class for mapping <see cref="MappedOperation{TCondition, TOperation}" /> to UI Events
     /// </summary>
     /// <typeparam name="TMapped">The type of the mapped.</typeparam>
     /// <seealso cref="BlackCoat.UI.UIInput" />
-    public class UIInputMap<TMapped> : UIInput
+    public partial class UIInputMap<TMapped> : UIInput
     {
-        // Nested ##########################################################################        
-        /// <summary>
-        /// List of all UI operations for input mapping.
-        /// </summary>
-        public enum UiOperation
-        {
-            None,
-            Move,
-            BeforeConfirm,
-            Confirm,
-            Cancel,
-            Edit,
-            Scroll
-        }
-
-
         // Variables #######################################################################
         private Dictionary<TMapped, (UiOperation Activation, UiOperation Deactivation, float Direction)> _Map;
 

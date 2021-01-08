@@ -95,6 +95,7 @@
     <Compile Include="UI\InputMapping\UIInput.cs" />
     <Compile Include="UI\InputMapping\UIInputMap.cs" />
     <Compile Include="UI\Canvas.cs" />
+    <Compile Include="UI\InputMapping\UiOperation.cs" />
     <Compile Include="UI\Label.cs" />
     <Compile Include="UI\DistributionContainer.cs" />
     <Compile Include="UI\Orientation.cs" />
