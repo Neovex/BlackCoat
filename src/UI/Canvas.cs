@@ -128,9 +128,9 @@ namespace BlackCoat.UI
         public void ResizeToFitContent()
         {
             var components = Components.Select(c => c.RelativeSize).ToArray();
-            if (components.Length == 0) return;
-            Resize(new Vector2f(DockX ? InnerSize.X : components.Max(c => c.X),
-                                DockY ? InnerSize.Y : components.Max(c => c.Y)));
+            if (components.Length == 0) Resize(MinSize);
+            else Resize(new Vector2f(DockX ? InnerSize.X : components.Max(c => c.X),
+                                     DockY ? InnerSize.Y : components.Max(c => c.Y)));
         }
 
         /// <summary>
