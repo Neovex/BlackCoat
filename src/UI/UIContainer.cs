@@ -159,7 +159,7 @@ namespace BlackCoat.UI
         public override void Clear()
         {
             _UpdateLock = true;
-            foreach (var component in Components) Remove(component);
+            foreach (var component in Components.ToArray()) Remove(component);
             _UpdateLock = false;
             InvokeSizeChanged();
         }
