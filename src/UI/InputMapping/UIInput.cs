@@ -20,7 +20,7 @@ namespace BlackCoat.UI
         public event Action BeforeConfirm = () => { };
 
         /// <summary>
-        /// Occurs when the user confirms an operation. I.e.: Clicks on a button.
+        /// Occurs when the user confirms an operation. I.e.: Clicks on a component.
         /// </summary>
         public event Action Confirm = () => { };
 
