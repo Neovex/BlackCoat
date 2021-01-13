@@ -141,9 +141,11 @@ namespace BlackCoat.UI
         public virtual bool HasFocus
         {
             get => _HasFocus;
-            set
+            protected set
             {
-                if (!CanFocus || _HasFocus == value) return;
+                if (!CanFocus || _HasFocus == value || 
+                     DIALOG != null && value && 
+                    !DIALOG.ComponentsFlattened.Contains(this)) return;
                 if (value)
                 {
                     if (!Visible || !Enabled) return;
