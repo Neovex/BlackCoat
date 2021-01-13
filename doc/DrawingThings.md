@@ -1,6 +1,6 @@
 # Drawing all the Things™!
 
-Now that you're all ready to go lets dive into getting some content into your scene.
+With the [input](Input.md) ready to go, lets dive into getting more content into your scene.
 Got no scene? Check back on the First Steps tutorial [here](FirstSteps.md).
 
 ## Understanding the Scene Graph

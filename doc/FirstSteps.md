@@ -53,10 +53,11 @@ Now that you got the engine running lets do something about the vast emptiness o
 If you would start your project right now however you wouldn't see a thing. Thats is because every entity needs to be explicitly added to the scene.
 3. To add any entity to your scene simply add it to one of the scenes layers. In our case this looks like so: `Layer_Game.Add(rect);`
 Now when you start the project you will see your newly created entity in the top left corner of your scene:
+
 ![First Steps](img/FirstSteps.jpg)
 
 ## Get Moving!
-Now that you have an entity in your scene it'll get boring pretty fast since nothing is happening. Lets change that! The `Update(float deltaT)` method is being called each and every frame as long as the engine window has focus. You can use that to bring all your entities to live. In this example lets attach our rectangle to the mouse like so:
+Now that you have an entity in your scene it'll get boring pretty fast since nothing is happening. Lets change that! The `Update(float deltaT)` method is being called every frame as long as the engine window has focus. You can use that to bring all your entities to live. In this example lets attach our rectangle to the mouse like so:
 1. Promote the rect variable to a field `private Rectangle rect;` You can also do so automatically by using the Visual Studio refactoring features.
 2. Now that the rectangle is inside the scope of the class we can use it in the `Update(float deltaT)` method and reassign its position:
 `rect.Position = Input.MousePosition;`
