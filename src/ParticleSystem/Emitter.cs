@@ -88,7 +88,7 @@ namespace BlackCoat.ParticleSystem
         /// <summary>
         /// Creates and spawns the particles.
         /// </summary>
-        private void SpawnParticles()
+        protected virtual void SpawnParticles()
         {
             var amount = ParticleInfo.ParticlesPerSpawn;
             for (int i = 0; i < amount; i++)
