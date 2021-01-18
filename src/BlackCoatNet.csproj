@@ -206,9 +206,6 @@
       <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="Tools\Launcher.resx">
-      <DependentUpon>Launcher.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Tools\Inspector\PropertyInspector.resx">
       <DependentUpon>PropertyInspector.cs</DependentUpon>
     </EmbeddedResource>
