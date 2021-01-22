@@ -90,6 +90,7 @@
     <Compile Include="UI\AlignedContainer.cs" />
     <Compile Include="UI\AnchoredContainer.cs" />
     <Compile Include="UI\AutomatedCanvas.cs" />
+    <Compile Include="UI\ComboBoxDialog.cs" />
     <Compile Include="UI\DialogContainer.cs" />
     <Compile Include="UI\IDockable.cs" />
     <Compile Include="UI\InputMapping\UIInput.cs" />
