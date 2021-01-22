@@ -148,11 +148,6 @@ namespace BlackCoat
             // System Layer
             Layer_Debug = new Layer(_Core) { Name = nameof(Layer_Debug) };
             Layer_Cursor = new CursorLayer(_Core) { Name = nameof(Layer_Cursor) };
-
-            // Handle Debug Features
-            HandleDebugChanged(_Core.Debug);
-            _Core.DebugChanged += HandleDebugChanged;
-            _Core.ConsoleCommand += HandleConsoleCommand;
         }
 
 
@@ -174,7 +169,7 @@ namespace BlackCoat
                 Layer_Debug.Remove(_PerformanceMonitor);
             }
 
-            // Pass debug mode on to the asset managers
+            // Pass debug mode to the asset managers
             TextureLoader.Debug = debug;
             MusicLoader.Debug = debug;
             FontLoader.Debug = debug;
@@ -245,6 +240,10 @@ namespace BlackCoat
 
             if (Load())
             {
+                HandleDebugChanged(_Core.Debug);
+                _Core.DebugChanged += HandleDebugChanged;
+                _Core.ConsoleCommand += HandleConsoleCommand;
+
                 Loaded.Invoke();
                 return true;
             }
