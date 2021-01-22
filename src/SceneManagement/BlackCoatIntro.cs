@@ -1,6 +1,6 @@
 ﻿using System;
+using SFML.System;
 using SFML.Audio;
-using SFML.Graphics;
 using BlackCoat.Properties;
 using BlackCoat.Entities;
 
@@ -15,11 +15,8 @@ namespace BlackCoat
     {
         // Variables #######################################################################
         private Scene _NextScene;
-        private Graphic _Bg;
-        private Texture _BgTex;
-        private SoundBuffer _SoundBuffer;
+        private Graphic _Logo;
         private Sound _Sound;
-        private Boolean _Done = false;
 
 
         // CTOR ############################################################################
@@ -42,24 +39,24 @@ namespace BlackCoat
         /// <returns>True on success.</returns>
         protected override bool Load()
         {
-            _BgTex = TextureLoader.Load(nameof(Resources.Loader), Resources.Loader);
-            _SoundBuffer = SfxLoader.Load(nameof(Resources.BCPad), Resources.BCPad);
-            if (_BgTex == null || _SoundBuffer == null) return false;
-            _Sound = new Sound(_SoundBuffer);
+            var sndBuff = SfxLoader.Load(nameof(Resources.BCPad), Resources.BCPad);
+            var tex = TextureLoader.Load(nameof(Resources.Loader), Resources.Loader);
+            if (sndBuff == null || tex == null) return false;
 
-            _Bg = new Graphic(_Core)
+            _Sound = new Sound(sndBuff);
+            
+            _Logo = new Graphic(_Core, tex)
             {
-                Texture = _BgTex,
                 Alpha = 0,
+                Scale = new Vector2f(0.5f, 0.5f),
+                Position = _Core.DeviceSize / 2 - tex.Size.ToVector2f() / 4
             };
-            Layer_Background.Add(_Bg);
-            _Bg.Scale /= 2;
-            _Bg.Position = _Core.DeviceSize / 2 - _Bg.Texture.Size.ToVector2f() * _Bg.Scale.X / 2;
+            Layer_Background.Add(_Logo);
 
-            Input.KeyPressed += k => _Done = true;
-            Input.JoystickButtonPressed += (joyId, btn) => _Done = true;
+            Input.KeyPressed += k => Done();
+            Input.JoystickButtonPressed += (joyId, btn) => Done();
+
             _Core.AnimationManager.Wait(1, Start);
-
             return true;
         }
 
@@ -68,24 +65,41 @@ namespace BlackCoat
         /// </summary>
         private void Start()
         {
-            if (_Done) return;
-            _Sound.Play();
-            _Core.AnimationManager.Run(0, 1, 4.5f, v => _Bg.Alpha = v);
-            _Core.AnimationManager.Wait(4, () => _Core.AnimationManager.Run(1, 0, 1f, v => _Bg.Alpha = v, () => _Done = true));
+            if (!Destroyed)
+            {
+                _Sound.Play();
+                _Core.AnimationManager.Run(0, 1, 4.5f, Blend);
+                _Core.AnimationManager.Wait(4,
+                    () => _Core.AnimationManager.Run(1, 0, 1f, Blend, Done));
+            }
         }
 
         /// <summary>
-        /// Check each frame if we need to change to the next scene.
+        /// Helper to fade the logo in and out
         /// </summary>
-        /// <param name="deltaT">Current frame time.</param>
-        protected override void Update(float deltaT)
+        private void Blend(float alpha)
         {
-            if (_Done)
+            if (!Destroyed) _Logo.Alpha = alpha;
+        }
+
+        /// <summary>
+        /// Helper to change to the next scene
+        /// </summary>
+        private void Done()
+        {
+            if (!Destroyed)
             {
                 _Sound.Stop();
                 _Core.SceneManager.ChangeScene(_NextScene);
             }
         }
+
+        /// <summary>
+        /// Called each Frame to update the scenes user code.
+        /// </summary>
+        /// <param name="deltaT">Current frame time.</param>
+        protected override void Update(float deltaT)
+        { }
 
         /// <summary>
         /// Cleanup everything that is not managed by either the scene graph or the asset loaders.
