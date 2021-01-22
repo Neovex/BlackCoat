@@ -48,8 +48,9 @@ namespace BlackCoat
             _Logo = new Graphic(_Core, tex)
             {
                 Alpha = 0,
-                Scale = new Vector2f(0.5f, 0.5f),
-                Position = _Core.DeviceSize / 2 - tex.Size.ToVector2f() / 4
+                Position = _Core.DeviceSize / 2,
+                Origin = tex.Size.ToVector2f()/2,
+                Scale = new Vector2f(0.5f, 0.5f)
             };
             Layer_Background.Add(_Logo);
 
