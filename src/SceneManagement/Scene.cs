@@ -11,7 +11,6 @@ namespace BlackCoat
     {
         // Variables #######################################################################
         private PerformanceMonitor _PerformanceMonitor;
-        private PropertyInspector _PropertyInspector;
         private Input _DefaultInput;
         private Input _Input;
 
@@ -177,37 +176,6 @@ namespace BlackCoat
         }
 
         /// <summary>
-        /// Handles the console command event.
-        /// </summary>
-        /// <param name="cmd">The command.</param>
-        /// <returns>True when the command was recognized otherwise false.</returns>
-        private bool HandleConsoleCommand(string cmd)
-        {
-            if (_Core.Debug && cmd == "inspect")
-            {
-                OpenInspector();
-                ToggleConsole();
-                return true;
-            }
-            return false;
-        }
-
-        /// <summary>
-        /// Opens the inspector window.
-        /// </summary>
-        /// <param name="target">Optional object for inspection. This is only necessary when the object is not part of the scene graph.</param>
-        /// <returns>Inspector interface for further interactions</returns>
-        protected IPropertyInspector OpenInspector(object target = null)
-        {
-            _PropertyInspector = _PropertyInspector ?? new PropertyInspector(_Core, TextureLoader);
-            _PropertyInspector.Clear();
-            _PropertyInspector.Add(target);
-            _PropertyInspector.Add(this);
-            _PropertyInspector.Show();
-            return _PropertyInspector;
-        }
-
-        /// <summary>
         /// Manually opens / closes the console.
         /// </summary>
         protected void ToggleConsole()
@@ -242,7 +210,6 @@ namespace BlackCoat
             {
                 HandleDebugChanged(_Core.Debug);
                 _Core.DebugChanged += HandleDebugChanged;
-                _Core.ConsoleCommand += HandleConsoleCommand;
 
                 Loaded.Invoke();
                 return true;
@@ -276,9 +243,6 @@ namespace BlackCoat
             Destroyed = true;
 
             _Core.DebugChanged -= HandleDebugChanged;
-            _Core.ConsoleCommand -= HandleConsoleCommand;
-
-            _PropertyInspector?.Destroy();
 
             OnDestroy.Invoke();
             Destroy();

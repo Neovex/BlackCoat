@@ -39,37 +39,6 @@ namespace BlackCoat
 
         #region Factories
         /// <summary>
-        /// Initializes a new Graphic Device via <see cref="Launcher"/>
-        /// </summary>
-        /// <param name="title">Optional Title of the Device/Window</param>
-        /// <returns></returns>
-        public static Device Create(String title = null) => Create(new Launcher(), title);
-
-        /// <summary>
-        /// Initializes a new Graphic Device via <see cref="Launcher"/>
-        /// </summary>
-        /// <param name="launcher">The launcher to initialize the <see cref="Device"/>.</param>
-        /// <param name="title">Optional Title of the Device/Window</param>
-        /// <returns>The Initialized Device/Window or null if the Device could not be created or the launcher has been exited</returns>
-        /// <exception cref="ArgumentNullException">launcher</exception>
-        public static Device Create(Launcher launcher, String title = null)
-        {
-            if (launcher == null) throw new ArgumentNullException(nameof(launcher));
-            if (!String.IsNullOrWhiteSpace(title)) launcher.Text = title;
-            if (launcher.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-            {
-                var style = Styles.Fullscreen;
-                if (launcher.Windowed)
-                {
-                    style = Styles.Default;
-                    if (launcher.Borderless) style = Styles.None;
-                }
-                return Create(launcher.VideoMode, launcher.Text, style, launcher.AntiAliasing, launcher.VSync, launcher.FpsLimit);
-            }
-            return null;
-        }
-
-        /// <summary>
         /// Initializes a new Graphic Device
         /// </summary>
         /// <param name="videoMode">The video mode.</param>
