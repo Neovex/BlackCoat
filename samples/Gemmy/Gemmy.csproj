@@ -1,9 +1,8 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <OutputType>WinExe</OutputType>
-    <TargetFramework>net5.0-windows</TargetFramework>
-    <UseWindowsForms>true</UseWindowsForms>
+    <OutputType>exe</OutputType>
+    <TargetFramework>net5.0</TargetFramework>
     <Authors>Alexander Schwahl</Authors>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <Description>A simple tetris clone</Description>
