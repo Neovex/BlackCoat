@@ -92,7 +92,6 @@ namespace UI
                 }
             };
 
-            OpenInspector();
             return true;
         }
 

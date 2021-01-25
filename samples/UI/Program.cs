@@ -1,20 +1,17 @@
-using System;
+using SFML.Window;
 using BlackCoat;
 
 namespace UI
 {
     static class Program
     {
-        [STAThread]
         static void Main()
         {
-            var device = Device.Create("Black Coat UI Sample");
-            if (device == null) return;
-            using (var core = new Core(device))
-            {
-                core.SceneManager.ChangeScene(new UIScene(core));
-                core.Run();
-            }
+            var mode = new VideoMode(800, 600);
+            var device = Device.Create(mode, "Black Coat UI Sample", Styles.Default, 0, false, 120);
+            using var core = new Core(device);
+            core.SceneManager.ChangeScene(new UIScene(core));
+            core.Run();
         }
     }
 }
