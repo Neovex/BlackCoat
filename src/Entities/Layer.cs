@@ -21,22 +21,22 @@ namespace BlackCoat.Entities
         /// <summary>
         /// A <see cref="Layer"/>s position cannot be changed.
         /// </summary>
-        public override Vector2f Position { get => base.Position; set => throw new Exception("Invalid Operation"); }
+        public override Vector2f Position { get => base.Position; set => throw new Exception("Invalid Operation. Layers cannot be moved."); }
 
         /// <summary>
         /// A <see cref="Layer"/>s Rotation cannot be changed.
         /// </summary>
-        public override float Rotation { get => base.Rotation; set => throw new Exception("Invalid Operation"); }
+        public override float Rotation { get => base.Rotation; set => throw new Exception("Invalid Operation. Layers cannot be rotated."); }
 
         /// <summary>
         /// A <see cref="Layer"/>s Scale cannot be changed.
         /// </summary>
-        public override Vector2f Scale { get => base.Scale; set => throw new Exception("Invalid Operation"); }
+        public override Vector2f Scale { get => base.Scale; set => throw new Exception("Invalid Operation. Layers cannot be scaled."); }
 
         /// <summary>
         /// A <see cref="Layer"/>s texture must not be defined.
         /// </summary>
-        public new Texture Texture { get => null; set => throw new Exception("Invalid Operation"); }
+        public new Texture Texture { get => null; set => throw new Exception("Invalid Operation. Layers cannot be assigned a texture."); }
 
 
         // CTOR ############################################################################
