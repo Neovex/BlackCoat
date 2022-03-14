@@ -61,5 +61,17 @@ namespace BlackCoat.Entities
             if (entities == null) throw new ArgumentNullException(nameof(entities));
             foreach (var entity in entities) base.Add(entity);
         }
+
+        /// <summary>
+        /// Maps a vector to view coordinates.
+        /// </summary>
+        /// <param name="target">The target coordinates to map.</param>
+        public Vector2f MapToView(Vector2f target) => View == null ? target : View.MapToView(_Core.DeviceSize, target);
+
+        /// <summary>
+        /// Maps a vector to device coordinates.
+        /// </summary>
+        /// <param name="target">The target coordinates to map.</param>
+        public Vector2i MapToPixel(Vector2f target) => View == null ? target.ToVector2i() : View.MapToPixel(_Core.DeviceSize, target);
     }
 }

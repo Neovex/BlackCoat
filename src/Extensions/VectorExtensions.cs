@@ -127,8 +127,17 @@ namespace BlackCoat
         {
             return new Vector2f(v.X * other.X, v.Y * other.Y);
         }
+
+        /// <summary>
+        /// X/X & Y/Y
+        /// </summary>
+        /// <param name="other">The other Vector</param>
+        public static Vector2f DivideBy(this Vector2f v, Vector2f other)
+        {
+            return new Vector2f(v.X / other.X, v.Y / other.Y);
+        }
         #endregion
-        
+
         #region CONVERSIONS
         public static Vector2i ToVector2i(this Vector2f v) => new Vector2i((int)v.X, (int)v.Y);
         public static Vector2u ToVector2u(this Vector2f v) => new Vector2u((uint)v.X, (uint)v.Y);
