@@ -10,20 +10,17 @@ namespace BlackCoat.Entities.Animation
     /// </summary>
     public class BlittingAnimation:Graphic
     {
-        // Events ##########################################################################
         /// <summary>
         /// Occurs when the animation completes and returns to its first frame.
         /// </summary>
         public event Action AnimationComplete = () => { };
 
 
-        // Variables #######################################################################
         protected Int32 _CurrentFrame;
         protected IntRect[] _Frames;
         protected Single _FrameTime;
 
 
-        // Properties ######################################################################
         /// <summary>
         /// Duration of each frame
         /// </summary>
