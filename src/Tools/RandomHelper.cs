@@ -83,7 +83,7 @@ namespace BlackCoat.Tools
         /// <returns>A Vector within the bounds</returns>
         public Vector2f NextVector(FloatRect area)
         {
-            return NextVector(area.Left, area.Top, area.Left + area.Width, area.Top + area.Height);
+            return NextVector(area.Left, area.Left + area.Width, area.Top, area.Top + area.Height);
         }
     }
 }
