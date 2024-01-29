@@ -250,7 +250,8 @@ namespace BlackCoat
         #endregion
 
         #region Keyboard
-        public Boolean IsKeyDown(Keyboard.Key key) { return _KeyboardKeys.Contains(key); }
+        public Boolean IsKeyDown(Keyboard.Key key) => _KeyboardKeys.Contains(key);
+        public Boolean IsKeyDown(params Keyboard.Key[] keys) => keys.All(k => _KeyboardKeys.Contains(k));
 
         private void HandleKeyPressed(object sender, KeyEventArgs e)
         {
