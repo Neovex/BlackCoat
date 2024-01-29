@@ -44,6 +44,7 @@ namespace BlackCoat
             if (sndBuff == null || tex == null) return false;
 
             _Sound = new Sound(sndBuff);
+            _Sound.Volume = 50;
             
             _Logo = new Graphic(_Core, tex)
             {

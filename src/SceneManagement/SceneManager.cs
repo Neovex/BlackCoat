@@ -66,7 +66,29 @@ namespace BlackCoat
             }
             else
             {
-                Log.Debug("Changing Scene...");
+                var success = false;
+                if (_RequestedScene != null)
+                {
+                    // Load Scene
+                    try
+                    {
+                        Log.Debug("Trying to load new Scene:", _RequestedScene);
+                        if (_RequestedScene.LoadInternal())
+                        {
+                            Log.Debug(_RequestedScene, "successfully loaded");
+                            success = true;
+                        }
+                        else throw new Exception("Manual Failure");
+                    }
+                    catch (Exception e)
+                    {
+                        Log.Error("Failed to load Scene", _CurrentScene, "Reason:", e);
+                        SceneChangeFailed.Invoke(_RequestedScene);
+                        _RequestedScene = null;
+                        if (_Core.Debug) throw;
+                    }
+                }
+                if (!success) return;
 
                 // Unload old Scene
                 if (_CurrentScene != null)
@@ -87,35 +109,8 @@ namespace BlackCoat
                 // Set new Scene
                 Log.Debug("Setting new Scene", _RequestedScene);
                 _CurrentScene = _RequestedScene;
+                SceneChanged.Invoke(_CurrentScene);
 
-                if (_CurrentScene != null)
-                {
-                    try
-                    {
-                        // Load Scene
-                        Log.Debug("Trying to load new Scene:", _CurrentScene);
-                        if (_CurrentScene.LoadInternal())
-                        {
-                            Log.Debug(_CurrentScene, "successfully loaded");
-                            SceneChanged.Invoke(_CurrentScene);
-                        }
-                        else
-                        {
-                            Log.Error("Failed to load Scene", _CurrentScene);
-                            var failedScene = _CurrentScene;
-                            _CurrentScene = _RequestedScene = null;
-                            SceneChangeFailed.Invoke(failedScene);
-                        }
-                    }
-                    catch (Exception e)
-                    {
-                        Log.Error("Failed to load Scene", _CurrentScene, "Reason:", e);
-                        var failedScene = _CurrentScene;
-                        _CurrentScene = _RequestedScene = null;
-                        SceneChangeFailed.Invoke(failedScene);
-                        if (_Core.Debug) throw;
-                    }
-                }
                 Log.Info("Scene change completed. New Scene:", _CurrentScene);
             }
         }
