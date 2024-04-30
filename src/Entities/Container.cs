@@ -44,12 +44,13 @@ namespace BlackCoat.Entities
         /// Adds an Entity to this Container
         /// </summary>
         /// <param name="entity">The Entity to add</param>
-        public virtual void Add(IEntity entity)
+        public virtual void Add(IEntity entity, bool toBack = false)
         {
             if (entity == null) throw new ArgumentNullException(nameof(entity));
             if (entity.Parent != null) entity.Parent.Remove(entity);
             entity.Parent = this;
-            _Entities.Add(entity);
+            if (toBack) _Entities.Insert(0, entity);
+            else _Entities.Add(entity);
         }
 
         /// <summary>

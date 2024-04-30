@@ -1,14 +1,14 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net5.0-windows</TargetFramework>
+    <TargetFramework>net8.0-windows7.0</TargetFramework>
     <UseWindowsForms>true</UseWindowsForms>
     <PackageId>BlackCoat Game Engine</PackageId>
     <Version>1.7.0</Version>
     <Authors>Alexander Schwahl</Authors>
     <Company>Neovex</Company>
     <Product>BlackCoat Game Engine</Product>
-    <Copyright>Copyright © Alexander Schwahl 2021</Copyright>
+    <Copyright>Copyright © Alexander Schwahl 2024</Copyright>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <RepositoryType>Git</RepositoryType>
     <RepositoryUrl>https://github.com/Neovex/BlackCoat</RepositoryUrl>
@@ -16,6 +16,7 @@
     <NeutralLanguage></NeutralLanguage>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <Description>A lightweight 2D game engine based on the SFML graphics framework</Description>
+    <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -37,7 +38,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="SFML.Net" Version="2.5.0" />
+    <PackageReference Include="SFML.Net" Version="2.5.1" />
   </ItemGroup>
 
   <ItemGroup>

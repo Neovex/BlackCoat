@@ -118,9 +118,9 @@ namespace BlackCoat.UI
         /// Adds an Entity to this Container
         /// </summary>
         /// <param name="entity">The Entity to add</param>
-        public override void Add(IEntity entity)
+        public override void Add(IEntity entity, bool toBack = false)
         {
-            base.Add(entity);
+            base.Add(entity, toBack);
             entity.RenderTarget = _RenderTarget;
         }
 

@@ -116,10 +116,10 @@ namespace BlackCoat.Entities
         /// </summary>
         /// <param name="entity">The Entity to add</param>
         /// <returns>True if the Entity could be added</returns>
-        public override void Add(IEntity entity)
+        public override void Add(IEntity entity, bool toBack = false)
         {
             entity.RenderTarget = _RenderTarget;
-            base.Add(entity);
+            base.Add(entity, toBack);
         }
 
         /// <summary>
