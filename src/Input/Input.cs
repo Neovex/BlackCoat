@@ -123,6 +123,7 @@ namespace BlackCoat
                 if (_JoysticksEnabled == value) return;
                 if (_JoysticksEnabled = value)
                 {
+                    _Device.SetJoystickThreshold(2);
                     _Device.JoystickConnected += HandleJoystickConnected;
                     _Device.JoystickDisconnected += HandleJoystickDisconnected;
                     _Device.JoystickMoved += HandleJoystickMoved;
@@ -250,8 +251,7 @@ namespace BlackCoat
         #endregion
 
         #region Keyboard
-        public Boolean IsKeyDown(Keyboard.Key key) => _KeyboardKeys.Contains(key);
-        public Boolean IsKeyDown(params Keyboard.Key[] keys) => keys.All(k => _KeyboardKeys.Contains(k));
+        public Boolean IsKeyDown(Keyboard.Key key) { return _KeyboardKeys.Contains(key); }
 
         private void HandleKeyPressed(object sender, KeyEventArgs e)
         {
@@ -353,6 +353,7 @@ namespace BlackCoat
         {
             HandleJoystickConnected(e.JoystickId);
             _JoystickPositions[(e.JoystickId, e.Axis)] = e.Position;
+            JoystickMoved.Invoke(e.JoystickId, e.Axis, e.Position);
         }
 
         private void ClearJoystickData(uint id)

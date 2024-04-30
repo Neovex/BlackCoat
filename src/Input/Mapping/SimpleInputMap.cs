@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using SFML.Window;
 
@@ -22,7 +23,7 @@ namespace BlackCoat.InputMapping
         private Dictionary<Keyboard.Key, TMappedOperation> _KeyboardActions;
         private Dictionary<Mouse.Button, TMappedOperation> _MouseActions;
         private Dictionary<uint, TMappedOperation> _JoystickButtonActions;
-        private Dictionary<Joystick.Axis, (float, TMappedOperation)> _JoystickMovementActions;
+        private List<(Joystick.Axis Axis, float Limit, TMappedOperation Operation)> _JoystickMovementActions;
 
         private uint _JoystickFilter;
         private Boolean _ScrollUpActionSet;
@@ -51,7 +52,7 @@ namespace BlackCoat.InputMapping
             _KeyboardActions = new Dictionary<Keyboard.Key, TMappedOperation>();
             _MouseActions = new Dictionary<Mouse.Button, TMappedOperation>();
             _JoystickButtonActions = new Dictionary<uint, TMappedOperation>();
-            _JoystickMovementActions = new Dictionary<Joystick.Axis, (float, TMappedOperation)>();
+            _JoystickMovementActions = new List<(Joystick.Axis, float, TMappedOperation)>();
 
             _JoystickFilter = joystickFilter;
             _ScrollUpActionSet = false;
@@ -159,7 +160,7 @@ namespace BlackCoat.InputMapping
         public void AddJoystickMovementMapping(Joystick.Axis axis, float limit, TMappedOperation action)
         {
             if (limit == 0) throw new Exception($"{nameof(limit)} must not be zero");
-            _JoystickMovementActions[axis] = (limit, action);
+            _JoystickMovementActions.Add((axis, limit, action));
         }
 
 
@@ -195,12 +196,20 @@ namespace BlackCoat.InputMapping
 
         private void HandleJoystickMoved(uint joystickId, Joystick.Axis axis, float position)
         {
-            if (joystickId == _JoystickFilter &&
-               _JoystickMovementActions.TryGetValue(axis, out (float limit, TMappedOperation action) kvp))
+            if (joystickId == _JoystickFilter)
             {
-                var activate = (kvp.limit < 0 && position < kvp.limit) ||
-                               (kvp.limit > 0 && position > kvp.limit);
-                MappedOperationInvoked.Invoke(kvp.action, activate);
+                var actions = _JoystickMovementActions.Where(a => a.Axis == axis); // TODO : more tests
+                foreach (var action in actions)
+                {
+                    if (action.Limit > 0)
+                    {
+                        MappedOperationInvoked.Invoke(action.Operation, position > action.Limit);
+                    }
+                    else
+                    {
+                        MappedOperationInvoked.Invoke(action.Operation, position < action.Limit);
+                    }
+                }
             }
         }
 
